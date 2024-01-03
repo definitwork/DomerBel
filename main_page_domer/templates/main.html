@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static './css/null_for_templates.css' %}">
+    <link rel="stylesheet" href="{% static './css/main_page_style.css' %}">
+    <title>Title</title>
+</head>
+<body>
+<div class="wrapper">
+    <div class="container">
+        <header>
+            <div class="header_up">
+                <div class="header_up_wrapper">
+                    <div class="header_up_wrapper_navigate_info">
+                        <div class="navigate_info_declarations font_blue">
+                            <a href="#">Объявления</a>
+                        </div>
+                        <div class="navigate_info_shops font_blue">
+                            <a href="#">Магазины</a>
+                        </div>
+                        <div class="navigate_info_publications font_blue">
+                            <a href="#">Публикации</a>
+                        </div>
+                        <div class="navigate_info_help font_blue">
+                            <a href="#">Помощь</a>
+                        </div>
+                    </div>
+                    <div class="header_up_wrapper_entrance_registration font_blue">
+                        <a href="#">Вход и регистрация</a>
+                    </div>
+
+                </div>
+                <div class="horizontal_line"></div>
+            </div>
+            <div class="header_down">
+                <div class="header_down_category">
+                    <div class="header_down_logo">
+                        <a href="#">
+                            <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
+                        </a>
+                    </div>
+                    <div class="header_down_nav_category">
+                        <div class="nav_category_title">
+                            <p>
+                                Общебелорусская доска объявлений
+                            </p>
+                        </div>
+                        <div class="nav_category_list">
+                            <a href="#">Авто</a>
+                            <a href="#">Работа</a>
+                            <a href="#">Недвижимость</a>
+
+                        </div>
+                    </div>
+                    <div class="header_down_get_ads">
+
+                    </div>
+                </div>
+            </div>
+        </header>
+        {#        <div class="navigation_category">#}
+        {#            lskfhla;#}
+        {#        </div>#}
+    </div>
+</div>
+</body>
+</html>

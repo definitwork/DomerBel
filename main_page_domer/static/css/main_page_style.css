@@ -1,0 +1,37 @@
+/*.container {*/
+/*    background: coral;*/
+/*}*/
+.header_up{
+    align-items: center;
+}
+
+.header_up_wrapper {
+    height: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header_up_wrapper_navigate_info {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.font_blue {
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+
+    & a {
+        text-decoration: none;
+        color: #307792;
+    }
+    :hover{
+        color:red;
+    }
+}
+
+.horizontal_line {
+    height: 2px;
+    background: #ADD8E6;
+}
