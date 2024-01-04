@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{% static './css/main_page_style.css' %}">
 
 
-    <title>Title</title>
+    <title>домер.бел.Уч</title>
 </head>
 <body>
 <div class="wrapper">
@@ -26,7 +26,7 @@
                             <a href="#">Публикации</a>
                         </div>
                         <div class="navigate_info_help">
-                            <a href="#">Помощь</a>
+                            <a href="{% url 'help' %}">Помощь</a>
                         </div>
                     </div>
                     <div class="header_up_wrapper_entrance_registration font_blue">
@@ -46,7 +46,7 @@
                     <div class="header_down_nav_category">
                         <div class="nav_category_title">
                             <p>
-                                <strong> Доска объявлений.Беларусь</strong>
+                                <strong> Общебелорусская доска объявлений</strong>
                             </p>
                         </div>
                         <div class="nav_category_list">
@@ -65,7 +65,56 @@
                 </div>
             </div>
         </header>
+        {% block help %}
 
+        {% endblock %}
+        <footer>
+            <div class="navigate_link">
+
+                <div class="footer_link">
+                    <a href="">
+                        <p>Подать объявление</p>
+                    </a>
+                </div>
+                <div class="footer_link">
+                    <a href="">
+                        <p>Объявления</p>
+                    </a>
+                </div>
+                <div class="footer_link">
+                    <a href="">
+                        <p>Магазины</p>
+                    </a>
+                </div>
+                <div class="footer_link">
+                    <a href="">
+                        <p>Помощь</p>
+                    </a>
+                </div>
+                <div class="footer_link">
+                    <a href="">
+                        <p>Виджеты</p>
+                    </a>
+                </div>
+                <div class="footer_link">
+                    <a href="">
+                        <p>Карта</p>
+                    </a>
+                </div>
+                <div class="footer_link">
+                    <a href="">
+                        <p>Обратная связь</p>
+                    </a>
+                </div>
+                <div class="footer_link">
+                    <a href="">
+                        <p>МОБИЛЬНАЯ ВЕРСИЯ</p>
+                    </a>
+                </div>
+            </div>
+
+
+        </footer>
     </div>
 </div>
 </body>
