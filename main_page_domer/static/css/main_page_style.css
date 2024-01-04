@@ -45,6 +45,7 @@
 
 .nav_category_list {
     margin-top: 10px;
+
 }
 
 .header_down_get_ads {
@@ -81,17 +82,29 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+    color: #333333;
     & p{
         word-break: break-word;
+    }
+    & h1{
+        margin-bottom: 32px;
+        padding-top: 15px;
+
     }
 }
 
 .indent_p{
-    padding-left: 10px;
+    padding-left: 15px;
 }
 .nav_category_title p {
     font-family: "Trebuchet MS";
     color: #333333;
     font-size: 16px;
     font-weight: bold;
+}
+
+.line{
+    border-bottom: solid 1px #D4D4D4;
 }
