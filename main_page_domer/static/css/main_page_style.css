@@ -55,3 +55,17 @@
         color: red;
     }
 }
+
+.text_help{
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    & p{
+        word-break: break-word;
+    }
+}
+
+.indent_p{
+    padding-left: 10px;
+}
