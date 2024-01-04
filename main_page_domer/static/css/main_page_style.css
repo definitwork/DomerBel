@@ -5,14 +5,28 @@
 .header_up_wrapper {
     height: 24px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
 }
 
 .header_up_wrapper_navigate_info {
     display: flex;
     justify-content: space-between;
-    gap: 15px;
+
+    & ul {
+        display: flex;
+        gap: 15px;
+        font-family: "Trebuchet MS";
+        font-size: 13px;
+        color: #307792;
+    }
+
+    & p {
+        display: flex;
+        margin-left: auto;
+        font-family: "Trebuchet MS";
+        font-size: 13px;
+        color: #307792;
+    }
 }
 
 .horizontal_line {
@@ -20,27 +34,28 @@
     background: #ADD8E6;
 }
 
-.header_down_category{
+.header_down_category {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
 }
 
-.nav_category_list{
+.nav_category_list {
     margin-top: 10px;
 }
 
-.header_down_get_ads{
+.header_down_get_ads {
     width: 189px;
     height: 30px;
-    & img{
+
+    & img {
         height: 100%;
         width: 100%;
         object-fit: cover;
     }
 }
 
-.navigate_link{
+.navigate_link {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -48,10 +63,12 @@
     height: 62px;
 
 
-    & a{
+    & a {
         color: rgb(85, 85, 85);
+        font-size: 12px;
     }
-    & a:hover{
+
+    & a:hover {
         color: red;
     }
 }
@@ -68,4 +85,10 @@
 
 .indent_p{
     padding-left: 10px;
+}
+.nav_category_title p {
+    font-family: "Trebuchet MS";
+    color: #333333;
+    font-size: 16px;
+    font-weight: bold;
 }
