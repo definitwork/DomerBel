@@ -11,6 +11,7 @@
 .header_up_wrapper_navigate_info {
     display: flex;
     justify-content: space-between;
+    width: 100%;
 
     & ul {
         display: flex;
@@ -19,15 +20,17 @@
         font-size: 13px;
         color: #307792;
     }
-
-    & p {
-        display: flex;
-        margin-left: auto;
+    & div {
         font-family: "Trebuchet MS";
         font-size: 13px;
         color: #307792;
     }
+    & div:hover{
+        color: red;
+        cursor: pointer;
+    }
 }
+
 
 .horizontal_line {
     height: 2px;
