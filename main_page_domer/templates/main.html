@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static './css/null_for_templates.css' %}">
     <link rel="stylesheet" href="{% static './css/main_page_style.css' %}">
+
+
     <title>Title</title>
 </head>
 <body>
@@ -14,16 +16,16 @@
             <div class="header_up">
                 <div class="header_up_wrapper">
                     <div class="header_up_wrapper_navigate_info">
-                        <div class="navigate_info_declarations font_blue">
+                        <div class="navigate_info_declarations">
                             <a href="#">Объявления</a>
                         </div>
-                        <div class="navigate_info_shops font_blue">
+                        <div class="navigate_info_shops">
                             <a href="#">Магазины</a>
                         </div>
-                        <div class="navigate_info_publications font_blue">
+                        <div class="navigate_info_publications">
                             <a href="#">Публикации</a>
                         </div>
-                        <div class="navigate_info_help font_blue">
+                        <div class="navigate_info_help">
                             <a href="#">Помощь</a>
                         </div>
                     </div>
@@ -44,25 +46,26 @@
                     <div class="header_down_nav_category">
                         <div class="nav_category_title">
                             <p>
-                                Общебелорусская доска объявлений
+                                <strong> Доска объявлений.Беларусь</strong>
                             </p>
                         </div>
                         <div class="nav_category_list">
                             <a href="#">Авто</a>
                             <a href="#">Работа</a>
                             <a href="#">Недвижимость</a>
-
                         </div>
                     </div>
                     <div class="header_down_get_ads">
-
+                        <div class="button_abs">
+                            <a href="#">
+                                <img src="{% static './img/button.png' %}" alt="{% static './img/button.png' %}">
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </header>
-        {#        <div class="navigation_category">#}
-        {#            lskfhla;#}
-        {#        </div>#}
+
     </div>
 </div>
 </body>
