@@ -1,4 +1,4 @@
-.header_up{
+.header_up {
     align-items: center;
 }
 
@@ -28,7 +28,8 @@
         font-size: 13px;
         color: #307792;
     }
-    & div:hover{
+
+    & div:hover {
         color: red;
         cursor: pointer;
     }
@@ -82,7 +83,7 @@
     }
 }
 
-.text_help{
+.text_help {
 
     display: flex;
     flex-direction: column;
@@ -90,19 +91,22 @@
     font-family: "Trebuchet MS";
     font-size: 13px;
     color: #333333;
-    & p{
+
+    & p {
         word-break: break-word;
     }
-    & h1{
+
+    & h1 {
         margin-bottom: 32px;
         padding-top: 15px;
 
     }
 }
 
-.indent_p{
+.indent_p {
     padding-left: 15px;
 }
+
 .nav_category_title p {
     margin-bottom: 25px;
     font-family: "Trebuchet MS";
@@ -179,8 +183,8 @@
 
 .button_search img {
     border-radius: 5px;
+}
 
-.line{
+.line {
     border-bottom: solid 1px #D4D4D4;
-
 }
