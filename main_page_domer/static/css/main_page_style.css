@@ -1,3 +1,191 @@
+.popup {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.login_form_popup {
+    position: relative;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 80px 95px;
+    max-width: 500px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 5px;
+
+    & button {
+        padding: 10px;
+        font-family: "Trebuchet MS";
+        font-size: 14px;
+
+    }
+}
+
+.login_form {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 20px;
+
+    & input {
+        padding: 10px;
+        width: 100%;
+        border-radius: 5px;
+        border: 1px solid #333333;
+        font-family: "Trebuchet MS";
+        font-size: 14px;
+        cursor: pointer;
+        color: #333333;
+
+        &::placeholder {
+            font-family: "Trebuchet MS";
+            font-size: 14px;
+            cursor: pointer;
+            color: #333333;
+        }
+    }
+
+    & button {
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #AAA;
+        background: #DADADA;
+        text-align: center;
+        font-family: "Trebuchet MS";
+        font-size: 14px;
+        cursor: pointer;
+        color: #333333;
+
+    }
+}
+
+.bar_code {
+    height: 40px;
+}
+
+.nav_popup {
+    display: flex;
+    justify-content: space-between;
+
+    & p {
+        display: flex;
+        align-items: center;
+        font-family: "Trebuchet MS";
+        font-size: 16px;
+        color: #333333;
+    }
+}
+
+.forget_pass_and_register_buttons {
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    }
+
+.closing_cross {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    background-color: #DADADA;
+    border-radius: 3px;
+
+    &::before,
+    &::after {
+        content: "";
+        top: 10px;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        border-radius: 10px;
+        background: white;
+        position: absolute;
+        transform: rotate(45deg);
+    }
+
+    &::after {
+        transform: rotate(-45deg);
+    }
+
+    &:hover {
+        background-color: red;
+        border-radius: 3px;
+    }
+}
+
+.register_form_popup {
+    position: relative;
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    padding: 80px 95px;
+    max-width: 500px;
+    width: 100%;
+    background: #fff;
+    border-radius: 5px;
+}
+
+.forget_pass_button,
+.register_button{
+    padding: 10px;
+    width: 100%;
+    background: none;
+    color: #307792;
+    font-family: "Trebuchet MS";
+    font-size: 14px;
+
+    &:hover {
+        color: red;
+    }
+}
+
+.return_to_login_button {
+    width: 100%;
+    background: none;
+    color: #307792;
+    font-family: "Trebuchet MS";
+    font-size: 14px;
+
+    &:hover {
+        color: red;
+    }
+}
+
+.forget_pass_form_popup {
+    position: relative;
+    display: none;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    padding: 80px 95px;
+    max-width: 500px;
+    width: 100%;
+    background: #fff;
+    border-radius: 5px;
+
+    & p {
+        color: #000;
+        font-family: Manrope;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 140%;
+    }
+}
+
 .header_up {
     align-items: center;
 }
@@ -112,7 +300,6 @@
     font-weight: bold;
 }
 
-
 .nav_category_list {
     display: flex;
     justify-content: space-between;
@@ -182,13 +369,14 @@
     border-radius: 5px;
 }
 
-.regions {
+.regions_list {
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     flex-wrap: wrap;
     padding: 10px 0px 10px;
     height: 70px;
-    & ul {
+
+    & li {
         flex: 0 1 50%;
     }
 }
