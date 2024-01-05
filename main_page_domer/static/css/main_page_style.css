@@ -17,14 +17,14 @@
         display: flex;
         gap: 15px;
         font-family: "Trebuchet MS";
+        cursor: pointer;
         font-size: 13px;
         color: #307792;
     }
 
-
-    & p {
-
+    & div {
         font-family: "Trebuchet MS";
+        cursor: pointer;
         font-size: 13px;
         color: #307792;
     }
@@ -52,7 +52,6 @@
 
 .nav_category_list {
     margin-top: 10px;
-
 }
 
 .header_down_get_ads {
@@ -84,7 +83,6 @@
 }
 
 .text_help {
-
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -99,7 +97,6 @@
     & h1 {
         margin-bottom: 32px;
         padding-top: 15px;
-
     }
 }
 
@@ -146,7 +143,7 @@
 }
 
 .slct {
-    width: 250px;
+    width: 322px;
     height: 28px;
     border-radius: 3px;
     font-family: "Trebuchet MS";
@@ -185,24 +182,36 @@
     border-radius: 5px;
 }
 
+.regions {
+    display: flex;
+    flex-direction:column;
+    flex-wrap: wrap;
+    padding: 10px 0px 10px;
+    height: 70px;
+    & ul {
+        flex: 0 1 50%;
+    }
+}
+
+.reg {
+    cursor: pointer;
+}
+
 .line {
     border-bottom: solid 1px #D4D4D4;
-
 }
 
 .ads {
     display: flex;
-
-
 }
 
 .last_ads_title {
+    width: 92%;
     text-align: center;
     margin-bottom: 20px;
     font-family: "Trebuchet MS";
     font-size: 18px;
     color: #333333;
-
 }
 
 .ads_date_time {
@@ -211,13 +220,11 @@
     font-family: "Trebuchet MS";
     font-size: 13px;
     color: #333333;
-
 }
 
 .ads_img {
     height: 113px;
     width: 120px;
-
 
     & img {
         max-width: 100%;
@@ -229,24 +236,20 @@
 .ads_description {
     height: 113px;
     width: 377px;
-    & li{
 
+    & li {
         margin: 3px;
     }
-
 
     & li:first-child {
         font-family: "Trebuchet MS";
         font-size: 14px;
         color: #307792;
-
     }
 
     & li:nth-child(2) {
         font-family: "Trebuchet MS";
         font-size: 13px;
-
-
     }
 
     & li:nth-child(n+3) {
@@ -254,5 +257,4 @@
         font-size: 13px;
         color: #858585;
     }
-
 }
