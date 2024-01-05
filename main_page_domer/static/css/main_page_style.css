@@ -72,25 +72,12 @@
     height: 40px;
 }
 
-.nav_popup {
-    display: flex;
-    justify-content: space-between;
-
-    & p {
-        display: flex;
-        align-items: center;
-        font-family: "Trebuchet MS";
-        font-size: 16px;
-        color: #333333;
-    }
-}
-
 .forget_pass_and_register_buttons {
     padding-top: 10px;
     display: flex;
     justify-content: space-between;
     width: 100%;
-    }
+}
 
 .closing_cross {
     position: absolute;
@@ -139,7 +126,7 @@
 }
 
 .forget_pass_button,
-.register_button{
+.register_button {
     padding: 10px;
     width: 100%;
     background: none;
@@ -183,6 +170,80 @@
         font-style: normal;
         font-weight: 400;
         line-height: 140%;
+    }
+}
+
+.forget_pass_form_popup {
+    position: relative;
+    display: none;
+    align-items: center;
+    padding: 80px 95px;
+    max-width: 500px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 5px;
+
+    & button {
+        padding: 10px;
+        width: 100%;
+        background: none;
+        color: #307792;
+        font-family: "Trebuchet MS";
+        font-size: 14px;
+
+        &:hover {
+            color: red;
+        }
+    }
+}
+
+.forget_pass_form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+
+
+    & button {
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #AAA;
+        background: #DADADA;
+        text-align: center;
+        font-family: "Trebuchet MS";
+        font-size: 14px;
+        cursor: pointer;
+        color: #333333;
+    }
+
+    & input {
+        padding: 10px;
+        width: 100%;
+        border-radius: 5px;
+        border: 1px solid #333333;
+        font-family: "Trebuchet MS";
+        font-size: 14px;
+        cursor: pointer;
+        color: #333333;
+
+        &::placeholder {
+            font-family: "Trebuchet MS";
+            font-size: 14px;
+            cursor: pointer;
+            color: #333333;
+        }
+    }
+}
+
+.nav_popup {
+    display: flex;
+    justify-content: space-between;
+    & p {
+        display: flex;
+        align-items: center;
+        font-family: "Trebuchet MS";
+        font-size: 16px;
+        color: #333333;
     }
 }
 
