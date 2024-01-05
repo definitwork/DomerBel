@@ -7,9 +7,53 @@
     <link rel="stylesheet" href="{% static './css/main_page_style.css' %}">
 
 
-
 </head>
 <body>
+<div class="popup">
+    <div class="login_form_popup">
+        <form method="POST" class="login_form">
+            <nav class="header_login_form_popup nav_popup">
+                <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
+                <p>Вход</p>
+            </nav>
+            <input type="email" placeholder="Электронная почта">
+            <input type="password" placeholder="Пароль">
+            <button>Войти</button>
+        </form>
+        <div class="forget_pass_and_register_buttons">
+            <button type="button" class="forget_pass_button">Забыли пароль?</button>
+            <button type="button" class="register_button">Регистрация</button>
+        </div>
+
+        <div class="closing_cross"></div>
+    </div>
+    <div class="register_form_popup">
+        <form method="POST" class="login_form">
+            <nav class="header_registration_form_popup nav_popup">
+                <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
+                <p>Регистрация</p>
+            </nav>
+            <input type="text" placeholder="* Контактное лицо">
+            <input type="email" placeholder="* Телефон">
+            <input type="password" placeholder="* Электронная почта">
+            <input type="password" placeholder="* Пароль">
+            <img class="bar_code" src="{% static './img/bar_code.png' %}" alt="{% static './img/bar_code.png' %}">
+            <input type="password" placeholder="* Введите защитный код цифрами">
+            <button>Регистрация</button>
+        </form>
+        <button type="button" class="return_to_login_button">Вход</button>
+        <div class="closing_cross"></div>
+    </div>
+    <div class="forget_pass_form_popup">
+        <form method="POST" class="forget_pass_form">
+            <input type="email" placeholder="Электронная почта">
+            <input type="password" placeholder="Пароль">
+            <button>Отправить</button>
+        </form>
+        <button type="button" class="return_to_login_from_forget_button">Вход</button>
+        <div class="closing_cross"></div>
+    </div>
+</div>
 <div class="wrapper">
     <div class="container">
         <header>
@@ -30,7 +74,7 @@
                                 <a href="{% url 'help' %}" class="help">Помощь</a>
                             </li>
                         </ul>
-                        <div>
+                        <div class="login_button">
                             Вход и регистрация
                         </div>
                     </nav>
@@ -57,7 +101,7 @@
 
                             <a href="#">Ещё...</a>
 
-                          
+
                         </div>
                     </nav>
                     <nav class="header_down_get_ads">
@@ -93,8 +137,8 @@
                     </a>
                 </div>
                 <div class="footer_link">
-                     <a href="{% url 'help' %}" class="help">Помощь</a>
-{#                        <p>Помощь</p>#}
+                    <a href="{% url 'help' %}" class="help">Помощь</a>
+                    {#                        <p>Помощь</p>#}
                     </a>
                 </div>
                 <div class="footer_link">
@@ -123,5 +167,6 @@
         </footer>
     </div>
 </div>
+<script src="{% static "js/modals.js" %}"></script>
 </body>
 </html>
