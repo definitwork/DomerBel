@@ -37,6 +37,8 @@ INSTALLED_APPS = [
 
     "main_page_domer",
 
+    'users',
+
 ]
 
 MIDDLEWARE = [
@@ -138,3 +140,9 @@ INTERNAL_IPS = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+AUTH_USER_MODEL = 'users.User'
+
+LOGIN_REDIRECT_URL = 'profile'
+LOGIN_URL = 'login'
+LOGOUT_REDIRECT_URL = 'profile'
