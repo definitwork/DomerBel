@@ -12,6 +12,10 @@ const forget_popup = document.querySelector(".forget_pass_form_popup");
 const forget_button = document.querySelector(".forget_pass_button");
 const return_to_login_from_forget = document.querySelector(".return_to_login_from_forget_button");
 
+const more_button = document.querySelector(".more_button");
+const nav_category_list_popup = document.querySelector(".nav_category_list_popup");
+
+
 // -> login
 
 login_button.addEventListener("click", () => {
@@ -27,6 +31,7 @@ closing_cross.forEach(item => item.addEventListener("click", () => {
     login_popup.style.display = 'none';
     register_popup.style.display = 'none';
     forget_popup.style.display = 'none';
+    nav_category_list_popup.style.display = 'none';
 }));
 
 popup.addEventListener("click", (event) => {
@@ -36,6 +41,7 @@ popup.addEventListener("click", (event) => {
         login_popup.style.display = 'none';
         register_popup.style.display = 'none';
         forget_button.style.display = 'none';
+        nav_category_list_popup.style.display = 'none';
     }
 });
 
@@ -63,3 +69,10 @@ return_to_login_from_forget.addEventListener("click", () => {
     login_popup.style.display = 'flex';
     forget_popup.style.display = 'none';
 });
+
+// -> view more
+more_button.addEventListener("click", () => {
+    nav_category_list_popup.style.display = 'flex';
+    popup.style.display = 'flex';
+});
+

@@ -11,14 +11,14 @@
 <body>
 <div class="popup">
     <div class="login_form_popup">
-        <form method="POST"  class="login_form" >
+        <form method="POST" class="login_form">
             {% csrf_token %}
             <nav class="header_login_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Вход</p>
             </nav>
-            <input type="email" placeholder="Электронная почта" >
-            <input type="password" placeholder="Пароль" >
+            <input type="email" placeholder="Электронная почта">
+            <input type="password" placeholder="Пароль">
             <button>Войти</button>
         </form>
         <div class="forget_pass_and_register_buttons">
@@ -30,7 +30,7 @@
     </div>
     <div class="register_form_popup">
         <form method="POST" action="{% url 'register' %}" class="login_form">
-             {% csrf_token %}
+            {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Регистрация</p>
@@ -48,6 +48,7 @@
     </div>
     <div class="forget_pass_form_popup">
         <form method="POST" class="forget_pass_form">
+            {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Восстановление пароля</p>
@@ -58,6 +59,92 @@
             <button>Отправить</button>
         </form>
         <button type="button" class="return_to_login_from_forget_button">Вход</button>
+        <div class="closing_cross"></div>
+    </div>
+    <div class="nav_category_list_popup">
+        <ul>
+            <li>
+                <a href="#">Транспорт</a>
+            </li>
+            <li>
+                <a href="#">Для дома и дачи</a>
+            </li>
+            <li>
+                <a href="#">Личные вещи</a>
+            </li>
+            <li>
+                <a href="#">Недвижимость</a>
+            </li>
+            <li>
+                <a href="#">Бытовая электроника</a>
+            </li>
+            <li>
+                <a href="#">Животные</a>
+            </li>
+            <li>
+                <a href="#">Хобби и отдых</a>
+            </li>
+            <li>
+                <a href="#">Работа и бизнес</a>
+            </li>
+            <li>
+                <a href="#">Потери и находки</a>
+            </li>
+            <li>
+                <a href="#">Транспорт</a>
+            </li>
+            <li>
+                <a href="#">Для дома и дачи</a>
+            </li>
+            <li>
+                <a href="#">Личные вещи</a>
+            </li>
+            <li>
+                <a href="#">Недвижимость</a>
+            </li>
+            <li>
+                <a href="#">Бытовая электроника</a>
+            </li>
+            <li>
+                <a href="#">Животные</a>
+            </li>
+            <li>
+                <a href="#">Хобби и отдых</a>
+            </li>
+            <li>
+                <a href="#">Работа и бизнес</a>
+            </li>
+            <li>
+                <a href="#">Потери и находки</a>
+            </li>
+            <li>
+                <a href="#">Транспорт</a>
+            </li>
+            <li>
+                <a href="#">Для дома и дачи</a>
+            </li>
+            <li>
+                <a href="#">Личные вещи</a>
+            </li>
+            <li>
+                <a href="#">Недвижимость</a>
+            </li>
+            <li>
+                <a href="#">Бытовая электроника</a>
+            </li>
+            <li>
+                <a href="#">Животные</a>
+            </li>
+            <li>
+                <a href="#">Хобби и отдых</a>
+            </li>
+            <li>
+                <a href="#">Работа и бизнес</a>
+            </li>
+            <li>
+                <a href="#">Потери и находки</a>
+            </li>
+        </ul>
         <div class="closing_cross"></div>
     </div>
 </div>
@@ -105,14 +192,11 @@
                             <a href="#">Авто</a>
                             <a href="#">Работа</a>
                             <a href="#">Недвижимость</a>
-
-                            <a href="#">Ещё...</a>
-
-
+                            <button class="more_button">Ещё...</button>
                         </div>
                     </nav>
                     <nav class="header_down_get_ads">
-                        <a href="#" class="button_abs">
+                        <a href="#" class="button_ads">
                             <img src="{% static 'img/button.png' %}" alt="{% static 'img/button.png' %}">
                         </a>
                     </nav>
@@ -127,7 +211,6 @@
 
         <footer>
             <div class="navigate_link">
-
                 <div class="footer_link">
                     <a href="">
                         <p>Подать объявление</p>
