@@ -11,13 +11,14 @@
 <body>
 <div class="popup">
     <div class="login_form_popup">
-        <form method="POST" class="login_form">
+        <form method="POST"  class="login_form" >
+            {% csrf_token %}
             <nav class="header_login_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Вход</p>
             </nav>
-            <input type="email" placeholder="Электронная почта">
-            <input type="password" placeholder="Пароль">
+            <input type="email" placeholder="Электронная почта" >
+            <input type="password" placeholder="Пароль" >
             <button>Войти</button>
         </form>
         <div class="forget_pass_and_register_buttons">
@@ -28,17 +29,18 @@
         <div class="closing_cross"></div>
     </div>
     <div class="register_form_popup">
-        <form method="POST" class="login_form">
+        <form method="POST" action="{% url 'register' %}" class="login_form">
+             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Регистрация</p>
             </nav>
-            <input type="text" placeholder="* Контактное лицо">
-            <input type="email" placeholder="* Телефон">
-            <input type="password" placeholder="* Электронная почта">
-            <input type="password" placeholder="* Пароль">
+            <input type="text" placeholder="* Контактное лицо" name="contact">
+            <input type="text" placeholder="* Телефон" name="phone">
+            <input type="email" placeholder="* Электронная почта" name="email">
+            <input type="password" placeholder="* Пароль" name="password">
             <img class="bar_code" src="{% static './img/bar_code.png' %}" alt="{% static './img/bar_code.png' %}">
-            <input type="password" placeholder="* Введите защитный код цифрами">
+            <input type="text" placeholder="* Введите защитный код цифрами" name="code">
             <button>Регистрация</button>
         </form>
         <button type="button" class="return_to_login_button">Вход</button>
