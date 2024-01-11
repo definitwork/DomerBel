@@ -310,6 +310,8 @@
 }
 
 .nav_category_title p {
+    display: flex;
+    justify-content: center;
     margin-bottom: 25px;
     font-family: "Trebuchet MS";
     color: #333333;

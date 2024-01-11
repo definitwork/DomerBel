@@ -8,3 +8,6 @@ def get_main_page(request):
 
 def get_help_page(request):
     return render(request, 'help.html')
+
+def get_personal_account_page(request):
+    return render(request, 'personal_account.html')
