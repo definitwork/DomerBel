@@ -1,0 +1,233 @@
+.popup_pa {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.nav_category_list_popup_pa {
+    position: relative;
+    display: none;
+    gap: 30px;
+    flex-direction: column;
+    padding: 80px 95px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 400px;
+    background: #fff;
+    border-radius: 5px;
+
+    & ul {
+        display: flex;
+        flex-wrap: wrap;
+
+        & li {
+            flex: 0 1 25%;
+        }
+    }
+}
+
+.closing_cross_pa {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    background-color: #DADADA;
+    border-radius: 3px;
+
+    &::before,
+    &::after {
+        content: "";
+        top: 10px;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        border-radius: 10px;
+        background: white;
+        position: absolute;
+        transform: rotate(45deg);
+    }
+
+    &::after {
+        transform: rotate(-45deg);
+    }
+
+    &:hover {
+        background-color: red;
+        border-radius: 3px;
+    }
+}
+
+.header_up {
+    align-items: center;
+}
+
+.header_up_wrapper {
+    height: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.header_up_wrapper_navigate_info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    & ul {
+        display: flex;
+        gap: 15px;
+        font-family: "Trebuchet MS";
+        cursor: pointer;
+        font-size: 13px;
+        color: #307792;
+    }
+
+    & div {
+        font-family: "Trebuchet MS";
+        cursor: pointer;
+        font-size: 13px;
+        color: #307792;
+    }
+
+    & div:hover {
+        color: red;
+        cursor: pointer;
+    }
+}
+
+.horizontal_line {
+    margin-bottom: 5px;
+    height: 2px;
+    background: #ADD8E6;
+}
+
+.header_down_category {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin: 0 5px 10px 0;
+    /*margin-bottom: 5px;*/
+}
+
+.nav_category_title p {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+    font-family: "Trebuchet MS";
+    color: #333333;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.nav_category_list {
+    display: flex;
+    width: 250px;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.more_button_pa {
+    font-family: "Trebuchet MS";
+    color: #307792;
+    font-size: 13px;
+    cursor: pointer;
+    background: #ffffff;
+
+    &:hover {
+        color: red;
+    }
+}
+
+.header_down_get_ads {
+    width: 189px;
+    height: 30px;
+
+    & img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+}
+
+.button_ads img {
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.search_table {
+    display: flex;
+    flex-direction: column;
+    background: #CFE6FE;
+    border: solid 1px #D4D4D4;
+    border-radius: 10px;
+    height: 73px;
+    padding: 5px;
+    gap: 5px;
+}
+
+.table_topics_search_location {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 5px;
+}
+
+.slct {
+    width: 322px;
+    height: 28px;
+    border-radius: 3px;
+    font-family: "Trebuchet MS";
+    font-size: 12px;
+    color: #333333;
+    border: solid 1px #D4D4D4;
+}
+
+.table_search {
+    width: 100%;
+    height: 28px;
+    border-radius: 3px;
+    font-family: "Trebuchet MS";
+    color: #333333;
+    border: solid 1px #D4D4D4;
+}
+
+.search_checkbox_button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search_ads {
+    & input {
+        border: solid 1px #D4D4D4;
+        border-radius: 3px;
+        width: 188px;
+        height: 28px;
+    }
+}
+
+.checkbox_list {
+    display: flex;
+    gap: 10px;
+    flex: 0 0 550px;
+}
+
+.checkbox_label {
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+    color: #333333;
+}
+
+.button_search img {
+    border-radius: 5px;
+}
