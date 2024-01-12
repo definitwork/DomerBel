@@ -197,6 +197,7 @@
     height: 28px;
     border-radius: 3px;
     font-family: "Trebuchet MS";
+    font-size: 13px;
     color: #333333;
     border: solid 1px #D4D4D4;
 }
@@ -209,6 +210,8 @@
 
 .search_ads {
     & input {
+        font-family: "Trebuchet MS";
+        font-size: 13px;
         border: solid 1px #D4D4D4;
         border-radius: 3px;
         width: 188px;
@@ -230,4 +233,41 @@
 
 .button_search img {
     border-radius: 5px;
+}
+
+. personal_account_body {
+    display: flex;
+    justify-content: space-between;
+}
+
+.personal_account_navigation {
+    display: flex;
+    justify-content: flex-start;
+    border: solid 1px #D4D4D4;
+    border-radius: 5%;
+    background-color: #CFE6FE;
+    padding: 10px;
+    width: 193px;
+    margin: 5px 0;
+}
+
+.wallet {
+    height: 50px;
+}
+
+.wallet_title {
+    font-family: "Trebuchet MS";
+    text-indent: initial;
+    font-size: 13px;
+}
+
+.wallet_amount {
+    font-family: "Trebuchet MS";
+    text-indent: initial;
+    font-size: 18px;
+    color: red;
+}
+
+.red_item {
+    color: red;
 }
