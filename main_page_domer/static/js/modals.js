@@ -15,7 +15,6 @@ const return_to_login_from_forget = document.querySelector(".return_to_login_fro
 const more_button = document.querySelector(".more_button");
 const nav_category_list_popup = document.querySelector(".nav_category_list_popup");
 
-
 // -> login
 
 login_button.addEventListener("click", () => {
