@@ -36,4 +36,54 @@
         </div>
     </div>
 {% endblock %}
+{% block personal_account_body %}
+    <div class="personal_account_body">
+    <div>
+        <div class="wrapper">
+            <div class="container">
+                <nav class="personal_account_navigation">
+                    <ul>
+                        <li class="wallet">
+                            <p class="wallet_title">В Вашем кошельке</p>
+                            <p class="wallet_amount"> 0,00 руб.</p>
+                        </li>
+                        <li>
+                            <a href="{% url 'home' %}">Выход</a>
+                        </li>
+                        <li>
+                            <a href="#">Контактные данные</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'pa' %}">Мои объявления</a>
+                        </li>
+                        <li>
+                            <a href="#" class="red_item">Добавить магазин</a>
+                        </li>
+                        <li>
+                            <a href="#">Входящие сообщения</a>
+                        </li>
+                        <li>
+                            <a href="#">Исходящие сообщения</a>
+                        </li>
+                        <li>
+                            <a href="#">Отправленные сообщения</a>
+                        </li>
+                        <li>
+                            <a href="#">История платежей</a>
+                        </li>
+                        <li>
+                            <a href="#" class="red_item">Пополнить кошелек</a>
+                        </li>
+                    </ul>
+                </nav>
+                <div>
+                    <a href="#">Активные (0)</a>
+                    <a href="#">Архивные (0)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+</div>
+
 
