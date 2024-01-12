@@ -235,7 +235,7 @@
     border-radius: 5px;
 }
 
-. personal_account_body {
+.body {
     display: flex;
     justify-content: space-between;
 }
