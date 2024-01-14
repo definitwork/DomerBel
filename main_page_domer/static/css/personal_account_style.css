@@ -237,7 +237,7 @@
 
 .body {
     display: flex;
-    justify-content: space-between;
+
 }
 
 .personal_account_navigation {
@@ -268,6 +268,38 @@
     color: red;
 }
 
+.green_item {
+    color: green;
+}
+
 .red_item {
     color: red;
+}
+
+.ads_status {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    padding: 10px;
+
+    & a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 115px;
+        height: 35px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+}
+
+.status_active {
+    border: solid 1px green;
+    border-spacing: 2px;
+}
+
+.status_archive {
+    border: solid 1px red;
+    border-spacing: 2px;
 }
