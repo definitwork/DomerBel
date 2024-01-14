@@ -11,3 +11,6 @@ def get_help_page(request):
 
 def get_personal_account_page(request):
     return render(request, 'personal_account.html')
+
+def get_user_data_page(request):
+    return  render(request, 'user_data.html')
