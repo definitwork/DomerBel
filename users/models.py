@@ -43,7 +43,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
-    first_name = models.CharField(_("first name"), max_length=150, blank=True)
+    first_name = models.CharField('Контактное лицо', max_length=255)
     last_name = models.CharField(_("last name"), max_length=150, blank=True)
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
     is_staff = models.BooleanField(
@@ -59,8 +59,8 @@ class User(AbstractBaseUser, PermissionsMixin):
             "Unselect this instead of deleting accounts."
         ),
     )
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
-
+    # avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    phone_number = models.CharField('Номер телефона', max_length=15)
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
