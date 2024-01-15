@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block search_table %}
+    {% load static %}
+    <title>Главная</title>
+    <section class="search_table">
+        <nav class="table_topics_search_location">
+            <select name="#" id="#" class="table_topics slct">
+                <option value="#">Все разделы</option>
+            </select>
+            <input type="text" placeholder="Поиск по тексту" class="table_search">
+            <select name="#" id="#" class="table_location slct">
+                <option value="#">Любое расположение</option>
+            </select>
+        </nav>
+        <div class="checkbox_button">
+            <div class="checkbox_list">
+                <div>
+                    <input id="1" type="checkbox">
+                    <label for="1" class="checkbox_label">Только в заголовках</label>
+                </div>
+                <div>
+                    <input id="2" type="checkbox">
+                    <label for="2" class="checkbox_label">С фото</label>
+                </div>
+                <div>
+                    <input id="3" type="checkbox">
+                    <label for="3" class="checkbox_label">С видео</label>
+                </div>
+            </div>
+            <a href="#" class="button_search">
+                <img src="{% static 'img/poisk.png' %}" alt="{% static 'img/poisk.png' %}">
+            </a>
+        </div>
+    </section>
+    <section class="regions">
+        <ul class="regions_list">
+            <li>
+                <a href="#" class="minsk reg">МИНСК</a>
+            </li>
+            <li>
+                <a href="#" class="brest reg">БРЕСТСКАЯ ОБЛАСТЬ</a>
+            </li>
+            <li>
+                <a href="#" class="vitebsk reg">ВИТЕБСКАЯ ОБЛАСТЬ</a>
+            </li>
+            <li>
+                <a href="#" class="gomel reg">ГОМЕЛЬСКАЯ ОБЛАСТЬ</a>
+            </li>
+            <li>
+                <a href="#" class="grodno reg">ГРОДНЕНСКАЯ ОБЛАСТЬ</a>
+            </li>
+            <li>
+                <a href="#" class="minsk_region reg">МИНСКАЯ ОБЛАСТЬ</a>
+            </li>
+            <li>
+                <a href="#" class="mogilev reg">МОГИЛЕВСКАЯ ОБЛАСТЬ</a>
+            </li>
+        </ul>
+    </section>
+    <main>
+        <section>
+            <div class="last_ads_title">
+                Последние объявления
+            </div>
+            <div class="ads_list">
+                <div class="ads">
+                    <div class="ads_date_time">
+                        <ul>
+                            <li>Сегодня</li>
+                            <li>12:00</li>
+                        </ul>
+                    </div>
+                    <div class="ads_img">
+                        <img src="{% static 'img/ads_img/1.jpg' %}" alt="{% static 'img/ads_img/1.jpg' %}">
+                    </div>
+                    <div class="ads_description">
+                        <ul>
+                            <li>Продаю 2-комн квартиру 66,70 кв м</li>
+                            <li> 697 руб.</li>
+                            <li>Продам квартиру</li>
+                            <li>Компания</li>
+                            <li>Первомайский район</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="ads">
+                    <div class="ads_date_time">
+                        <ul>
+                            <li>Сегодня</li>
+                            <li>10:35</li>
+                        </ul>
+                    </div>
+                    <div class="ads_img">
+                        <img src="{% static 'img/ads_img/2.jpg' %}" alt="{% static 'img/ads_img/2.jpg' %}">
+                    </div>
+                    <div class="ads_description">
+                        <ul>
+                            <li>Продаю 3-комн квартиру 66,70 кв м</li>
+                            <li> 584 руб.</li>
+                            <li>Продам квартиру</li>
+                            <li>Компания</li>
+                            <li>Советский район</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="ads">
+                    <div class="ads_date_time">
+                        <ul>
+                            <li>Сегодня</li>
+                            <li>9:44</li>
+                        </ul>
+                    </div>
+                    <div class="ads_img">
+                        <img src="{% static 'img/ads_img/3.jpg' %}" alt="{% static 'img/ads_img/3.jpg' %}">
+                    </div>
+                    <div class="ads_description">
+                        <ul>
+                            <li>Продаю 3-комн квартиру 66,70 кв м</li>
+                            <li> 748 руб.</li>
+                            <li>Продам квартиру</li>
+                            <li>Компания</li>
+                            <li>Октябрьский район</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}

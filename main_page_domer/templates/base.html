@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/null_for_templates.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main_page_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user_data.css' %}">
+
+
+
+</head>
+<body>
+<div class="popup">
+    <div class="login_form_popup">
+        <form method="POST" class="login_form">
+            {% csrf_token %}
+            <nav class="header_login_form_popup nav_popup">
+                <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
+                <p>Вход</p>
+            </nav>
+            <input type="email" placeholder="Электронная почта">
+            <input type="password" placeholder="Пароль">
+            <button>Войти</button>
+        </form>
+        <div class="forget_pass_and_register_buttons">
+            <button type="button" class="forget_pass_button">Забыли пароль?</button>
+            <button type="button" class="register_button">Регистрация</button>
+        </div>
+
+        <div class="closing_cross"></div>
+    </div>
+    <div class="register_form_popup">
+        <form method="POST" action="{% url 'register' %}" class="login_form">
+            {% csrf_token %}
+            <nav class="header_registration_form_popup nav_popup">
+                <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
+                <p>Регистрация</p>
+            </nav>
+            <input type="text" placeholder="* Контактное лицо" name="contact">
+            <input type="text" placeholder="* Телефон" name="phone">
+            <input type="email" placeholder="* Электронная почта" name="email">
+            <input type="password" placeholder="* Пароль" name="password">
+            <img class="bar_code" src="{% static 'img/bar_code.png' %}" alt="{% static './img/bar_code.png' %}">
+            <input type="text" placeholder="* Введите защитный код цифрами" name="code">
+            <button>Регистрация</button>
+        </form>
+        <button type="button" class="return_to_login_button">Вход</button>
+        <div class="closing_cross"></div>
+    </div>
+    <div class="forget_pass_form_popup">
+        <form method="POST" class="forget_pass_form">
+            {% csrf_token %}
+            <nav class="header_registration_form_popup nav_popup">
+                <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
+                <p>Восстановление пароля</p>
+            </nav>
+            <input type="email" placeholder="* E-mail, указанный при регистрации">
+            <img class="bar_code" src="{% static 'img/bar_code.png' %}" alt="{% static './img/bar_code.png' %}">
+            <input type="password" placeholder="* Введите защитный код цифрами">
+            <button>Отправить</button>
+        </form>
+        <button type="button" class="return_to_login_from_forget_button">Вход</button>
+        <div class="closing_cross"></div>
+    </div>
+    <div class="nav_category_list_popup">
+        <ul>
+            <li>
+                <a href="#">Транспорт</a>
+            </li>
+            <li>
+                <a href="#">Для дома и дачи</a>
+            </li>
+            <li>
+                <a href="#">Личные вещи</a>
+            </li>
+            <li>
+                <a href="#">Недвижимость</a>
+            </li>
+            <li>
+                <a href="#">Бытовая электроника</a>
+            </li>
+            <li>
+                <a href="#">Животные</a>
+            </li>
+            <li>
+                <a href="#">Хобби и отдых</a>
+            </li>
+            <li>
+                <a href="#">Работа и бизнес</a>
+            </li>
+            <li>
+                <a href="#">Потери и находки</a>
+            </li>
+            <li>
+                <a href="#">Транспорт</a>
+            </li>
+            <li>
+                <a href="#">Для дома и дачи</a>
+            </li>
+            <li>
+                <a href="#">Личные вещи</a>
+            </li>
+            <li>
+                <a href="#">Недвижимость</a>
+            </li>
+            <li>
+                <a href="#">Бытовая электроника</a>
+            </li>
+            <li>
+                <a href="#">Животные</a>
+            </li>
+            <li>
+                <a href="#">Хобби и отдых</a>
+            </li>
+            <li>
+                <a href="#">Работа и бизнес</a>
+            </li>
+            <li>
+                <a href="#">Потери и находки</a>
+            </li>
+            <li>
+                <a href="#">Транспорт</a>
+            </li>
+            <li>
+                <a href="#">Для дома и дачи</a>
+            </li>
+            <li>
+                <a href="#">Личные вещи</a>
+            </li>
+            <li>
+                <a href="#">Недвижимость</a>
+            </li>
+            <li>
+                <a href="#">Бытовая электроника</a>
+            </li>
+            <li>
+                <a href="#">Животные</a>
+            </li>
+            <li>
+                <a href="#">Хобби и отдых</a>
+            </li>
+            <li>
+                <a href="#">Работа и бизнес</a>
+            </li>
+            <li>
+                <a href="#">Потери и находки</a>
+            </li>
+        </ul>
+        <div class="closing_cross"></div>
+    </div>
+</div>
+<div class="wrapper">
+    <div class="container">
+        <header>
+            <section class="header_up">
+                <div class="header_up_wrapper">
+                    <nav class="header_up_wrapper_navigate_info">
+                        <ul>
+                            <li>
+                                <a href="#" class="declarations">Объявления</a>
+                            </li>
+                            <li>
+                                <a href="#" class="shops">Магазины</a>
+                            </li>
+                            <li>
+                                <a href="#" class="publications">Публикации</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'help' %}" class="help">Помощь</a>
+                            </li>
+                        </ul>
+                        <div class="login_button">
+                            Вход и регистрация
+                        </div>
+                    </nav>
+                </div>
+                <div class="horizontal_line"></div>
+            </section>
+            <section class="header_down">
+                <div class="header_down_category">
+                    <div class="header_down_logo">
+                        <a href="{% url 'home' %}">
+                            <img src="{% static 'img/logo.png' %}" alt="{% static './img/logo.png' %}">
+                        </a>
+                    </div>
+                    <nav class="header_down_nav_category">
+                        <div class="nav_category_title">
+                            <p>
+                                Общебелорусская доска объявлений
+                            </p>
+                        </div>
+                        <div class="nav_category_list">
+                            <a href="#">Авто</a>
+                            <a href="#">Работа</a>
+                            <a href="#">Недвижимость</a>
+                            <button class="more_button">Ещё...</button>
+                        </div>
+                    </nav>
+                    <nav class="header_down_get_ads">
+                        <a href="#" class="button_ads">
+                            <img src="{% static 'img/button.png' %}" alt="{% static 'img/button.png' %}">
+                        </a>
+                    </nav>
+                </div>
+            </section>
+        </header>
+
+        {% block help %}
+        {% endblock %}
+        {% block search_table %}
+        {% endblock %}
+
+        <footer>
+            <div class="navigate_link">
+                <div class="footer_link">
+                    <a href="">
+                        <p>Подать объявление</p>
+                    </a>
+                </div>
+                <div class="footer_link">
+                    <a href="">
+                        <p>Объявления</p>
+                    </a>
+                </div>
+                <div class="footer_link">
+                    <a href="">
+                        <p>Магазины</p>
+                    </a>
+                </div>
+                <div class="footer_link">
+                    <a href="{% url 'help' %}" class="help">Помощь</a>
+                    {#                        <p>Помощь</p>#}
+                </div>
+                <div class="footer_link">
+                    <a href="#">
+                        <p>Виджеты</p>
+                    </a>
+                </div>
+                <div class="footer_link">
+                    <a href="#">
+                        Карта
+                    </a>
+                </div>
+                <div class="footer_link">
+                    <a href="#">
+                        Обратная связь
+                    </a>
+                </div>
+                <div class="footer_link">
+                    <a href="#">
+                        МОБИЛЬНАЯ ВЕРСИЯ
+                    </a>
+                </div>
+            </div>
+
+
+        </footer>
+    </div>
+</div>
+<script src="{% static "js/modals.js" %}"></script>
+</body>
+</html>

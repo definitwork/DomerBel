@@ -1,0 +1,77 @@
+.page_user_data {
+    display: flex;
+}
+
+.user_data {
+    display: flex;
+
+    & button {
+        display: flex;
+        border: 1px solid #AAA;
+        margin-top: 3px;
+        margin-bottom: 3px;
+        padding: 3px;
+        text-decoration: none;
+        cursor: pointer;
+        background-color: #DADADA;
+        font-size: 13px;
+        font-family: 'Trebuchet MS';
+    }
+}
+
+.user_data_form {
+    flex-direction: column;
+    gap: 50px;
+    padding-left: 10px;
+    padding-top: 10px;
+
+    & li {
+        display: flex;
+        padding: 2px 0;
+        color: #333333;
+        font-family: "Trebuchet MS";
+        font-size: 13px;
+
+        & label {
+            width: 100%;
+            max-width: 140px;
+        }
+
+        & input {
+            font-family: 'Arial';
+            font-size: 12px;
+            padding: 1px 2px;
+            align-items: center;
+            max-width: 100%;
+            width: 420px;
+            color: #555;
+            border: 1px solid #B5B8C8;
+            background: #FFF repeat-x;
+        }
+
+        & input:focus {
+            border: 2px solid black;
+            border-radius: 5px;
+        }
+    }
+}
+
+.ishsenit_button {
+    border: 1px solid #AAA;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    margin-left: 10px;
+    padding: 3px;
+    cursor: pointer;
+    background-color: #DADADA;
+    font-family: 'Trebuchet MS';
+    font-size: 13px;
+    color: #333333;;
+}
+
+.line {
+    height: 1px;
+    max-width: 100%;
+    width: 965px;
+    border-bottom: solid 1px #D4D4D4
+}

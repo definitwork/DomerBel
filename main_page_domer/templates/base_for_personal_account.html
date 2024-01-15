@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/null_for_templates.css' %}">
+    <link rel="stylesheet" href="{% static 'css/personal_account_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user_data.css' %}">
+    <link rel="stylesheet" href="{% static 'css/messages.css' %}">
+    <title>Личный кабинет</title>
+
+</head>
+<body>
+<div class="popup_pa">
+    <div class="nav_category_list_popup_pa">
+        <ul>
+            <li>
+                <a href="#">Транспорт</a>
+            </li>
+            <li>
+                <a href="#">Для дома и дачи</a>
+            </li>
+            <li>
+                <a href="#">Личные вещи</a>
+            </li>
+            <li>
+                <a href="#">Недвижимость</a>
+            </li>
+            <li>
+                <a href="#">Бытовая электроника</a>
+            </li>
+            <li>
+                <a href="#">Животные</a>
+            </li>
+            <li>
+                <a href="#">Хобби и отдых</a>
+            </li>
+            <li>
+                <a href="#">Работа и бизнес</a>
+            </li>
+            <li>
+                <a href="#">Потери и находки</a>
+            </li>
+            <li>
+                <a href="#">Транспорт</a>
+            </li>
+            <li>
+                <a href="#">Для дома и дачи</a>
+            </li>
+            <li>
+                <a href="#">Личные вещи</a>
+            </li>
+            <li>
+                <a href="#">Недвижимость</a>
+            </li>
+            <li>
+                <a href="#">Бытовая электроника</a>
+            </li>
+            <li>
+                <a href="#">Животные</a>
+            </li>
+            <li>
+                <a href="#">Хобби и отдых</a>
+            </li>
+            <li>
+                <a href="#">Работа и бизнес</a>
+            </li>
+            <li>
+                <a href="#">Потери и находки</a>
+            </li>
+            <li>
+                <a href="#">Транспорт</a>
+            </li>
+            <li>
+                <a href="#">Для дома и дачи</a>
+            </li>
+            <li>
+                <a href="#">Личные вещи</a>
+            </li>
+            <li>
+                <a href="#">Недвижимость</a>
+            </li>
+            <li>
+                <a href="#">Бытовая электроника</a>
+            </li>
+            <li>
+                <a href="#">Животные</a>
+            </li>
+            <li>
+                <a href="#">Хобби и отдых</a>
+            </li>
+            <li>
+                <a href="#">Работа и бизнес</a>
+            </li>
+            <li>
+                <a href="#">Потери и находки</a>
+            </li>
+        </ul>
+        <div class="closing_cross_pa"></div>
+    </div>
+</div>
+<div class="wrapper">
+    <div class="container">
+        <header>
+            <section class="header_up">
+                <div class="header_up_wrapper">
+                    <nav class="header_up_wrapper_navigate_info">
+                        <ul>
+                            <li>
+                                <a href="#" class="declarations">Объявления</a>
+                            </li>
+                            <li>
+                                <a href="#" class="shops">Магазины</a>
+                            </li>
+                            <li>
+                                <a href="#" class="publications">Публикации</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'help' %}" class="help">Помощь</a>
+                            </li>
+                        </ul>
+                        <div class="user_name">
+                            { user_name }
+                        </div>
+                    </nav>
+                </div>
+                <div class="horizontal_line"></div>
+            </section>
+            <section class="header_down">
+                <div class="header_down_category">
+                    <div class="header_down_logo">
+                        <a href="{% url 'home' %}">
+                            <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
+                        </a>
+                    </div>
+                    <nav class="header_down_nav_category">
+                        <div class="nav_category_title">
+                            <p>
+                                { adaptive_navigation }
+                            </p>
+                        </div>
+                        <div class="nav_category_list">
+                            <a href="#">Авто</a>
+                            <a href="#">Работа</a>
+                            <a href="#">Недвижимость</a>
+                            <button class="more_button_pa">Ещё...</button>
+                        </div>
+                    </nav>
+                    <nav class="header_down_get_ads">
+                        <a href="#" class="button_ads">
+                            <img src="{% static 'img/button.png' %}" alt="{% static 'img/button.png' %}">
+                        </a>
+                    </nav>
+                </div>
+            </section>
+        </header>
+
+        {% block help %}
+        {% endblock %}
+        {% block search_table %}
+        {% endblock %}
+
+    </div>
+</div>
+{% block table %}
+{% endblock %}
+{% block personal_account_body %}
+{% endblock %}
+{% block user_data_page %}
+{% endblock %}
+{% block incoming_messages %}
+{% endblock %}
+{% block outgoing_messages %}
+{% endblock %}
+{% block sent_messages %}
+{% endblock %}
+{% block admin_message %}
+{% endblock %}
+
+    <script src="{% static "js/modals_for_personal_account.js" %}"></script>
+
+</body>
+</html>
