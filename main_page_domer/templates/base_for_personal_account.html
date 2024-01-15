@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{% static 'css/null_for_templates.css' %}">
     <link rel="stylesheet" href="{% static 'css/personal_account_style.css' %}">
     <link rel="stylesheet" href="{% static 'css/user_data.css' %}">
+    <link rel="stylesheet" href="{% static 'css/messages.css' %}">
     <title>Личный кабинет</title>
 
 </head>
@@ -167,7 +168,14 @@
 {% endblock %}
 {% block user_data_page %}
 {% endblock %}
-
+{% block incoming_messages %}
+{% endblock %}
+{% block outgoing_messages %}
+{% endblock %}
+{% block sent_messages %}
+{% endblock %}
+{% block admin_message %}
+{% endblock %}
 
     <script src="{% static "js/modals_for_personal_account.js" %}"></script>
 

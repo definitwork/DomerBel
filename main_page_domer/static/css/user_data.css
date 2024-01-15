@@ -1,11 +1,11 @@
-.page_user_data{
+.page_user_data {
     display: flex;
 }
 
-.user_data{
+.user_data {
     display: flex;
 
-    & button{
+    & button {
         display: flex;
         border: 1px solid #AAA;
         margin-top: 3px;
@@ -15,7 +15,7 @@
         cursor: pointer;
         background-color: #DADADA;
         font-size: 13px;
-        font-family:'Trebuchet MS';
+        font-family: 'Trebuchet MS';
     }
 }
 
@@ -25,19 +25,19 @@
     padding-left: 10px;
     padding-top: 10px;
 
-    & li{
+    & li {
         display: flex;
         padding: 2px 0;
         color: #333333;
         font-family: "Trebuchet MS";
         font-size: 13px;
 
-         & label{
-             width: 100%;
-             max-width: 140px;
-         }
+        & label {
+            width: 100%;
+            max-width: 140px;
+        }
 
-        & input{
+        & input {
             font-family: 'Arial';
             font-size: 12px;
             padding: 1px 2px;
@@ -49,14 +49,14 @@
             background: #FFF repeat-x;
         }
 
-        input:focus {
+        & input:focus {
             border: 2px solid black;
             border-radius: 5px;
         }
     }
 }
 
-.ishsenit_button{
+.ishsenit_button {
     border: 1px solid #AAA;
     margin-top: 3px;
     margin-bottom: 3px;
@@ -69,7 +69,7 @@
     color: #333333;;
 }
 
-.line{
+.line {
     height: 1px;
     max-width: 100%;
     width: 965px;
