@@ -1,12 +1,12 @@
 {% extends 'base_for_personal_account.html' %}
 
 {% load static %}
-{% block user_data_page %}
+
+{% block sent_messages %}
     <div class="wrapper">
         <div class="container">
-            <div class="line"></div>
-            <div class="page_user_data">
-                <div class="body">
+        <div class="line"></div>
+            <div class="body">
                     <nav class="personal_account_navigation">
                         <ul>
                             <li class="wallet">
@@ -43,31 +43,6 @@
                         </ul>
                     </nav>
                 </div>
-                <div class="user_data">
-                    <form method="post" action>
-                        <ul class="user_data_form">
-                            <li>
-                                <label for="contact">Контактное лицо</label>
-                                <input type="text" name="contact">
-
-                            </li>
-                            <li>
-                                <label for="phone">Телефон</label>
-                                <input type="text" name="phone">
-                            </li>
-                            <li>
-                                <label for="email">E-MAIL</label>
-                                <input type="text" name="email">
-                            </li>
-                            <li>
-                                <label for="pass">Пароль</label>
-                                <input type="password" name="pass">
-                            </li>
-                        </ul>
-                        <button class="ishsenit_button">Изменить</button>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 {% endblock %}

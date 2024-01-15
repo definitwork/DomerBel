@@ -1,0 +1,51 @@
+{% extends 'base_for_personal_account.html' %}
+
+{% load static %}
+
+{% block outgoing_messages %}
+    <div class="wrapper">
+        <div class="container">
+            <div class="line"></div>
+            <div class="body">
+                <nav class="personal_account_navigation">
+                    <ul>
+                        <li class="wallet">
+                            <p class="wallet_title">В Вашем кошельке</p>
+                            <p class="wallet_amount"> 0,00 руб.</p>
+                        </li>
+                        <li>
+                            <a href="{% url 'home' %}" class="green_item">Выход</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'ud' %}">Контактные данные</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'pa' %}">Мои объявления</a>
+                        </li>
+                        <li>
+                            <a href="#" class="red_item">Добавить магазин</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'in' %}">Входящие сообщения</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'out' %}">Исходящие сообщения</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'sent' %}">Отправленные сообщения</a>
+                        </li>
+                        <li>
+                            <a href="#">История платежей</a>
+                        </li>
+                        <li>
+                            <a href="#" class="red_item">Пополнить кошелек</a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="admin_message">
+                    <a href="{% url 'adm_me' %}">Написать письмо администратору</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
