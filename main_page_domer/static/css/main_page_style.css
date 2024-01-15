@@ -423,6 +423,14 @@
     gap: 25px;
 }
 
+
+.checkbox_input_label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
 .checkbox_label {
     font-family: "Trebuchet MS";
     font-size: 13px;
