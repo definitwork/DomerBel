@@ -8,19 +8,19 @@
     <link rel="stylesheet" href="{% static 'css/user_data.css' %}">
 
 
-
 </head>
 <body>
+
 <div class="popup">
     <div class="login_form_popup">
-        <form method="POST" class="login_form">
+        <form method="POST" action="{% url 'login' %}" class="login_form">
             {% csrf_token %}
             <nav class="header_login_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Вход</p>
             </nav>
-            <input type="email" placeholder="Электронная почта">
-            <input type="password" placeholder="Пароль">
+            <input type="email" placeholder="Электронная почта" name="email">
+            <input type="password" placeholder="Пароль" name="password">
             <button>Войти</button>
         </form>
         <div class="forget_pass_and_register_buttons">
@@ -31,7 +31,7 @@
         <div class="closing_cross"></div>
     </div>
     <div class="register_form_popup">
-        <form method="POST" action="{% url 'register' %}" class="login_form">
+        <form method="POST" action="#s" class="login_form">
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
@@ -50,13 +50,13 @@
         <div class="closing_cross"></div>
     </div>
     <div class="forget_pass_form_popup">
-        <form method="POST" class="forget_pass_form">
+        <form method="POST" action="{% url 'users:password_reset' %}" class="forget_pass_form">
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Восстановление пароля</p>
             </nav>
-            <input type="email" placeholder="* E-mail, указанный при регистрации">
+            <input type="email" placeholder="* E-mail, указанный при регистрации" name="email">
             <img class="bar_code" src="{% static 'img/bar_code.png' %}" alt="{% static './img/bar_code.png' %}">
             <input type="password" placeholder="* Введите защитный код цифрами">
             <button>Отправить</button>
@@ -207,6 +207,9 @@
             </section>
         </header>
 
+
+        {% block content %}
+        {% endblock %}
         {% block help %}
         {% endblock %}
         {% block search_table %}
