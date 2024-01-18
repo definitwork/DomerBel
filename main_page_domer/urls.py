@@ -11,4 +11,5 @@ urlpatterns = [
     path('out/', get_outgiong_page, name='out'),
     path('sent/', get_sent_page, name='sent'),
     path('adm_me/', get_admin_message_page, name='adm_me'),
+
 ]
