@@ -146,7 +146,7 @@ LOGOUT_REDIRECT_URL = 'profile'
 
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # Для отображения писем в консоли
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST_PASSWORD = "twosafdoczffaqwi"
+EMAIL_HOST_PASSWORD = env_keys.get("EMAIL_HOST_PASSWORD")
 EMAIL_HOST = "smtp.yandex.ru"
 EMAIL_PORT = "465"
 EMAIL_HOST_USER = "banwicket@yandex.ru"
