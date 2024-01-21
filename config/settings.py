@@ -32,7 +32,11 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "rest_framework",
     "corsheaders",
+
     'mptt',
+
+    'captcha',
+
 
     "main_page_domer",
 
@@ -145,3 +149,22 @@ AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = 'profile'
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'profile'
+
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # Для отображения писем в консоли
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST_PASSWORD = env_keys.get("EMAIL_HOST_PASSWORD")
+EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_PORT = "465"
+EMAIL_HOST_USER = "domer.bel@yandex.by"
+EMAIL_USE_SSL = True
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = EMAIL_HOST_USER
+
+# Настройки капчи
+CAPTCHA_FONT_SIZE = 40
+CAPTCHA_FONT_PATH = 'main_page_domer/static/fonts/arial/arial.ttf'
+CAPTCHA_CHALLENGE_FUNCT = 'users.captcha.random_digit_challenge'  # Функция для генерации CAPTCHA на русском языке
+
+

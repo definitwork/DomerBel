@@ -75,3 +75,19 @@ more_button.addEventListener("click", () => {
     popup.style.display = 'flex';
 });
 
+
+// -> данные из формы входа
+const forms_login_username = document.querySelector('.check_auth_field');
+if (forms_login_username.value !== '') {
+    popup.style.display = 'flex';
+    login_popup.style.display = 'flex';
+}
+
+const forms_register_username = document.querySelector('.check_register_field');
+if (forms_register_username.value !== '') {
+    popup.style.display = 'flex';
+    register_popup.style.display = 'flex';
+    login_popup.style.display = 'none';
+}
+
+
