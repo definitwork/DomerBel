@@ -35,27 +35,11 @@
     </section>
     <section class="regions">
         <ul class="regions_list">
+            {% for region in regions %}
             <li>
-                <a href="#" class="minsk reg">МИНСК</a>
+                <a href="#" class="minsk reg">{{ region.area }}</a>
             </li>
-            <li>
-                <a href="#" class="brest reg">БРЕСТСКАЯ ОБЛАСТЬ</a>
-            </li>
-            <li>
-                <a href="#" class="vitebsk reg">ВИТЕБСКАЯ ОБЛАСТЬ</a>
-            </li>
-            <li>
-                <a href="#" class="gomel reg">ГОМЕЛЬСКАЯ ОБЛАСТЬ</a>
-            </li>
-            <li>
-                <a href="#" class="grodno reg">ГРОДНЕНСКАЯ ОБЛАСТЬ</a>
-            </li>
-            <li>
-                <a href="#" class="minsk_region reg">МИНСКАЯ ОБЛАСТЬ</a>
-            </li>
-            <li>
-                <a href="#" class="mogilev reg">МОГИЛЕВСКАЯ ОБЛАСТЬ</a>
-            </li>
+            {% endfor %}
         </ul>
     </section>
     <main>
@@ -63,68 +47,48 @@
             <div class="last_ads_title">
                 Последние объявления
             </div>
-            <div class="ads_list">
+            {% for cart in adver %}
+                <div class="ads_list">
                 <div class="ads">
                     <div class="ads_date_time">
                         <ul>
-                            <li>Сегодня</li>
-                            <li>12:00</li>
+                            {% if cart.date_of_create.date == date_today %}
+                                <li>Сегодня</li>
+                            {% elif cart.date_of_create.date == date_yesterday %}
+                                <li>Вчера</li>
+                            {% else %}
+                                <li>{{ cart.date_of_create|date:"d b. Y" }}</li>
+                            {% endif %}
+                            <li>{{ cart.date_of_create|date:"H:i" }}</li>
                         </ul>
                     </div>
                     <div class="ads_img">
-                        <img src="{% static 'img/ads_img/1.jpg' %}" alt="{% static 'img/ads_img/1.jpg' %}">
+                        <img src="{{ cart.previous_image.url }}" alt="{{ cart.previous_image.url }}">
                     </div>
                     <div class="ads_description">
                         <ul>
-                            <li>Продаю 2-комн квартиру 66,70 кв м</li>
-                            <li> 697 руб.</li>
-                            <li>Продам квартиру</li>
-                            <li>Компания</li>
-                            <li>Первомайский район</li>
+                            <li>
+                                <a href="#">
+                                    {{ cart.title }}
+                                </a>
+                            </li>
+                            <li>
+                                {{ cart.price }}
+                            </li>
+                            <li>
+                                {{ cart.category }}
+                            </li>
+                            <li>
+                                {{ cart.bearer }}
+                            </li>
+                            <li>
+                                {{ cart.region }}
+                            </li>
                         </ul>
                     </div>
                 </div>
-                <div class="ads">
-                    <div class="ads_date_time">
-                        <ul>
-                            <li>Сегодня</li>
-                            <li>10:35</li>
-                        </ul>
-                    </div>
-                    <div class="ads_img">
-                        <img src="{% static 'img/ads_img/2.jpg' %}" alt="{% static 'img/ads_img/2.jpg' %}">
-                    </div>
-                    <div class="ads_description">
-                        <ul>
-                            <li>Продаю 3-комн квартиру 66,70 кв м</li>
-                            <li> 584 руб.</li>
-                            <li>Продам квартиру</li>
-                            <li>Компания</li>
-                            <li>Советский район</li>
-                        </ul>
-                    </div>
                 </div>
-                <div class="ads">
-                    <div class="ads_date_time">
-                        <ul>
-                            <li>Сегодня</li>
-                            <li>9:44</li>
-                        </ul>
-                    </div>
-                    <div class="ads_img">
-                        <img src="{% static 'img/ads_img/3.jpg' %}" alt="{% static 'img/ads_img/3.jpg' %}">
-                    </div>
-                    <div class="ads_description">
-                        <ul>
-                            <li>Продаю 3-комн квартиру 66,70 кв м</li>
-                            <li> 748 руб.</li>
-                            <li>Продам квартиру</li>
-                            <li>Компания</li>
-                            <li>Октябрьский район</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </section>
     </main>
 {% endblock %}

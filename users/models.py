@@ -45,6 +45,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField('Контактное лицо', max_length=255)
     last_name = models.CharField(_("last name"), max_length=150, blank=True)
+    phone_number = models.CharField('Номер телефона', max_length=15)
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
     is_staff = models.BooleanField(
         _("staff status"),
@@ -60,7 +61,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         ),
     )
     # avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
-    phone_number = models.CharField('Номер телефона', max_length=15)
+
     objects = UserManager()
 
     USERNAME_FIELD = 'email'

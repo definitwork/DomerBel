@@ -32,7 +32,11 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "rest_framework",
     "corsheaders",
+
+    'mptt',
+
     'captcha',
+
 
     "main_page_domer",
 
@@ -68,6 +72,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'advertisement.context_processors.get_date_today',
             ],
         },
     },
