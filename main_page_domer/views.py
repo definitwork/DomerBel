@@ -1,10 +1,20 @@
 from django.shortcuts import render
 
+from advertisement.models import Advertisement, Region
+
+
 # Create your views here.
 
 
 def get_main_page(request):
-    return render(request, 'main.html')
+    advertisement_queryset = Advertisement.objects.filter(is_active=True, moderated=True).select_related('category', 'region', 'images').order_by("-date_of_create")[:7]
+    regions_queryset = Region.objects.all()
+    context = {
+        "adver": advertisement_queryset,
+        "regions": regions_queryset,
+
+    }
+    return render(request, 'main.html', context)
 
 def get_help_page(request):
     return render(request, 'help.html')
