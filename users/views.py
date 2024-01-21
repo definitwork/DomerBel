@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login,  logout
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from .forms import UserRegisterForm, CustomAuthenticationForm
 
@@ -15,7 +15,8 @@ def login_view(request):  # Форма авторизации
                 return redirect('pa')
     else:
         login_form = CustomAuthenticationForm()
-    return render(request, 'main.html', {'login_form': login_form})
+    reg_form = UserRegisterForm()
+    return render(request, 'main.html', {'login_form': login_form, 'reg_form': reg_form})
 
 
 def registration(request):
@@ -24,7 +25,10 @@ def registration(request):
         if reg_form.is_valid():
             reg_form.save()
             return redirect('home')
-    return render(request, 'main.html', {'reg_form': reg_form})
+    else:
+        reg_form = UserRegisterForm()
+    login_form = CustomAuthenticationForm()
+    return render(request, 'main.html', {'reg_form': reg_form, 'login_form': login_form})
 
 
 def logout_view(request):
