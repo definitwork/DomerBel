@@ -1,57 +1,32 @@
-from django.contrib import messages
-from django.contrib.auth import authenticate, login, get_user_model
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import PasswordChangeView
-from django.urls import reverse_lazy
-
-from .models import User
-from django.http import HttpResponse
+from django.contrib.auth import authenticate, login,  logout
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, CustomAuthenticationForm
 
 
-def login_view(request):
+def login_view(request):  # Форма авторизации
     if request.method == 'POST':
-        email = request.POST['email']
-        password = request.POST['password']
-        user = authenticate(request, email=email, password=password)
-        if user is not None:
-            login(request, user)
-            return HttpResponse('Вы успешно вошли в систему!')
-        else:
-            return HttpResponse('Неверный логин или пароль.')
-    return render(request, 'registration/login.html')
+        login_form = CustomAuthenticationForm(request, data=request.POST)
+        if login_form.is_valid():
+            username = login_form.cleaned_data.get('username')
+            password = login_form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('pa')
+    else:
+        login_form = CustomAuthenticationForm()
+    return render(request, 'main.html', {'login_form': login_form})
 
 
-def register(request):
+def registration(request):
+    reg_form = UserRegisterForm(request.POST)
     if request.method == 'POST':
-        username = request.POST['contact']
-        email = request.POST['email']
-        password = request.POST['password']
-        repeat_password = request.POST['repeat_password']
-        user = User(first_name=username, email=email, password=password)
-        user.set_password()
+        if reg_form.is_valid():
+            reg_form.save()
+            return redirect('home')
+    return render(request, 'main.html', {'reg_form': reg_form})
 
 
-# def reset_password(request):
-#     if request.method == 'POST':
-#         email = request.POST['email']
-#         if User.objects.filter(email=email).exists():
-#             return render(request, 'users/password_reset_form.html')
-#
-#         else:
-#             print('нет такого')
-#             return render(request, 'main.html', {'error': "Такого имейла нет"})
-
-
-# def change_password(email, new_password):
-#     user = User.objects.get(email=email)
-#     user.set_password(new_password)
-#     user.save()
-# change_password('user@mail.ru', 'Ishimura2')
-
-
-@login_required
-def profile(request):
-    return render(request, template_name='personal_account.html')
+def logout_view(request):
+    logout(request)
+    return redirect('home')

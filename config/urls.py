@@ -31,6 +31,7 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('advertisement/', include('advertisement.urls')),
+    path('captcha/', include('captcha.urls')),
 
 ]
 
