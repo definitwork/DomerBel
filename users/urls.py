@@ -2,14 +2,13 @@ from django.conf import settings
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
     PasswordResetCompleteView
 from django.urls import path, reverse_lazy
-
-from .views import profile, login_view
+from .views import login_view, registration, logout_view
 
 app_name = 'users'
 urlpatterns = [
     path('login/', login_view, name="login"),
-    # path('register/', register, name='register'),
-    path('profile/', profile, name='profile'),
+    path('register/', registration, name='register'),
+    path('logout/', logout_view, name="logout"),
 
     path('password-reset/',
          PasswordResetView.as_view(

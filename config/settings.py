@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "rest_framework",
     "corsheaders",
+    'captcha',
 
     "main_page_domer",
 
@@ -155,3 +156,10 @@ EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
+
+# Настройки капчи
+CAPTCHA_FONT_SIZE = 40
+CAPTCHA_FONT_PATH = 'main_page_domer/static/fonts/arial/arial.ttf'
+CAPTCHA_CHALLENGE_FUNCT = 'users.captcha.random_digit_challenge'  # Функция для генерации CAPTCHA на русском языке
+
+
