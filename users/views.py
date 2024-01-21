@@ -27,6 +27,7 @@ def registration(request):
             return redirect('home')
     else:
         reg_form = UserRegisterForm()
+
     login_form = CustomAuthenticationForm()
     return render(request, 'main.html', {'reg_form': reg_form, 'login_form': login_form})
 
