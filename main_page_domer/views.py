@@ -10,10 +10,10 @@ from users.forms import UserRegisterForm, CustomAuthenticationForm, SendEmailFor
 # Использую на главной вьюшке 2 формы связанные с юзером
 # для того что бы при вызове главной страницы они отрендерелись в pop-up окнах
 def get_main_page(request):
-    advertisement_queryset = Advertisement.objects.filter(is_active=True, moderated=True).select_related('category',
-                                                                                                         'region',
-                                                                                                         'images').order_by(
-        "-date_of_create")[:7]
+    advertisement_queryset = Advertisement.objects.filter(
+        is_active=True, moderated=True).select_related(
+        'category', 'region', 'images').order_by("-date_of_create")[:7]
+
     regions_queryset = Region.objects.all()
     reg_form = UserRegisterForm()
     login_form = CustomAuthenticationForm()
@@ -25,7 +25,6 @@ def get_main_page(request):
         "login_form": login_form,
         'email_form': SendEmailForm
     }
-
     return render(request, 'main.html', context)
 
 

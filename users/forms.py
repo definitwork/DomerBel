@@ -17,9 +17,7 @@ class SendEmailForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.fields['email'].widget.attrs['class'] = 'send_email_field'
 
-    class Meta:
-        model = get_user_model()
-        fields = ['email']
+
 
 
 class CustomUserCreationForm(UserCreationForm):
