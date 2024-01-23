@@ -1,9 +1,11 @@
+from django.contrib import admin
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.mail import send_mail
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.contrib.auth.base_user import BaseUserManager
@@ -70,6 +72,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
+
+    @admin.display
+    def set_input(self):
+        return format_html(
+            "<input type='text'>"
+        )
 
     def get_full_name(self):
         """

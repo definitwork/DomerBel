@@ -48,16 +48,16 @@
                         <ul class="user_data_form">
                             <li>
                                 <label for="contact">Контактное лицо</label>
-                                <input type="text" name="contact">
+                                <input type="text" name="contact" value="{{ user.first_name }}">
 
                             </li>
                             <li>
                                 <label for="phone">Телефон</label>
-                                <input type="text" name="phone">
+                                <input type="text" name="phone" value="{{ user.phone_number }}">
                             </li>
                             <li>
                                 <label for="email">E-MAIL</label>
-                                <input type="text" name="email">
+                                <input type="text" name="email" value="{{ user.email }}">
                             </li>
                             <li>
                                 <label for="pass">Пароль</label>

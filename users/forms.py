@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from captcha.fields import CaptchaField
 from .models import User
 from django import forms
@@ -33,3 +33,19 @@ class CustomAuthenticationForm(AuthenticationForm):
         super().__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['class'] = 'auth_field check_auth_field'
         self.fields['password'].widget.attrs['class'] = 'auth_field check_auth_field'
+
+
+
+#Johan добавил
+class MyCustomUserCreationForm(UserCreationForm):
+
+    class Meta:
+        model = User
+        fields = ("email",)
+
+
+class CustomUserChangeForm(UserChangeForm):
+
+    class Meta:
+        model = User
+        fields = ("email",)
