@@ -52,7 +52,7 @@ class Complaint(models.Model):
 
 
 class ReasonOfComplaint(models.Model):
-    reason = models.CharField(verbose_name='Причина жалобы')
+    reason = models.CharField('Причина жалобы', max_length=1000)
 
     class Meta:
         verbose_name = 'Причина жалобы'

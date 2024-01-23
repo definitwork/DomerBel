@@ -31,7 +31,7 @@
         <div class="closing_cross"></div>
     </div>
     <div class="register_form_popup">
-        <form method="POST" action="{% url 'users:register' %}" class="login_form">
+        <form method="POST" action="{% url 'users:register' %}" class="login_form" id="bany">
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
@@ -45,14 +45,13 @@
     </div>
     <div class="forget_pass_form_popup">
         <form method="POST" action="{% url 'users:password_reset' %}" class="forget_pass_form">
+{#        <form method="POST" action="{% url 'users:send_email' %}" class="forget_pass_form">#}
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Восстановление пароля</p>
             </nav>
-            <input type="email" placeholder="* E-mail, указанный при регистрации" name="email">
-            <img class="bar_code" src="{% static 'img/bar_code.png' %}" alt="{% static './img/bar_code.png' %}">
-            <input type="password" placeholder="* Введите защитный код цифрами">
+            {{ email_form.as_p }}
             <button>Отправить</button>
         </form>
         <button type="button" class="return_to_login_from_forget_button">Вход</button>
@@ -169,9 +168,9 @@
                             {% if user.is_authenticated %}
                                 <a href="{% url 'pa' %}">{{ user }}</a>
                             {% else %}
-                               Вход и регистрация
+                                Вход и регистрация
                             {% endif %}
-                            
+
                         </div>
                     </nav>
                 </div>
