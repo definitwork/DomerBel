@@ -73,6 +73,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'advertisement.context_processors.get_date_today',
+                'config.context_processor.get_context_data',
             ],
         },
     },

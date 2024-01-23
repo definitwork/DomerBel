@@ -1,8 +1,5 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import render
-
 from advertisement.models import Advertisement, Region
-from users.forms import UserRegisterForm, CustomAuthenticationForm, SendEmailForm
 
 
 # Create your views here.
@@ -13,18 +10,8 @@ def get_main_page(request):
     advertisement_queryset = Advertisement.objects.filter(
         is_active=True, moderated=True).select_related(
         'category', 'region', 'images').order_by("-date_of_create")[:7]
-
     regions_queryset = Region.objects.all()
-    reg_form = UserRegisterForm()
-    login_form = CustomAuthenticationForm()
-    email_form = SendEmailForm()
-    context = {
-        "adver": advertisement_queryset,
-        "regions": regions_queryset,
-        "reg_form": reg_form,
-        "login_form": login_form,
-        'email_form': SendEmailForm
-    }
+    context = {"adver": advertisement_queryset, }
     return render(request, 'main.html', context)
 
 

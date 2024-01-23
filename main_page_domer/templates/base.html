@@ -13,15 +13,14 @@
 
 <div class="popup">
     <div class="login_form_popup">
-        <form method="POST" action="{% url 'users:login' %}" class="login_form">
+        <form id="form_ajax" method="POST" class="login_form">
             {% csrf_token %}
             <nav class="header_login_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Вход</p>
             </nav>
-
-            {{ login_form.as_p }}
-            <button>Войти</button>
+            {{ login_ajax }}
+            <button type="submit">Отправить</button>
         </form>
         <div class="forget_pass_and_register_buttons">
             <button type="button" class="forget_pass_button">Забыли пароль?</button>
@@ -31,7 +30,7 @@
         <div class="closing_cross"></div>
     </div>
     <div class="register_form_popup">
-        <form method="POST" action="{% url 'users:register' %}" class="login_form" id="bany">
+        <form method="POST" action="#" class="login_form" id="bany">
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
@@ -44,8 +43,8 @@
         <div class="closing_cross"></div>
     </div>
     <div class="forget_pass_form_popup">
-        <form method="POST" action="{% url 'users:password_reset' %}" class="forget_pass_form">
-{#        <form method="POST" action="{% url 'users:send_email' %}" class="forget_pass_form">#}
+        <form method="POST" action="#" class="forget_pass_form">
+            {#        <form method="POST" action="{% url 'users:send_email' %}" class="forget_pass_form">#}
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
@@ -261,5 +260,6 @@
     </div>
 </div>
 <script src="{% static "js/modals.js" %}"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </body>
 </html>
