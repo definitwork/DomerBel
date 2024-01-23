@@ -466,6 +466,10 @@
     color: #333333;
 }
 
+.ads_list {
+    gap: 10px;
+}
+
 .ads {
     display: flex;
 }
@@ -479,8 +483,8 @@
 }
 
 .ads_img {
-    height: 113px;
-    width: 120px;
+    height: 105px;
+    width: 105px;
 
     & img {
         max-width: 100%;
@@ -541,13 +545,15 @@
 .indent_p {
     padding-left: 15px;
 }
-.reset_done_message{
+
+.reset_done_message {
 
     align-items: center;
     justify-content: center;
     border: black solid 1px;
     border-radius: 5px;
-    & h4{
+
+    & h4 {
         margin-bottom: 10px;
     }
 }
