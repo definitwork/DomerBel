@@ -13,47 +13,47 @@
 
 <div class="popup">
     <div class="login_form_popup">
-        <form id="form_ajax" method="POST" class="login_form">
+        <form id="login_form" method="POST" class="login_form">
             {% csrf_token %}
             <nav class="header_login_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Вход</p>
             </nav>
-            {{ login_ajax }}
-            <button type="submit">Отправить</button>
+            {{ login_form }}
+            <button name="login_form">Отправить</button>
         </form>
         <div class="forget_pass_and_register_buttons">
-            <button type="button" class="forget_pass_button">Забыли пароль?</button>
-            <button type="button" class="register_button">Регистрация</button>
+            <button class="forget_pass_button">Забыли пароль?</button>
+            <button class="register_button">Регистрация</button>
         </div>
 
         <div class="closing_cross"></div>
     </div>
     <div class="register_form_popup">
-        <form method="POST" action="#" class="login_form" id="bany">
+        <form id="register_form" method="POST" class="login_form">
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Регистрация</p>
             </nav>
-            {{ reg_form.as_p }}
+            {{ register_form }}
             <button>Регистрация</button>
         </form>
-        <button type="button" class="return_to_login_button">Вход</button>
+        {#        <button class="return_to_login_button" name="return_to_login_button">Вход</button>#}
+        <input type="button" class="return_to_login_button" id="return_to_login_button" value="Вход">
         <div class="closing_cross"></div>
     </div>
     <div class="forget_pass_form_popup">
-        <form method="POST" action="#" class="forget_pass_form">
-            {#        <form method="POST" action="{% url 'users:send_email' %}" class="forget_pass_form">#}
+        <form id="forget_pass_form" method="POST" class="forget_pass_form">
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Восстановление пароля</p>
             </nav>
-            {{ email_form.as_p }}
-            <button>Отправить</button>
+            {{ email_reset_form }}
+            <button name="send_email_button">Отправить</button>
         </form>
-        <button type="button" class="return_to_login_from_forget_button">Вход</button>
+        <button class="return_to_login_from_forget_button">Вход</button>
         <div class="closing_cross"></div>
     </div>
     <div class="nav_category_list_popup">
@@ -254,12 +254,10 @@
                     </a>
                 </div>
             </div>
-
-
         </footer>
     </div>
 </div>
 <script src="{% static "js/modals.js" %}"></script>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="{% static "js/auth.js" %}"></script>
 </body>
 </html>
