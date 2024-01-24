@@ -8,19 +8,19 @@
     <link rel="stylesheet" href="{% static 'css/user_data.css' %}">
 
 
-
 </head>
 <body>
+
 <div class="popup">
     <div class="login_form_popup">
-        <form method="POST" class="login_form">
+        <form method="POST" action="{% url 'users:login' %}" class="login_form">
             {% csrf_token %}
             <nav class="header_login_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Вход</p>
             </nav>
-            <input type="email" placeholder="Электронная почта">
-            <input type="password" placeholder="Пароль">
+
+            {{ login_form.as_p }}
             <button>Войти</button>
         </form>
         <div class="forget_pass_and_register_buttons">
@@ -31,33 +31,27 @@
         <div class="closing_cross"></div>
     </div>
     <div class="register_form_popup">
-        <form method="POST" action="{% url 'register' %}" class="login_form">
+        <form method="POST" action="{% url 'users:register' %}" class="login_form" id="bany">
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Регистрация</p>
             </nav>
-            <input type="text" placeholder="* Контактное лицо" name="contact">
-            <input type="text" placeholder="* Телефон" name="phone">
-            <input type="email" placeholder="* Электронная почта" name="email">
-            <input type="password" placeholder="* Пароль" name="password">
-            <img class="bar_code" src="{% static 'img/bar_code.png' %}" alt="{% static './img/bar_code.png' %}">
-            <input type="text" placeholder="* Введите защитный код цифрами" name="code">
+            {{ reg_form.as_p }}
             <button>Регистрация</button>
         </form>
         <button type="button" class="return_to_login_button">Вход</button>
         <div class="closing_cross"></div>
     </div>
     <div class="forget_pass_form_popup">
-        <form method="POST" class="forget_pass_form">
+        <form method="POST" action="{% url 'users:password_reset' %}" class="forget_pass_form">
+{#        <form method="POST" action="{% url 'users:send_email' %}" class="forget_pass_form">#}
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Восстановление пароля</p>
             </nav>
-            <input type="email" placeholder="* E-mail, указанный при регистрации">
-            <img class="bar_code" src="{% static 'img/bar_code.png' %}" alt="{% static './img/bar_code.png' %}">
-            <input type="password" placeholder="* Введите защитный код цифрами">
+            {{ email_form.as_p }}
             <button>Отправить</button>
         </form>
         <button type="button" class="return_to_login_from_forget_button">Вход</button>
@@ -171,7 +165,12 @@
                             </li>
                         </ul>
                         <div class="login_button">
-                            Вход и регистрация
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'pa' %}">{{ user }}</a>
+                            {% else %}
+                                Вход и регистрация
+                            {% endif %}
+
                         </div>
                     </nav>
                 </div>
@@ -206,6 +205,9 @@
             </section>
         </header>
 
+
+        {% block content %}
+        {% endblock %}
         {% block help %}
         {% endblock %}
         {% block search_table %}

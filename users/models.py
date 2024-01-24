@@ -1,9 +1,11 @@
+from django.contrib import admin
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.mail import send_mail
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.contrib.auth.base_user import BaseUserManager
@@ -43,8 +45,9 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
-    first_name = models.CharField(_("first name"), max_length=150, blank=True)
+    first_name = models.CharField('Контактное лицо', max_length=255)
     last_name = models.CharField(_("last name"), max_length=150, blank=True)
+    phone_number = models.CharField('Номер телефона', max_length=15)
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
     is_staff = models.BooleanField(
         _("staff status"),
@@ -59,7 +62,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             "Unselect this instead of deleting accounts."
         ),
     )
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    # avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
 
     objects = UserManager()
 
@@ -69,6 +72,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
+
+    @admin.display
+    def set_input(self):
+        return format_html(
+            "<input type='text'>"
+        )
 
     def get_full_name(self):
         """

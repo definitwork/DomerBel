@@ -36,7 +36,7 @@
     flex-direction: column;
     gap: 20px;
 
-    & input {
+    input {
         padding: 10px;
         width: 100%;
         border-radius: 5px;
@@ -423,6 +423,14 @@
     gap: 25px;
 }
 
+
+.checkbox_input_label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
 .checkbox_label {
     font-family: "Trebuchet MS";
     font-size: 13px;
@@ -458,6 +466,10 @@
     color: #333333;
 }
 
+.ads_list {
+    gap: 10px;
+}
+
 .ads {
     display: flex;
 }
@@ -471,8 +483,8 @@
 }
 
 .ads_img {
-    height: 113px;
-    width: 120px;
+    height: 105px;
+    width: 105px;
 
     & img {
         max-width: 100%;
@@ -532,4 +544,104 @@
 
 .indent_p {
     padding-left: 15px;
+}
+
+.reset_done_message {
+
+    align-items: center;
+    justify-content: center;
+    border: black solid 1px;
+    border-radius: 5px;
+
+    & h4 {
+        margin-bottom: 10px;
+    }
+}
+
+.password_set_form {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f5f5f5;
+}
+
+.password_set_form p {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.password_set_form label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.password_set_form input[type="text"], .password_set_form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.password_set_form input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.password_set_form input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+
+.alert-success {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #d4edda;
+}
+
+.alert-success h4 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.alert-success p {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.alert-success a {
+    color: #155724;
+    text-decoration: underline;
+}
+
+.reset_done_message {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #d4edda;
+}
+
+.reset_done_message h4 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.reset_done_message p {
+    font-size: 16px;
+    margin-bottom: 10px;
 }
