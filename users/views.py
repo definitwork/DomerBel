@@ -1,12 +1,7 @@
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.views import PasswordResetView
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework.views import APIView
-
-from users.serializers import AuthSerializer
+from django.contrib.auth import logout, authenticate, login
+from django.http import JsonResponse
+from django.shortcuts import redirect
+from .forms import LoginForm, RegisterForm
 
 
 def logout_view(request):
@@ -14,7 +9,28 @@ def logout_view(request):
     return redirect('home')
 
 
-class LoginAjaxView(APIView):
-    def post(self, request):
-        if request.method == 'POST':
-            return
+def login_view(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+            user = authenticate(email=email, password=password)
+            if user is not None:
+                login(request, user)
+                return JsonResponse({'success': True})  # Есть в базе
+            elif user is None:
+                return JsonResponse({'errors': 1})  # Неверный email или пароль
+        else:
+            return JsonResponse({'errors': 1})  # Неверный email или пароль
+
+
+def register_view(request):
+    if request.method == 'POST':
+        print(request.POST)
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            print(form.errors)
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'errors': form.errors})

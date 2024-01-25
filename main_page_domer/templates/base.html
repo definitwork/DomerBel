@@ -19,8 +19,9 @@
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Вход</p>
             </nav>
+            <p id="login_form_error"></p>
             {{ login_form }}
-            <button name="login_form">Отправить</button>
+            <input type="button" id="form_login_button" value="Отправить"></input>
         </form>
         <div class="forget_pass_and_register_buttons">
             <button class="forget_pass_button">Забыли пароль?</button>
@@ -36,11 +37,15 @@
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Регистрация</p>
             </nav>
+            <p style="color: red" class="error_phone_register"></p>
+            <p style="color: red" class="error_email_register"></p>
+            <p style="color: red" class="error_pass_not_match_register"></p>
+            <p style="color: red" class="error_empty_register"></p> 
+            <p style="color: red" class="error_captcha_register"></p>
             {{ register_form }}
-            <button>Регистрация</button>
+            <input type="button" id="form_register_button" value="Регистрация">Регистрация</input>
         </form>
-        {#        <button class="return_to_login_button" name="return_to_login_button">Вход</button>#}
-        <input type="button" class="return_to_login_button" id="return_to_login_button" value="Вход">
+        <button class="return_to_login_button">Вход</button>
         <div class="closing_cross"></div>
     </div>
     <div class="forget_pass_form_popup">
@@ -51,7 +56,7 @@
                 <p>Восстановление пароля</p>
             </nav>
             {{ email_reset_form }}
-            <button name="send_email_button">Отправить</button>
+            <button id="send_email_button">Отправить</button>
         </form>
         <button class="return_to_login_from_forget_button">Вход</button>
         <div class="closing_cross"></div>
@@ -169,8 +174,7 @@
                             {% else %}
                                 Вход и регистрация
                             {% endif %}
-
-                        </div>
+                          </div>
                     </nav>
                 </div>
                 <div class="horizontal_line"></div>

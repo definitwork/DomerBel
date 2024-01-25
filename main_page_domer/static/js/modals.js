@@ -15,14 +15,18 @@ const return_to_login_from_forget = document.querySelector(".return_to_login_fro
 const more_button = document.querySelector(".more_button");
 const nav_category_list_popup = document.querySelector(".nav_category_list_popup");
 
-// -> login
 
+// Если юзер залогинен скрыть класс отвечающий за окна pop up
+if (document.cookie.indexOf('logged_in=true') !== -1) {
+    document.querySelector('.login_button').classList.add('hidden');
+}
+
+// -> login
 login_button.addEventListener("click", () => {
     popup.style.display = 'flex';
     login_popup.style.display = 'flex';
     forget_button.style.display = 'flex';
     forget_popup.style.display = 'none';
-
 });
 
 closing_cross.forEach(item => item.addEventListener("click", () => {
@@ -43,6 +47,7 @@ popup.addEventListener("click", (event) => {
         nav_category_list_popup.style.display = 'none';
     }
 });
+
 
 // -> register
 
@@ -76,9 +81,3 @@ more_button.addEventListener("click", () => {
 });
 
 
-$(function() {
-    $('#form_ajax').submit(function(e) {
-        e.preventDefault();
-        console.log(this);
-    });
-});

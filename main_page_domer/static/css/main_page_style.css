@@ -647,3 +647,8 @@
 .captcha{
     margin-left: 100px;
 }
+
+#login_form_error{
+    color: red;
+    font-family: "Trebuchet MS";
+}
