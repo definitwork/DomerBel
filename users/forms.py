@@ -1,5 +1,6 @@
-from captcha.fields import CaptchaField, CaptchaTextInput
 from django import forms
+from django_recaptcha.fields import ReCaptchaField
+
 from .validators import validate_password, validate_email, validate_phone
 
 
@@ -23,8 +24,9 @@ class RegisterForm(forms.Form):
         widget=forms.PasswordInput(attrs={'id': 'password_register_field', 'placeholder': 'Введите пароль'}),
         validators=[validate_password], label='')
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Повторите пароль'}), label='')
-    captcha = CaptchaField(label='', widget=CaptchaTextInput(
-        attrs={'id': 'captcha_register_field', 'placeholder': 'Введите текст с картинки'}))
+    # captcha = CaptchaField(label='', widget=CaptchaTextInput(
+    #     attrs={'id': 'captcha_register_field', 'placeholder': 'Введите текст с картинки'}))
+    captcha = ReCaptchaField(label='')
 
     def clean(self):
         cleaned_data = super().clean()
@@ -38,6 +40,6 @@ class RegisterForm(forms.Form):
 class EmailResetForm(forms.Form):
     email = forms.CharField(
         label='', widget=forms.EmailInput(attrs={'id': 'email_reset_field', 'placeholder': 'Введите Вашу почту'}))
-    captcha = CaptchaField(
-        label='',
-        widget=CaptchaTextInput(attrs={'id': 'captcha_reset_field', 'placeholder': 'Введите текст с картинки'}))
+    # captcha = CaptchaField(
+    #     label='',
+    #     widget=CaptchaTextInput(attrs={'id': 'captcha_reset_field', 'placeholder': 'Введите текст с картинки'}))

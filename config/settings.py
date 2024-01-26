@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'mptt',
 
     'captcha',
+    'django_recaptcha',
 
 
     "main_page_domer",
@@ -167,5 +168,10 @@ EMAIL_ADMIN = EMAIL_HOST_USER
 CAPTCHA_FONT_SIZE = 40
 CAPTCHA_FONT_PATH = 'main_page_domer/static/fonts/arial/arial.ttf'
 CAPTCHA_CHALLENGE_FUNCT = 'users.captcha.random_digit_challenge'  # Функция для генерации CAPTCHA на русском языке
+
+
+
+RECAPTCHA_PUBLIC_KEY = '6LesQF0pAAAAAACYsgZsOAnwA_olJtct3zKAF7gv'
+RECAPTCHA_PRIVATE_KEY = '6LesQF0pAAAAAL4RilcuWrIqdQ98DOIrM-1TMqEh'
 
 

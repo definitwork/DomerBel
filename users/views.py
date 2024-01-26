@@ -32,9 +32,9 @@ def register_view(request):
         print(request.POST)
         form = RegisterForm(request.POST)
         if form.is_valid():
-            print(form.errors)
-            # return JsonResponse({'success': True})
-            return redirect('home')
+            print(form.cleaned_data)
+            return JsonResponse({'success': True})
+
         else:
+            print(form.errors)
             return JsonResponse({'errors': form.errors})
-        return JsonResponse({'errors': 'aswdasd'})

@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link rel="stylesheet" href="{% static 'css/null_for_templates.css' %}">
     <link rel="stylesheet" href="{% static 'css/main_page_style.css' %}">
     <link rel="stylesheet" href="{% static 'css/user_data.css' %}">
@@ -10,7 +11,6 @@
 
 </head>
 <body>
-
 <div class="popup">
     <div class="login_form_popup">
         <form id="login_form" method="POST" class="login_form">
@@ -41,9 +41,9 @@
             <p style="color: red" class="error_email_register"></p>
             <p style="color: red" class="error_pass_not_match_register"></p>
             <p style="color: red" class="error_empty_register"></p> 
-            <p style="color: red" class="error_captcha_register"></p>
+            <p style="color: red" class="error_bad_password_register"></p>
             {{ register_form }}
-            <input type="button" id="form_register_button" value="Регистрация">Регистрация</input>
+            <input type="button" id="form_register_button" value="Регистрация"></input>
         </form>
         <button class="return_to_login_button">Вход</button>
         <div class="closing_cross"></div>
@@ -263,5 +263,8 @@
 </div>
 <script src="{% static "js/modals.js" %}"></script>
 <script src="{% static "js/auth.js" %}"></script>
+
+
+
 </body>
 </html>

@@ -33,21 +33,13 @@ function login_fn() {
 }
 
 
-// function handleIncorrectInput() {
-//     // Генерируем новый URL изображения (например, добавляем случайный хэш)
-//     const newCaptchaImageUrl = '/captcha/image/' + '555'; // Замените на реальный URL
-//     const captchaImage = document.querySelector('.captcha'); // Замените на реальный ID элемента
-//     captchaImage.src = newCaptchaImageUrl;
-// }
-
-
 function register_fn() {
     const form_register_data = new FormData(document.querySelector('#register_form'));
     const error_phone_register = document.querySelector('.error_phone_register');
     const error_email_register = document.querySelector('.error_email_register');
     const error_pass_not_match_register = document.querySelector('.error_pass_not_match_register');
     const error_empty_register = document.querySelector('.error_empty_register');
-    const error_captcha_register = document.querySelector('.error_captcha_register');
+    const error_bad_password_register = document.querySelector('#password_register_field')
     // Для обнуленя значений поля
     const field_password2_register_form = document.querySelector('#id_password2');
 
@@ -59,16 +51,33 @@ function register_fn() {
     })
         .then(response => response.json())
         .then(data => {
-            // if (data.errors.captcha[0] === 'Неверный ответ') {
-            //     handleIncorrectInput()
-            // }
-            console.log(data)
-            error_phone_register.innerHTML = data.errors.phone
-            error_email_register.innerHTML = data.errors.email
-            error_pass_not_match_register.innerHTML = data.errors.password2
-            error_empty_register.innerHTML = data.errors.password
-            error_captcha_register.innerHTML = data.errors.captcha
-        })
+
+                console.log(data)
+                // if (data.errors.phone) {
+                //     error_phone_register.innerHTML = data.errors.phone;
+                // } else {
+                //     error_phone_register.innerHTML = '';
+                // } // Пустая строка, чтобы ничего не отображалось
+                //
+                // if (data.errors.email) {
+                //     error_email_register.innerHTML = data.errors.email;
+                // } else {
+                //     error_email_register.innerHTML = '';
+                // }
+                //  if (data.errors.password) {
+                //     error_bad_password_register.innerHTML = 'DAROU';
+                // } else {
+                //     error_bad_password_register.innerHTML = 'DAROU';
+                //  }
+                error_bad_password_register.innerHTML = 'DAROU';
+                console.log(error_bad_password_register.value)
+
+                // if (data.errors.password2) {
+                //     error_pass_not_match_register.innerHTML = data.errors.password2;
+                // }
+
+            }
+        )
 }
 
 
