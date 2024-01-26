@@ -32,6 +32,15 @@ function login_fn() {
         )
 }
 
+
+// function handleIncorrectInput() {
+//     // Генерируем новый URL изображения (например, добавляем случайный хэш)
+//     const newCaptchaImageUrl = '/captcha/image/' + '555'; // Замените на реальный URL
+//     const captchaImage = document.querySelector('.captcha'); // Замените на реальный ID элемента
+//     captchaImage.src = newCaptchaImageUrl;
+// }
+
+
 function register_fn() {
     const form_register_data = new FormData(document.querySelector('#register_form'));
     const error_phone_register = document.querySelector('.error_phone_register');
@@ -41,6 +50,8 @@ function register_fn() {
     const error_captcha_register = document.querySelector('.error_captcha_register');
     // Для обнуленя значений поля
     const field_password2_register_form = document.querySelector('#id_password2');
+
+
     fetch('http://127.0.0.1:8000/users/register/', {
         method: 'POST',
         headers: {"X-CSRFToken": token},
@@ -48,14 +59,15 @@ function register_fn() {
     })
         .then(response => response.json())
         .then(data => {
+            // if (data.errors.captcha[0] === 'Неверный ответ') {
+            //     handleIncorrectInput()
+            // }
             console.log(data)
             error_phone_register.innerHTML = data.errors.phone
             error_email_register.innerHTML = data.errors.email
             error_pass_not_match_register.innerHTML = data.errors.password2
             error_empty_register.innerHTML = data.errors.password
             error_captcha_register.innerHTML = data.errors.captcha
-
-
         })
 }
 
