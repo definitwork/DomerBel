@@ -13,6 +13,7 @@ def logout_view(request):
 
 def login_view(request):
     if request.method == 'POST':
+        print(request.POST, 'авторизация')
         form = LoginForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data.get('email')
@@ -28,13 +29,15 @@ def login_view(request):
 
 
 def register_view(request):
+    print(request.POST)
+    print(55555)
     if request.method == 'POST':
-        print(request.POST)
+
         form = RegisterForm(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
+            # print(form.cleaned_data)
             return JsonResponse({'success': True})
 
         else:
-            print(form.errors)
+            # print(form.errors)
             return JsonResponse({'errors': form.errors})
