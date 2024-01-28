@@ -6,6 +6,5 @@ def get_context_data(request):
         'login_form': LoginForm(),
         'register_form': RegisterForm(),
         'email_reset_form': EmailResetForm(),
-        'EditProfileForm': EditProfileForm()
     }
     return context

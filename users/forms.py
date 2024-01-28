@@ -44,7 +44,23 @@ class EmailResetForm(forms.Form):
     captcha = ReCaptchaField(label='')
 
 
+# validators=[validate_password], label='Пароль',
+#                                    required=False)
 class EditProfileForm(forms.ModelForm):
+    first_name = forms.CharField(label='Контактное лицо', required=False)
+    phone_number = forms.CharField(validators=[validate_phone], label='Телефон', required=False)
+    email = forms.EmailField(validators=[validate_email], label='E-MAIL', required=False)
+
     class Meta:
         model = get_user_model()
-        fields = ['first_name', 'phone_number', 'email', 'password']
+        fields = ['first_name', 'phone_number', 'email']
+
+
+class PasswordResetPersonForm(forms.ModelForm):
+    password = forms.CharField(error_messages={'required': 'Введите пароль'}, label='',
+                               widget=forms.PasswordInput(
+                                   attrs={'id': 'password_person_reset_field', 'placeholder': 'Введите старый пароль'}))
+
+    class Meta:
+        model = get_user_model()
+        fields = ['password']

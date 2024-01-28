@@ -18,7 +18,8 @@ const nav_category_list_popup = document.querySelector(".nav_category_list_popup
 
 // Если юзер залогинен скрыть класс отвечающий за окна pop up
 if (document.cookie.indexOf('logged_in=true') !== -1) {
-    document.querySelector('.login_button').classList.add('hidden');
+    popup.classList.add('hidden');
+    login_popup.add('hidden');
 }
 
 // -> login

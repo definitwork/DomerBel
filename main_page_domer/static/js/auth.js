@@ -1,6 +1,13 @@
 const form_login_button = document.querySelector('#form_login_button')
 const form_register_button = document.querySelector('#form_register_button')
 // const send_email_button = document.querySelector('#send_email_button')
+const error_name_register = document.querySelector('.error_name_register')
+const error_phone_register = document.querySelector('.error_phone_register');
+const error_email_register = document.querySelector('.error_email_register');
+const error_pass_not_match_register = document.querySelector('.error_pass_not_match_register');
+const error_bad_password_register = document.querySelector('.error_bad_password_register')
+// Для обнуленя значения поля
+const field_password2_register_form = document.querySelector('#id_password2');
 
 
 form_login_button.addEventListener('click', login_fn)
@@ -20,7 +27,7 @@ function login_fn() {
     })
         .then(response => response.json())
         .then(data => {
-                // console.log(data.errors);
+                console.log(data.errors);
                 if (data.success) {
                     window.location.href = '/pa';
                 } else if (data.errors === 1) {
@@ -31,13 +38,7 @@ function login_fn() {
         )
 }
 
-const error_name_register = document.querySelector('.error_name_register')
-const error_phone_register = document.querySelector('.error_phone_register');
-const error_email_register = document.querySelector('.error_email_register');
-const error_pass_not_match_register = document.querySelector('.error_pass_not_match_register');
-const error_bad_password_register = document.querySelector('.error_bad_password_register')
-// Для обнуленя значения поля
-const field_password2_register_form = document.querySelector('#id_password2');
+
 
 
 
@@ -84,6 +85,11 @@ function register_fn() {
 
         })
 }
+
+
+
+
+
 
 
 function getCookie(name) {
