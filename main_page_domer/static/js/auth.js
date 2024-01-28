@@ -12,7 +12,7 @@ const token = getCookie('csrftoken')
 function login_fn() {
     const form_login_data = new FormData(document.querySelector('.login_form'));
     const field_password_login_form = document.querySelector('#password_login_field');
-    const login_errors = document.getElementById('login_form_error');
+    const login_errors = document.querySelector('.register_form10');
     fetch('http://127.0.0.1:8000/users/login/', {
         method: 'POST',
         headers: {"X-CSRFToken": token},
@@ -31,7 +31,7 @@ function login_fn() {
         )
 }
 
-const form_register_data = new FormData(document.querySelector('#register_form'));
+const form_register_data = new FormData(document.getElementById('register_form10'));
 // const error_name_register = document.querySelector('.error_name_register')
 // const error_phone_register = document.querySelector('.error_phone_register');
 // const error_email_register = document.querySelector('.error_email_register');
@@ -40,61 +40,59 @@ const form_register_data = new FormData(document.querySelector('#register_form')
 // // Для обнуленя значения поля
 // const field_password2_register_form = document.querySelector('#id_password2');
 function register_fn() {
+    // data = {
+    //     name:form_register_data.get('name')
+
+
+
+
     fetch('http://127.0.0.1:8000/users/register/', {
         method: 'POST',
         headers: {"X-CSRFToken": token},
-        body: form_register_data
+        body: new FormData(document.querySelector('#register_form10'))
     })
 
         .then(response => response.json())
         .then(data => {
-            console.log(data)
-        // if (data.errors.name) {
-        //     error_name_register.innerHTML = data.errors.name
-        // } else {
-        //      error_name_register.innerHTML = ''
-        // }
+            console.log(data)  })}
 
-        // if (data.errors.phone) {
-        //     error_phone_register.innerHTML = data.errors.phone;
-        // } else {
-        //     error_phone_register.innerHTML = '';
-        // }
-        // if (data.errors.email) {
-        //     error_email_register.innerHTML = data.errors.email;
-        // } else {
-        //     error_email_register.innerHTML = '';
-        // }
-        // if (data.errors.password) {
-        //     error_bad_password_register.innerHTML = data.errors.password;
-        // } else {
-        //     error_bad_password_register.innerHTML = '';
-        // }
-     })}
-const name = form_register_data.get('name');
-const phone = form_register_data.get('phone');
-const email = form_register_data.get('email');
-const password = form_register_data.get('password');
-const password2 = form_register_data.get('password2');
+// if (data.errors.name) {
+//     error_name_register.innerHTML = data.errors.name
+// } else {
+//      error_name_register.innerHTML = ''
+// }
 
-console.log(name, phone, email, password, password2, 'BANYYYY');
-    // if (data.errors.password2) {
-    //     error_pass_not_match_register.innerHTML = data.errors.password2;
-    // }
+// if (data.errors.phone) {
+//     error_phone_register.innerHTML = data.errors.phone;
+// } else {
+//     error_phone_register.innerHTML = '';
+// }
+// if (data.errors.email) {
+//     error_email_register.innerHTML = data.errors.email;
+// } else {
+//     error_email_register.innerHTML = '';
+// }
+// if (data.errors.password) {
+//     error_bad_password_register.innerHTML = data.errors.password;
+// } else {
+//     error_bad_password_register.innerHTML = '';
+// }
 
 
-    function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            var cookies = document.cookie.split(';');
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
+
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
             }
         }
-        return cookieValue
     }
+    return cookieValue
+}

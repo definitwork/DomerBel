@@ -1,5 +1,6 @@
 from django import forms
-# from django_recaptcha.fields import ReCaptchaField
+from django.contrib.auth import get_user_model
+from django_recaptcha.fields import ReCaptchaField
 
 from .validators import validate_password, validate_email, validate_phone
 
@@ -21,19 +22,19 @@ class RegisterForm(forms.Form):
     name = forms.CharField(
         max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Контактное лицо'}), label='')
     phone = forms.CharField(
-                            widget=forms.TextInput(attrs={'placeholder': 'Контактное лицо'}),
-                            validators=[validate_phone], label='')
+        widget=forms.TextInput(attrs={'placeholder': 'Контактное лицо'}),
+        validators=[validate_phone], label='')
     email = forms.CharField(
-                            widget=forms.EmailInput(
-                                attrs={'id': 'email_register_field', 'placeholder': 'Введите Вашу почту'}),
-                            validators=[validate_email], label='')
+        widget=forms.EmailInput(
+            attrs={'id': 'email_register_field', 'placeholder': 'Введите Вашу почту'}),
+        validators=[validate_email], label='')
     password = forms.CharField(
-                               widget=forms.PasswordInput(
-                                   attrs={'id': 'password_register_field', 'placeholder': 'Введите пароль'}),
-                               validators=[validate_password], label='')
+        widget=forms.PasswordInput(
+            attrs={'id': 'password_register_field', 'placeholder': 'Введите пароль'}),
+        validators=[validate_password], label='')
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Повторите пароль'}), label='')
 
-    # captcha = ReCaptchaField(label='')
+    captcha = ReCaptchaField(label='')
 
     def clean(self):
         cleaned_data = super().clean()
@@ -46,6 +47,10 @@ class RegisterForm(forms.Form):
 class EmailResetForm(forms.Form):
     email = forms.CharField(
         label='', widget=forms.EmailInput(attrs={'id': 'email_reset_field', 'placeholder': 'Введите Вашу почту'}))
-    # captcha = CaptchaField(
-    #     label='',
-    #     widget=CaptchaTextInput(attrs={'id': 'captcha_reset_field', 'placeholder': 'Введите текст с картинки'}))
+    captcha = ReCaptchaField(label='')
+
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = get_user_model()
+        fields = ['first_name', 'phone_number', 'email', 'password']

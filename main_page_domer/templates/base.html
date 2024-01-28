@@ -31,7 +31,7 @@
         <div class="closing_cross"></div>
     </div>
     <div class="register_form_popup">
-        <form id="register_form" method="POST" class="login_form register_form">
+        <form id="register_form10" method="POST" class="login_form" action="">
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
@@ -44,7 +44,7 @@
 {#                <li style="display: flex;color:red" class="error_pass_not_match_register"></li>#}
 {#                <li style="display: flex;color:red" class="error_bad_password_register"></li>#}
 {#            </ul>#}
-                {{ register_form }}
+                {{ register_form.as_p }}
                 <input type="button" id="form_register_button" value="Регистрация"></input>
         </form>
         <button class="return_to_login_button">Вход</button>

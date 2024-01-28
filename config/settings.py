@@ -34,8 +34,6 @@ INSTALLED_APPS = [
     "corsheaders",
 
     'mptt',
-
-    'captcha',
     'django_recaptcha',
 
 

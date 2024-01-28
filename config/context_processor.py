@@ -1,10 +1,11 @@
-from users.forms import LoginForm, RegisterForm, EmailResetForm
+from users.forms import LoginForm, RegisterForm, EmailResetForm, EditProfileForm
 
 
 def get_context_data(request):
     context = {
         'login_form': LoginForm(),
         'register_form': RegisterForm(),
-        'email_reset_form': EmailResetForm()
+        'email_reset_form': EmailResetForm(),
+        'EditProfileForm': EditProfileForm()
     }
     return context
