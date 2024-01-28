@@ -31,19 +31,19 @@
         <div class="closing_cross"></div>
     </div>
     <div class="register_form_popup">
-        <form id="register_form10" method="POST" class="login_form" action="">
+        <form id="register_form" method="POST" class="login_form" action="">
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Регистрация</p>
             </nav>
-{#            <ul>#}
-{#                <li style="display: flex;color:red" class="error_name_register"></li>#}
-{#                <li style="display: flex;color:red" class="error_email_register"></li>#}
-{#                <li style="display: flex;color:red" class="error_phone_register"></li>#}
-{#                <li style="display: flex;color:red" class="error_pass_not_match_register"></li>#}
-{#                <li style="display: flex;color:red" class="error_bad_password_register"></li>#}
-{#            </ul>#}
+            <ul>
+                <li style="display: flex;color:red" class="error_name_register"></li>
+                <li style="display: flex;color:red" class="error_email_register"></li>
+                <li style="display: flex;color:red" class="error_phone_register"></li>
+                <li style="display: flex;color:red" class="error_pass_not_match_register"></li>
+                <li style="display: flex;color:red" class="error_bad_password_register"></li>
+            </ul>
                 {{ register_form.as_p }}
                 <input type="button" id="form_register_button" value="Регистрация"></input>
         </form>

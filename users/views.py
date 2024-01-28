@@ -1,9 +1,8 @@
-from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth import logout, authenticate, login, get_user_model
 from django.http import JsonResponse
 from django.shortcuts import redirect
-
-from .captcha import random_digit_challenge
 from .forms import LoginForm, RegisterForm
+from .models import User
 
 
 def logout_view(request):
@@ -29,15 +28,15 @@ def login_view(request):
 
 
 def register_view(request):
-    print(request.POST)
-    print(55555)
     if request.method == 'POST':
-
         form = RegisterForm(request.POST)
         if form.is_valid():
-            # print(form.cleaned_data)
+            user = User()
+            user.first_name = form.cleaned_data.get('name')
+            user.phone_number = form.cleaned_data.get('phone')
+            user.email = form.cleaned_data.get('email').lower()
+            user.password = form.cleaned_data.get('password')
+            user.save()
             return JsonResponse({'success': True})
-
         else:
-            # print(form.errors)
             return JsonResponse({'errors': form.errors})

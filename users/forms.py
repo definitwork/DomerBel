@@ -9,31 +9,25 @@ class LoginForm(forms.Form):
     email = forms.CharField(
         widget=forms.EmailInput(attrs={'id': 'email_login_field', 'placeholder': 'Введите Вашу почту'}),
         label='', validators=[validate_email])
-
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={'id': 'password_login_field', 'placeholder': 'Введите пароль'}), label='')
 
 
-# error_messages={'required': 'Не указано контактное лицо'},
-# error_messages={'required': 'Не указан email'},
-# error_messages={'required': 'Введите пароль'},
-# error_messages={'required': 'Не указан телефон'},
 class RegisterForm(forms.Form):
-    name = forms.CharField(
-        max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Контактное лицо'}), label='')
-    phone = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'Контактное лицо'}),
-        validators=[validate_phone], label='')
-    email = forms.CharField(
-        widget=forms.EmailInput(
-            attrs={'id': 'email_register_field', 'placeholder': 'Введите Вашу почту'}),
-        validators=[validate_email], label='')
-    password = forms.CharField(
-        widget=forms.PasswordInput(
-            attrs={'id': 'password_register_field', 'placeholder': 'Введите пароль'}),
-        validators=[validate_password], label='')
+    name = forms.CharField(error_messages={'required': 'Не указано контактное лицо'},
+                           max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Контактное лицо'}), label='')
+    phone = forms.CharField(error_messages={'required': 'Не указан телефон'},
+                            widget=forms.TextInput(attrs={'placeholder': 'Номер телефона'}),
+                            validators=[validate_phone], label='')
+    email = forms.CharField(error_messages={'required': 'Не указан email'},
+                            widget=forms.EmailInput(
+                                attrs={'id': 'email_register_field', 'placeholder': 'Введите Вашу почту'}),
+                            validators=[validate_email], label='')
+    password = forms.CharField(error_messages={'required': 'Введите пароль'},
+                               widget=forms.PasswordInput(
+                                   attrs={'id': 'password_register_field', 'placeholder': 'Введите пароль'}),
+                               validators=[validate_password], label='')
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Повторите пароль'}), label='')
-
     captcha = ReCaptchaField(label='')
 
     def clean(self):
