@@ -46,16 +46,15 @@
                 <div class="user_data">
                     <form method="POST" class="user_data_form">
                         {% csrf_token %}
+                        {% if messages %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
                         {{ form.as_p }}
-
                         <button class="ishsenit_button">Изменить</button>
-
-                        </button>
-                    </form>
-                    <form class="person_reset_pass_form" method="POST">
-                        <p id="reset_person_pass_click">Сменить пароль</p>
-                            {{ form_password.as_p }}
-                        <button id="reset_person_pass_button" type="submit">Далее</button>
                     </form>
                 </div>
             </div>

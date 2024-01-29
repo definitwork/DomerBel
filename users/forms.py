@@ -50,6 +50,23 @@ class EditProfileForm(forms.ModelForm):
     first_name = forms.CharField(label='Контактное лицо', required=False)
     phone_number = forms.CharField(validators=[validate_phone], label='Телефон', required=False)
     email = forms.EmailField(validators=[validate_email], label='E-MAIL', required=False)
+    password = forms.CharField(required=False, error_messages={'required': 'Введите пароль'}, label='Введите пароль',
+                               widget=forms.PasswordInput(
+                                   attrs={'id': 'password_person_reset_field', 'placeholder': 'Введите старый пароль'}),
+                               validators=[validate_password])
+    new_password = forms.CharField(required=False, widget=forms.PasswordInput(
+        attrs={'id': 'password_register_field', 'placeholder': 'Введите новый пароль'}),
+                                   validators=[validate_password], label='Введите новый пароль')
+    repeat_new_pass = forms.CharField(required=False, widget=forms.PasswordInput(
+        attrs={'id': 'password_register_field', 'placeholder': 'Повторите новый пароль'}),
+                                      validators=[validate_password], label='Повторите новый пароль')
+
+    def clean(self):
+        cleaned_data = super().clean()
+        new_password = cleaned_data.get('new_password')
+        repeat_new_pass = cleaned_data.get('repeat_new_pass')
+        if new_password and repeat_new_pass and new_password != repeat_new_pass:
+            self.add_error('repeat_new_pass', 'Пароли не совпадают')
 
     class Meta:
         model = get_user_model()
@@ -60,7 +77,14 @@ class PasswordResetPersonForm(forms.ModelForm):
     password = forms.CharField(error_messages={'required': 'Введите пароль'}, label='',
                                widget=forms.PasswordInput(
                                    attrs={'id': 'password_person_reset_field', 'placeholder': 'Введите старый пароль'}))
+    new_password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'id': 'password_register_field', 'placeholder': 'Введите пароль'}),
+        validators=[validate_password], label='Введите новый пароль')
+    repeat_new_pass = forms.CharField(widget=forms.PasswordInput(
+        attrs={'id': 'password_register_field', 'placeholder': 'Повторите новый пароль'}),
+        validators=[validate_password], label='')
 
-    class Meta:
-        model = get_user_model()
-        fields = ['password']
+
+class Meta:
+    model = get_user_model()
+    fields = ['password']
