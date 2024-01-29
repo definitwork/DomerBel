@@ -1,7 +1,7 @@
 from django.contrib.auth import logout, authenticate, login, get_user_model
 from django.http import JsonResponse
 from django.shortcuts import redirect
-from .forms import LoginForm, RegisterForm, PasswordResetPersonForm
+from .forms import LoginForm, RegisterForm
 from .models import User
 
 
@@ -40,7 +40,4 @@ def register_view(request):
         else:
             return JsonResponse({'errors': form.errors})
 
-def reset_person_password(request):
-    if request.method == 'POST':
-        form_password = PasswordResetPersonForm(request.POST)
-        return JsonResponse({'success': 'Test'})
+

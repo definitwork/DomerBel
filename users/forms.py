@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django_recaptcha.fields import ReCaptchaField
-
 from .validators import validate_password, validate_email, validate_phone
 
 
@@ -44,8 +43,6 @@ class EmailResetForm(forms.Form):
     captcha = ReCaptchaField(label='')
 
 
-# validators=[validate_password], label='Пароль',
-#                                    required=False)
 class EditProfileForm(forms.ModelForm):
     first_name = forms.CharField(label='Контактное лицо', required=False)
     phone_number = forms.CharField(validators=[validate_phone], label='Телефон', required=False)
@@ -71,20 +68,3 @@ class EditProfileForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = ['first_name', 'phone_number', 'email']
-
-
-class PasswordResetPersonForm(forms.ModelForm):
-    password = forms.CharField(error_messages={'required': 'Введите пароль'}, label='',
-                               widget=forms.PasswordInput(
-                                   attrs={'id': 'password_person_reset_field', 'placeholder': 'Введите старый пароль'}))
-    new_password = forms.CharField(widget=forms.PasswordInput(
-        attrs={'id': 'password_register_field', 'placeholder': 'Введите пароль'}),
-        validators=[validate_password], label='Введите новый пароль')
-    repeat_new_pass = forms.CharField(widget=forms.PasswordInput(
-        attrs={'id': 'password_register_field', 'placeholder': 'Повторите новый пароль'}),
-        validators=[validate_password], label='')
-
-
-class Meta:
-    model = get_user_model()
-    fields = ['password']

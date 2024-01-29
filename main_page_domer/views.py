@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import check_password
 from django.shortcuts import render, redirect
 from advertisement.models import Advertisement, Region
-from users.forms import EditProfileForm, PasswordResetPersonForm
+from users.forms import EditProfileForm
 from users.validators import validate_password
 
 
@@ -47,24 +47,22 @@ def get_user_data_page(request):
             password = form.cleaned_data.get('password')
             new_password = form.cleaned_data.get('new_password')
             repeat_password = form.cleaned_data.get('repeat_password')
-            if not check_password(password, user.password):
-                messages.success(request, 'Ошибка ввода пароля')
             if check_password(password, user.password) and new_password != '' and repeat_password != '':
                 user.set_password(new_password)
                 user.save()
-                # form.save()
-                print('Можно сохранять пароль', form.cleaned_data)
-                messages.success(request, 'можно сохранять пароль')
-            else:
-                print('чистые', form.cleaned_data)
                 form.save()
                 messages.success(request, 'Данные успешно изменены!')
+                messages.success(request, 'Пароль успешно изменен')
+            else:
+                if not check_password(password, user.password):
+                    messages.error(request, 'Ошибка пароля')
+                else:
+                    form.save()
+                    messages.success(request, 'Данные успешно изменены!')
                 return redirect('ud')
-        else:
-            print('ошибки', form.errors)
     else:
         form = EditProfileForm(instance=user)
-    # form_password = PasswordResetPersonForm()
+
     return render(request, 'user_data.html', {'form': form})
 
 
