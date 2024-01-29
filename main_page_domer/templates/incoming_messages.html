@@ -3,6 +3,7 @@
 {% load static %}
 
 {% block incoming_messages %}
+    <title>Переписка</title>
     <div class="wrapper">
         <div class="container">
             <div class="line"></div>
@@ -17,22 +18,22 @@
                             <a href="{% url 'home' %}" class="green_item">Выход</a>
                         </li>
                         <li>
-                            <a href="{% url 'ud' %}">Контактные данные</a>
+                            <a href="{% url 'user_data' %}">Контактные данные</a>
                         </li>
                         <li>
-                            <a href="{% url 'pa' %}">Мои объявления</a>
+                            <a href="{% url 'personal_account' %}">Мои объявления</a>
                         </li>
                         <li>
-                            <a href="#" class="red_item">Добавить магазин</a>
+                            <a href="{% url 'add_store' %}" class="red_item">Добавить магазин</a>
                         </li>
                         <li>
-                            <a href="{% url 'in' %}">Входящие сообщения</a>
+                            <a href="{% url 'incoming_messages' %}">Входящие сообщения</a>
                         </li>
                         <li>
-                            <a href="{% url 'out' %}">Исходящие сообщения</a>
+                            <a href="{% url 'outgoing_messages' %}">Исходящие сообщения</a>
                         </li>
                         <li>
-                            <a href="{% url 'sent' %}">Отправленные сообщения</a>
+                            <a href="{% url 'sent_messages' %}">Отправленные сообщения</a>
                         </li>
                         <li>
                             <a href="#">История платежей</a>

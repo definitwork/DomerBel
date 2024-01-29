@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{% static 'css/null_for_templates.css' %}">
     <link rel="stylesheet" href="{% static 'css/main_page_style.css' %}">
     <link rel="stylesheet" href="{% static 'css/user_data.css' %}">
-
+    <link rel="stylesheet" href="{% static 'css/add_store.css' %}">
 
 </head>
 <body>
@@ -19,7 +19,6 @@
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Вход</p>
             </nav>
-
             {{ login_form.as_p }}
             <button>Войти</button>
         </form>
@@ -166,7 +165,7 @@
                         </ul>
                         <div class="login_button">
                             {% if user.is_authenticated %}
-                                <a href="{% url 'pa' %}">{{ user }}</a>
+                                <a href="{% url 'personal_account' %}">{{ user }}</a>
                             {% else %}
                                 Вход и регистрация
                             {% endif %}

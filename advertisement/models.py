@@ -81,6 +81,9 @@ class Region(MPTTModel):
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, verbose_name='Отношения')
     slug = models.SlugField(unique=True, verbose_name='URL')
 
+    class MPTTMeta:
+        order_insertion_by = ('area',)
+
     class Meta:
         verbose_name = 'Регион'
         verbose_name_plural = 'Регионы'
@@ -219,7 +222,7 @@ class Store(models.Model):
     email = models.EmailField(verbose_name='E-Mail')
     phone_num = models.CharField(max_length=255, blank=True, null=True, verbose_name='Номер телефона')
     video_link = models.URLField(blank=True, null=True, verbose_name='Ссылка с видео')  # хранит строку, которая представляет валидный URL-адрес
-    logo_image = models.ImageField(upload_to='images', default='default/no_image.jpg', blank=True, null=True, verbose_name='Логотип')
+    logo_image = models.ImageField(upload_to='images/store_img', default='default/no_image.jpg', blank=True, null=True, verbose_name='Логотип')
     date_of_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     date_of_deactivate = models.DateTimeField(auto_now_add=True, verbose_name='Дата деактивации')
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
@@ -228,7 +231,7 @@ class Store(models.Model):
     category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Связь с категорией')
     url = models.URLField(blank=True, null=True, verbose_name='Ссылка')  # хранит строку, которая представляет валидный URL-адрес
     address = models.CharField(max_length=255, blank=True, null=True, verbose_name='Адрес')
-    counter_prosmotr = models.IntegerField(verbose_name='Счетчик просмотров') # над этим еще надо подумать
+    counter_prosmotr = models.IntegerField(blank=True, null=True, verbose_name='Счетчик просмотров') # над этим еще надо подумать
 
     class Meta:
         verbose_name = 'Магазин'
