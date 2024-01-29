@@ -15,11 +15,9 @@ const return_to_login_from_forget = document.querySelector(".return_to_login_fro
 const more_button = document.querySelector(".more_button");
 const nav_category_list_popup = document.querySelector(".nav_category_list_popup");
 
-
-// Если юзер залогинен скрыть класс отвечающий за окна pop up
-if (document.cookie.indexOf('logged_in=true') !== -1) {
-    popup.classList.add('hidden');
-    login_popup.add('hidden');
+let userIsLoggedIn;
+if (userIsLoggedIn) {
+  login_popup.classList.add("login_button1");
 }
 
 // -> login

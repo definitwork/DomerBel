@@ -44,8 +44,8 @@
                 <li style="display: flex;color:red" class="error_pass_not_match_register"></li>
                 <li style="display: flex;color:red" class="error_bad_password_register"></li>
             </ul>
-                {{ register_form.as_p }}
-                <input type="button" id="form_register_button" value="Регистрация"></input>
+            {{ register_form.as_p }}
+            <input type="button" id="form_register_button" value="Регистрация"></input>
         </form>
         <button class="return_to_login_button">Вход</button>
         <div class="closing_cross"></div>
@@ -170,12 +170,13 @@
                                 <a href="{% url 'help' %}" class="help">Помощь</a>
                             </li>
                         </ul>
-                        <div class="login_button">
+                        <div class='user_name'>
                             {% if user.is_authenticated %}
-                                <a href="{% url 'pa' %}">{{ user }}</a>
+                                <a href="{% url 'pa' %}">{{ user.first_name }}</a>
                             {% else %}
-                                Вход и регистрация
+                               <p class="login_button">Вход и регистрация</p>
                             {% endif %}
+
                         </div>
                     </nav>
                 </div>
@@ -209,13 +210,8 @@
                 </div>
             </section>
         </header>
-
-
         {% block content %}
         {% endblock %}
-        
-      
-
         <footer>
             <div class="navigate_link">
                 <div class="footer_link">

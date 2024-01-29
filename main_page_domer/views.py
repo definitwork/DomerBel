@@ -39,15 +39,15 @@ def get_user_data_page(request):
                 user.set_password(new_password)
                 user.save()
                 form.save()
-                messages.success(request, 'Данные успешно изменены!')
+                messages.success(request, 'Данные успешно изменены!1')
                 messages.success(request, 'Пароль успешно изменен')
+            if check_password(password, user.password):
+                messages.error(request, 'Ошибка пароля')
             else:
-                if not check_password(password, user.password):
-                    messages.error(request, 'Ошибка пароля')
-                else:
-                    form.save()
-                    messages.success(request, 'Данные успешно изменены!')
-                return redirect('ud')
+                form.save()
+                messages.success(request, 'Данные успешно изменены!')
+        else:
+            messages.success(request, 'Ошибка смены пароля')
     else:
         form = EditProfileForm(instance=user)
 

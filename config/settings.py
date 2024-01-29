@@ -146,9 +146,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 AUTH_USER_MODEL = 'users.User'
 
-# LOGIN_REDIRECT_URL = 'pa/'
-# LOGIN_URL = '/'
-# LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'pa/'
+LOGIN_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # Для отображения писем в консоли
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

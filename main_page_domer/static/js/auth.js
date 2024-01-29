@@ -1,6 +1,5 @@
 const form_login_button = document.querySelector('#form_login_button')
 const form_register_button = document.querySelector('#form_register_button')
-// const send_email_button = document.querySelector('#send_email_button')
 const error_name_register = document.querySelector('.error_name_register')
 const error_phone_register = document.querySelector('.error_phone_register');
 const error_email_register = document.querySelector('.error_email_register');
@@ -12,7 +11,6 @@ const field_password2_register_form = document.querySelector('#id_password2');
 
 form_login_button.addEventListener('click', login_fn)
 form_register_button.addEventListener('click', register_fn)
-// send_email_button.addEventListener('click', send_email_fn)
 
 const token = getCookie('csrftoken')
 
