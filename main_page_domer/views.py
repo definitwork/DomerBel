@@ -26,18 +26,6 @@ def get_personal_account_page(request):
     return render(request, 'personal_account.html')
 
 
-# @login_required
-# def get_user_data_page(request):
-#     user = request.user
-#     # if request.method == 'POST':
-#     #     form = EditProfileForm(request.POST, instance=user)
-#     #     if form.is_valid():
-#     #         form.save()
-#     #         return redirect('ud')
-#     # else:
-#     #     form = EditProfileForm(instance=user)
-#     form = EditProfileForm(instance=user)
-#     return render(request, 'user_data.html', {'form': form})
 @login_required
 def get_user_data_page(request):
     user = request.user
