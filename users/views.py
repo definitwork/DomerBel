@@ -14,7 +14,7 @@ def login_view(request):  # Форма авторизации
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('pa')
+                return redirect('personal_account')
     else:
         login_form = CustomAuthenticationForm()
     email_form = SendEmailForm()

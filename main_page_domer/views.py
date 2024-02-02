@@ -1,10 +1,6 @@
 from django.shortcuts import render, redirect
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-
 from advertisement.forms import StoreForm
 from advertisement.models import Advertisement, Region, Category
-from main_page_domer.serializers import GetListOfCitiesSerializer, GetListOfCategoriesSerializer
 from users.forms import UserRegisterForm, CustomAuthenticationForm, SendEmailForm
 
 
@@ -74,16 +70,6 @@ def add_store(request):
                "store_form": store_form}
     return render(request, 'add_store.html', context)
 
-# Отдаёт список городов type='Город' по id выбранной области type='Область' из модели Region
-@api_view(["GET", "POST"])
-def get_list_of_cities(request, id):
-    cities = Region.objects.filter(parent_id=id)
-    serializer = GetListOfCitiesSerializer(cities, many=True)
-    return Response(serializer.data)
 
-# Отдаёт список всех категорий из модели Category
-@api_view(["GET", "POST"])
-def get_list_of_categories(request):
-    categories = Category.objects.all()
-    serializer = GetListOfCategoriesSerializer(categories, many=True)
-    return Response(serializer.data)
+def get_my_store(request):
+    return render(request, 'my_store.html')

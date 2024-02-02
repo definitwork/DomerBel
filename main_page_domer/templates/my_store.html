@@ -1,0 +1,67 @@
+{% extends 'base_for_personal_account.html' %}
+
+{% load static %}
+
+{% block table %}
+    <title>Мой магазин</title>
+    <div class="wrapper">
+        <div class="container">
+            <div class="thin_line"></div>
+        </div>
+    </div>
+{% endblock %}
+{% block personal_account_body %}
+    <div class="personal_account_body">
+        <div class="wrapper">
+            <div class="container">
+                <div class="body">
+                    <nav class="personal_account_navigation">
+                        <ul>
+                            <li class="wallet">
+                                <p class="wallet_title">В Вашем кошельке</p>
+                                <p class="wallet_amount"> 0,00 руб.</p>
+                            </li>
+                            <li>
+                                <a href="{% url 'users:logout' %}" class="green_item">Выход</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'user_data' %}">Контактные данные</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'personal_account' %}">Мои объявления</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'my_store' %}">Мой магазин</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'incoming_messages' %}">Входящие сообщения</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'outgoing_messages' %}">Исходящие сообщения</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'sent_messages' %}">Отправленные сообщения</a>
+                            </li>
+                            <li>
+                                <a href="#">История платежей</a>
+                            </li>
+                            <li>
+                                <a href="#" class="red_item">Пополнить кошелек</a>
+                            </li>
+                        </ul>
+                    </nav>
+                        <div class="my_store">
+                            <div class="my_store_info">
+                                <p>
+                                    <a href="#">Редактировать магазин</a>
+                                </p>
+                            </div>
+                            <div class="my_store_img">
+
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
