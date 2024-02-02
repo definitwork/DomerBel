@@ -1,12 +1,19 @@
 {% extends 'base_for_personal_account.html' %}
 
 {% load static %}
-{% block user_data_page %}
-    <title>Контактные данные</title>
+
+{% block table %}
+    <title>Мой магазин</title>
     <div class="wrapper">
         <div class="container">
-            <div class="line"></div>
-            <div class="page_user_data">
+            <div class="thin_line"></div>
+        </div>
+    </div>
+{% endblock %}
+{% block personal_account_body %}
+    <div class="personal_account_body">
+        <div class="wrapper">
+            <div class="container">
                 <div class="body">
                     <nav class="personal_account_navigation">
                         <ul>
@@ -15,7 +22,7 @@
                                 <p class="wallet_amount"> 0,00 руб.</p>
                             </li>
                             <li>
-                                <a href="{% url 'home' %}" class="green_item">Выход</a>
+                                <a href="{% url 'users:logout' %}" class="green_item">Выход</a>
                             </li>
                             <li>
                                 <a href="{% url 'user_data' %}">Контактные данные</a>
@@ -24,7 +31,7 @@
                                 <a href="{% url 'personal_account' %}">Мои объявления</a>
                             </li>
                             <li>
-                                <a href="{% url 'add_store' %}" class="red_item">Добавить магазин</a>
+                                <a href="{% url 'my_store' %}">Мой магазин</a>
                             </li>
                             <li>
                                 <a href="{% url 'incoming_messages' %}">Входящие сообщения</a>
@@ -43,29 +50,16 @@
                             </li>
                         </ul>
                     </nav>
-                </div>
-                <div class="user_data">
-                    <form method="post" action>
-                        <ul class="user_data_form">
-                            <li>
-                                <label for="contact">Контактное лицо</label>
-                                <input type="text" name="contact" value="{{ user.first_name }}">
-                            </li>
-                            <li>
-                                <label for="phone">Телефон</label>
-                                <input type="text" name="phone" value="{{ user.phone_number }}">
-                            </li>
-                            <li>
-                                <label for="email">E-MAIL</label>
-                                <input type="text" name="email" value="{{ user.email }}">
-                            </li>
-                            <li>
-                                <label for="pass">Пароль</label>
-                                <input type="password" name="pass">
-                            </li>
-                        </ul>
-                        <button class="izmenit_button">Изменить</button>
-                    </form>
+                        <div class="my_store">
+                            <div class="my_store_info">
+                                <p>
+                                    <a href="#">Редактировать магазин</a>
+                                </p>
+                            </div>
+                            <div class="my_store_img">
+
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>

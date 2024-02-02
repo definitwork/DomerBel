@@ -32,7 +32,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('advertisement/', include('advertisement.urls')),
     path('captcha/', include('captcha.urls')),
-
+    path('api/v1/', include('api_domer.urls'))
 ]
 
 if settings.DEBUG:

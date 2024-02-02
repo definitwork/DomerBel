@@ -1,0 +1,64 @@
+.thin_line {
+    margin-bottom: 5px;
+    height: 1px;
+    background: #D4D4D4;
+}
+
+.add_store {
+    padding: 10px 0;
+}
+
+.add_store_form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    & li {
+        display: flex;
+    }
+}
+
+.region_hidden {
+    display: none;
+    }
+
+.label_field {
+    display: flex;
+    align-items: flex-start;
+    gap: 2px;
+    width: 256px;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+}
+
+.input_field {
+    display: flex;
+    color: black;
+    border-radius: 2px;
+    border: 1px solid #B5B8C8;
+    height: auto;
+    width: 326px;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+    &:focus {
+        border-radius: 2px;
+        border: 2px solid black;
+    }
+}
+
+span {
+    color: red;
+    font-family: "Trebuchet MS";
+    font-size: 18px;
+}
+
+form button {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #AAA;
+    background: #DADADA;
+    text-align: center;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+    cursor: pointer;
+    color: #333333;
+}

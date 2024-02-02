@@ -38,12 +38,10 @@ INSTALLED_APPS = [
     'captcha',
 
 
-    "main_page_domer",
-
+    'main_page_domer',
     'users',
-
     'advertisement',
-
+    'api_domer'
 ]
 
 MIDDLEWARE = [
