@@ -10,7 +10,7 @@
             {% csrf_token %}
             <ul class="add_store_form">
                 <li>
-                    <p class="label_field"><span>*</span><label for="oblast">Регион, город, область</label></p>
+                    <p class="label_field"><span>*</span><label for="oblast">{{ store_form.region.label }}</label></p>
                     <div>
                         <p class="region_opened">
                             <select class="input_field" id="select_oblast">

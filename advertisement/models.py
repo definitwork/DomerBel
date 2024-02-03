@@ -214,22 +214,22 @@ class ElementTwo(models.Model):
 
 
 class Store(models.Model):
-    region = models.ForeignKey('Region', on_delete=models.CASCADE, verbose_name='Связь с регионами')
-    title = models.CharField(max_length=255,verbose_name='Название магазина')
-    slug = models.SlugField(max_length=255, unique=True, verbose_name='URL')
+    region = models.ForeignKey('Region', on_delete=models.CASCADE, verbose_name='Регион')
+    title = models.CharField(max_length=60,verbose_name='Название магазина')
+    slug = models.SlugField(max_length=30, unique=True, verbose_name='URL')
     description = models.TextField(verbose_name='Описание')
-    contact_name = models.CharField(max_length=255, verbose_name='Контактное лицо')
+    contact_name = models.CharField(max_length=100, verbose_name='Контактное лицо')
     email = models.EmailField(verbose_name='E-Mail')
-    phone_num = models.CharField(max_length=255, blank=True, null=True, verbose_name='Номер телефона')
-    video_link = models.URLField(blank=True, null=True, verbose_name='Ссылка с видео')  # хранит строку, которая представляет валидный URL-адрес
+    phone_num = models.CharField(max_length=20, blank=True, null=True, verbose_name='Номер телефона')
+    video_link = models.URLField(blank=True, null=True, verbose_name='Ссылка на YouTube видео')  # хранит строку, которая представляет валидный URL-адрес
     logo_image = models.ImageField(upload_to='images/store_img', default='default/no_image.jpg', blank=True, null=True, verbose_name='Логотип')
     date_of_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     date_of_deactivate = models.DateTimeField(auto_now_add=True, verbose_name='Дата деактивации')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE, verbose_name='Связь с User')
-    is_active = models.BooleanField(default=False, verbose_name='Активный пользователь?)')
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Связь с категорией')
-    url = models.URLField(blank=True, null=True, verbose_name='Ссылка')  # хранит строку, которая представляет валидный URL-адрес
+    user = models.OneToOneField(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE, verbose_name='Пользователь, создавший магазин')
+    is_active = models.BooleanField(default=False, verbose_name='Активный магазин')
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Категория')
+    url = models.URLField(blank=True, null=True, verbose_name='Ссылка на сайт магазина')  # хранит строку, которая представляет валидный URL-адрес
     address = models.CharField(max_length=255, blank=True, null=True, verbose_name='Адрес')
     counter_prosmotr = models.IntegerField(blank=True, null=True, verbose_name='Счетчик просмотров') # над этим еще надо подумать
 
