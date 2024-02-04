@@ -15,13 +15,13 @@
                 <p>
                     Выводить по:
                 </p>
-                <a href="?sort=3">
+                <a href="?sort=30">
                     30
                 </a>
-                <a href="?sort=6">
+                <a href="?sort=60">
                     60
                 </a>
-                <a href="?sort=9">
+                <a href="?sort=90">
                     90
                 </a>
             </div>
@@ -71,7 +71,9 @@
                     </div>
                     <div class="cart_info">
                         <a href="#" class="cart_link">{{ cart.title }}</a>
+                        {% if cart.price %}
                         <p class="cart_info_price">{{ cart.price }} руб.</p>
+                        {% endif %}
                         <p>{{ cart.category }}</p>
                         <p class="cart_info_bearer">{{ cart.bearer }}</p>
                         <p>{{ cart.region }}</p>

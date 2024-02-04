@@ -2,9 +2,9 @@ from django.core.paginator import Paginator
 
 
 def sorted_by_number(number):
-    if (number == '3'
-            or number == '6'
-            or number == '9'):
+    if (number == '30'
+            or number == '60'
+            or number == '90'):
         sort_for_paginator = int(number)
         return sort_for_paginator
     else:
@@ -39,15 +39,19 @@ def sorted_by(key):
 
 
 def get_view_type(view_type):
-    if type(view_type) == str:
-        if view_type == '1':
-            return (1, 'advertisement_page_type_1.html')
+    if view_type.get('view_type'):
+        view_type = view_type.get('view_type')
+        if type(view_type) == str:
+            if view_type == '1':
+                return (1, 'advertisement_page_type_2.html')
+            else:
+                return (0, 'advertisement_page_type_1.html')
+        elif view_type.get('view_type'):
+            if view_type.get('view_type') == '0':
+                return (1, 'advertisement_page_type_2.html')
+            else:
+                return (0, 'advertisement_page_type_1.html')
         else:
-            return (0, 'advertisement_page_type_2.html')
-    elif view_type.get('view_type'):
-        if view_type.get('view_type') == '0':
-            return (1, 'advertisement_page_type_1.html')
-        else:
-            return (0, 'advertisement_page_type_2.html')
+            return (0, 'advertisement_page_type_1.html')
     else:
-        return (0, 'advertisement_page_type_2.html')
+        return (0, 'advertisement_page_type_1.html')

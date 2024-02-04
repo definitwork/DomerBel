@@ -21,12 +21,15 @@ if (userIsLoggedIn) {
 }
 
 // -> login
-login_button.addEventListener("click", () => {
+if (login_button) {
+    login_button.addEventListener("click", () => {
     popup.style.display = 'flex';
     login_popup.style.display = 'flex';
     forget_button.style.display = 'flex';
     forget_popup.style.display = 'none';
 });
+}
+
 
 closing_cross.forEach(item => item.addEventListener("click", () => {
     popup.style.display = 'none';
@@ -75,7 +78,9 @@ return_to_login_from_forget.addEventListener("click", () => {
 
 // -> view more
 more_button.addEventListener("click", () => {
-    nav_category_list_popup.style.display = 'flex';
+    console.log('joh')
+    // nav_category_list_popup.style.display = 'flex';
+    nav_category_list_popup.style.display = 'grid';
     popup.style.display = 'flex';
 });
 

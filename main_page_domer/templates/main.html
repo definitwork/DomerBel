@@ -1,8 +1,19 @@
 {% extends 'base.html' %}
 {% load static %}
-    <title>Главная</title>
+<title>Главная</title>
 
-    {% block content %}
+    {% block filter %}
+         <section class="regions">
+        <ul class="regions_list">
+            {% for region in regions %}
+            <li>
+                <a href="#" class="minsk reg">{{ region.area }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endblock %}
+{% block content %}
     <main>
         <section>
             <div class="last_ads_title">
@@ -10,46 +21,46 @@
             </div>
             {% for cart in adver %}
                 <div class="ads_list">
-                <div class="ads">
-                    <div class="ads_date_time">
-                        <ul>
-                            {% if cart.date_of_create.date == date_today %}
-                                <li>Сегодня</li>
-                            {% elif cart.date_of_create.date == date_yesterday %}
-                                <li>Вчера</li>
-                            {% else %}
-                                <li>{{ cart.date_of_create|date:"d b. Y" }}</li>
-                            {% endif %}
-                            <li>{{ cart.date_of_create|date:"H:i" }}</li>
-                        </ul>
-                    </div>
-                    <div class="ads_img">
-                        <img src="{{ cart.previous_image.url }}" alt="{{ cart.previous_image.url }}">
-                    </div>
-                    <div class="ads_description">
-                        <ul>
-                            <li>
-                                <a href="#">
-                                    {{ cart.title }}
-                                </a>
-                            </li>
-                            <li>
-                                {% if cart.price %}
-                                {{ cart.price }} руб.
+                    <div class="ads">
+                        <div class="ads_date_time">
+                            <ul>
+                                {% if cart.date_of_create.date == date_today %}
+                                    <li>Сегодня</li>
+                                {% elif cart.date_of_create.date == date_yesterday %}
+                                    <li>Вчера</li>
+                                {% else %}
+                                    <li>{{ cart.date_of_create|date:"d b. Y" }}</li>
                                 {% endif %}
-                            </li>
-                            <li>
-                                {{ cart.category }}
-                            </li>
-                            <li>
-                                {{ cart.bearer }}
-                            </li>
-                            <li>
-                                {{ cart.region }}
-                            </li>
-                        </ul>
+                                <li>{{ cart.date_of_create|date:"H:i" }}</li>
+                            </ul>
+                        </div>
+                        <div class="ads_img">
+                            <img src="{{ cart.previous_image.url }}" alt="{{ cart.previous_image.url }}">
+                        </div>
+                        <div class="ads_description">
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        {{ cart.title }}
+                                    </a>
+                                </li>
+                                <li>
+                                    {% if cart.price %}
+                                        {{ cart.price }} руб.
+                                    {% endif %}
+                                </li>
+                                <li>
+                                    {{ cart.category }}
+                                </li>
+                                <li>
+                                    {{ cart.bearer }}
+                                </li>
+                                <li>
+                                    {{ cart.region }}
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
                 </div>
             {% endfor %}
         </section>

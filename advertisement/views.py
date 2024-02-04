@@ -11,7 +11,7 @@ def get_advertisement_page(request):
     order_by = sorted_by(request.COOKIES.get('sorted_by'))
     sort_for_paginator = sorted_by_number(request.COOKIES.get('sort'))
     state_sort_by_date = request.COOKIES.get('date', 0)
-    view_type, html = get_view_type(request.COOKIES.get('view_type'))
+    view_type, html = get_view_type(request.COOKIES)
 
     if request.GET.get('date') or request.GET.get('price'):
         state_sort_by_date, order_by = sorted_by_date_or_price(request.GET)
@@ -20,6 +20,7 @@ def get_advertisement_page(request):
     if request.GET.get('view_type'):
         view_type, html = get_view_type(request.GET)
 
+    category_list = Category.objects.filter(level__lte=1)
     advertisement_queryset = Advertisement.objects.filter(is_active=True,
                                                           moderated=True).select_related(
                                                           'category', 'region').order_by(order_by)
@@ -35,6 +36,7 @@ def get_advertisement_page(request):
     context = {
         "adver": advertisement_queryset,
         "category": category_queryset,
+        "category_list": category_list,
         "page_obj": page_obj,
         'date': state_sort_by_date,
         'view_type': view_type,
@@ -53,7 +55,7 @@ def get_advertisement_by_category(request, category_slug):
     order_by = sorted_by(request.COOKIES.get('sorted_by'))
     sort_for_paginator = sorted_by_number(request.COOKIES.get('sort'))
     state_sort_by_date = request.COOKIES.get('date', 0)
-    view_type, html = get_view_type(request.COOKIES.get('view_type'))
+    view_type, html = get_view_type(request.COOKIES)
 
     if request.GET.get('date') or request.GET.get('price'):
         state_sort_by_date, order_by = sorted_by_date_or_price(request.GET)
@@ -62,6 +64,7 @@ def get_advertisement_by_category(request, category_slug):
     if request.GET.get('view_type'):
         view_type, html = get_view_type(request.GET)
 
+    category_list = Category.objects.filter(level__lte=1)
     category_queryset = Category.objects.add_related_count(Category.objects.root_nodes(),
                                                            Advertisement,
                                                            'category',
@@ -78,6 +81,7 @@ def get_advertisement_by_category(request, category_slug):
     context = {
         "adver": advertisement_queryset,
         "category": category_queryset,
+        "category_list": category_list,
         "page_obj": page_obj,
         'date': state_sort_by_date,
         'view_type': view_type,

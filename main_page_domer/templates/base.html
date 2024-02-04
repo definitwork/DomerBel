@@ -68,89 +68,24 @@
         <div class="closing_cross"></div>
     </div>
     <div class="nav_category_list_popup">
-        <ul>
-            <li>
-                <a href="#">Транспорт</a>
-            </li>
-            <li>
-                <a href="#">Для дома и дачи</a>
-            </li>
-            <li>
-                <a href="#">Личные вещи</a>
-            </li>
-            <li>
-                <a href="#">Недвижимость</a>
-            </li>
-            <li>
-                <a href="#">Бытовая электроника</a>
-            </li>
-            <li>
-                <a href="#">Животные</a>
-            </li>
-            <li>
-                <a href="#">Хобби и отдых</a>
-            </li>
-            <li>
-                <a href="#">Работа и бизнес</a>
-            </li>
-            <li>
-                <a href="#">Потери и находки</a>
-            </li>
-            <li>
-                <a href="#">Транспорт</a>
-            </li>
-            <li>
-                <a href="#">Для дома и дачи</a>
-            </li>
-            <li>
-                <a href="#">Личные вещи</a>
-            </li>
-            <li>
-                <a href="#">Недвижимость</a>
-            </li>
-            <li>
-                <a href="#">Бытовая электроника</a>
-            </li>
-            <li>
-                <a href="#">Животные</a>
-            </li>
-            <li>
-                <a href="#">Хобби и отдых</a>
-            </li>
-            <li>
-                <a href="#">Работа и бизнес</a>
-            </li>
-            <li>
-                <a href="#">Потери и находки</a>
-            </li>
-            <li>
-                <a href="#">Транспорт</a>
-            </li>
-            <li>
-                <a href="#">Для дома и дачи</a>
-            </li>
-            <li>
-                <a href="#">Личные вещи</a>
-            </li>
-            <li>
-                <a href="#">Недвижимость</a>
-            </li>
-            <li>
-                <a href="#">Бытовая электроника</a>
-            </li>
-            <li>
-                <a href="#">Животные</a>
-            </li>
-            <li>
-                <a href="#">Хобби и отдых</a>
-            </li>
-            <li>
-                <a href="#">Работа и бизнес</a>
-            </li>
-            <li>
-                <a href="#">Потери и находки</a>
-            </li>
-        </ul>
+                {% for category in category_list %}
+                        {% if category.level == 0 %}
+                            {% if category.title == 'Транспорт' or category.title == 'Хобби и отдых' %}
+                                <a href="" class="category_footer_item item_0">
+                                    {{ category.title }}
+                                </a>
+                            {% else %}
+                                <p></p>
+                                <a href="" class="category_footer_item item_0">
+                                    {{ category.title }}
+                                </a>
+                            {% endif %}
+                        {% else %}
+                            <a href="" class="category_footer_item item_1">
+                                {{ category.title }}
+                            </a>
+                        {% endif %}
+                    {% endfor %}
         <div class="closing_cross"></div>
     </div>
 </div>
@@ -247,20 +182,14 @@
     </section>
     {% endblock %}
     {% block filter %}
-         <section class="regions">
-        <ul class="regions_list">
-            {% for region in regions %}
-            <li>
-                <a href="#" class="minsk reg">{{ region.area }}</a>
-            </li>
-            {% endfor %}
-        </ul>
-    </section>
+
     {% endblock %}
         {% block content %}
         {% endblock %}
     {% block paginator %}
-{% endblock %}
+    {% endblock %}
+    {% block prefooter %}
+    {% endblock %}
         <footer>
             <div class="navigate_link">
                 <div class="footer_link">
