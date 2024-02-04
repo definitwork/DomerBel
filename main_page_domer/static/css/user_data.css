@@ -3,7 +3,7 @@
 }
 
 .user_data {
-    display: flex;
+    /*display: flex;*/
 
     & button {
         display: flex;
@@ -20,43 +20,35 @@
 }
 
 .user_data_form {
-    flex-direction: column;
-    gap: 50px;
-    padding-left: 10px;
-    padding-top: 10px;
+    & label {
+        width: 100%;
+        max-width: 140px;
+    }
 
-    & li {
-        display: flex;
-        padding: 2px 0;
-        color: #333333;
-        font-family: "Trebuchet MS";
-        font-size: 13px;
+    & input {
+        font-family: 'Arial';
+        font-size: 12px;
+        padding: 1px 2px;
+        align-items: center;
+        max-width: 100%;
+        width: 420px;
+        color: #555;
+        border: 1px solid #B5B8C8;
+        background: #FFF repeat-x;
+    }
 
-        & label {
-            width: 100%;
-            max-width: 140px;
-        }
-
-        & input {
-            font-family: 'Arial';
-            font-size: 12px;
-            padding: 1px 2px;
-            align-items: center;
-            max-width: 100%;
-            width: 420px;
-            color: #555;
-            border: 1px solid #B5B8C8;
-            background: #FFF repeat-x;
-        }
-
-        & input:focus {
-            border: 2px solid black;
-            border-radius: 5px;
-        }
+    & input:focus {
+        border: 2px solid black;
+        border-radius: 5px;
     }
 }
 
+<<<<<<< HEAD
 .izmenit_button {
+=======
+
+.ishsenit_button {
+>>>>>>> 4a5d666d88507971e4491741deed5bed993aa5e9
     border: 1px solid #AAA;
     margin-top: 3px;
     margin-bottom: 3px;
@@ -74,4 +66,16 @@
     max-width: 100%;
     width: 965px;
     border-bottom: solid 1px #D4D4D4
+}
+
+#password_person_reset_field {
+    font-family: 'Arial';
+    font-size: 12px;
+    padding: 1px 2px;
+    align-items: center;
+    max-width: 100%;
+    width: 420px;
+    color: #555;
+    border: 1px solid #B5B8C8;
+    background: #FFF repeat-x
 }

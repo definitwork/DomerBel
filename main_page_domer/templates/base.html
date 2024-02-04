@@ -3,57 +3,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link rel="stylesheet" href="{% static 'css/null_for_templates.css' %}">
     <link rel="stylesheet" href="{% static 'css/main_page_style.css' %}">
     <link rel="stylesheet" href="{% static 'css/user_data.css' %}">
     <link rel="stylesheet" href="{% static 'css/add_store.css' %}">
+    {% block stylesheet %}
+    {% endblock %}
 
 </head>
 <body>
-
 <div class="popup">
     <div class="login_form_popup">
-        <form method="POST" action="{% url 'users:login' %}" class="login_form">
+        <form id="login_form" method="POST" class="login_form" action="">
             {% csrf_token %}
             <nav class="header_login_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Вход</p>
             </nav>
-            {{ login_form.as_p }}
-            <button>Войти</button>
+            <p id="login_form_error"></p>
+            {{ login_form }}
+            <input type="button" id="form_login_button" value="Отправить">
         </form>
         <div class="forget_pass_and_register_buttons">
-            <button type="button" class="forget_pass_button">Забыли пароль?</button>
-            <button type="button" class="register_button">Регистрация</button>
+            <button class="forget_pass_button">Забыли пароль?</button>
+            <button class="register_button">Регистрация</button>
         </div>
 
         <div class="closing_cross"></div>
     </div>
     <div class="register_form_popup">
-        <form method="POST" action="{% url 'users:register' %}" class="login_form" id="bany">
+        <form id="register_form" method="POST" class="login_form" action="">
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Регистрация</p>
             </nav>
-            {{ reg_form.as_p }}
-            <button>Регистрация</button>
+            <ul>
+                <li style="display: flex;color:red" class="error_name_register"></li>
+                <li style="display: flex;color:red" class="error_email_register"></li>
+                <li style="display: flex;color:red" class="error_phone_register"></li>
+                <li style="display: flex;color:red" class="error_pass_not_match_register"></li>
+                <li style="display: flex;color:red" class="error_bad_password_register"></li>
+            </ul>
+            {{ register_form.as_p }}
+            <input type="button" id="form_register_button" value="Регистрация"></input>
         </form>
-        <button type="button" class="return_to_login_button">Вход</button>
+        <button class="return_to_login_button">Вход</button>
         <div class="closing_cross"></div>
     </div>
     <div class="forget_pass_form_popup">
-        <form method="POST" action="{% url 'users:password_reset' %}" class="forget_pass_form">
-{#        <form method="POST" action="{% url 'users:send_email' %}" class="forget_pass_form">#}
+        <form id="forget_pass_form" action="{% url 'users:password_reset' %}" method="POST" class="forget_pass_form">
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
                 <p>Восстановление пароля</p>
             </nav>
-            {{ email_form.as_p }}
-            <button>Отправить</button>
+            {{ email_reset_form }}
+            <button id="send_email_button">Отправить</button>
         </form>
-        <button type="button" class="return_to_login_from_forget_button">Вход</button>
+        <button class="return_to_login_from_forget_button">Вход</button>
         <div class="closing_cross"></div>
     </div>
     <div class="nav_category_list_popup">
@@ -151,7 +162,7 @@
                     <nav class="header_up_wrapper_navigate_info">
                         <ul>
                             <li>
-                                <a href="#" class="declarations">Объявления</a>
+                                <a href="{% url 'advertisement' %}" class="declarations">Объявления</a>
                             </li>
                             <li>
                                 <a href="#" class="shops">Магазины</a>
@@ -163,11 +174,11 @@
                                 <a href="{% url 'help' %}" class="help">Помощь</a>
                             </li>
                         </ul>
-                        <div class="login_button">
+                        <div class='user_name'>
                             {% if user.is_authenticated %}
-                                <a href="{% url 'personal_account' %}">{{ user }}</a>
+                                <a href="{% url 'personal_account' %}">{{ user.first_name }}</a> | <a href="{% url 'users:logout' %}">Выйти</a>
                             {% else %}
-                                Вход и регистрация
+                               <p class="login_button">Вход и регистрация</p>
                             {% endif %}
 
                         </div>
@@ -203,15 +214,53 @@
                 </div>
             </section>
         </header>
-
-
+    {% block find %}
+        <section class="search_table">
+        <nav class="table_topics_search_location">
+            <select name="#" id="#" class="table_topics slct">
+                <option value="#">Все разделы</option>
+            </select>
+            <input type="text" placeholder="Поиск по тексту" class="table_search">
+            <select name="#" id="#" class="table_location slct">
+                <option value="#">Любое расположение</option>
+            </select>
+        </nav>
+        <div class="checkbox_button">
+            <div class="checkbox_list">
+                <div class="checkbox_input_label">
+                    <input id="1" type="checkbox">
+                    <label for="1" class="checkbox_label">Только в заголовках</label>
+                </div>
+                <div class="checkbox_input_label">
+                    <input id="2" type="checkbox">
+                    <label for="2" class="checkbox_label">С фото</label>
+                </div>
+                <div class="checkbox_input_label">
+                    <input id="3" type="checkbox">
+                    <label for="3" class="checkbox_label">С видео</label>
+                </div>
+            </div>
+            <a href="#" class="button_search">
+                <img src="{% static 'img/poisk.png' %}" alt="{% static 'img/poisk.png' %}">
+            </a>
+        </div>
+    </section>
+    {% endblock %}
+    {% block filter %}
+         <section class="regions">
+        <ul class="regions_list">
+            {% for region in regions %}
+            <li>
+                <a href="#" class="minsk reg">{{ region.area }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endblock %}
         {% block content %}
         {% endblock %}
-        {% block help %}
-        {% endblock %}
-        {% block search_table %}
-        {% endblock %}
-
+    {% block paginator %}
+{% endblock %}
         <footer>
             <div class="navigate_link">
                 <div class="footer_link">
@@ -231,7 +280,6 @@
                 </div>
                 <div class="footer_link">
                     <a href="{% url 'help' %}" class="help">Помощь</a>
-                    {#                        <p>Помощь</p>#}
                 </div>
                 <div class="footer_link">
                     <a href="#">
@@ -254,11 +302,14 @@
                     </a>
                 </div>
             </div>
-
-
         </footer>
     </div>
 </div>
+
 <script src="{% static "js/modals.js" %}"></script>
+<script src="{% static "js/auth.js" %}"></script>
+{% block javascript %}
+{% endblock %}
+
 </body>
 </html>

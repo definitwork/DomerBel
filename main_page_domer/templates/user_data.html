@@ -45,7 +45,7 @@
                     </nav>
                 </div>
                 <div class="user_data">
-                    <form method="post" action>
+                    <form method="post" action="">
                         <ul class="user_data_form">
                             <li>
                                 <label for="contact">Контактное лицо</label>
@@ -65,6 +65,17 @@
                             </li>
                         </ul>
                         <button class="izmenit_button">Изменить</button>
+                    <form method="POST" class="user_data_form">
+                        {% csrf_token %}
+                        {% if messages %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {{ form.as_p }}
+                        <button class="ishsenit_button">Изменить</button>
                     </form>
                 </div>
             </div>

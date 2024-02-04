@@ -34,8 +34,7 @@ INSTALLED_APPS = [
     "corsheaders",
 
     'mptt',
-
-    'captcha',
+    'django_recaptcha',
 
 
     'main_page_domer',
@@ -71,6 +70,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'advertisement.context_processors.get_date_today',
+                'config.context_processor.get_context_data',
             ],
         },
     },
@@ -144,9 +144,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 AUTH_USER_MODEL = 'users.User'
 
-LOGIN_REDIRECT_URL = 'profile'
-LOGIN_URL = 'login'
-LOGOUT_REDIRECT_URL = 'profile'
+LOGIN_REDIRECT_URL = 'personal_account/'
+LOGIN_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # Для отображения писем в консоли
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -164,5 +164,10 @@ EMAIL_ADMIN = EMAIL_HOST_USER
 CAPTCHA_FONT_SIZE = 40
 CAPTCHA_FONT_PATH = 'main_page_domer/static/fonts/arial/arial.ttf'
 CAPTCHA_CHALLENGE_FUNCT = 'users.captcha.random_digit_challenge'  # Функция для генерации CAPTCHA на русском языке
+
+
+
+RECAPTCHA_PUBLIC_KEY = env_keys.get('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = env_keys.get('RECAPTCHA_PRIVATE_KEY')
 
 

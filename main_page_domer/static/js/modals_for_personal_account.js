@@ -3,6 +3,9 @@ const more_button_pa = document.querySelector(".more_button_pa");
 const nav_category_list_popup_pa = document.querySelector(".nav_category_list_popup_pa");
 const closing_cross_pa = document.querySelectorAll(".closing_cross_pa");
 
+
+
+
 // -> view more for personal account
 more_button_pa.addEventListener("click", () => {
     popup_pa.style.display = 'flex';

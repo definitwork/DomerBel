@@ -15,14 +15,17 @@ const return_to_login_from_forget = document.querySelector(".return_to_login_fro
 const more_button = document.querySelector(".more_button");
 const nav_category_list_popup = document.querySelector(".nav_category_list_popup");
 
-// -> login
+let userIsLoggedIn;
+if (userIsLoggedIn) {
+  login_popup.classList.add("login_button1");
+}
 
+// -> login
 login_button.addEventListener("click", () => {
     popup.style.display = 'flex';
     login_popup.style.display = 'flex';
     forget_button.style.display = 'flex';
     forget_popup.style.display = 'none';
-
 });
 
 closing_cross.forEach(item => item.addEventListener("click", () => {
@@ -43,6 +46,7 @@ popup.addEventListener("click", (event) => {
         nav_category_list_popup.style.display = 'none';
     }
 });
+
 
 // -> register
 
@@ -75,23 +79,4 @@ more_button.addEventListener("click", () => {
     popup.style.display = 'flex';
 });
 
-
-// -> данные из форм входа
-const forms_login_username = document.querySelector('.check_auth_field');
-if (forms_login_username.value !== '') {
-    popup.style.display = 'flex';
-    login_popup.style.display = 'flex';
-}
-
-const forms_register_username = document.querySelector('.check_register_field');
-if (forms_register_username.value !== '') {
-    popup.style.display = 'flex';
-    register_popup.style.display = 'flex';
-}
-
-const forms_send_email = document.querySelector('.send_email_field');
-if (forms_send_email.value !== '') {
-    popup.style.display = 'flex';
-    forget_popup.style.display = 'flex';
-}
 

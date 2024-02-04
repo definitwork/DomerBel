@@ -148,9 +148,7 @@
     border-radius: 5px;
 }
 
-.bar_code {
-    height: 40px;
-}
+
 
 .return_to_login_button {
     width: 100%;
@@ -644,4 +642,13 @@
 .reset_done_message p {
     font-size: 16px;
     margin-bottom: 10px;
+}
+
+.captcha{
+    margin-left: 100px;
+}
+
+#login_form_error{
+    color: red;
+    font-family: "Trebuchet MS";
 }
