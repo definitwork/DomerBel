@@ -24,7 +24,11 @@
                             <a href="{% url 'personal_account' %}">Мои объявления</a>
                         </li>
                         <li>
-                            <a href="{% url 'add_store' %}" class="red_item">Добавить магазин</a>
+                            {% if request.user.store %}
+                                <a href="{% url 'my_store' %}">Мой магазин</a>
+                            {% else %}
+                                <a href="{% url 'add_store' %}" class="red_item">Добавить магазин</a>
+                            {% endif %}
                         </li>
                         <li>
                             <a href="{% url 'incoming_messages' %}">Входящие сообщения</a>

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <title>{{ store_page.title }}</title>
+    <div class="store">
+        <div class="store_details">
+            <div class="store_details_title">
+                <p>{{ store_page.title }}</p>
+            </div>
+            <div class="store_details_description">
+                <p>{{ store_page.description }}</p>
+            </div>
+        </div>
+        <div class="store_contacts">
+            <div class="store_contacts_img">
+                <img src="{{ store_page.logo_image.url }}" alt="{{ store_page.logo_image.url }}">
+            </div>
+            <div class="store_contacts_items">
+                <div class="store_region_title">
+                    <p>{{ oblast.area }}</p>
+                    <p>{{ store_page.region.area }}</p>
+                    <p>{{ store_page.title }}</p>
+                </div>
+                <div class="store_telephone">
+                    <img src="{% static 'img/icons/telefon.gif' %}" alt="{% static 'img/icons/telefon.gif' %}">
+                    <p>{{ store_page.phone_num }}</p>
+                </div>
+                <div class="store_email">
+                    <img src="{% static 'img/icons/email.gif' %}" alt="{% static 'img/icons/email.gif' %}">
+                    <a href="{{ store_page.email }}">Отправить письмо</a>
+                </div>
+                <div class="store_site">
+                    <img src="{% static 'img/icons/site.png' %}" alt="{% static 'img/icons/site.png' %}">
+                    <a href="{{ store_page.url }}">Сайт магазина</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

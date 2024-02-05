@@ -148,6 +148,7 @@ LOGIN_REDIRECT_URL = 'personal_account/'
 LOGIN_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
+
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # Для отображения писем в консоли
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST_PASSWORD = env_keys.get("EMAIL_HOST_PASSWORD")

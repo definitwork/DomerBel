@@ -50,16 +50,50 @@
                             </li>
                         </ul>
                     </nav>
-                        <div class="my_store">
-                            <div class="my_store_info">
-                                <p>
-                                    <a href="#">Редактировать магазин</a>
+                    <div class="my_store">
+                        <div class="my_store_info">
+                            <p><a href="{% url 'edit_store' %}">Редактировать магазин</a></p>
+                            <p class="store_date">
+                                Дата регистрации магазина: <span>{{ store.date_of_create|date:"j E Y" }}</span>
+                            </p>
+                            {% if store.is_active == False %}
+                                <p class="store_inactive">Магазин не активен</p>
+                                <p><a class="pay_store" href="#">Оплатить на год</a></p>
+                            {% else %}
+                                <p class="store_date">
+                                    Магазин активен до: <span>{{ store.date_of_deactivate|date:"j E Y" }} </span><span style="color: #008000">(Осталось {{ days_till_expiration }} дн.)</span>
                                 </p>
+                            {% endif %}
+                            <p><a href="{% url 'store_page' store.slug %}">Страница магазина на сайте</a></p>
+                            <div class="my_store_table">
+                                <p class="table_name">Название</p>
+                                <p class="table_description">{{ store.title }}</p>
                             </div>
-                            <div class="my_store_img">
-
+                            <div class="my_store_table">
+                                <p class="table_name">Раздел</p>
+                                <p class="table_description">{{ store.category.title }}</p>
+                            </div>
+                            <div class="my_store_table">
+                                <p class="table_name">Регион</p>
+                                <p class="table_description">{{ oblast.area }}</p>
+                            </div>
+                            <div class="my_store_table">
+                                <p class="table_name">Город / район</p>
+                                <p class="table_description">{{ store.region.area }}</p>
+                            </div>
+                            <div class="my_store_table">
+                                <p class="table_name">Описание</p>
+                                <p class="table_description">{{ store.description }}</p>
+                            </div>
+                            <div class="my_store_table">
+                                <p class="table_name">Сайт магазина</p>
+                                <p class="table_description"><a href="#">{{ store.url }}</a></p>
                             </div>
                         </div>
+                        <div class="my_store_img">
+                            <img src="{{ store.logo_image.url }}" alt="{{ store.logo_image.url }}">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
