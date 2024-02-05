@@ -1,18 +1,10 @@
-
-from django.shortcuts import render, redirect
-from advertisement.forms import StoreForm
-from advertisement.models import Advertisement, Region, Category
-from users.forms import RegisterForm, LoginForm
-
-
-# Использую на главной вьюшке 2 формы связанные с юзером
-# для того что бы при вызове главной страницы они отрендерелись в pop-up окнах
-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import check_password
 from django.shortcuts import render, redirect
-from advertisement.models import Advertisement, Region
+
+from advertisement.models import Advertisement, Region, Category
+from advertisement.forms import StoreForm
 from users.forms import EditProfileForm
 
 
@@ -22,7 +14,7 @@ from users.forms import EditProfileForm
 def get_main_page(request):
     advertisement_queryset = Advertisement.objects.filter(
         is_active=True, moderated=True).select_related(
-        'category', 'region').order_by("-date_of_create")[:7]
+        'category', 'region').order_by("-date_of_create")[:10]
     regions_queryset = Region.objects.filter(level=0)
     category_list = Category.objects.filter(level__lte=1)
     context = {
