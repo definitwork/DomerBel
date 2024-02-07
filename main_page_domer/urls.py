@@ -12,5 +12,7 @@ urlpatterns = [
     path('sent_messages/', get_sent_page, name='sent_messages'),
     path('admin_messages/', get_admin_message_page, name='admin_messages'),
     path('add_store/', add_store, name='add_store'),
-    path('my_store/', get_my_store, name='my_store')
+    path('my_store/', get_my_store, name='my_store'),
+    path('edit_store/', edit_store, name='edit_store'),
+    path('store/<slug:slug>/', get_store_page, name='store_page')
 ]
