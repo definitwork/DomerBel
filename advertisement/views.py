@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 
 from .models import Advertisement, Category
@@ -23,7 +24,8 @@ def get_advertisement_page(request):
     category_list = Category.objects.filter(level__lte=1)
     advertisement_queryset = Advertisement.objects.filter(is_active=True,
                                                           moderated=True).select_related(
-                                                          'category', 'region').order_by(order_by)
+                                                          'category',
+                                                          'region').order_by(order_by)
     category_queryset = Category.objects.add_related_count(Category.objects.root_nodes(),
                                                            Advertisement,
                                                            'category',
@@ -34,7 +36,6 @@ def get_advertisement_page(request):
                                        request.GET.get('page'),
                                        sort_for_paginator)
     context = {
-        "adver": advertisement_queryset,
         "category": category_queryset,
         "category_list": category_list,
         "page_obj": page_obj,
@@ -64,22 +65,25 @@ def get_advertisement_by_category(request, category_slug):
     if request.GET.get('view_type'):
         view_type, html = get_view_type(request.GET)
 
-    category_list = Category.objects.filter(level__lte=1)
-    category_queryset = Category.objects.add_related_count(Category.objects.root_nodes(),
-                                                           Advertisement,
-                                                           'category',
-                                                           'advertisement_counts',
-                                                           cumulative=True)
-    category = get_object_or_404(category_queryset, slug=category_slug)
-    advertisement_queryset = Advertisement.objects.filter(category__tree_id=category.id,
+    category_queryset_all = Category.objects.all()
+    category_list = category_queryset_all.filter(level__lte=1)
+    category = get_object_or_404(category_queryset_all, slug=category_slug)
+    category_queryset_an = Category.objects.add_related_count(category.get_descendants(),
+                                                              Advertisement,
+                                                              'category',
+                                                              'advertisement_counts',
+                                                              cumulative=True)
+    category_queryset = category_queryset_an.filter(parent_id=category.id)
+    advertisement_queryset = Advertisement.objects.filter(Q(category__in=category_queryset_an) |
+                                                          Q(category__slug=category.slug),
                                                           is_active=True,
                                                           moderated=True).select_related(
-                                                          'category', 'region').order_by(order_by)
+                                                          'category',
+                                                          'region').order_by(order_by)
     page_obj = variables_for_paginator(advertisement_queryset,
                                        request.GET.get('page'),
                                        sort_for_paginator)
     context = {
-        "adver": advertisement_queryset,
         "category": category_queryset,
         "category_list": category_list,
         "page_obj": page_obj,
@@ -95,4 +99,3 @@ def get_advertisement_by_category(request, category_slug):
 
     return response
 # Create your views here.
-

@@ -14,9 +14,11 @@
             <div class="category_wrapper">
                 <div class="category_list">
                     {% for cat in category %}
-                        <a href="{% url 'advertisement_by_category' cat.slug %}" class="category">
-                            {{ cat.title }}, {{ cat.advertisement_counts }}
-                        </a>
+                        {% if cat %}
+                            <a href="{% url 'advertisement_by_category' cat.slug %}" class="category">
+                                {{ cat.title }}, {{ cat.advertisement_counts }}
+                            </a>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -30,27 +32,31 @@
     <div class="paginator">
         <div class="container">
             <div class="paginator_wrapper">
-                <ul>
-                    {% if page_obj.has_previous %}
-                        <li class="">
-                            <a href="?page={{ page_obj.previous_page_number }}"><</a>
-                        </li>
-                    {% endif %}
-                    {% for page in page_obj.paginator.page_range %}
-                        {% if page_obj.number == page %}
-                            <li class="page-num page-num-selected">{{ page }}</li>
-                        {% elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
-                            <li class="page-num">
-                                <a href="?page={{ page }}">{{ page }}</a>
+                <nav class="list_pages">
+                    <ul>
+                        {% if page_obj.has_previous %}
+                            <li class="">
+                                <a href="?page={{ page_obj.previous_page_number }}"><</a>
                             </li>
                         {% endif %}
-                    {% endfor %}
-                    {% if page_obj.has_next %}
-                        <li class="">
-                            <a href="?page={{ page_obj.next_page_number }}">></a>
-                        </li>
-                    {% endif %}
-                </ul>
+                        {% if page_obj.has_other_pages %}
+                            {% for page in page_obj.paginator.page_range %}
+                                {% if page_obj.number == page %}
+                                    <li class="page_num page_num_selected">{{ page }}</li>
+                                {% elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                                    <li class="page_num">
+                                        <a href="?page={{ page }}">{{ page }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% if page_obj.has_next %}
+                            <li class="">
+                                <a href="?page={{ page_obj.next_page_number }}">></a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
@@ -63,17 +69,17 @@
                     {% for category in category_list %}
                         {% if category.level == 0 %}
                             {% if category.title == 'Транспорт' or category.title == 'Хобби и отдых' %}
-                                <a href="" class="category_footer_item item_0">
+                                <a href="{% url 'advertisement_by_category' category.slug %}" class="category_footer_item item_0">
                                     {{ category.title }}
                                 </a>
                             {% else %}
                                 <p></p>
-                                <a href="" class="category_footer_item item_0">
+                                <a href="{% url 'advertisement_by_category' category.slug %}" class="category_footer_item item_0">
                                     {{ category.title }}
                                 </a>
                             {% endif %}
                         {% else %}
-                            <a href="" class="category_footer_item item_1">
+                            <a href="{% url 'advertisement_by_category' category.slug %}" class="category_footer_item item_1">
                                 {{ category.title }}
                             </a>
                         {% endif %}

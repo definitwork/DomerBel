@@ -9,22 +9,22 @@ from django.conf import settings
 class Advertisement(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=255, verbose_name='Заголовок')
-    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, verbose_name='Цена')
+    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, default=0, verbose_name='Цена')
     category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Раздел')
     description = models.TextField(verbose_name='Описание')
     bearer = models.CharField(max_length=50, choices=[('Частное лицо', 'Частное лицо'), ('Компания', 'Компания')],
                               verbose_name='Податель')
     region = models.ForeignKey('Region', on_delete=models.CASCADE, verbose_name='Регион, город, район')
     images = models.ForeignKey('Gallery', blank=True, null=True, on_delete=models.CASCADE, verbose_name='Фотографии')
-    previous_image = models.ImageField(upload_to='images', default='default/no_image.jpg', verbose_name='Предыдущая фотография')
+    previous_image = models.ImageField(upload_to='images', default='default/no_image.jpg', verbose_name='Главная фотография')
     contact_name = models.CharField(max_length=255, verbose_name='Контактное лицо')
     phone_num = models.CharField(max_length=255, verbose_name='Телефон')
     email = models.EmailField(verbose_name='E-Mail')
     video_link = models.URLField(blank=True, null=True, verbose_name='Ссылка на видео')  # хранит строку, которая представляет валидный URL-адрес
-    moderated = models.BooleanField(default=False, verbose_name='Модерация')
+    moderated = models.BooleanField(default=False, verbose_name='Прошло модерацию')
     date_of_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания объявления')
     date_of_deactivate = models.DateTimeField(auto_now=True, verbose_name='Дата деактивации объявления')
-    is_active = models.BooleanField(default=False, verbose_name='Активный пользователь?)')
+    is_active = models.BooleanField(default=False, verbose_name='Объявление активно')
     counter_prosmotr = models.IntegerField(blank=True, null=True, verbose_name='Счетчик просмотров') # над этим еще надо подумать
     slug = models.SlugField(unique=True, verbose_name='URL')
 
@@ -65,7 +65,7 @@ class Category(MPTTModel):
     title = models.CharField(max_length=255, verbose_name='Заголовок категории')
     type = models.CharField(max_length=255, choices=[('category_1', 'category_1'), ('category_2', 'category_2'),
                                                      ('category_3', 'category_3'), ('category_4', 'category_4')], verbose_name='Уровень категории')
-    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, verbose_name='Отношения')
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, verbose_name='Отношение')
     slug = models.SlugField(unique=True, verbose_name='URL')
 
     class Meta:
@@ -76,9 +76,9 @@ class Category(MPTTModel):
 
 
 class Region(MPTTModel):
-    area = models.CharField(max_length=255, verbose_name='Регион, город, район')
+    area = models.CharField(max_length=255, verbose_name='Область, город')
     type = models.CharField(max_length=255, choices=[('Область', 'Область'), ('Город', 'Город')], verbose_name='Тип местонахождения')
-    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, verbose_name='Отношения')
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, verbose_name='Отношение')
     slug = models.SlugField(unique=True, verbose_name='URL')
 
     class MPTTMeta:

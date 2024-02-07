@@ -39,6 +39,7 @@ def register_view(request):
             user.save()
             return JsonResponse({'success': True})
         else:
+            print(form)
             return JsonResponse({'errors': form.errors})
 
 

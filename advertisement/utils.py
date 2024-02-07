@@ -8,7 +8,7 @@ def sorted_by_number(number):
         sort_for_paginator = int(number)
         return sort_for_paginator
     else:
-        return 3
+        return 30
 
 
 def variables_for_paginator(queryset, page=1, elments=30):

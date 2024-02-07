@@ -48,13 +48,17 @@ function register_fn() {
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data)
+
             if (data.success) {
                 window.location.href = '/';
             }
 
+            if (data.errors) {
+                reset()
+            }
+
             if (data.errors.name) {
-                error_name_register.innerHTML = data.errors.name
+                error_name_register.innerHTML = data.errors.name;
             } else {
                 error_name_register.innerHTML = ''
             }
@@ -86,7 +90,9 @@ function register_fn() {
 
 
 
-
+function reset() {
+    grecaptcha.reset();
+}
 
 
 

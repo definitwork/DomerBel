@@ -8,7 +8,7 @@
 
 .category_list {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-wrap: wrap;
     width: 100%;
     word-wrap: break-word;
@@ -41,11 +41,11 @@
     font-size: 13px;
     flex-wrap: wrap;
     font-family: Trebuchet MS;
-    flex-basis: 26%;
+    flex-basis: 33%;
     padding: 5px 0;
 }
 
-.paginator_wrapper {
+.list_pages {
     display: flex;
     justify-content: center;
     padding: 20px 0;
