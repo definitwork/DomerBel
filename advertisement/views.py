@@ -17,7 +17,6 @@ def load_new_region_to_model(request):
             type = i['rayon']
             slug = i['url']
             parent_id = i['parent_id']
-
             region = Region(id=id, area=area, type=type, slug=slug, parent_id=parent_id)
             print(region)
             print(area, type, slug, parent_id)
