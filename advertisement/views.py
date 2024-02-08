@@ -1,9 +1,27 @@
+import json
+
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 
-from .models import Advertisement, Category
+from .models import Advertisement, Category, Region
 
 from .utils import sorted_by_number, variables_for_paginator, sorted_by_date_or_price, sorted_by, get_view_type
+
+
+def load_new_region_to_model(request):
+    with open('./region_refactor_id.json') as json_file:
+        ishod_dump = json.loads(json_file.read())
+        for i in ishod_dump:
+            # id = i['id_region']
+            area = i['region']
+            type = i['rayon']
+            slug = i['url']
+            parent_id = i['parent_id']
+
+            region = Region(id=id, area=area, type=type, slug=slug, parent_id=parent_id)
+            print(region)
+            print(area, type, slug, parent_id)
+        return render(request, '1111.html')
 
 
 # Create your views here.
@@ -24,8 +42,8 @@ def get_advertisement_page(request):
     category_list = Category.objects.filter(level__lte=1)
     advertisement_queryset = Advertisement.objects.filter(is_active=True,
                                                           moderated=True).select_related(
-                                                          'category',
-                                                          'region').order_by(order_by)
+        'category',
+        'region').order_by(order_by)
     category_queryset = Category.objects.add_related_count(Category.objects.root_nodes(),
                                                            Advertisement,
                                                            'category',
@@ -78,8 +96,8 @@ def get_advertisement_by_category(request, category_slug):
                                                           Q(category__slug=category.slug),
                                                           is_active=True,
                                                           moderated=True).select_related(
-                                                          'category',
-                                                          'region').order_by(order_by)
+        'category',
+        'region').order_by(order_by)
     page_obj = variables_for_paginator(advertisement_queryset,
                                        request.GET.get('page'),
                                        sort_for_paginator)

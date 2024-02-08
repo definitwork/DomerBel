@@ -1,5 +1,7 @@
 from pathlib import Path
 import os
+
+from django.conf import settings
 from dotenv import dotenv_values
 
 env_keys = dotenv_values()
@@ -171,4 +173,5 @@ CAPTCHA_CHALLENGE_FUNCT = 'users.captcha.random_digit_challenge'  # Функци
 RECAPTCHA_PUBLIC_KEY = env_keys.get('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = env_keys.get('RECAPTCHA_PRIVATE_KEY')
 
-
+# MPTT_DEFAULT_LEVEL_INDICATOR = "---"
+# DEFAULT_LEVEL_INDICATOR = getattr(settings, "MPTT_DEFAULT_LEVEL_INDICATOR", "---")
