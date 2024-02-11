@@ -98,4 +98,7 @@ def get_advertisement_by_category(request, category_slug):
     response.set_cookie('view_type', view_type)
 
     return response
-# Create your views here.
+
+
+def get_page_place_an_ad(request):
+    return render(request, 'place_an_ad.html')
