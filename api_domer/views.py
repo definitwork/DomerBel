@@ -17,3 +17,17 @@ def get_list_of_categories(request):
     categories = Category.objects.all()
     serializer = GetListOfCategoriesSerializer(categories, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_region_list(request):
+    regions = Region.objects.all()
+    serializer = GetListOfCitiesSerializer(regions, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_category_list(request):
+    categories = Category.objects.all()
+    serializer = GetListOfCategoriesSerializer(categories, many=True)
+    return Response(serializer.data)

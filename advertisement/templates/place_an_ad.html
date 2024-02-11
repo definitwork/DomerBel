@@ -1,12 +1,32 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
     <form action="" method="POST">
-    {% csrf_token %}
+        {% csrf_token %}
+
+        <p class="region_opened">
+            <select class="input_field" id="select_oblast">
+                <option value="0">---------</option>
+            </select>
+        </p>
+        <p class="region_hidden">
+            <select class="input_field" id="select_city" name="region" style="margin-top: 5px;">
+                <option value="0">---------</option>
+            </select>
+        </p>
+        <p class="category_level_0">
+            <select class="input_field" id="select_category_0" name="category_0" style="margin-top: 5px;">
+                <option value="0">---------</option>
+            </select>
+        </p>
 
     </form>
 
 
 
 
+{% endblock %}
+{% block javascript %}
+    <script src="{% static 'js/place_an_ad.js' %}"></script>
 {% endblock %}
