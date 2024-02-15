@@ -5,8 +5,6 @@
 }
 
 .user_data {
-    /*display: flex;*/
-
     & button {
         display: flex;
         border: 1px solid #AAA;
@@ -22,8 +20,13 @@
 }
 
 .user_data_form {
+    font-size: 13px;
+    font-family: 'Trebuchet MS';
+    color: #333333;
+    padding: 3px;
 
     & label {
+        padding: 3px 7px;
         display: inline-block;
         width: 180px;
         vertical-align: top;
@@ -47,9 +50,7 @@
     }
 }
 
-
 .ishsenit_button {
-
     border: 1px solid #AAA;
     margin-top: 3px;
     margin-bottom: 3px;
@@ -94,6 +95,7 @@
     background: #FFF repeat-x;
 
 }
+
 #password_register_field {
     font-family: 'Arial';
     font-size: 12px;
@@ -106,6 +108,7 @@
     background: #FFF repeat-x;
 
 }
+
 #id_first_name {
     font-family: 'Arial';
     font-size: 12px;

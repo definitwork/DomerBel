@@ -144,7 +144,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 AUTH_USER_MODEL = 'users.User'
 
-LOGIN_REDIRECT_URL = 'personal_account/'
+LOGIN_REDIRECT_URL = 'users/personal_account/'
 LOGIN_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 

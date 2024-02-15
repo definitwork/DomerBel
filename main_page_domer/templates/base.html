@@ -21,7 +21,7 @@
         <form id="login_form" method="POST" class="login_form" action="">
             {% csrf_token %}
             <nav class="header_login_form_popup nav_popup">
-                <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
+                <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
                 <p>Вход</p>
             </nav>
             <p id="login_form_error"></p>
@@ -39,7 +39,7 @@
         <form id="register_form" method="POST" class="login_form" action="">
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
-                <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
+                <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
                 <p>Регистрация</p>
             </nav>
             <ul>
@@ -59,7 +59,7 @@
         <form id="forget_pass_form" action="{% url 'users:password_reset' %}" method="POST" class="forget_pass_form">
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
-                <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
+                <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
                 <p>Восстановление пароля</p>
             </nav>
             {{ email_reset_form }}
@@ -112,7 +112,7 @@
                         </ul>
                         <div class='user_name'>
                             {% if user.is_authenticated %}
-                                <a href="{% url 'personal_account' %}">{{ user.first_name }}</a> | <a href="{% url 'users:logout' %}">Выйти</a>
+                                <a href="{% url 'users:logout' %}">Выход</a> | <a href="{% url 'users:personal_account' %}">{{ user }}</a>
                             {% else %}
                                <p class="login_button">Вход и регистрация</p>
                             {% endif %}
@@ -126,7 +126,7 @@
                 <div class="header_down_category">
                     <div class="header_down_logo">
                         <a href="{% url 'home' %}">
-                            <img src="{% static 'img/logo.png' %}" alt="{% static './img/logo.png' %}">
+                            <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
                         </a>
                     </div>
                     <nav class="header_down_nav_category">
