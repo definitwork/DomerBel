@@ -9,47 +9,50 @@ from .models import User
 
 
 def get_personal_account_page(request):
-    user = User.objects.get(first_name=request.user.first_name)
+    # user = User.objects.get(first_name=request.user.first_name)
+    # context = {
+    #     'user': user
+    # }
+    category_list = Category.objects.filter(level__lte=1)
     context = {
-        'user': user
+        "category_list": category_list,
     }
     return render(request, 'personal_account/personal_account.html', context)
 
 
 def get_incoming_page(request):
-    user = User.objects.get(first_name=request.user.first_name)
+    category_list = Category.objects.filter(level__lte=1)
     context = {
-        'user': user
+        "category_list": category_list,
     }
     return render(request, 'personal_account/incoming_messages.html', context)
 
 
 def get_outgoing_page(request):
-    user = User.objects.get(first_name=request.user.first_name)
+    category_list = Category.objects.filter(level__lte=1)
     context = {
-        'user': user
+        "category_list": category_list,
     }
     return render(request, 'personal_account/outgoing_messages.html', context)
 
 
 def get_sent_page(request):
-    user = User.objects.get(first_name=request.user.first_name)
+    category_list = Category.objects.filter(level__lte=1)
     context = {
-        'user': user
+        "category_list": category_list,
     }
     return render(request, 'personal_account/sent_messages.html', context)
 
 
 def get_admin_message_page(request):
-    user = User.objects.get(first_name=request.user.first_name)
+    category_list = Category.objects.filter(level__lte=1)
     context = {
-        'user': user
+        "category_list": category_list,
     }
     return render(request, 'personal_account/admin_message.html', context)
 
 
 def add_store(request):
-    user = User.objects.get(first_name=request.user.first_name)
     if request.method == 'POST':
         new_store = StoreForm(request.POST, request.FILES)
         if new_store.is_valid():
@@ -62,9 +65,11 @@ def add_store(request):
     oblast = Region.objects.filter(type='Область')
     store_form = StoreForm(initial={'contact_name': request.user.first_name, 'email': request.user.email,
                                     'phone_num': request.user.phone_number})
+    category_list = Category.objects.filter(level__lte=1)
+
     context = {"oblast": oblast,
                "store_form": store_form,
-               'user': user}
+               "category_list": category_list,}
     return render(request, 'personal_account/add_store.html', context)
 
 
@@ -72,35 +77,35 @@ def add_store(request):
 
 
 def get_my_store(request):
-    user = User.objects.get(first_name=request.user.first_name)
     store = Store.objects.get(user=request.user)
     oblast = Region.objects.get(id=store.region.parent_id)
     start_date = store.date_of_create
     end_date = store.date_of_deactivate
     days_till_expiration = end_date - start_date
+    category_list = Category.objects.filter(level__lte=1)
+
     context = {
         'store': store,
         'oblast': oblast,
         'days_till_expiration': days_till_expiration.days,
-        'user': user
+        'category_list': category_list,
     }
     return render(request, 'personal_account/my_store.html', context)
 
 
 def get_store_page(request, slug):
-    user = User.objects.get(first_name=request.user.first_name)
     store_page = Store.objects.get(user=request.user, slug=slug)
     oblast = Region.objects.get(id=store_page.region.parent_id)
+    category_list = Category.objects.filter(level__lte=1)
     context = {
         'store_page': store_page,
         'oblast': oblast,
-        'user': user
+        'category_list': category_list
     }
     return render(request, 'personal_account/store_page.html', context)
 
 
 def edit_store(request):
-    user = User.objects.get(first_name=request.user.first_name)
     store = Store.objects.get(user=request.user)
     if request.method == 'POST':
         edit_store = StoreForm(request.POST, request.FILES, instance=store)
@@ -113,6 +118,7 @@ def edit_store(request):
     oblast = Region.objects.filter(type='Область')
     selected_oblast = Region.objects.get(id=store.region.parent_id)
     categories = Category.objects.all()
+    category_list = Category.objects.filter(level__lte=1)
     context = {
         'edit_store': edit_store,
         'oblast': oblast,
@@ -120,7 +126,7 @@ def edit_store(request):
         'categories': categories,
         'selected_category': store.category.id if store.category else None,
         'store': store,
-        'user': user
+        'category_list': category_list
     }
     return render(request, 'personal_account/edit_store.html', context)
 
