@@ -11,26 +11,26 @@
 {% block popup %}
     <div class="popup_pa">
         <div class="nav_category_list_popup_pa">
-        {% for category in category_list %}
-            {% if category.level == 0 %}
-                {% if category.title == 'Транспорт' or category.title == 'Хобби и отдых' %}
-                    <a href="" class="category_footer_item item_0">
-                        {{ category.title }}
-                    </a>
+            {% for category in category_list %}
+                {% if category.level == 0 %}
+                    {% if category.title == 'Транспорт' or category.title == 'Хобби и отдых' %}
+                        <a href="" class="category_footer_item item_0">
+                            {{ category.title }}
+                        </a>
+                    {% else %}
+                        <p></p>
+                        <a href="" class="category_footer_item item_0">
+                            {{ category.title }}
+                        </a>
+                    {% endif %}
                 {% else %}
-                    <p></p>
-                    <a href="" class="category_footer_item item_0">
+                    <a href="" class="category_footer_item item_1">
                         {{ category.title }}
                     </a>
                 {% endif %}
-            {% else %}
-                <a href="" class="category_footer_item item_1">
-                    {{ category.title }}
-                </a>
-            {% endif %}
-        {% endfor %}
-        <div class="closing_cross_pa"></div>
-    </div>
+            {% endfor %}
+            <div class="closing_cross_pa"></div>
+        </div>
     </div>
 {% endblock %}
 <div class="wrapper">
@@ -73,12 +73,12 @@
                         </div>
                         <nav class="header_down_nav_category">
                             {% block nav_title %}
-                            <div class="nav_category_title">
-                                <p>
-                                    { adaptive_navigation }
-                                </p>
-                            </div>
-                                {% endblock %}
+                                <div class="nav_category_title">
+                                    <p>
+                                        { adaptive_navigation }
+                                    </p>
+                                </div>
+                            {% endblock %}
                             <div class="nav_category_list">
                                 <a href="#">Авто</a>
                                 <a href="#">Работа</a>

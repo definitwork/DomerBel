@@ -35,7 +35,7 @@
     flex-direction: column;
     gap: 13px;
 
-    input{
+    input {
         padding: 10px;
         width: 100%;
         border-radius: 5px;
@@ -44,13 +44,13 @@
         font-size: 14px;
         cursor: pointer;
         color: #333333;
+    }
 
-        &::placeholder {
-            font-family: "Trebuchet MS";
-            font-size: 14px;
-            cursor: pointer;
-            color: #333333;
-        }
+    &::placeholder {
+        font-family: "Trebuchet MS";
+        font-size: 14px;
+        cursor: pointer;
+        color: #333333;
     }
 
     & button {
@@ -63,7 +63,6 @@
         font-size: 14px;
         cursor: pointer;
         color: #333333;
-
     }
 }
 
@@ -101,7 +100,6 @@
     }
 }
 
-
 .register_form_popup {
     position: relative;
     display: none;
@@ -115,6 +113,44 @@
     height: 100%;
     border-radius: 5px;
 }
+
+.register_form {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 13px;
+
+    & input {
+        padding: 10px;
+        width: 100%;
+        border-radius: 5px;
+        border: 1px solid #333333;
+        font-family: "Trebuchet MS";
+        font-size: 14px;
+        cursor: pointer;
+        color: #333333;
+    }
+
+    &::placeholder {
+        font-family: "Trebuchet MS";
+        font-size: 14px;
+        cursor: pointer;
+        color: #333333;
+    }
+
+    & button {
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #AAA;
+        background: #DADADA;
+        text-align: center;
+        font-family: "Trebuchet MS";
+        font-size: 14px;
+        cursor: pointer;
+        color: #333333;
+    }
+}
+
 
 .return_to_login_button {
     width: 100%;
@@ -142,12 +178,15 @@
     border-radius: 5px;
 
     & p {
-        color: #000;
-        font-family: Manrope;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 140%;
+        & input {
+            color: #000;
+            font-family: Manrope;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 140%;
+        }
+
     }
 
     & button {
@@ -555,7 +594,6 @@
     min-width: 300px;
     height: 280px;
     border: 1px solid red;
-
 }
 
 .vip_cart_header {

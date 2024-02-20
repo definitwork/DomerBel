@@ -9,10 +9,6 @@ from .models import User
 
 
 def get_personal_account_page(request):
-    # user = User.objects.get(first_name=request.user.first_name)
-    # context = {
-    #     'user': user
-    # }
     category_list = Category.objects.filter(level__lte=1)
     context = {
         "category_list": category_list,
@@ -161,6 +157,7 @@ def register_view(request):
             user.phone_number = form.cleaned_data.get('phone')
             user.email = form.cleaned_data.get('email')
             user.set_password(form.cleaned_data.get('password'))
+            user.set_password(form.cleaned_data.get('password2'))
             user.save()
             return JsonResponse({'success': True})
         else:
