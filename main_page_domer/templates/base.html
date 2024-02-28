@@ -21,7 +21,7 @@
         <form id="login_form" method="POST" class="login_form" action="">
             {% csrf_token %}
             <nav class="header_login_form_popup nav_popup">
-                <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
+                <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
                 <p>Вход</p>
             </nav>
             <p id="login_form_error"></p>
@@ -32,14 +32,13 @@
             <button class="forget_pass_button">Забыли пароль?</button>
             <button class="register_button">Регистрация</button>
         </div>
-
         <div class="closing_cross"></div>
     </div>
     <div class="register_form_popup">
-        <form id="register_form" method="POST" class="login_form" action="">
+        <form id="register_form" method="POST" class="register_form" action="">
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
-                <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
+                <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
                 <p>Регистрация</p>
             </nav>
             <ul>
@@ -59,7 +58,7 @@
         <form id="forget_pass_form" action="{% url 'users:password_reset' %}" method="POST" class="forget_pass_form">
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
-                <img src="{% static './img/logo.png' %}" alt="{% static './img/logo.png' %}">
+                <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
                 <p>Восстановление пароля</p>
             </nav>
             {{ email_reset_form }}
@@ -69,24 +68,24 @@
         <div class="closing_cross"></div>
     </div>
     <div class="nav_category_list_popup">
-                {% for category in category_list %}
-                        {% if category.level == 0 %}
-                            {% if category.title == 'Транспорт' or category.title == 'Хобби и отдых' %}
-                                <a href="" class="category_footer_item item_0">
-                                    {{ category.title }}
-                                </a>
-                            {% else %}
-                                <p></p>
-                                <a href="" class="category_footer_item item_0">
-                                    {{ category.title }}
-                                </a>
-                            {% endif %}
-                        {% else %}
-                            <a href="" class="category_footer_item item_1">
-                                {{ category.title }}
-                            </a>
-                        {% endif %}
-                    {% endfor %}
+        {% for category in category_list %}
+            {% if category.level == 0 %}
+                {% if category.title == 'Транспорт' or category.title == 'Хобби и отдых' %}
+                    <a href="" class="category_footer_item item_0">
+                        {{ category.title }}
+                    </a>
+                {% else %}
+                    <p></p>
+                    <a href="" class="category_footer_item item_0">
+                        {{ category.title }}
+                    </a>
+                {% endif %}
+            {% else %}
+                <a href="" class="category_footer_item item_1">
+                    {{ category.title }}
+                </a>
+            {% endif %}
+        {% endfor %}
         <div class="closing_cross"></div>
     </div>
 </div>
@@ -112,9 +111,10 @@
                         </ul>
                         <div class='user_name'>
                             {% if user.is_authenticated %}
-                                <a href="{% url 'personal_account' %}">{{ user.first_name }}</a> | <a href="{% url 'users:logout' %}">Выйти</a>
+                                <a href="{% url 'users:logout' %}">Выход</a> |
+                                <a href="{% url 'users:personal_account' %}">{{ user }}</a>
                             {% else %}
-                               <p class="login_button">Вход и регистрация</p>
+                                <p class="login_button">Вход и регистрация</p>
                             {% endif %}
 
                         </div>
@@ -126,7 +126,7 @@
                 <div class="header_down_category">
                     <div class="header_down_logo">
                         <a href="{% url 'home' %}">
-                            <img src="{% static 'img/logo.png' %}" alt="{% static './img/logo.png' %}">
+                            <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
                         </a>
                     </div>
                     <nav class="header_down_nav_category">
@@ -150,47 +150,47 @@
                 </div>
             </section>
         </header>
-    {% block find %}
-        <section class="search_table">
-        <nav class="table_topics_search_location">
-            <select name="#" id="#" class="table_topics slct">
-                <option value="#">Все разделы</option>
-            </select>
-            <input type="text" placeholder="Поиск по тексту" class="table_search">
-            <select name="#" id="#" class="table_location slct">
-                <option value="#">Любое расположение</option>
-            </select>
-        </nav>
-        <div class="checkbox_button">
-            <div class="checkbox_list">
-                <div class="checkbox_input_label">
-                    <input id="1" type="checkbox">
-                    <label for="1" class="checkbox_label">Только в заголовках</label>
+        {% block find %}
+            <section class="search_table">
+                <nav class="table_topics_search_location">
+                    <select name="#" id="#" class="table_topics slct">
+                        <option value="#">Все разделы</option>
+                    </select>
+                    <input type="text" placeholder="Поиск по тексту" class="table_search">
+                    <select name="#" id="#" class="table_location slct">
+                        <option value="#">Любое расположение</option>
+                    </select>
+                </nav>
+                <div class="checkbox_button">
+                    <div class="checkbox_list">
+                        <div class="checkbox_input_label">
+                            <input id="1" type="checkbox">
+                            <label for="1" class="checkbox_label">Только в заголовках</label>
+                        </div>
+                        <div class="checkbox_input_label">
+                            <input id="2" type="checkbox">
+                            <label for="2" class="checkbox_label">С фото</label>
+                        </div>
+                        <div class="checkbox_input_label">
+                            <input id="3" type="checkbox">
+                            <label for="3" class="checkbox_label">С видео</label>
+                        </div>
+                    </div>
+                    <a href="#" class="button_search">
+                        <img src="{% static 'img/poisk.png' %}" alt="{% static 'img/poisk.png' %}">
+                    </a>
                 </div>
-                <div class="checkbox_input_label">
-                    <input id="2" type="checkbox">
-                    <label for="2" class="checkbox_label">С фото</label>
-                </div>
-                <div class="checkbox_input_label">
-                    <input id="3" type="checkbox">
-                    <label for="3" class="checkbox_label">С видео</label>
-                </div>
-            </div>
-            <a href="#" class="button_search">
-                <img src="{% static 'img/poisk.png' %}" alt="{% static 'img/poisk.png' %}">
-            </a>
-        </div>
-    </section>
-    {% endblock %}
-    {% block filter %}
+            </section>
+        {% endblock %}
+        {% block filter %}
 
-    {% endblock %}
+        {% endblock %}
         {% block content %}
         {% endblock %}
-    {% block paginator %}
-    {% endblock %}
-    {% block prefooter %}
-    {% endblock %}
+        {% block paginator %}
+        {% endblock %}
+        {% block prefooter %}
+        {% endblock %}
         <footer>
             <div class="navigate_link">
                 <div class="footer_link">

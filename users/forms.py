@@ -29,7 +29,7 @@ class RegisterForm(forms.Form):
                             validators=[validate_email], label='')
     password = forms.CharField(error_messages={'required': 'Введите пароль'},
                                widget=forms.PasswordInput(
-                                   attrs={'id': 'password_register_field', 'placeholder': 'Введите пароль'}),
+                                   attrs={'placeholder': 'Введите пароль'}),
                                validators=[validate_password], label='')
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Повторите пароль'}), label='')
     captcha = ReCaptchaField(label='')

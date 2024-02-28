@@ -14,23 +14,23 @@
 .nav_category_list_popup_pa {
     position: relative;
     display: none;
-    gap: 30px;
-    flex-direction: column;
-    padding: 80px 95px;
+    grid-auto-flow: column;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(27, 1fr);
     max-width: 900px;
     width: 100%;
-    max-height: 400px;
+    max-height: 500px;
     background: #fff;
     border-radius: 5px;
+    padding: 40px 95px;
+}
 
-    & ul {
-        display: flex;
-        flex-wrap: wrap;
+.item_0 {
+    color: black;
+}
 
-        & li {
-            flex: 0 1 25%;
-        }
-    }
+.item_2 {
+    align-items: start;
 }
 
 .closing_cross_pa {
@@ -237,7 +237,6 @@
 
 .body {
     display: flex;
-
 }
 
 .personal_account_navigation {

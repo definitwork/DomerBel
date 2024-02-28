@@ -1,0 +1,39 @@
+{% extends 'personal_account/base_for_personal_account.html' %}
+
+{% load static %}
+{% block user_search_table %}
+{% endblock %}
+{% block nav_title %}
+    <div class="nav_category_title">
+        <p>
+            Контактные данные
+        </p>
+    </div>
+{% endblock %}
+{% block content %}
+    <title>Контактные данные</title>
+    <div class="wrapper">
+        <div class="container">
+            <div class="page_user_data">
+                <div class="user_data">
+                    <form method="POST" class="user_data_form" action="">
+                        {% csrf_token %}
+                        {% if messages %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        <div class="form-error">{{ form.non_field_errors }}</div>
+                        {% for f in form %}
+                            <p><label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}: </label>{{ f }}</p>
+                            <div class="form-error">{{ f.errors }}</div>
+                        {% endfor %}
+                    </form>
+                    <button class="ishsenit_button">Изменить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

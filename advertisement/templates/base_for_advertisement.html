@@ -3,92 +3,93 @@
 {% block stylesheet %}
 
     <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/base_advertisement_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/null_for_templates.css' %}">
     {% block style %}
     {% endblock %}
 {% endblock %}
 
-
-{% block filter %}
-    <div class="category_navigation_bar">
-        <div class="container">
-            <div class="category_wrapper">
-                <div class="category_list">
-                    {% for cat in category %}
-                        {% if cat %}
-                            <a href="{% url 'advertisement_by_category' cat.slug %}" class="category">
-                                {{ cat.title }}, {{ cat.advertisement_counts }}
-                            </a>
-                        {% endif %}
-                    {% endfor %}
+<div class="wrapper">
+    <div class="container">
+        {% block filter %}
+            <div class="category_navigation_bar">
+                <div class="category_wrapper">
+                    <div class="category_list">
+                        {% for cat in category %}
+                            {% if cat %}
+                                <a href="{% url 'advertisement_by_category' cat.slug %}" class="category">
+                                    {{ cat.title }}, {{ cat.advertisement_counts }}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-{% endblock %}
-{% block content %}
-{% endblock %}
-{% block paginator %}
-    <div class="paginator">
-        <div class="container">
-            <div class="paginator_wrapper">
-                <nav class="list_pages">
-                    <ul>
-                        {% if page_obj.has_previous %}
-                            <li class="">
-                                <a href="?page={{ page_obj.previous_page_number }}"><</a>
-                            </li>
-                        {% endif %}
-                        {% if page_obj.has_other_pages %}
-                            {% for page in page_obj.paginator.page_range %}
-                                {% if page_obj.number == page %}
-                                    <li class="page_num page_num_selected">{{ page }}</li>
-                                {% elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
-                                    <li class="page_num">
-                                        <a href="?page={{ page }}">{{ page }}</a>
-                                    </li>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                        {% if page_obj.has_next %}
-                            <li class="">
-                                <a href="?page={{ page_obj.next_page_number }}">></a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </nav>
+        {% endblock %}
+        {% block content %}
+        {% endblock %}
+        {% block paginator %}
+            <div class="paginator">
+                <div class="paginator_wrapper">
+                    <nav class="list_pages">
+                        <ul>
+                            {% if page_obj.has_previous %}
+                                <li class="">
+                                    <a href="?page={{ page_obj.previous_page_number }}"><</a>
+                                </li>
+                            {% endif %}
+                            {% if page_obj.has_other_pages %}
+                                {% for page in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == page %}
+                                        <li class="page_num page_num_selected">{{ page }}</li>
+                                    {% elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                                        <li class="page_num">
+                                            <a href="?page={{ page }}">{{ page }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            {% if page_obj.has_next %}
+                                <li class="">
+                                    <a href="?page={{ page_obj.next_page_number }}">></a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
             </div>
-        </div>
-    </div>
-{% endblock %}
-{% block prefooter %}
-    <div class="category_footer">
-        <div class="container">
-            <div class="category_footer_wrapper">
-                <div class="category_footer_list">
-                    {% for category in category_list %}
-                        {% if category.level == 0 %}
-                            {% if category.title == 'Транспорт' or category.title == 'Хобби и отдых' %}
-                                <a href="{% url 'advertisement_by_category' category.slug %}" class="category_footer_item item_0">
-                                    {{ category.title }}
-                                </a>
+        {% endblock %}
+        {% block prefooter %}
+            <div class="category_footer">
+                <div class="category_footer_wrapper">
+                    <div class="category_footer_list">
+                        {% for category in category_list %}
+                            {% if category.level == 0 %}
+                                {% if category.title == 'Транспорт' or category.title == 'Хобби и отдых' %}
+                                    <a href="{% url 'advertisement_by_category' category.slug %}"
+                                        class="category_footer_item item_0">
+                                        {{ category.title }}
+                                    </a>
+                                {% else %}
+                                    <p></p>
+                                    <a href="{% url 'advertisement_by_category' category.slug %}"
+                                        class="category_footer_item item_0">
+                                        {{ category.title }}
+                                    </a>
+                                {% endif %}
                             {% else %}
-                                <p></p>
-                                <a href="{% url 'advertisement_by_category' category.slug %}" class="category_footer_item item_0">
+                                <a href="{% url 'advertisement_by_category' category.slug %}"
+                                    class="category_footer_item item_1">
                                     {{ category.title }}
                                 </a>
                             {% endif %}
-                        {% else %}
-                            <a href="{% url 'advertisement_by_category' category.slug %}" class="category_footer_item item_1">
-                                {{ category.title }}
-                            </a>
-                        {% endif %}
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endblock %}
     </div>
-{% endblock %}
+</div>
+
 {% block javascript %}
     <script src="{% static 'js/advertisement.js' %}"></script>
 {% endblock %}
