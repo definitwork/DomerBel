@@ -145,7 +145,7 @@
                         </li>
                         <li>
                             {% if request.user.store %}
-                                <a href="{% url 'my_store' %}">Мой магазин</a>
+                                <a href="{% url 'users:my_store' %}">Мой магазин</a>
                             {% else %}
                                 <a href="{% url 'users:add_store' %}" class="red_item">Добавить магазин</a>
                             {% endif %}
