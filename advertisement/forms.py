@@ -25,7 +25,7 @@ class StoreForm(forms.ModelForm):
                'size': 40}))
     contact_name = forms.CharField(max_length=255, label="Контактное лицо",
                                    widget=forms.TextInput(attrs={'class': 'input_field'}))
-    email = forms.EmailField(label="E-mail", widget=forms.TextInput(attrs={'class': 'input_field'}))
+    email = forms.EmailField(label="E-mail", widget=forms.TextInput(attrs={'class': 'input_field', 'id': 'store_email'}))
     phone_num = forms.CharField(max_length=255, required=False, label="Телефон",
                                 widget=forms.TextInput(attrs={'class': 'input_field'}))
     video_link = forms.URLField(required=False, label="Ссылка на видеоролик YouTube", widget=forms.URLInput(

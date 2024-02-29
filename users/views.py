@@ -57,7 +57,7 @@ def add_store(request):
             store.save()
             return redirect('personal_account')
         else:
-            print(new_store.errors)
+            return new_store.errors
     oblast = Region.objects.filter(type='Область')
     store_form = StoreForm(initial={'contact_name': request.user.first_name, 'email': request.user.email,
                                     'phone_num': request.user.phone_number})
