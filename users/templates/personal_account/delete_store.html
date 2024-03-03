@@ -1,0 +1,29 @@
+{% extends 'personal_account/base_for_personal_account.html' %}
+
+{% load static %}
+
+{% block nav_title %}
+    <div class="nav_category_title">
+        <p>
+            Удаление магазина
+        </p>
+    </div>
+{% endblock %}
+{% block user_search_table %}
+{% endblock %}
+{% block user_navigation %}
+    {% block content %}
+        <title>Добавление магазина</title>
+        <div class="thin_line"></div>
+        <div class="delete_store">
+            <h1>Вы уверены, что хотите удалить магазин {{ store.title }}?</h1>
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="buttons_for_delete">
+                    <button>Удалить</button>
+                    <a href="{% url 'users:my_store' %}"><div class="cancel_button">Отмена</div></a>
+                </div>
+            </form>
+        </div>
+    {% endblock %}
+{% endblock %}

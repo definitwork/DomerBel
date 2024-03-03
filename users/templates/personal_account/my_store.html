@@ -2,64 +2,107 @@
 
 {% load static %}
 
-{% block table %}
-    <title>Мой магазин</title>
-    <div class="wrapper">
-        <div class="container">
-            <div class="thin_line"></div>
-        </div>
+{% block nav_title %}
+    <div class="nav_category_title">
+        <p>
+            Мои магазины
+        </p>
     </div>
 {% endblock %}
+
 {% block user_search_table %}
 {% endblock %}
 {% block content %}
+    <title>Мои магазины</title>
+    <div class="thin_line"></div>
     <div class="personal_account_body">
         <div class="wrapper">
             <div class="container">
                 <div class="body">
                     <div class="my_store">
-                        <div class="my_store_info">
-                            <p><a href="{% url 'users:edit_store' %}">Редактировать магазин</a></p>
-                            <p class="store_date">
-                                Дата регистрации магазина: <span>{{ store.date_of_create|date:"j E Y" }}</span>
-                            </p>
-                            {% if store.is_active == False %}
-                                <p class="store_inactive">Магазин не активен</p>
-                                <p><a class="pay_store" href="#">Оплатить на год</a></p>
-                            {% else %}
-                                <p class="store_date">
-                                    Магазин активен до: <span>{{ store.date_of_deactivate|date:"j E Y" }} </span><span style="color: #008000">(Осталось {{ days_till_expiration }} дн.)</span>
-                                </p>
+                        {% if stores %}
+                        {% for message in messages %}
+                            {% if message.tags == 'success' %}
+                                <div class="success-message">{{ message }}</div>
+                                <script>
+                                    setTimeout(function() {
+                                        let successMessage = document.querySelector('.success-message');
+                                        successMessage.style.display = 'none';
+                                    }, 5000);
+                                </script>
                             {% endif %}
-                            <p><a href="{% url 'users:store_page' store.slug %}">Страница магазина на сайте</a></p>
-                            <div class="my_store_table">
-                                <p class="table_name">Название</p>
-                                <p class="table_description">{{ store.title }}</p>
+                        {% endfor %}
+                        {% for store in stores %}
+                        <div class="store_block">
+                            <div class="my_store_info">
+                                <p class="store_title">{{ store.title }}</p>
+                                <div class="change_store">
+                                    <p><a href="{% url 'users:edit_store' store.id %}">Редактировать магазин</a></p>
+                                    <p><a href="{% url 'users:delete_store' store.id %}">Удалить магазин</a></p>
+                                </div>
+                                <p class="store_date">
+                                    Дата регистрации магазина: <span>{{ store.date_of_create|date:"j E Y" }}</span>
+                                </p>
+                                {% if store.is_active == False %}
+                                    <p class="store_inactive">Магазин не активен</p>
+                                    <p><a class="pay_store" href="#">Оплатить на год</a></p>
+                                {% else %}
+                                    <p class="store_date">
+                                        Магазин активен до: <span>{{ store.date_of_deactivate|date:"j E Y" }} </span><span style="color: #008000">(Осталось {{ store.get_days_till_expiration }} дн.)</span>
+                                    </p>
+                                {% endif %}
+                                <p><a href="{% url 'users:store_page' store.slug %}">Страница магазина на сайте</a></p>
+                                <div class="my_store_table">
+                                    <p class="table_name">Название</p>
+                                    <p class="table_description">{{ store.title }}</p>
+                                </div>
+                                <div class="my_store_table">
+                                    <p class="table_name">Раздел</p>
+                                    <p class="table_description">{{ store.category.title }}</p>
+                                </div>
+                                <div class="my_store_table">
+                                    <p class="table_name">Регион</p>
+                                    <p class="table_description" id="{{store.region.parent_id}}">{{store.region.parent}}</p>
+                                </div>
+                                <div class="my_store_table">
+                                    <p class="table_name">Город / район</p>
+                                    <p class="table_description">{{ store.region.area }}</p>
+                                </div>
+                                <div class="my_store_table">
+                                    <p class="table_name">Описание</p>
+                                    <p class="table_description">{{ store.description }}</p>
+                                </div>
+                                <div class="my_store_table">
+                                    <p class="table_name">Сайт магазина</p>
+                                    {% if store.url == None %}
+                                        <p class="table_description"><a href="{{ store.url }}"></a></p>
+                                    {% else %}
+                                        <p class="table_description"><a href="{{ store.url }}">{{ store.url }}</a></p>
+                                    {% endif %}
+                                </div>
                             </div>
-                            <div class="my_store_table">
-                                <p class="table_name">Раздел</p>
-                                <p class="table_description">{{ store.category.title }}</p>
-                            </div>
-                            <div class="my_store_table">
-                                <p class="table_name">Регион</p>
-                                <p class="table_description">{{ oblast.area }}</p>
-                            </div>
-                            <div class="my_store_table">
-                                <p class="table_name">Город / район</p>
-                                <p class="table_description">{{ store.region.area }}</p>
-                            </div>
-                            <div class="my_store_table">
-                                <p class="table_name">Описание</p>
-                                <p class="table_description">{{ store.description }}</p>
-                            </div>
-                            <div class="my_store_table">
-                                <p class="table_name">Сайт магазина</p>
-                                <p class="table_description"><a href="{{ store.url }}">{{ store.url }}</a></p>
+                            <div class="my_store_img">
+                                <img src="{{ store.logo_image.url }}" alt="{{ store.logo_image.url }}">
                             </div>
                         </div>
-                        <div class="my_store_img">
-                            <img src="{{ store.logo_image.url }}" alt="{{ store.logo_image.url }}">
-                        </div>
+                        <div class="thin_line" style="margin-bottom: 10px"></div>
+                        {% endfor %}
+                        {% else %}
+                            <div class="my_store_info">
+                                {% for message in messages %}
+                                    {% if message.tags == 'success' %}
+                                        <div class="success-message">{{ message }}</div>
+                                        <script>
+                                                setTimeout(function() {
+                                                    let successMessage = document.querySelector('.success-message');
+                                                    successMessage.style.display = 'none';
+                                                    }, 5000);
+                                        </script>
+                                        {% endif %}
+                                {% endfor %}
+                                <p class="store_title">У Вас нет созданных магазинов</p>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

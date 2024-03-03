@@ -5,7 +5,7 @@
 {% block nav_title %}
     <div class="nav_category_title">
         <p>
-            Добавление магазина.
+            Добавление магазина
         </p>
     </div>
 {% endblock %}
@@ -16,7 +16,7 @@
         <title>Добавление магазина</title>
         <div class="thin_line"></div>
         <div class="add_store">
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form action="" method="POST" enctype="multipart/form-data" novalidate>
                 {% csrf_token %}
                 <ul class="add_store_form">
                     <li>
@@ -37,6 +37,9 @@
                                 </select>
                             </p>
                         </div>
+                        {% if store_form.region.errors %}
+                            {{ store_form.region.errors }}
+                        {% endif %}
                     </li>
                     <li>
                         <p class="label_field"><label for="address">{{ store_form.address.label }}</label></p>
@@ -50,19 +53,31 @@
                             <select class="input_field" id="select_category" name="category" size="10">
                             </select>
                         </p>
+                        {% if store_form.category.errors %}
+                            {{ store_form.category.errors }}
+                        {% endif %}
                     </li>
                     <li>
                         <p class="label_field"><span>*</span><label for="title">{{ store_form.title.label }}</label></p>
                         <p>{{ store_form.title }}</p>
+                        {% if store_form.title.errors %}
+                            {{ store_form.title.errors }}
+                        {% endif %}
                     </li>
                     <li>
                         <p class="label_field"><span>*</span><label for="slug">{{ store_form.slug.label }}</label></p>
                         <p>{{ store_form.slug }}</p>
+                        {% if store_form.slug.errors %}
+                            {{ store_form.slug.errors }}
+                        {% endif %}
                     </li>
                     <li>
                         <p class="label_field"><span>*</span><label
                                 for="description">{{ store_form.description.label }}</label></p>
                         <p>{{ store_form.description }}</p>
+                        {% if store_form.description.errors %}
+                            {{ store_form.description.errors }}
+                        {% endif %}
                     </li>
                     <li>
                         <p class="label_field"><label for="url">{{ store_form.url.label }}</label></p>
@@ -72,14 +87,23 @@
                         <p class="label_field"><span>*</span><label
                                 for="contact_name">{{ store_form.contact_name.label }}</label></p>
                         <p>{{ store_form.contact_name }}</p>
+                        {% if store_form.contact_name.errors %}
+                            {{ store_form.contact_name.errors }}
+                        {% endif %}
                     </li>
                     <li>
                         <p class="label_field"><span>*</span><label for="email">{{ store_form.email.label }}</label></p>
                         <p>{{ store_form.email }}</p>
+                        {% if store_form.email.errors %}
+                            {{ store_form.email.errors }}
+                        {% endif %}
                     </li>
                     <li>
                         <p class="label_field"><label for="phone_num">{{ store_form.phone_num.label }}</label></p>
                         <p>{{ store_form.phone_num }}</p>
+                        {% if store_form.phone_num.errors %}
+                            {{ store_form.phone_num.errors }}
+                        {% endif %}
                     </li>
                     <li>
                         <p class="label_field"><label for="url">{{ store_form.video_link.label }}</label></p>
