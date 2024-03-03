@@ -225,13 +225,17 @@ class Store(models.Model):
     logo_image = models.ImageField(upload_to='images/store_img', default='default/no_image.jpg', blank=True, null=True, verbose_name='Логотип')
     date_of_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     date_of_deactivate = models.DateTimeField(auto_now_add=True, verbose_name='Дата деактивации')
-    user = models.OneToOneField(settings.AUTH_USER_MODEL,
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE, verbose_name='Пользователь, создавший магазин')
     is_active = models.BooleanField(default=False, verbose_name='Активный магазин')
     category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Категория')
     url = models.URLField(blank=True, null=True, verbose_name='Ссылка на сайт магазина')  # хранит строку, которая представляет валидный URL-адрес
     address = models.CharField(max_length=255, blank=True, null=True, verbose_name='Адрес')
     counter_prosmotr = models.IntegerField(blank=True, null=True, verbose_name='Счетчик просмотров') # над этим еще надо подумать
+
+    def get_days_till_expiration(self):
+        days_till_expiration = self.date_of_deactivate - self.date_of_create
+        return days_till_expiration.days
 
     class Meta:
         verbose_name = 'Магазин'

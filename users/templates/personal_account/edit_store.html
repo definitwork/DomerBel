@@ -5,7 +5,7 @@
 {% block nav_title %}
     <div class="nav_category_title">
         <p>
-            Редактирование магазина.
+            Редактирование магазина
         </p>
     </div>
 {% endblock %}
@@ -16,7 +16,7 @@
         <title>Редактирование магазина</title>
         <div class="thin_line"></div>
         <div class="add_store">
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form id="form" method="POST" enctype="multipart/form-data" novalidate>
                 {% csrf_token %}
                 <ul class="add_store_form">
                     <li>
@@ -36,6 +36,7 @@
                                 </select>
                             </p>
                         </div>
+                        <p class="errorlist" id="error_message" style="display: none">Выберите корректный вариант. Вашего варианта нет среди допустимых значений.</p>
                     </li>
                     <li>
                         <p class="label_field"><label for="address">{{ edit_store.address.label }}</label></p>
@@ -61,15 +62,24 @@
                     <li>
                         <p class="label_field"><span>*</span><label for="title">{{ edit_store.title.label }}</label></p>
                         <p>{{ edit_store.title }}</p>
+                        {% if edit_store.title.errors %}
+                            {{ edit_store.title.errors }}
+                        {% endif %}
                     </li>
                     <li>
                         <p class="label_field"><span>*</span><label for="slug">{{ edit_store.slug.label }}</label></p>
                         <p>{{ edit_store.slug }}</p>
+                        {% if edit_store.slug.errors %}
+                            {{ edit_store.slug.errors }}
+                        {% endif %}
                     </li>
                     <li>
                         <p class="label_field"><span>*</span><label
                                 for="description">{{ edit_store.description.label }}</label></p>
                         <p>{{ edit_store.description }}</p>
+                        {% if edit_store.description.errors %}
+                            {{ edit_store.description.errors }}
+                        {% endif %}
                     </li>
                     <li>
                         <p class="label_field"><label for="url">{{ edit_store.url.label }}</label></p>
@@ -79,14 +89,23 @@
                         <p class="label_field"><span>*</span><label
                                 for="contact_name">{{ edit_store.contact_name.label }}</label></p>
                         <p>{{ edit_store.contact_name }}</p>
+                        {% if edit_store.contact_name.errors %}
+                            {{ edit_store.contact_name.errors }}
+                        {% endif %}
                     </li>
                     <li>
                         <p class="label_field"><span>*</span><label for="email">{{ edit_store.email.label }}</label></p>
                         <p>{{ edit_store.email }}</p>
+                        {% if edit_store.email.errors %}
+                            {{ edit_store.email.errors }}
+                        {% endif %}
                     </li>
                     <li>
                         <p class="label_field"><label for="phone_num">{{ edit_store.phone_num.label }}</label></p>
                         <p>{{ edit_store.phone_num }}</p>
+                        {% if edit_store.phone_num.errors %}
+                            {{ edit_store.phone_num.errors }}
+                        {% endif %}
                     </li>
                     <li>
                         <p class="label_field"><label for="url">{{ edit_store.video_link.label }}</label></p>

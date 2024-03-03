@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{% static 'css/personal_account_style.css' %}">
     <link rel="stylesheet" href="{% static 'css/user_data.css' %}">
     <link rel="stylesheet" href="{% static 'css/messages.css' %}">
-    <link rel="stylesheet" href="{% static 'css/add_store.css' %}">
+    <link rel="stylesheet" href="{% static 'css/add_edit_delete_store.css' %}">
     <link rel="stylesheet" href="{% static 'css/my_store.css' %}">
 {% endblock %}
 {% block popup %}
@@ -144,11 +144,10 @@
                             <a href="{% url 'users:personal_account' %}">Мои объявления</a>
                         </li>
                         <li>
-                            {% if request.user.store %}
-                                <a href="{% url 'users:my_store' %}">Мой магазин</a>
-                            {% else %}
-                                <a href="{% url 'users:add_store' %}" class="red_item">Добавить магазин</a>
-                            {% endif %}
+                            <a href="{% url 'users:add_store' %}" class="red_item">Добавить магазин</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'users:my_store' %}">Мои магазины</a>
                         </li>
                         <li>
                             <a href="{% url 'users:incoming_messages' %}">Входящие сообщения</a>
