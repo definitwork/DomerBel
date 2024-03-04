@@ -16,3 +16,19 @@ function show_city(event){
         get_element_select_city.innerHTML = `<option value="0">---------</option>`;
     }
 }
+
+
+let select_oblast = document.getElementById('select_oblast')
+let select_city = document.getElementById('select_city')
+let error_message = document.getElementById('error_message')
+
+function validateSelectRegion(event) {
+    if (select_oblast.value === "0" | select_city.value === "0") {
+        error_message.style.display = 'block';
+        event.preventDefault();
+    } else {
+        error_message.style.display = 'none';
+    }
+}
+let form = document.getElementById('form');
+form.addEventListener('submit', validateSelectRegion);

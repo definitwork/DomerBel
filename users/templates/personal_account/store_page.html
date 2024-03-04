@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% load static %}
-
+{% block find %}
+{% endblock %}
 {% block content %}
     <title>{{ store_page.title }}</title>
     <div class="store">
@@ -29,7 +30,7 @@
                 </div>
                 <div class="store_email">
                     <img src="{% static 'img/icons/email.gif' %}" alt="{% static 'img/icons/email.gif' %}">
-                    <a href="{{ store_page.email }}">Отправить письмо</a>
+                    <a href="mailto:{{ store_page.email }}">Отправить письмо</a>
                 </div>
                 <div class="store_site">
                     <img src="{% static 'img/icons/site.png' %}" alt="{% static 'img/icons/site.png' %}">

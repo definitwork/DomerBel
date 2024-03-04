@@ -61,4 +61,53 @@ form button {
     font-size: 13px;
     cursor: pointer;
     color: #333333;
+    width: 80px;
+    height: 30px;
+}
+
+.delete_store {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+    & h1 {
+        display: flex;
+        font-family: "Trebuchet MS";
+        font-size: 18px;
+        color: #333333;
+    }
+}
+
+.buttons_for_delete {
+    display: flex;
+    gap: 5px;
+}
+
+.cancel_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #AAA;
+    background: #DADADA;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+    cursor: pointer;
+    color: #333333;
+    width: 80px;
+    height: 30px;
+}
+
+.errorlist {
+    display: flex;
+
+
+    text-align: justify;
+    padding-left: 5px;
+    max-width: 366px;
+    width: 100%;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+    color: red;
 }

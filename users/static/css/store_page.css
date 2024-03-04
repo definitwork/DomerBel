@@ -1,6 +1,7 @@
 .store {
     display: flex;
     margin-top: 20px;
+    margin-bottom: 30px;
 }
 
 .store_details {

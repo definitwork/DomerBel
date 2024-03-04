@@ -7,6 +7,7 @@
 
 }
 
+
 .vip_cart_list {
     display: flex;
     flex-direction: column;
@@ -33,7 +34,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     gap: 5px;
     width: 65%;
     min-width: 300px;
@@ -47,6 +47,7 @@
     max-width: 640px;
     height: 120px;
     position: relative;
+
     &::after {
         position: absolute;
         bottom: 0px;
@@ -64,24 +65,25 @@
     }
 
 }
-.cart_info{
+
+.cart_info {
     display: flex;
     flex-direction: column;
     gap: 3px;
     color: #858585;
+
     & a {
         color: #307792;
         font-weight: bold;
         font-size: 16px;
         font-family: Arial, Helvetica, sans-serif;
     }
-    & p {
 
+    & p {
         font-size: 13px;
         font-family: Trebuchet MS;
     }
 }
-
 
 .cart_info_price {
     color: #333333;
@@ -103,15 +105,10 @@
     }
 }
 
-
-
 .sort_wrapper {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
     padding: 10px 0;
-    flex-wrap: wrap;
-
 }
 
 
@@ -120,28 +117,46 @@
     justify-content: center;
     gap: 10px;
     align-items: end;
+}
 
+.number_of_advertisements {
+    display: flex;
+    align-items: center;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
 }
 
 .number_of_advertisements_per_page {
     display: flex;
+    align-items: center;
     gap: 5px;
-    align-items: end;
+
     & a {
         padding: 2px;
         border: 1px solid black;
         color: #333333;
+
         &:hover {
-            color: #333333;
+            color: black;
+            background-color: #3CB371;
         }
+    }
+
+    & p {
+        font-family: "Trebuchet MS";
+        font-size: 13px;
     }
 }
 
 .sorted_by_price_or_date {
     display: flex;
+    align-items: center;
     gap: 5px;
-    align-items: end;
-    flex-wrap: wrap;
+
+    & p {
+        font-family: "Trebuchet MS";
+        font-size: 13px;
+    }
 }
 
 
