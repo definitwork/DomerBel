@@ -68,6 +68,7 @@ def get_advertisement_by_category(request, category_slug):
     category_queryset_all = Category.objects.all()
     category_list = category_queryset_all.filter(level__lte=1)
     category = get_object_or_404(category_queryset_all, slug=category_slug)
+    category_bread_crumbs = category.get_ancestors(ascending=False, include_self=True)
     category_queryset_an = Category.objects.add_related_count(category.get_descendants(),
                                                               Advertisement,
                                                               'category',
@@ -85,6 +86,7 @@ def get_advertisement_by_category(request, category_slug):
                                        sort_for_paginator)
     context = {
         "category": category_queryset,
+        "category_bread_crumbs": category_bread_crumbs,
         "category_list": category_list,
         "page_obj": page_obj,
         'date': state_sort_by_date,

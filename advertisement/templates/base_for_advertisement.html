@@ -11,6 +11,14 @@
 <div class="wrapper">
     <div class="container">
         {% block filter %}
+            {% if category_bread_crumbs %}
+            <div class="", style="display: flex;">
+                <a href="{% url 'advertisement'%}">Все объявления...</a>
+                {% for bread_crumbs in category_bread_crumbs %}
+                   <a href="{% url 'advertisement_by_category' bread_crumbs.slug %}">{{ bread_crumbs.title }}...</a>
+            {% endfor %}
+            </div>
+            {% endif %}
             <div class="category_navigation_bar">
                 <div class="category_wrapper">
                     <div class="category_list">
@@ -66,19 +74,19 @@
                             {% if category.level == 0 %}
                                 {% if category.title == 'Транспорт' or category.title == 'Хобби и отдых' %}
                                     <a href="{% url 'advertisement_by_category' category.slug %}"
-                                        class="category_footer_item item_0">
+                                       class="category_footer_item item_0">
                                         {{ category.title }}
                                     </a>
                                 {% else %}
                                     <p></p>
                                     <a href="{% url 'advertisement_by_category' category.slug %}"
-                                        class="category_footer_item item_0">
+                                       class="category_footer_item item_0">
                                         {{ category.title }}
                                     </a>
                                 {% endif %}
                             {% else %}
                                 <a href="{% url 'advertisement_by_category' category.slug %}"
-                                    class="category_footer_item item_1">
+                                   class="category_footer_item item_1">
                                     {{ category.title }}
                                 </a>
                             {% endif %}
