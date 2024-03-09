@@ -11,25 +11,35 @@
 <div class="wrapper">
     <div class="container">
         {% block filter %}
-            {% if category_bread_crumbs %}
-            <div class="", style="display: flex;">
-                <a href="{% url 'advertisement'%}">Все объявления...</a>
-                {% for bread_crumbs in category_bread_crumbs %}
-                   <a href="{% url 'advertisement_by_category' bread_crumbs.slug %}">{{ bread_crumbs.title }}...</a>
+            {% if category_bread_crumbs or region_bread_crumbs %}
+            <div class="advertisement_breadcrumbs">
+                <a href="{% url 'advertisement'%}">Все объявления ...</a>
+            {% if region_bread_crumbs %}
+                {% for bread_crumbs in region_bread_crumbs %}
+                   <a href="{% url 'advertisement'  %}?region={{ bread_crumbs.id }}">{{ bread_crumbs.area }} ...</a>
             {% endfor %}
+                {% endif %}
+            {% if category_bread_crumbs %}
+                {% for bread_crumbs in category_bread_crumbs %}
+                   <a href="{% url 'advertisement_by_category' bread_crumbs.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}">{{ bread_crumbs.title }} ...</a>
+            {% endfor %}
+                {% endif %}
             </div>
             {% endif %}
             <div class="category_navigation_bar">
                 <div class="category_wrapper">
+                {% if category %}
                     <div class="category_list">
                         {% for cat in category %}
                             {% if cat %}
-                                <a href="{% url 'advertisement_by_category' cat.slug %}" class="category">
+                                <a href="{% url 'advertisement_by_category' cat.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}" class="category">
                                     {{ cat.title }}, {{ cat.advertisement_counts }}
                                 </a>
                             {% endif %}
                         {% endfor %}
+
                     </div>
+                {% endif %}
                 </div>
             </div>
         {% endblock %}
@@ -42,7 +52,7 @@
                         <ul>
                             {% if page_obj.has_previous %}
                                 <li class="">
-                                    <a href="?page={{ page_obj.previous_page_number }}"><</a>
+                                    <a href="?page={{ page_obj.previous_page_number }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}"><</a>
                                 </li>
                             {% endif %}
                             {% if page_obj.has_other_pages %}
@@ -51,14 +61,14 @@
                                         <li class="page_num page_num_selected">{{ page }}</li>
                                     {% elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
                                         <li class="page_num">
-                                            <a href="?page={{ page }}">{{ page }}</a>
+                                            <a href="?page={{ page }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">{{ page }}</a>
                                         </li>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
                             {% if page_obj.has_next %}
                                 <li class="">
-                                    <a href="?page={{ page_obj.next_page_number }}">></a>
+                                    <a href="?page={{ page_obj.next_page_number }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">></a>
                                 </li>
                             {% endif %}
                         </ul>

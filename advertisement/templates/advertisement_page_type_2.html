@@ -9,28 +9,28 @@
     <div class="container">
         <div class="sort_wrapper">
             <div class="number_of_advertisements">
-                Найдено: {{ page_obj.object_list.count }}
+                Найдено: {{ ads_found }}
             </div>
             <div class="number_of_advertisements_per_page">
                 <p>
                     Выводить по:
                 </p>
-                <a href="?sort=30">
+                <a href="?sort=3{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
                     30
                 </a>
-                <a href="?sort=60">
+                <a href="?sort=6{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
                     60
                 </a>
-                <a href="?sort=90">
+                <a href="?sort=9{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
                     90
                 </a>
             </div>
 
             <div class="type_sorted">
-                <a href="?view_type=1" class="type_sorted_img">
+                <a href="?view_type=1{% if region_param.id %}&region={{ region_param.id }}{% endif %}" class="type_sorted_img">
                     <img src="{% static 'img/sort1.png' %}" alt="">
                 </a>
-                <a href="?view_type=0" class="type_sorted_img">
+                <a href="?view_type=0{% if region_param.id %}&region={{ region_param.id }}{% endif %}" class="type_sorted_img">
                     <img src="{% static 'img/sort2.png' %}" alt="">
                 </a>
             </div>
@@ -39,10 +39,10 @@
                 <p>
                     Сортировать
                 </p>
-                <a href="?date={{ date }}">
+                <a href="?date={{ date }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
                     Дата
                 </a>
-                <a href="?price={{ date }}">
+                <a href="?price={{ date }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
                     Цена
                 </a>
             </div>

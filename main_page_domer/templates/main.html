@@ -7,7 +7,7 @@
         <ul class="regions_list">
             {% for region in regions %}
                 <li>
-                    <a href="#" class="minsk reg">{{ region.area|upper }}</a>
+                    <a href="{% url 'advertisement' %}?region={{ region.id }}" class="minsk reg">{{ region.area|upper }}</a>
                 </li>
             {% endfor %}
         </ul>
