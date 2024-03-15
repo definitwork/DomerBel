@@ -3,8 +3,10 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
-from advertisement.forms import StoreForm
-from advertisement.models import Region, Store, Category
+
+from main_page_domer.forms import StoreForm
+from main_page_domer.models import Store
+from advertisement.models import Region, Category
 from .forms import LoginForm, RegisterForm
 from .models import User
 
@@ -128,7 +130,6 @@ def edit_store(request, store_id):
     selected_oblast = Region.objects.get(id=store.region.parent_id)
     categories = Category.objects.all()
     category_list = Category.objects.filter(level__lte=1)
-    print(edit_store.errors)
     context = {
         'edit_store': edit_store,
         'oblast': oblast,
@@ -186,5 +187,4 @@ def register_view(request):
             user.save()
             return JsonResponse({'success': True})
         else:
-            print(form)
             return JsonResponse({'errors': form.errors})

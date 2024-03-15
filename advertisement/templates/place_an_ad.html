@@ -23,6 +23,27 @@
 
     </form>
 
+    {% for i in category %}
+        {% for f in i.field_set.all %}
+            <p>{{ f }}:{{ f.spisok }}:{% for e in f.spisok.element_set.all %}{{ e }}{% for e2 in e.elementtwo_set.all %}{{ e2 }}{% endfor %}
+{% endfor %}</p>
+
+
+
+            {% endfor %}
+    {% endfor %}
+
+{#    {% for i in spisok %}#}
+{#    <p>{{ i }}</p>#}
+{#        {% for b in i.element_set.all %}#}
+{#        <p>----{{ b }}</p>#}
+{#            {% for c in b.elementtwo_set.all %}#}
+{#                <p>------{{ c }}</p>#}
+{#                {% endfor %}#}
+{#            {% endfor %}#}
+{##}
+{#    {% endfor %}#}
+
 
 
 

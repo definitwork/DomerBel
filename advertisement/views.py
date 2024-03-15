@@ -1,7 +1,10 @@
+import codecs
+import json
+
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 
-from .models import Advertisement, Category, Region
+from .models import Advertisement, Category, Region, Spisok, Element, ElementTwo, Field
 
 from .utils import sorted_by_number, variables_for_paginator, sorted_by_date_or_price, sorted_by, get_view_type, \
     get_region_variables
@@ -119,8 +122,14 @@ def get_advertisement_by_category(request, category_slug):
 
 def get_page_place_an_ad(request):
     oblast = Region.objects.filter(type='Область')
+    spisok = Spisok.objects.all()
+    category = Category.objects.all()
+
+
 
     context = {
-        'oblast': oblast
+        'spisok': spisok,
+        'oblast': oblast,
+        'category': category,
     }
     return render(request, 'place_an_ad.html', context)
