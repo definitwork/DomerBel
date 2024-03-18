@@ -16,22 +16,45 @@
         <div class="container">
             <div class="page_user_data">
                 <div class="user_data">
-                    <form method="POST" class="user_data_form" action="">
-                        {% csrf_token %}
-                        {% if messages %}
-                            <ul class="messages">
-                                {% for message in messages %}
-                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                                {% endfor %}
-                            </ul>
+                    {% for message in messages %}
+                        {% if message.tags == 'success' %}
+                            <div class="success-message">{{ message }}</div>
+                            <script>
+                                setTimeout(function() {
+                                    let successMessage = document.querySelector('.success-message');
+                                    successMessage.style.display = 'none';
+                                }, 5000);
+                            </script>
                         {% endif %}
-                        <div class="form-error">{{ form.non_field_errors }}</div>
-                        {% for f in form %}
-                            <p><label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}: </label>{{ f }}</p>
-                            <div class="form-error">{{ f.errors }}</div>
+                    {% endfor %}
+                    <p class="title">Контактные данные пользователя</p>
+                    <form method="POST" class="user_data_form" action="" novalidate>
+                        {% csrf_token %}
+                        {% for field in edit_contact_data_form %}
+                            <div class="form_field">
+                                <p class="form_label"><label>{{ field.label }}</label></p>
+                                <p>{{ field }}</p>
+                                {% if field.errors %}
+                                    {{ field.errors }}
+                                {% endif %}
+                            </div>
                         {% endfor %}
+                        <button class="change_button" name="edit_contact_data">Изменить</button>
                     </form>
-                    <button class="ishsenit_button">Изменить</button>
+                    <p class="title">Изменить пароль пользователя</p>
+                    <form method="POST" class="user_data_form" action="" novalidate>
+                        {% csrf_token %}
+                        {% for field in change_pass_form %}
+                            <div class="form_field">
+                                <p class="form_label"><label>{{ field.label }}</label></p>
+                                <p>{{ field }}</p>
+                                {% if field.errors %}
+                                    <p class="form-error">{{ field.errors }}</p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <button class="change_button" name="change_password">Сохранить</button>
+                    </form>
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-from users.forms import LoginForm, RegisterForm, EmailResetForm, EditProfileForm
+from users.forms import LoginForm, RegisterForm, EmailResetForm
 
 
 def get_context_data(request):

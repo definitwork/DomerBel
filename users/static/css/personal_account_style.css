@@ -294,6 +294,11 @@
     }
 }
 
+.ads_list {
+    display: flex;
+    flex-direction: column;
+}
+
 .status_active {
     border: solid 1px green;
     border-spacing: 2px;

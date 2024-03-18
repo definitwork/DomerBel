@@ -5,7 +5,7 @@ from mptt.forms import TreeNodeChoiceField
 from advertisement.models import Region, Category
 from main_page_domer.models import Store
 from users.models import User
-from users.validators import validate_email, validate_phone
+from users.validators import validate_phone
 
 class StoreForm(forms.ModelForm):
     region = forms.ModelChoiceField(queryset=Region.objects.filter(type="Город"), label="Регион, город, область",

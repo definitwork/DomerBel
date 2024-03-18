@@ -1,22 +1,69 @@
-from django.contrib.auth import logout, authenticate, login, get_user_model
+from django.contrib.auth import logout, authenticate, login, get_user_model, update_session_auth_hash
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import check_password, make_password
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
 
 from main_page_domer.forms import StoreForm
 from main_page_domer.models import Store
-from advertisement.models import Region, Category
-from .forms import LoginForm, RegisterForm
+from advertisement.models import Region, Category, Advertisement
+from .forms import LoginForm, RegisterForm, EditContactDataForm, ChangePasswordForm
 from .models import User
 
 
 def get_personal_account_page(request):
+    ads = Advertisement.objects.filter(author=request.user).order_by('-date_of_create').first()
+    category_list = Category.objects.filter(level__lte=1)
+    context = {
+        'ads': ads,
+        "category_list": category_list,
+    }
+    return render(request, 'personal_account/personal_account.html', context)
+
+
+def get_personal_account_inactive_adds_page(request):
     category_list = Category.objects.filter(level__lte=1)
     context = {
         "category_list": category_list,
     }
-    return render(request, 'personal_account/personal_account.html', context)
+    return render(request, 'personal_account/inactive_adds.html', context)
+
+
+@login_required
+def get_user_data_page(request):
+    """ Обрабатывает в личном кабинете две формы на изменение контактных данных и пароля пользователя """
+    user = request.user
+    edit_contact_data_form = EditContactDataForm(instance=user)
+    change_pass_form = ChangePasswordForm()
+    category_list = Category.objects.filter(level__lte=1)
+    if request.method == "POST":
+        # Изменяем контактные данные пользователя
+        if 'edit_contact_data' in request.POST:
+            edit_contact_data_form = EditContactDataForm(request.POST, instance=user)
+            if edit_contact_data_form.is_valid():
+                edit_contact_data_form.save()
+                messages.success(request, "Контактные данные пользователя успешно изменены!")
+                return redirect('users:user_data')
+        # Изменяем пароль пользователя
+        elif 'change_password' in request.POST:
+            change_pass_form = ChangePasswordForm(request.POST, instance=user)
+            if change_pass_form.is_valid():
+                password = change_pass_form.cleaned_data.get("password")
+                new_password = change_pass_form.cleaned_data.get("new_password")
+                repeat_new_pass = change_pass_form.cleaned_data.get("repeat_new_pass")
+                if password == user.password and password and new_password and repeat_new_pass:
+                    user.set_password(new_password)
+                    user.save()
+                    update_session_auth_hash(request, user)
+                    messages.success(request, "Пароль пользователя успешно изменён!")
+                    return redirect('users:user_data')
+    context = {'edit_contact_data_form': edit_contact_data_form,
+               'change_pass_form': change_pass_form,
+               'category_list': category_list
+               }
+    return render(request, 'personal_account/user_data.html', context)
 
 
 def get_incoming_page(request):
