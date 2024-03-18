@@ -61,7 +61,7 @@
                 {% for cart in page_obj %}
                     <div class="cart">
                         <a href="#" class="cart_img">
-                            <img src="{{ cart.previous_image.url }}" alt="{{ cart.previous_image.url }}">
+                            <img src="{{ cart.preview_image.url }}" alt="{{ cart.preview_image.url }}">
                         </a>
                         <div class="cart_favorite_button">
                             <img class="favorite_img" id="{{ cart.id }}" src="{% static 'img/favorite.png' %}" alt="">

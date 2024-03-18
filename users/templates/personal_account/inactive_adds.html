@@ -1,0 +1,20 @@
+{% extends 'personal_account/base_for_personal_account.html' %}
+
+{% load static %}
+{% block nav_title %}
+    <div class="nav_category_title">
+        <p>
+            Все разделы. Все регионы.
+        </p>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="personal_account_body">
+        <div class="body">
+            <div class=ads_status>
+                <a href="{% url 'users:personal_account' %}" class="status_active">Активные (0)</a>
+                <a href="{% url 'users:inactive_adds' %}" class="status_archive">Архивные (0)</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

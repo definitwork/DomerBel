@@ -11,12 +11,37 @@
 {% block content %}
     <div class="personal_account_body">
         <div class="body">
-            <div class=ads_status>
-                <a href="#" class="status_active">Активные (0)</a>
-                <a href="#" class="status_archive">Архивные (0)</a>
+            <div class="ads_list">
+                <div class=ads_status>
+                    <a href="{% url 'users:personal_account' %}" class="status_active">Активные (0)</a>
+                    <a href="{% url 'users:inactive_adds' %}" class="status_archive">Архивные (0)</a>
+                </div>
+                <div class="select_all_ads">
+                    <input type="checkbox" id="select-all"/>
+                    <label for="select-all">Выбрать все объявления</label>
+                </div>
+                <table>
+                    <tr>
+                        <td>
+                            <p><img src="{% static 'img/icons/vip.png' %}" alt="{% static 'img/icons/vip.png' %}"></p>
+                            <p><img src="{% static 'img/icons/lupa.png' %}" alt="{% static 'img/icons/lupa.png' %}"></p>
+                            <p><img src="{% static 'img/icons/special.png' %}" alt="{% static 'img/icons/special.png' %}"></p>
+                            <p><img src="{% static 'img/icons/raise.png' %}" alt="{% static 'img/icons/raise.png' %}"></p>
+                        </td>
+                        <td>
+                            <p>{{ ads.date_of_create }}</p>
+                            <p></p>
+                            <p></p>
+                            <p></p>
+                        </td>
+                        <td>
+                            <img src="{{ ads.preview_image.url }}" alt="{{ ads.preview_image.url }}">
+                        </td>
+                        <td>aaa</td>
+                        <td>aaa</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
 {% endblock %}
-
-
