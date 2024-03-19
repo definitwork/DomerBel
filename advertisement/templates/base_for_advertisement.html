@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block stylesheet %}
+
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/base_advertisement_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/null_for_templates.css' %}">
+    {% block style %}
+    {% endblock %}
+{% endblock %}
+
+<div class="wrapper">
+    <div class="container">
+        {% block filter %}
+            {% if category_bread_crumbs or region_bread_crumbs %}
+            <div class="advertisement_breadcrumbs">
+                <a href="{% url 'advertisement'%}">Все объявления ...</a>
+            {% if region_bread_crumbs %}
+                {% for bread_crumbs in region_bread_crumbs %}
+                   <a href="{% url 'advertisement'  %}?region={{ bread_crumbs.id }}">{{ bread_crumbs.area }} ...</a>
+            {% endfor %}
+                {% endif %}
+            {% if category_bread_crumbs %}
+                {% for bread_crumbs in category_bread_crumbs %}
+                   <a href="{% url 'advertisement_by_category' bread_crumbs.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}">{{ bread_crumbs.title }} ...</a>
+            {% endfor %}
+                {% endif %}
+            </div>
+            {% endif %}
+            <div class="category_navigation_bar">
+                <div class="category_wrapper">
+                {% if category %}
+                    <div class="category_list">
+                        {% for cat in category %}
+                            {% if cat %}
+                                <a href="{% url 'advertisement_by_category' cat.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}" class="category">
+                                    {{ cat.title }}, {{ cat.advertisement_counts }}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+        {% endblock %}
+        {% block content %}
+        {% endblock %}
+        {% block paginator %}
+            <div class="paginator">
+                <div class="paginator_wrapper">
+                    <nav class="list_pages">
+                        <ul>
+                            {% if page_obj.has_previous %}
+                                <li class="">
+                                    <a href="?page={{ page_obj.previous_page_number }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}"><</a>
+                                </li>
+                            {% endif %}
+                            {% if page_obj.has_other_pages %}
+                                {% for page in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == page %}
+                                        <li class="page_num page_num_selected">{{ page }}</li>
+                                    {% elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                                        <li class="page_num">
+                                            <a href="?page={{ page }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">{{ page }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            {% if page_obj.has_next %}
+                                <li class="">
+                                    <a href="?page={{ page_obj.next_page_number }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">></a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        {% endblock %}
+        {% block prefooter %}
+            <div class="category_footer">
+                <div class="category_footer_wrapper">
+                    <div class="category_footer_list">
+                        {% for category in category_list %}
+                            {% if category.level == 0 %}
+                                {% if category.title == 'Транспорт' or category.title == 'Хобби и отдых' %}
+                                    <a href="{% url 'advertisement_by_category' category.slug %}"
+                                       class="category_footer_item item_0">
+                                        {{ category.title }}
+                                    </a>
+                                {% else %}
+                                    <p></p>
+                                    <a href="{% url 'advertisement_by_category' category.slug %}"
+                                       class="category_footer_item item_0">
+                                        {{ category.title }}
+                                    </a>
+                                {% endif %}
+                            {% else %}
+                                <a href="{% url 'advertisement_by_category' category.slug %}"
+                                   class="category_footer_item item_1">
+                                    {{ category.title }}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    </div>
+</div>
+
+{% block javascript %}
+    <script src="{% static 'js/advertisement.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+<title>Главная</title>
+
+{% block filter %}
+    <section class="regions">
+        <ul class="regions_list">
+            {% for region in regions %}
+                <li>
+                    <a href="{% url 'advertisement' %}?region={{ region.id }}" class="minsk reg">{{ region.area|upper }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endblock %}
+{% block content %}
+    <main>
+        <section>
+            <div class="vip_cart_and_ads">
+                <div class="vip_cart_list">
+                    <a href="#" class="vip_cart">
+                        <p class="vip_cart_header">VIP Объявление</p>
+                    </a>
+                    <a href="#" class="vip_cart">
+                        <p class="vip_cart_header">VIP Объявление</p>
+                    </a>
+                </div>
+                <div class="ads_wrapper">
+                    <div class="last_ads_title">
+                        Последние объявления
+                    </div>
+
+                    {% for cart in adver %}
+                        <div class="ads_list">
+
+                            <div class="ads">
+
+                                <div class="ads_date_time">
+                                    <ul>
+                                        {% if cart.date_of_create.date == date_today %}
+                                            <li>Сегодня</li>
+                                        {% elif cart.date_of_create.date == date_yesterday %}
+                                            <li>Вчера</li>
+                                        {% else %}
+                                            <li>{{ cart.date_of_create|date:"d b. Y" }}</li>
+                                        {% endif %}
+                                        <li>{{ cart.date_of_create|date:"H:i" }}</li>
+                                    </ul>
+                                </div>
+                                <div class="ads_img">
+                                    <img src="{{ cart.preview_image.url }}" alt="{{ cart.preview_image.url }}">
+                                </div>
+                                <div class="ads_description">
+                                    <ul>
+                                        <li>
+                                            <a href="#" class="ads_description_title">
+                                                {{ cart.title }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            {% if cart.price %}
+                                                {{ cart.price }} руб.
+                                            {% endif %}
+                                        </li>
+                                        <li>
+                                            {{ cart.category }}
+                                        </li>
+                                        <li>
+                                            {{ cart.bearer }}
+                                        </li>
+                                        <li>
+                                            {{ cart.region }}
+                                        </li>
+                                    </ul>
+
+                                </div>
+
+                            </div>
+                            <div class="line"></div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </main>
+
+{% endblock %}

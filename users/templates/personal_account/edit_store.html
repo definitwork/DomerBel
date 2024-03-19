@@ -1,0 +1,121 @@
+{% extends 'personal_account/base_for_personal_account.html' %}
+
+{% load static %}
+
+{% block nav_title %}
+    <div class="nav_category_title">
+        <p>
+            Редактирование магазина
+        </p>
+    </div>
+{% endblock %}
+{% block user_search_table %}
+{% endblock %}
+{% block user_navigation %}
+    {% block content %}
+        <title>Редактирование магазина</title>
+        <div class="add_store">
+            <form id="form" method="POST" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                <ul class="add_store_form">
+                    <li>
+                        <p class="label_field"><span>*</span><label>{{ edit_store.region.label }}</label></p>
+                        <div>
+                            <p class="region_oblast">
+                                <select class="input_field" id="select_oblast">
+                                    <option value="0">---------</option>
+                                    {% for obl in oblast %}
+                                        <option value="{{ obl.id }}" {% if obl.id == selected_oblast.id %} selected {% endif %}>{{ obl.area }}</option>
+                                    {% endfor %}
+                                </select>
+                            </p>
+                            <p class="region_city">
+                                <select class="input_field" id="select_city" name="region" style="margin-top: 5px;">
+                                    <option value="{{ store.region.id }}">{{ store.region.area }}</option>
+                                </select>
+                            </p>
+                        </div>
+                        <p class="errorlist" id="error_message" style="display: none">Выберите корректный вариант. Вашего варианта нет среди допустимых значений.</p>
+                    </li>
+                    <li>
+                        <p class="label_field"><label>{{ edit_store.address.label }}</label></p>
+                        <p>{{ edit_store.address }}</p>
+                    </li>
+                    <li>
+                        <p class="label_field"><span>*</span><label>{{ edit_store.category.label }}</label>
+                        </p>
+                        <p>
+                            <select class="input_field" id="select_category" name="category" size="10">
+                                {% for category in categories %}
+                                    {% if category.level == 0 %}
+                                        <option value="{{ category.id }}" style="font-weight: 600;"
+                                                disabled>{{ category.title }}</option>
+                                    {% else %}
+                                        <option value="{{ category.id }}" style="padding-left: 15px;"
+                                                {% if category.id == selected_category %}selected{% endif %}>{{ category.title }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </p>
+                    </li>
+                    <li>
+                        <p class="label_field"><span>*</span><label>{{ edit_store.title.label }}</label></p>
+                        <p>{{ edit_store.title }}</p>
+                        {% if edit_store.title.errors %}
+                            {{ edit_store.title.errors }}
+                        {% endif %}
+                    </li>
+                    <li>
+                        <p class="label_field"><span>*</span><label>{{ edit_store.slug.label }}</label></p>
+                        <p>{{ edit_store.slug }}</p>
+                        {% if edit_store.slug.errors %}
+                            {{ edit_store.slug.errors }}
+                        {% endif %}
+                    </li>
+                    <li>
+                        <p class="label_field"><span>*</span><label>{{ edit_store.description.label }}</label></p>
+                        <p>{{ edit_store.description }}</p>
+                        {% if edit_store.description.errors %}
+                            {{ edit_store.description.errors }}
+                        {% endif %}
+                    </li>
+                    <li>
+                        <p class="label_field"><label>{{ edit_store.url.label }}</label></p>
+                        <p>{{ edit_store.url }}</p>
+                    </li>
+                    <li>
+                        <p class="label_field"><span>*</span><label>{{ edit_store.contact_name.label }}</label></p>
+                        <p>{{ edit_store.contact_name }}</p>
+                        {% if edit_store.contact_name.errors %}
+                            {{ edit_store.contact_name.errors }}
+                        {% endif %}
+                    </li>
+                    <li>
+                        <p class="label_field"><span>*</span><label>{{ edit_store.email.label }}</label></p>
+                        <p>{{ edit_store.email }}</p>
+                        {% if edit_store.email.errors %}
+                            {{ edit_store.email.errors }}
+                        {% endif %}
+                    </li>
+                    <li>
+                        <p class="label_field"><label>{{ edit_store.phone_num.label }}</label></p>
+                        <p>{{ edit_store.phone_num }}</p>
+                        {% if edit_store.phone_num.errors %}
+                            {{ edit_store.phone_num.errors }}
+                        {% endif %}
+                    </li>
+                    <li>
+                        <p class="label_field"><label>{{ edit_store.video_link.label }}</label></p>
+                        <p>{{ edit_store.video_link }}</p>
+                    </li>
+                    <li>
+                        <p class="label_field"><label>{{ edit_store.logo_image.label }}</label></p>
+                        <p>{{ edit_store.logo_image }}</p>
+                    </li>
+                </ul>
+                <button>Изменить</button>
+            </form>
+        </div>
+            <script src="{% static 'js/edit_store.js' %}"></script>
+    {% endblock %}
+{% endblock %}

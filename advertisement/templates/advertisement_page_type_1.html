@@ -1,0 +1,91 @@
+{% extends 'base_for_advertisement.html' %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/style_for_type_1.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="sort_bar">
+
+        <div class="sort_wrapper">
+            <div class="number_of_advertisements">
+                Найдено: {{ ads_found }}
+            </div>
+            <div class="number_of_advertisements_per_page">
+                <p>
+                    Выводить по:
+                </p>
+                <a href="?sort=3{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                    30
+                </a>
+                <a href="?sort=6{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                    60
+                </a>
+                <a href="?sort=9{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                    90
+                </a>
+            </div>
+            <div class="type_sorted">
+                <a href="?view_type=1{% if region_param.id %}&region={{ region_param.id }}{% endif %}" class="type_sorted_img">
+                    <img src="{% static 'img/sort1.png' %}" alt="">
+                </a>
+                <a href="?view_type=0{% if region_param.id %}&region={{ region_param.id }}{% endif %}" class="type_sorted_img">
+                    <img src="{% static 'img/sort2.png' %}" alt="">
+                </a>
+            </div>
+
+            <div class="sorted_by_price_or_date">
+                <p>
+                    Сортировать:
+                </p>
+                <a href="?date={{ date }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                    Дата
+                </a>
+                <a href="?price={{ date }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                    Цена
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="cart_list_wrapper">
+            <div class="vip_cart_list">
+                <a href="#" class="vip_cart">
+                    <p class="vip_cart_header">VIP Объявление</p>
+                </a>
+                <a href="#" class="vip_cart">
+                    <p class="vip_cart_header">VIP Объявление</p>
+                </a>
+            </div>
+            <div class="cart_list">
+                {% for cart in page_obj %}
+                    <div class="cart">
+                        <a href="#" class="cart_img">
+                            <img src="{{ cart.preview_image.url }}" alt="{{ cart.preview_image.url }}">
+                        </a>
+                        <div class="cart_favorite_button">
+                            <img class="favorite_img" id="{{ cart.id }}" src="{% static 'img/favorite.png' %}" alt="">
+                        </div>
+                        <div class="cart_info">
+                            <a href="#" class="cart_link">{{ cart.title }}</a>
+                            {% if cart.price %}
+                                <p class="cart_info_price">{{ cart.price }} руб.</p>
+                            {% endif %}
+                            <p>{{ cart.category }}</p>
+                            <p class="cart_info_bearer">{{ cart.bearer }}</p>
+                            <p>{{ cart.region }}</p>
+                            {% if cart.date_of_create.date == date_today %}
+                                <p>Сегодня</p>
+                            {% elif cart.date_of_create.date == date_yesterday %}
+                                <p>Вчера</p>
+                            {% else %}
+                                <p>{{ cart.date_of_create|date:"d b. Y H:i" }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

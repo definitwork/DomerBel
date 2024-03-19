@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <link rel="stylesheet" href="{% static 'css/null_for_templates.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main_page_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user_data.css' %}">
+    <link rel="stylesheet" href="{% static 'css/add_edit_delete_store.css' %}">
+    {% block stylesheet %}
+    {% endblock %}
+    <link rel="stylesheet" href="{% static 'css/store_page.css' %}">
+
+</head>
+<body>
+<div class="popup">
+    <div class="login_form_popup">
+        <form id="login_form" method="POST" class="login_form" action="">
+            {% csrf_token %}
+            <nav class="header_login_form_popup nav_popup">
+                <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
+                <p>Вход</p>
+            </nav>
+            <p id="login_form_error"></p>
+            {{ login_form }}
+            <input type="button" id="form_login_button" value="Отправить">
+        </form>
+        <div class="forget_pass_and_register_buttons">
+            <button class="forget_pass_button">Забыли пароль?</button>
+            <button class="register_button">Регистрация</button>
+        </div>
+        <div class="closing_cross"></div>
+    </div>
+    <div class="register_form_popup">
+        <form id="register_form" method="POST" class="register_form" action="">
+            {% csrf_token %}
+            <nav class="header_registration_form_popup nav_popup">
+                <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
+                <p>Регистрация</p>
+            </nav>
+            <ul>
+                <li style="display: flex;color:red" class="error_name_register"></li>
+                <li style="display: flex;color:red" class="error_email_register"></li>
+                <li style="display: flex;color:red" class="error_phone_register"></li>
+                <li style="display: flex;color:red" class="error_pass_not_match_register"></li>
+                <li style="display: flex;color:red" class="error_bad_password_register"></li>
+            </ul>
+            {{ register_form.as_p }}
+            <input type="button" id="form_register_button" value="Регистрация"></input>
+        </form>
+        <button class="return_to_login_button">Вход</button>
+        <div class="closing_cross"></div>
+    </div>
+    <div class="forget_pass_form_popup">
+        <form id="forget_pass_form" action="{% url 'users:password_reset' %}" method="POST" class="forget_pass_form">
+            {% csrf_token %}
+            <nav class="header_registration_form_popup nav_popup">
+                <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
+                <p>Восстановление пароля</p>
+            </nav>
+            {{ email_reset_form }}
+            <button id="send_email_button">Отправить</button>
+        </form>
+        <button class="return_to_login_from_forget_button">Вход</button>
+        <div class="closing_cross"></div>
+    </div>
+    <div class="nav_category_list_popup">
+        {% for category in category_list %}
+            {% if category.level == 0 %}
+                {% if category.title == 'Транспорт' or category.title == 'Хобби и отдых' %}
+                    <a href="" class="category_footer_item item_0">
+                        {{ category.title }}
+                    </a>
+                {% else %}
+                    <p></p>
+                    <a href="" class="category_footer_item item_0">
+                        {{ category.title }}
+                    </a>
+                {% endif %}
+            {% else %}
+                <a href="" class="category_footer_item item_1">
+                    {{ category.title }}
+                </a>
+            {% endif %}
+        {% endfor %}
+        <div class="closing_cross"></div>
+    </div>
+</div>
+<div class="wrapper">
+    <div class="container">
+        <header>
+            <section class="header_up">
+                <div class="header_up_wrapper">
+                    <nav class="header_up_wrapper_navigate_info">
+                        <ul>
+                            <li>
+                                <a href="{% url 'advertisement' %}" class="declarations">Объявления</a>
+                            </li>
+                            <li>
+                                <a href="#" class="shops">Магазины</a>
+                            </li>
+                            <li>
+                                <a href="#" class="publications">Публикации</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'help' %}" class="help">Помощь</a>
+                            </li>
+                        </ul>
+                        <div class='user_name'>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'users:logout' %}">Выход</a> |
+                                <a href="{% url 'users:personal_account' %}">{{ user }}</a>
+                            {% else %}
+                                <p class="login_button">Вход и регистрация</p>
+                            {% endif %}
+
+                        </div>
+                    </nav>
+                </div>
+                <div class="horizontal_line"></div>
+            </section>
+            <section class="header_down">
+                <div class="header_down_category">
+                    <div class="header_down_logo">
+                        <a href="{% url 'home' %}">
+                            <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
+                        </a>
+                    </div>
+                    <nav class="header_down_nav_category">
+                        <div class="nav_category_title">
+                            <p>
+                                Общебелорусская доска объявлений
+                            </p>
+                        </div>
+                        <div class="nav_category_list">
+                            <a href="#">Авто</a>
+                            <a href="#">Работа</a>
+                            <a href="#">Недвижимость</a>
+                            <button class="more_button">Ещё...</button>
+                        </div>
+                    </nav>
+                    <nav class="header_down_get_ads">
+                        <a href="{% url 'place_an_ad' %}" class="button_ads">
+                            <img src="{% static 'img/button.png' %}" alt="{% static 'img/button.png' %}">
+                        </a>
+                    </nav>
+                </div>
+            </section>
+        </header>
+        {% block find %}
+            <section class="search_table">
+                <nav class="table_topics_search_location">
+                    <select name="#" id="#" class="table_topics slct">
+                        <option value="#">Все разделы</option>
+                    </select>
+                    <input type="text" placeholder="Поиск по тексту" class="table_search">
+                    <select name="#" id="#" class="table_location slct">
+                        <option value="#">Любое расположение</option>
+                    </select>
+                </nav>
+                <div class="checkbox_button">
+                    <div class="checkbox_list">
+                        <div class="checkbox_input_label">
+                            <input id="1" type="checkbox">
+                            <label for="1" class="checkbox_label">Только в заголовках</label>
+                        </div>
+                        <div class="checkbox_input_label">
+                            <input id="2" type="checkbox">
+                            <label for="2" class="checkbox_label">С фото</label>
+                        </div>
+                        <div class="checkbox_input_label">
+                            <input id="3" type="checkbox">
+                            <label for="3" class="checkbox_label">С видео</label>
+                        </div>
+                    </div>
+                    <a href="#" class="button_search">
+                        <img src="{% static 'img/poisk.png' %}" alt="{% static 'img/poisk.png' %}">
+                    </a>
+                </div>
+            </section>
+        {% endblock %}
+        {% block filter %}
+
+        {% endblock %}
+        {% block content %}
+        {% endblock %}
+        {% block paginator %}
+        {% endblock %}
+        {% block prefooter %}
+        {% endblock %}
+        <footer>
+            <div class="navigate_link">
+                <div class="footer_link">
+                    <a href="">
+                        <p>Подать объявление</p>
+                    </a>
+                </div>
+                <div class="footer_link">
+                    <a href="">
+                        <p>Объявления</p>
+                    </a>
+                </div>
+                <div class="footer_link">
+                    <a href="">
+                        <p>Магазины</p>
+                    </a>
+                </div>
+                <div class="footer_link">
+                    <a href="{% url 'help' %}" class="help">Помощь</a>
+                </div>
+                <div class="footer_link">
+                    <a href="#">
+                        <p>Виджеты</p>
+                    </a>
+                </div>
+                <div class="footer_link">
+                    <a href="#">
+                        Карта
+                    </a>
+                </div>
+                <div class="footer_link">
+                    <a href="#">
+                        Обратная связь
+                    </a>
+                </div>
+                <div class="footer_link">
+                    <a href="#">
+                        МОБИЛЬНАЯ ВЕРСИЯ
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<script src="{% static 'js/modals.js' %}"></script>
+<script src="{% static 'js/auth.js' %}"></script>
+{% block javascript %}
+{% endblock %}
+
+</body>
+</html>

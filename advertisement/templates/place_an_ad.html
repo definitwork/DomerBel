@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+
+        <p class="region_opened">
+            <select class="input_field" id="select_oblast">
+                <option value="0">---------</option>
+            </select>
+        </p>
+        <p class="region_hidden">
+            <select class="input_field" id="select_city" name="region" style="margin-top: 5px;">
+                <option value="0">---------</option>
+            </select>
+        </p>
+        <p class="category_level_0">
+            <select class="input_field" id="select_category_0" name="category_0" style="margin-top: 5px;">
+                <option value="0">---------</option>
+            </select>
+        </p>
+
+    </form>
+
+    {% for i in category %}
+        {% for f in i.field_set.all %}
+            <p>{{ f }}:{{ f.spisok }}:{% for e in f.spisok.element_set.all %}{{ e }}{% for e2 in e.elementtwo_set.all %}{{ e2 }}{% endfor %}
+{% endfor %}</p>
+
+
+
+            {% endfor %}
+    {% endfor %}
+
+{#    {% for i in spisok %}#}
+{#    <p>{{ i }}</p>#}
+{#        {% for b in i.element_set.all %}#}
+{#        <p>----{{ b }}</p>#}
+{#            {% for c in b.elementtwo_set.all %}#}
+{#                <p>------{{ c }}</p>#}
+{#                {% endfor %}#}
+{#            {% endfor %}#}
+{##}
+{#    {% endfor %}#}
+
+
+
+
+{% endblock %}
+{% block javascript %}
+    <script src="{% static 'js/place_an_ad.js' %}"></script>
+{% endblock %}

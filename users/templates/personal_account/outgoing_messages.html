@@ -1,0 +1,24 @@
+{% extends 'personal_account/base_for_personal_account.html' %}
+
+{% load static %}
+{% block nav_title %}
+    <div class="nav_category_title">
+        <p>
+            Исходящие сообщения
+        </p>
+    </div>
+{% endblock %}
+{% block user_search_table %}
+{% endblock %}
+{% block content %}
+    <title>Переписка</title>
+    <div class="wrapper">
+        <div class="container">
+            <div class="body">
+                <div class="admin_message">
+                    <a href="{% url 'users:admin_messages' %}">Написать письмо администратору</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
