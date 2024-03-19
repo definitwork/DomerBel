@@ -65,8 +65,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    max-width: 215px;
-    max-height: 130px;
+    width: 185px;
+    height: 130px;
     & img {
         margin: auto;
         width: 100%;

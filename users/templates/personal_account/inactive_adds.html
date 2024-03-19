@@ -2,19 +2,102 @@
 
 {% load static %}
 {% block nav_title %}
-    <div class="nav_category_title">
-        <p>
-            Все разделы. Все регионы.
-        </p>
-    </div>
+<div class="nav_category_title">
+    <p>
+        Все разделы. Все регионы.
+    </p>
+</div>
+{% endblock %}
+{% block line %}
 {% endblock %}
 {% block content %}
-    <div class="personal_account_body">
-        <div class="body">
+<div class="personal_account_body">
+    <div class="body">
+        <div class="ads_list">
             <div class=ads_status>
-                <a href="{% url 'users:personal_account' %}" class="status_active">Активные (0)</a>
-                <a href="{% url 'users:inactive_adds' %}" class="status_archive">Архивные (0)</a>
+                <a href="{% url 'users:personal_account' %}" class="status_active">Активные ({{ active_ads_quantity }})</a>
+                <a href="{% url 'users:inactive_adds' %}" class="status_archive">Архивные ({{ inactive_ads_quantity }})</a>
             </div>
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <div class="success-message">{{ message }}</div>
+                        <script>
+                            setTimeout(function() {
+                                let successMessage = document.querySelector('.success-message');
+                                successMessage.style.display = 'none';
+                            }, 5000);
+                        </script>
+                {% endif %}
+            {% endfor %}
+            {% if ads %}
+            <form method="POST" action="{% url 'users:delete_or_archive_ads' %}">
+                {% csrf_token %}
+                <div class="select_all_ads">
+                    <input type="checkbox" id="select_all"/>
+                    <label for="select_all">Выделить все объявления</label>
+                </div>
+                <table>
+                    {% for ad in page_obj %}
+                    <tr>
+                        <td class="ads_icons">
+                            <a href="#"><img src="{% static 'img/icons/vip.png' %}"
+                                             alt="{% static 'img/icons/vip.png' %}" title="Сделать VIP-объявлением"></a>
+                            <a href="#"><img src="{% static 'img/icons/lupa.png' %}"
+                                             alt="{% static 'img/icons/lupa.png' %}" title="Выделить объявление"></a>
+                            <a href="#"><img src="{% static 'img/icons/special.png' %}"
+                                             alt="{% static 'img/icons/special.png' %}" title="Спецразмещение"></a>
+                            <a href="#"><img src="{% static 'img/icons/raise.png' %}"
+                                             alt="{% static 'img/icons/raise.png' %}" title="Поднять в поиске"></a>
+                        </td>
+                        <td class="ads_data">
+                            <p>{{ ad.date_of_create }}</p>
+                            <p class="green_item">Осталось {{ ad.get_days_till_expiration }} дн.</p>
+                            <p><a href="#">Редактировать</a></p>
+                            <p class="ads_checkbox">
+                                <input type="checkbox" name="ads_checkbox" value="{{ ad.id }}">
+                                <label>Выделить</label>
+                            </p>
+                        </td>
+                        <td class="ads_image">
+                            <img src="{{ ad.preview_image.url }}" alt="{{ ad.preview_image.url }}">
+                        </td>
+                        <td class="ads_info">
+                            <p class="ads_title">{{ ad.title }}</p>
+                            <p>{{ ad.price }} руб.</p>
+                            <p style="color: #858585;">{{ ad.category.title }}</p>
+                            <p style="color: #858585;">{{ ad.region.area }}</p>
+                        </td>
+                        <td class="ads_raised"></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <div class="ads_marked">
+                    <p>Отмеченные:</p>
+                    <button name="delete_ads">Удалить</button>
+                </div>
+            </form>
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <p class="other_page"><a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a></p>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <p class="current_page">{{ num }}</p>
+                    {% elif num > page_obj.number|add:'-5' and num < page_obj.number|add:'5' %}
+                        <p class="other_page"><a href="?page={{ num }}">{{ num }}</a></p>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <p class="other_page"><a href="?page={{ page_obj.next_page_number }}">Следующая</a></p>
+                {% endif %}
+            </div>
+            {% else %}
+            <div class="no_ads">У Вас нет активных объявлений</div>
+            {% endif %}
         </div>
     </div>
+    <script src="{% static 'js/personal_account.js' %}"></script>
+</div>
 {% endblock %}

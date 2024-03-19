@@ -1,3 +1,7 @@
+.wrapper {
+    width: 1045px;
+}
+
 .popup_pa {
     display: none;
     justify-content: center;
@@ -107,6 +111,13 @@
     margin-bottom: 5px;
     height: 2px;
     background: #ADD8E6;
+}
+
+.line {
+    height: 1px;
+    max-width: 100%;
+    width: 965px;
+    border-bottom: solid 1px #D4D4D4
 }
 
 .header_down_category {
@@ -246,7 +257,7 @@
     border-radius: 5%;
     background-color: #CFE6FE;
     padding: 10px;
-    width: 193px;
+    min-width: 193px;
     height: 100%;
     margin: 5px 0;
 }
@@ -281,7 +292,7 @@
     justify-content: flex-start;
     gap: 15px;
     padding: 10px;
-
+    max-width: 755px;
     & a {
         display: flex;
         justify-content: center;
@@ -297,6 +308,7 @@
 .ads_list {
     display: flex;
     flex-direction: column;
+    max-width: 755px;
 }
 
 .status_active {
@@ -307,4 +319,168 @@
 .status_archive {
     border: solid 1px red;
     border-spacing: 2px;
+}
+
+.select_all_ads {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+    max-width: 755px;
+    & label {
+        font-family: "Trebuchet MS";
+        font-size: 13px;
+    }
+}
+
+table tr {
+    display: flex;
+    border-bottom: 1px solid #D4D4D4;
+}
+
+.ads_icons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5px;
+    width: 40px;
+    height: 125px;
+    & img {
+        width: 20px;
+        height: 20px;
+        margin-bottom: 5px;
+    }
+}
+
+.ads_data {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5px;
+    width: 130px;
+    height: 125px;
+    & p {
+        margin-bottom: 5px;
+        font-family: "Trebuchet MS";
+        font-size: 13px;
+        &.ads_checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    }
+}
+
+.ads_image {
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    width: 150px;
+    height: 125px;
+    & img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+}
+
+.ads_info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 10px 5px 5px 5px;
+    width: 310px;
+    height: 125px;
+    & p {
+        margin-bottom: 5px;
+        font-family: "Trebuchet MS";
+        font-size: 13px;
+        &.ads_title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #307792;
+            text-align: justify;
+        }
+    }
+}
+
+.ads_raised {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5px;
+    width: 125px;
+    height: 125px;
+}
+
+.ads_marked {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    padding-left: 5px;
+    gap: 10px;
+    max-width: 755px;
+    & p {
+        font-family: "Trebuchet MS";
+        font-size: 13px;
+    }
+    & button {
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #AAA;
+        background: #DADADA;
+        align-items: center;
+        justify-content: center;
+        font-family: "Trebuchet MS";
+        font-size: 13px;
+        cursor: pointer;
+        color: #333333;
+        width: auto;
+        height: auto;
+    }
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 15px;
+    margin-bottom: 50px;
+    max-width: 755px;
+}
+
+.current_page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 2px;
+    min-width: 20px;
+    width: auto;
+    font-family: "Trebuchet MS";
+    font-size: 14px;
+    background-color: #307792;
+    color: #FFFFFF;
+}
+
+.other_page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 2px;
+    min-width: 20px;
+    width: auto;
+    & a {
+        font-family: "Trebuchet MS";
+        font-size: 14px;
+        color: #307792;
+    }
+}
+
+.no_ads {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
 }
