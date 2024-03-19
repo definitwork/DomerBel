@@ -47,6 +47,10 @@ class Advertisement(models.Model):
     description = models.TextField(verbose_name='Описание')
     video_link = models.URLField(blank=True, null=True, verbose_name='Ссылка на видео')  # хранит строку, которая представляет валидный URL-адрес
 
+    def get_days_till_expiration(self):
+        days_till_expiration = self.date_of_deactivate - self.date_of_create
+        return days_till_expiration.days
+
     class Meta:
         verbose_name = 'Объявление'
         verbose_name_plural = 'Объявления'

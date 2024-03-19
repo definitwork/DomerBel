@@ -1,34 +1,68 @@
-from django.contrib.auth import logout, authenticate, login, get_user_model, update_session_auth_hash
 from django.contrib import messages
+from django.contrib.auth import logout, authenticate, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.hashers import check_password, make_password
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
-
+from advertisement.models import Region, Category, Advertisement
 from main_page_domer.forms import StoreForm
 from main_page_domer.models import Store
-from advertisement.models import Region, Category, Advertisement
 from .forms import LoginForm, RegisterForm, EditContactDataForm, ChangePasswordForm
 from .models import User
 
 
 def get_personal_account_page(request):
-    ads = Advertisement.objects.filter(author=request.user).order_by('-date_of_create').first()
+    ads = Advertisement.objects.filter(author=request.user, is_active=True).select_related('category', 'region').all().order_by('-date_of_create')
+    active_ads_quantity = ads.count()
+    inactive_ads_quantity = Advertisement.objects.filter(author=request.user, is_active=False).count()
     category_list = Category.objects.filter(level__lte=1)
+    paginator = Paginator(ads, 20)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'ads': ads,
+        "ads": ads,
+        "active_ads_quantity": active_ads_quantity,
+        "inactive_ads_quantity": inactive_ads_quantity,
         "category_list": category_list,
+        "page_obj": page_obj
     }
     return render(request, 'personal_account/personal_account.html', context)
 
 
 def get_personal_account_inactive_adds_page(request):
+    ads = Advertisement.objects.filter(author=request.user, is_active=False).select_related('category', 'region').all().order_by('-date_of_create')
+    inactive_ads_quantity = ads.count()
+    active_ads_quantity = Advertisement.objects.filter(author=request.user, is_active=True).count()
     category_list = Category.objects.filter(level__lte=1)
+
+    paginator = Paginator(ads, 20)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     context = {
+        "ads": ads,
+        "inactive_ads_quantity": inactive_ads_quantity,
+        "active_ads_quantity": active_ads_quantity,
         "category_list": category_list,
+        "page_obj": page_obj
     }
     return render(request, 'personal_account/inactive_adds.html', context)
+
+
+def delete_or_archive_selected_ads(request):
+    if request.method == "POST":
+        if 'delete_ads' in request.POST:
+            selected_ads = request.POST.getlist('ads_checkbox')
+            Advertisement.objects.filter(id__in=selected_ads).delete()
+            messages.success(request, "Выбранные объявления удалены!")
+            return redirect('users:personal_account')
+        if 'archive_ads' in request.POST:
+            selected_ads = request.POST.getlist('ads_checkbox')
+            Advertisement.objects.filter(id__in=selected_ads).update(is_active=False)
+            messages.success(request, "Выбранные объявления перемещены в Архивные!")
+            return redirect('users:personal_account')
 
 
 @login_required
@@ -117,7 +151,6 @@ def add_store(request):
                    "store_form": store_form,
                    "category_list": category_list}
         return render(request, 'personal_account/add_store.html', context)
-
 
     oblast = Region.objects.filter(type='Область')
     store_form = StoreForm(initial={'contact_name': request.user.first_name, 'email': request.user.email,
