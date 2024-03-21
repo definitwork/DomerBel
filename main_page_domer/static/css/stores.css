@@ -1,0 +1,9 @@
+.search_table_stores {
+    display: flex;
+    flex-direction: column;
+    background: #CFE6FE;
+    border-radius: 10px;
+    height: 38px;
+    padding: 5px;
+    gap: 5px;
+}

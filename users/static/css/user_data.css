@@ -1,6 +1,7 @@
 .page_user_data {
     display: flex;
     margin-top: 5px;
+    padding-left: 10px;
 }
 
 .user_data {

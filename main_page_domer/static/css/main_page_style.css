@@ -293,12 +293,17 @@
 
 .item_0 {
     color: black;
-
-
 }
 
 .item_2 {
     align-items: start;
+}
+
+.wrapper {
+    display: flex;
+    width: 1045px;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .header_up {
@@ -349,7 +354,12 @@
     justify-content: space-between;
     align-items: flex-end;
     margin: 0px 5px 10px 0px;
-    /*margin-bottom: 5px;*/
+}
+
+.header_down_nav_category {
+    display: flex;
+    flex-direction: column;
+    width: 275px;
 }
 
 .nav_category_title p {
@@ -465,7 +475,6 @@
     width: 100%;
     gap: 25px;
 }
-
 
 .checkbox_input_label {
     display: flex;

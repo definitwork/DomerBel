@@ -1,15 +1,21 @@
 .store {
     display: flex;
+    max-width: 948px;
+    width: 100%;
+    min-height: 250px;
+    height: auto;
     margin-top: 20px;
     margin-bottom: 30px;
 }
 
 .store_details {
-    width: 630px;
+    max-width: 630px;
+    width: 100%;
 }
 
 .store_details_title {
-    height: 55px;
+    min-height: 55px;
+    height: auto;
     padding: 15px 0 15px 10px;
     font-family: "Trebuchet MS";
     font-size: 19px;
@@ -24,7 +30,8 @@
 .store_details_description {
     padding: 15px 10px 15px 10px;
     text-align: justify;
-    height: 195px;
+    min-height: 195px;
+    height: auto;
     font-family: "Trebuchet MS";
     font-size: 13px;
     color: #333333;
@@ -32,8 +39,10 @@
 }
 
 .store_contacts {
-    width: 338px;
-    height: 250px;
+    max-width: 338px;
+    width: 100%;
+    min-height: 250px;
+    height: auto;
     border-top: solid 1px #D4D4D4;
     border-right: solid 1px #D4D4D4;
     border-bottom: solid 1px #D4D4D4;
