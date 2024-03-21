@@ -1,5 +1,8 @@
 .wrapper {
-    width: 1045px;
+    display: flex;
+    max-width: 1045px;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .popup_pa {

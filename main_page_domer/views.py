@@ -16,5 +16,17 @@ def get_main_page(request):
     return render(request, 'main.html', context)
 
 
+def get_stores_page(request):
+    category_list = Category.objects.filter(level__lte=1)
+    context = {
+        "category_list": category_list
+    }
+    return render(request, 'stores.html', context)
+
+
 def get_help_page(request):
-    return render(request, 'help.html')
+    category_list = Category.objects.filter(level__lte=1)
+    context = {
+        "category_list": category_list
+    }
+    return render(request, 'help.html', context)

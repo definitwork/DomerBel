@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/base_advertisement_style.css' %}">
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/style_for_type_1.css' %}">
+{% endblock %}
+{% block nav_title %}
+    <div class="nav_category_title">
+        <p>
+            Магазины. Беларусь
+        </p>
+    </div>
+{% endblock %}
+{% block find %}
+    <section class="search_table_stores">
+        <nav class="table_topics_search_location">
+            <select name="#" id="#" class="table_topics slct">
+                <option value="#">Все разделы</option>
+            </select>
+            <input type="text" placeholder="Поиск по тексту" class="table_search">
+            <select name="#" id="#" class="table_location slct">
+                <option value="#">Любое расположение</option>
+            </select>
+            <div class="checkbox_button">
+                <a href="#" class="button_search">
+                    <img src="{% static 'img/poisk.png' %}" alt="{% static 'img/poisk.png' %}">
+                </a>
+            </div>
+        </nav>
+    </section>
+{% endblock %}
+<div class="wrapper">
+    <div class="container">
+        {% block filter %}
+            {% if category_bread_crumbs or region_bread_crumbs %}
+            <div class="advertisement_breadcrumbs">
+                <a href="{% url 'advertisement'%}">Все объявления ...</a>
+            {% if region_bread_crumbs %}
+                {% for bread_crumbs in region_bread_crumbs %}
+                   <a href="{% url 'advertisement'  %}?region={{ bread_crumbs.id }}">{{ bread_crumbs.area }} ...</a>
+            {% endfor %}
+                {% endif %}
+            {% if category_bread_crumbs %}
+                {% for bread_crumbs in category_bread_crumbs %}
+                   <a href="{% url 'advertisement_by_category' bread_crumbs.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}">{{ bread_crumbs.title }} ...</a>
+            {% endfor %}
+                {% endif %}
+            </div>
+            {% endif %}
+            <div class="category_navigation_bar">
+                <div class="category_wrapper">
+                {% if category %}
+                    <div class="category_list">
+                        {% for cat in category %}
+                            {% if cat %}
+                                <a href="{% url 'advertisement_by_category' cat.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}" class="category">
+                                    {{ cat.title }}, {{ cat.advertisement_counts }}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+        {% endblock %}
+        {% block content %}
+            <div class="sort_bar">
+                <div class="sort_wrapper">
+                    <div class="number_of_advertisements">
+                        Найдено: {{ ads_found }}
+                    </div>
+                    <div class="number_of_advertisements_per_page">
+                        <p>
+                            Выводить по:
+                        </p>
+                        <a href="?sort=3{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                            30
+                        </a>
+                        <a href="?sort=6{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                            60
+                        </a>
+                        <a href="?sort=9{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                            90
+                        </a>
+                    </div>
+                    <div class="type_sorted">
+                        <a href="?view_type=1{% if region_param.id %}&region={{ region_param.id }}{% endif %}" class="type_sorted_img">
+                            <img src="{% static 'img/sort1.png' %}" alt="">
+                        </a>
+                        <a href="?view_type=0{% if region_param.id %}&region={{ region_param.id }}{% endif %}" class="type_sorted_img">
+                            <img src="{% static 'img/sort2.png' %}" alt="">
+                        </a>
+                    </div>
+
+                    <div class="sorted_by_price_or_date">
+                        <p>
+                            Сортировать:
+                        </p>
+                        <a href="?date={{ date }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                            Дата
+                        </a>
+                        <a href="?price={{ date }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                            Цена
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="main">
+                <div class="cart_list_wrapper">
+                    <div class="cart_list">
+                        {% for cart in page_obj %}
+                            <div class="cart">
+                                <a href="#" class="cart_img">
+                                    <img src="{{ cart.preview_image.url }}" alt="{{ cart.preview_image.url }}">
+                                </a>
+<!--                                <div class="cart_favorite_button">-->
+<!--                                    <img class="favorite_img" id="{{ cart.id }}" src="{% static 'img/favorite.png' %}" alt="">-->
+<!--                                </div>-->
+                                <div class="cart_info">
+                                    <a href="#" class="cart_link">{{ cart.title }}</a>
+                                    {% if cart.price %}
+                                        <p class="cart_info_price">{{ cart.price }} руб.</p>
+                                    {% endif %}
+                                    <p>{{ cart.category }}</p>
+                                    <p class="cart_info_bearer">{{ cart.bearer }}</p>
+                                    <p>{{ cart.region }}</p>
+                                    {% if cart.date_of_create.date == date_today %}
+                                        <p>Сегодня</p>
+                                    {% elif cart.date_of_create.date == date_yesterday %}
+                                        <p>Вчера</p>
+                                    {% else %}
+                                        <p>{{ cart.date_of_create|date:"d b. Y H:i" }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+        {% block paginator %}
+        {% endblock %}
+        {% block prefooter %}
+        {% endblock %}
+    </div>
+</div>

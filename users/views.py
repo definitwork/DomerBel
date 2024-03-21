@@ -13,6 +13,7 @@ from .models import User
 
 
 def get_personal_account_page(request):
+    """ Выводит все активные объявления пользователя в ЛК"""
     ads = Advertisement.objects.filter(author=request.user, is_active=True).select_related('category', 'region').all().order_by('-date_of_create')
     active_ads_quantity = ads.count()
     inactive_ads_quantity = Advertisement.objects.filter(author=request.user, is_active=False).count()
@@ -32,6 +33,7 @@ def get_personal_account_page(request):
 
 
 def get_personal_account_inactive_adds_page(request):
+    """ Выводит все неактивные объявления пользователя в ЛК"""
     ads = Advertisement.objects.filter(author=request.user, is_active=False).select_related('category', 'region').all().order_by('-date_of_create')
     inactive_ads_quantity = ads.count()
     active_ads_quantity = Advertisement.objects.filter(author=request.user, is_active=True).count()
@@ -53,11 +55,13 @@ def get_personal_account_inactive_adds_page(request):
 
 def delete_or_archive_selected_ads(request):
     if request.method == "POST":
+        # Удаляет выбранные объявления из активных или архивных
         if 'delete_ads' in request.POST:
             selected_ads = request.POST.getlist('ads_checkbox')
             Advertisement.objects.filter(id__in=selected_ads).delete()
             messages.success(request, "Выбранные объявления удалены!")
             return redirect('users:personal_account')
+        # Переводит выбранные объявления из активных в архивные
         if 'archive_ads' in request.POST:
             selected_ads = request.POST.getlist('ads_checkbox')
             Advertisement.objects.filter(id__in=selected_ads).update(is_active=False)

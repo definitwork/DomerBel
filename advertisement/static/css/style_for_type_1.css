@@ -60,10 +60,13 @@
 }
 
 .cart_favorite_button {
+    display: flex;
     & img {
+        width: 19px;
+        height: 18px
         cursor: pointer;
+        align-self: flex-start;
     }
-
 }
 
 .cart_info {
@@ -95,13 +98,13 @@
 }
 
 .cart_img {
-    max-height: 115px;
+    display: flex;
+    height: 115px;
     width: 140px;
-
     & img {
-        width: 140px;
-        height: 100%;
-        object-fit: cover;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
     }
 }
 
