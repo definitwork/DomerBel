@@ -3,10 +3,8 @@ from mptt.admin import MPTTModelAdmin
 
 
 from advertisement.models import Advertisement,  Category, Region, PhotoAdvertisement, \
-     FieldSet, Field, Spisok, Element, ElementTwo
+     FieldSet, Field, Spisok, Element, ElementTwo, Store
 
-
-# Register your models here.
 
 class AdvertisementAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
@@ -24,6 +22,10 @@ class GalleryAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
 
 
+class StoreAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("title",)}
+
+
 admin.site.register(Advertisement, AdvertisementAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Region, RegionAdmin)
@@ -33,4 +35,5 @@ admin.site.register(Field)
 admin.site.register(Spisok)
 admin.site.register(Element)
 admin.site.register(ElementTwo)
+admin.site.register(Store, StoreAdmin)
 

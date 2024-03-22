@@ -60,10 +60,14 @@
                             </p>
                         </td>
                         <td class="ads_image">
-                            <img src="{{ ad.preview_image.url }}" alt="{{ ad.preview_image.url }}">
+                            <a href="#">
+                                <img src="{{ ad.preview_image.url }}" alt="{{ ad.preview_image.url }}">
+                            </a>
                         </td>
                         <td class="ads_info">
-                            <p class="ads_title">{{ ad.title }}</p>
+                            <a href="#">
+                                <p class="ads_title">{{ ad.title }}</p>
+                            </a>
                             <p>{{ ad.price }} руб.</p>
                             <p style="color: #858585;">{{ ad.category.title }}</p>
                             <p style="color: #858585;">{{ ad.region.area }}</p>

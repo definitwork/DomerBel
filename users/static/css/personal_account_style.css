@@ -223,20 +223,26 @@
 }
 
 .search_ads {
+    display: flex;
+    max-width: 189px;
+    width: 100%;
     & input {
         font-family: "Trebuchet MS";
         font-size: 13px;
         border: solid 1px #D4D4D4;
         border-radius: 3px;
-        width: 188px;
+        width: 100%;
+        flex-grow: 1;
         height: 28px;
     }
 }
 
 .checkbox_list {
     display: flex;
+    align-items: center;
     gap: 10px;
-    flex: 0 0 550px;
+    max-width: 550px;
+    width: 100%;
 }
 
 .checkbox_label {
@@ -245,8 +251,17 @@
     color: #333333;
 }
 
-.button_search img {
-    border-radius: 5px;
+.checkbox_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 189px;
+    width: 100%;
+    & input {
+        border-radius: 5px;
+        width: 100%;
+        height: auto;
+    }
 }
 
 .body {

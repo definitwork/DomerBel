@@ -10,8 +10,6 @@ from .utils import sorted_by_number, variables_for_paginator, sorted_by_date_or_
     get_region_variables
 
 
-# Create your views here.
-
 def get_advertisement_page(request):
     order_by = sorted_by(request.COOKIES.get('sorted_by'))
     sort_for_paginator = sorted_by_number(request.COOKIES.get('sort'))
