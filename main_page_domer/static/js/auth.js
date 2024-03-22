@@ -102,6 +102,7 @@ setTimeout(function() {
     info_massage_popup.style.display = "none";
 }, 5000);
 
+
 function reset() {
     grecaptcha.reset();
 }
