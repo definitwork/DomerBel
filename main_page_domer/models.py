@@ -1,53 +1,6 @@
-import calendar
-from datetime import datetime, timedelta
-
 from django.db import models
-
 from django.conf import settings
-
-from advertisement.models import Region, Category, Advertisement
-
-
-# Create your models here.
-class Store(models.Model):
-    region = models.ForeignKey(Region, on_delete=models.CASCADE, verbose_name='Регион')
-    title = models.CharField(max_length=60,verbose_name='Название магазина')
-    slug = models.SlugField(max_length=30, unique=True, verbose_name='URL')
-    description = models.TextField(verbose_name='Описание')
-    contact_name = models.CharField(max_length=100, verbose_name='Контактное лицо')
-    email = models.EmailField(verbose_name='E-Mail')
-    phone_num = models.CharField(max_length=20, blank=True, null=True, verbose_name='Номер телефона')
-    video_link = models.URLField(blank=True, null=True, verbose_name='Ссылка на YouTube видео')  # хранит строку, которая представляет валидный URL-адрес
-    logo_image = models.ImageField(upload_to='images/store_img', default='default/no_image.jpg', blank=True, null=True, verbose_name='Логотип')
-    date_of_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
-    date_of_deactivate = models.DateTimeField(blank=True, null=True, verbose_name='Дата деактивации')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE, verbose_name='Пользователь, создавший магазин')
-    is_active = models.BooleanField(default=False, verbose_name='Активный магазин')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
-    url = models.URLField(blank=True, null=True, verbose_name='Ссылка на сайт магазина')  # хранит строку, которая представляет валидный URL-адрес
-    address = models.CharField(max_length=255, blank=True, null=True, verbose_name='Адрес')
-    counter_views = models.IntegerField(default=0, verbose_name='Счетчик просмотров')
-
-    def save(self, *args, **kwargs):
-        day_now = datetime.now()
-        if calendar.isleap(int(day_now.strftime('%Y'))) and int(day_now.strftime("%m")) <= 2:
-            self.date_of_deactivate = day_now + timedelta(days=366)
-        else:
-            self.date_of_deactivate = day_now + timedelta(days=365)
-        super(Store, self).save(*args, **kwargs)
-
-
-    def get_days_till_expiration(self):
-        days_till_expiration = self.date_of_deactivate - self.date_of_create
-        return days_till_expiration.days
-
-    class Meta:
-        verbose_name = 'Магазин'
-        verbose_name_plural = 'Магазины'
-
-    def __str__(self):
-        return self.title
+from advertisement.models import Advertisement
 
 
 class Comment(models.Model):

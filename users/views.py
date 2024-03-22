@@ -5,9 +5,8 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
-from advertisement.models import Region, Category, Advertisement
-from main_page_domer.forms import StoreForm
-from main_page_domer.models import Store
+from advertisement.models import Region, Category, Advertisement, Store
+from advertisement.forms import StoreForm
 from .forms import LoginForm, RegisterForm, EditContactDataForm, ChangePasswordForm
 from .models import User
 

@@ -463,15 +463,14 @@
     color: #333333;
 }
 
-.checkbox_button {
+.checkbox {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
 }
 
 .checkbox_list {
     display: flex;
     justify-content: flex-start;
+    max-width: 749px;
     width: 100%;
     gap: 25px;
 }
@@ -489,8 +488,17 @@
     color: #333333;
 }
 
-.button_search img {
-    border-radius: 5px;
+.checkbox_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 189px;
+    width: 100%;
+    & input {
+        border-radius: 5px;
+        width: 100%;
+        height: auto;
+    }
 }
 
 .regions_list {
