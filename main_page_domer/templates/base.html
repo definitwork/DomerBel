@@ -164,7 +164,7 @@
                         <option value="#">Любое расположение</option>
                     </select>
                 </nav>
-                <div class="checkbox_button">
+                <div class="checkbox">
                     <div class="checkbox_list">
                         <div class="checkbox_input_label">
                             <input id="1" type="checkbox">
@@ -179,9 +179,9 @@
                             <label for="3" class="checkbox_label">С видео</label>
                         </div>
                     </div>
-                    <a href="#" class="button_search">
-                        <img src="{% static 'img/poisk.png' %}" alt="{% static 'img/poisk.png' %}">
-                    </a>
+                    <div class="checkbox_button">
+                        <input type="image" name="submit" src="{% static 'img/poisk.png' %}">
+                    </div>
                 </div>
             </section>
         {% endblock %}
