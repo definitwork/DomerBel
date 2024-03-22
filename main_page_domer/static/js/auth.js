@@ -5,6 +5,8 @@ const error_phone_register = document.querySelector('.error_phone_register');
 const error_email_register = document.querySelector('.error_email_register');
 const error_pass_not_match_register = document.querySelector('.error_pass_not_match_register');
 const error_bad_password_register = document.querySelector('.error_bad_password_register')
+const error_click_captcha = document.querySelector('.error_click_captcha')
+const info_massage_popup = document.querySelector('.info_massage_popup')
 // Для обнуленя значения поля
 const field_password2_register_form = document.querySelector('#id_password2');
 
@@ -51,6 +53,9 @@ function register_fn() {
 
             if (data.success) {
                 window.location.href = '/';
+                info_massage_popup.style.display = 'flex';
+                
+
             }
 
             if (data.errors) {
@@ -84,11 +89,18 @@ function register_fn() {
             } else {
                 error_pass_not_match_register.innerHTML = '';
             }
+            if (data.errors.captcha) {
+                error_click_captcha.innerHTML = data.errors.captcha;
+            } else {
+                error_click_captcha.innerHTML = '';
+            }
 
         })
 }
 
-
+setTimeout(function() {
+    info_massage_popup.style.display = "none";
+}, 5000);
 
 function reset() {
     grecaptcha.reset();

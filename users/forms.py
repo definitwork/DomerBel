@@ -12,7 +12,7 @@ from .validators import validate_password, validate_email, validate_phone
 class LoginForm(forms.Form):
     email = forms.CharField(
         widget=forms.EmailInput(attrs={'id': 'email_login_field', 'placeholder': 'Введите Вашу почту'}),
-        label='', validators=[validate_email])
+        label='')
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={'id': 'password_login_field', 'placeholder': 'Введите пароль'}), label='')
 
@@ -29,9 +29,10 @@ class RegisterForm(forms.Form):
                             validators=[validate_email], label='')
     password = forms.CharField(error_messages={'required': 'Введите пароль'},
                                widget=forms.PasswordInput(
-                                   attrs={'id': 'password_register_field', 'placeholder': 'Введите пароль'}),
+                                   attrs={'id': 'password_register', 'placeholder': 'Введите пароль'}),
                                validators=[validate_password], label='')
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Повторите пароль'}), label='')
+ 
     captcha = ReCaptchaField(label='')
 
     def clean(self):

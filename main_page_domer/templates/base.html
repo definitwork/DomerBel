@@ -48,8 +48,9 @@
                 <li style="display: flex;color:red" class="error_phone_register"></li>
                 <li style="display: flex;color:red" class="error_pass_not_match_register"></li>
                 <li style="display: flex;color:red" class="error_bad_password_register"></li>
+                <li style="display: flex;color:red" class="error_click_captcha"></li>
             </ul>
-            {{ register_form.as_p }}
+            {{ register_form }}
             <input type="button" id="form_register_button" value="Регистрация"></input>
         </form>
         <button class="return_to_login_button">Вход</button>
@@ -150,6 +151,13 @@
                 </div>
             </section>
         </header>
+        {% if not user.is_authenticated%}
+        <div class="info_massage_popup">
+            <p class='info_massage'>Вы успешно зарегистрированны <br>
+                Авторизуйтесь!
+            </p>
+        </div>
+        {% endif %}
     {% block find %}
         <section class="search_table">
         <nav class="table_topics_search_location">

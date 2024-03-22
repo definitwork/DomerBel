@@ -24,11 +24,11 @@ def login_view(request):
             else:
                 return JsonResponse({'errors': 1})
         else:
+            print(form.errors)
             return JsonResponse({'errors': 1})
 
 
 def register_view(request):
-    if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = User()
@@ -39,7 +39,7 @@ def register_view(request):
             user.save()
             return JsonResponse({'success': True})
         else:
-            print(form)
+            print(form.errors)
             return JsonResponse({'errors': form.errors})
 
 

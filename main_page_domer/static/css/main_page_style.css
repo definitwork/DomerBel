@@ -11,6 +11,21 @@
     background: rgba(0, 0, 0, 0.5);
 }
 
+.info_massage_popup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 311px;
+    z-index: 1;
+    width: 510px;
+    height: 163px;
+    background: #e5e5e5;
+    border: 1px solid;
+    border-radius: 10px;
+
+}
+
 .login_form_popup {
     position: relative;
     display: none;

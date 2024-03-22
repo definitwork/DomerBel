@@ -8,6 +8,10 @@ from advertisement.forms import StoreForm
 from advertisement.models import Advertisement, Region, Store, Category
 
 
+
+
+
+
 def get_main_page(request):
     advertisement_queryset = Advertisement.objects.filter(
         is_active=True, moderated=True).select_related(
