@@ -32,7 +32,6 @@
 <div class="wrapper">
     <div class="container">
         {% block filter %}
-
             <div class="category_navigation_bar">
                 <div class="category_wrapper">
                 {% if category %}
@@ -69,8 +68,10 @@
                             </a>
                         </td>
                         <td class="store_info">
-                            <a href="#" class="cart_link">{{ store.title }}</a>
-                            <p>{{ store.region }}</p>
+                            <a href="#">
+                                <p class="store_title">{{ store.title }}</p>
+                            </a>
+                            <p style="color: #858585;">{{ store.region }}</p>
                             {% if store.address %}
                                 <p>{{ store.address }}</p>
                             {% endif %}
