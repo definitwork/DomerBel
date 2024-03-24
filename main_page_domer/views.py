@@ -3,6 +3,7 @@ from django.shortcuts import render
 
 from advertisement.models import Advertisement, Region, Category, Store
 from advertisement.utils import get_region_variables
+from main_page_domer.models import Publication
 
 
 def get_main_page(request):
@@ -49,3 +50,10 @@ def get_help_page(request):
         "category_list": category_list
     }
     return render(request, 'help.html', context)
+
+
+# Выводим публикации
+def get_publications(request):
+    publications = Publication.objects.all()
+    context = {'publications': publications}
+    return render(request=request, template_name='publications.html', context=context)
