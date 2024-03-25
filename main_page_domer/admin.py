@@ -1,10 +1,6 @@
 from django.contrib import admin
 
-from main_page_domer.models import Complaint, ReasonOfComplaint, Publication, Comment, PhotoPublication
-
-
-class PublicationAdmin(admin.ModelAdmin):
-    prepopulated_fields = {"slug": ("title",)}
+from main_page_domer.models import Complaint, ReasonOfComplaint, Publication, PublicationAdmin, Comment, PhotoPublication
 
 
 admin.site.register(Complaint)

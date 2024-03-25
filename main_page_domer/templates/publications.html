@@ -1,9 +1,53 @@
 {% extends 'base.html' %}
+{% load static %} 
 
-{% load static %}
+{% block title %} Пубикации {% endblock title %}
 
-<title>Главная</title>
+{% block nav_title %}
+    <div class="nav_category_title">
+        <p>Доска объявлений</p>
+    </div>
+{% endblock nav_title %} 
+
+{% block find %}
+    <section class="search_table_stores">
+        <nav class="table_topics_search_location">
+            <select name="#" id="#" class="table_topics slct">
+                <option value="#">Все разделы</option>
+            </select>
+            <input type="text" placeholder="Поиск по тексту" class="table_search">
+            <select name="#" id="#" class="table_location slct">
+                <option value="#">Любое расположение</option>
+            </select>
+            <div class="checkbox_button">
+                <input type="image" name="submit" src="{% static 'img/poisk.png' %}">
+            </div>
+        </nav>
+    </section>
+{% endblock find %}
 
 {% block content %}
-<p>Этам один</p>
+    <section>
+        <div>
+            <p>Найдено записей {{ publications.count }} </p>
+        </div>
+        <div>
+            {% for publication in publications %}
+                <div class="data">
+                    <p> {{ publication.date_of_create }} </p>
+                </div>
+                <div class="img">
+                    <img src="{{ publication.preview_image.url }}" alt="">
+                </div>
+                <div class="text">
+                    <p> {{ publication.title }} </p>
+                <p> {{ publication.announcement }} </p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
 {% endblock content %}
+
+{% block javascript %}
+    <script src=""></script>
+{% endblock %}
