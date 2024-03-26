@@ -124,7 +124,6 @@ def get_page_place_an_ad(request):
     category = Category.objects.all()
 
 
-
     context = {
         'spisok': spisok,
         'oblast': oblast,

@@ -120,10 +120,10 @@ class FieldSet(models.Model):
 
 class Field(models.Model):
     title = models.CharField(max_length=500, verbose_name='Заголовок поля')
-    error = models.CharField(max_length=500, verbose_name='Текст ошибки при неверно введенных данных')
+    error = models.CharField(max_length=500, verbose_name='Текст ошибки при неверно введенных данных', blank=True, null=True)
     spisok = models.ForeignKey('Spisok', on_delete=models.CASCADE, verbose_name='Связь со списком', blank=True, null=True)
     category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Связь с категорией', blank=True, null=True)
-    int_val_list = ArrayField(models.CharField(max_length=1000, blank=True, null=True, verbose_name='Список числовых значений для задания диапазонов фильтрации'), default=list)
+    int_val_list = ArrayField(models.CharField(max_length=1000, blank=True, null=True, verbose_name='Список числовых значений для задания диапазонов фильтрации'), blank=True, null=True, default=list)
     min_val_interval_date = models.IntegerField(verbose_name='Минимально возможный год для выбора', blank=True, null=True)
     max_val_interval_date = models.IntegerField(verbose_name='Максимально возможный год для выбора', blank=True, null=True)
     search = models.CharField(max_length=500, blank=True, null=True)
@@ -134,7 +134,7 @@ class Field(models.Model):
         verbose_name_plural = 'Поля'
 
     def __str__(self):
-        return self.title
+        return f"{self.title}---{self.search}"
 
 
 class Spisok(models.Model):

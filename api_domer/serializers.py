@@ -26,7 +26,7 @@ class ElementSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Element
-        fields = 'title', 'elementtwo_set'
+        fields = 'id', 'title', 'elementtwo_set'
 
 
 class SpisokSerializer(serializers.ModelSerializer):
@@ -43,3 +43,7 @@ class FieldSerialier(serializers.ModelSerializer):
     class Meta:
         model = Field
         fields = '__all__'
+
+
+class PhotoAdvertisementSerializer(serializers.Serializer):
+    InMemoryUploadedFile = serializers.ImageField()

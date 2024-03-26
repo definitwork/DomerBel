@@ -1,48 +1,115 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block stylesheet %}
+
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/place_an_ad.css' %}">
+    {% block style %}
+    {% endblock %}
+{% endblock %}
 
 {% block content %}
-    <form action="" method="POST">
+    <form action="" method="POST" enctype="multipart/form-data" id="add_adver">
         {% csrf_token %}
+        <div class="title">
+            <p class="title_label label_fields">Заголовок</p>
+            <input type="text" name="title" class="information_item-input">
+        </div>
+        <div class="region" style="display: flex;">
+            <div class="region_label label_fields">Регион, город</div>
+            <div class="region_select">
+                <p class="region_opened">
+                    <select class="input_field" style="margin-top: 5px" id="select_oblast">
+                        <option value="0">---------</option>
+                    </select>
+                </p>
+                <p class="region_hidden">
+                    <select class="input_field" id="select_city" name="region" style="margin-top: 5px;">
+                        <option value="0">---------</option>
+                    </select>
+                </p>
+            </div>
+        </div>
+        <div class="category" style="display: flex">
+            <div class="category_label label_fields">Категория</div>
+            <div class="category_select">
+                <p class="category_level_0">
+                    <select class="input_field" id="select_category_0" name="category" style="margin-top: 5px;">
+                        <option value="0">---------</option>
+                    </select>
+                </p>
+                <p class="category_level_1">
+                    <select class="input_field select_class" id="select_category_1" name="category"
+                            style="margin-top: 5px; display: none;">
+                        <option value="0">---------</option>
+                    </select>
+                </p>
+                <p class="category_level_2">
+                    <select class="input_field select_class" id="select_category_2" name="category"
+                            style="margin-top: 5px; display: none;">
+                        <option value="0">---------</option>
+                    </select>
+                </p>
+                <p class="category_level_3">
+                    <select class="input_field select_class" id="select_category_3" name="category"
+                            style="margin-top: 5px;display: none;">
+                        <option value="0">---------</option>
+                    </select>
+                </p>
+            </div>
+        </div>
 
-        <p class="region_opened">
-            <select class="input_field" id="select_oblast">
-                <option value="0">---------</option>
-            </select>
-        </p>
-        <p class="region_hidden">
-            <select class="input_field" id="select_city" name="region" style="margin-top: 5px;">
-                <option value="0">---------</option>
-            </select>
-        </p>
-        <p class="category_level_0">
-            <select class="input_field" id="select_category_0" name="category_0" style="margin-top: 5px;">
-                <option value="0">---------</option>
-            </select>
-        </p>
+        <div class="additional_information"></div>
+
+        <div class="description">
+            <p class="description_label label_fields">Описание</p>
+            <textarea class="description_textarea" name="description" id="" cols="30" rows="10"></textarea>
+        </div>
+        <div class="bearer">
+            <p class="bearer_label label_fields">Податель</p>
+            <div class="description_radio">
+                <label>
+                    <input type="radio" name="bearer" value="Частное лицо">
+                    Частное лицо
+                </label>
+                <label>
+                    <input type="radio" name="bearer" value="Компания">
+                    Компания
+                </label>
+
+            </div>
+        </div>
+        <div class="contact">
+            <div class="contact_information">
+                <p class="contact_label label_fields">Контактное лицо</p>
+                <input type="text" name="contact_name" class="information_item-input">
+            </div>
+            <div class="email_information">
+                <p class="email_label label_fields">E-mail</p>
+                <input type="text" name="email" class="information_item-input">
+            </div>
+            <div class="phone_information">
+                <p class="contact_label label_fields">Телефон</p>
+                <input type="text" name="phone_num" class="information_item-input">
+            </div>
+        </div>
+        <div class="link_youtube">
+            <p class="link_youtube_label label_fields">Ссылка на видеоролик YOUTUBE</p>
+            <input type="text" name="video_link" class="information_item-input">
+        </div>
+        <div class="photo">
+            <p class="photo_label label_fields">Фотографии (не более 30 штук)</p>
+            <div class="photo_file">
+                <input type="file" class="file_input" name="photo_files" id="photo_list" multiple>
+                <div class="photo_preview">
+
+                </div>
+            </div>
+
+        </div>
 
     </form>
+    <button class="add_adv">Разместить объявление</button>
 
-    {% for i in category %}
-        {% for f in i.field_set.all %}
-            <p>{{ f }}:{{ f.spisok }}:{% for e in f.spisok.element_set.all %}{{ e }}{% for e2 in e.elementtwo_set.all %}{{ e2 }}{% endfor %}
-{% endfor %}</p>
-
-
-
-            {% endfor %}
-    {% endfor %}
-
-{#    {% for i in spisok %}#}
-{#    <p>{{ i }}</p>#}
-{#        {% for b in i.element_set.all %}#}
-{#        <p>----{{ b }}</p>#}
-{#            {% for c in b.elementtwo_set.all %}#}
-{#                <p>------{{ c }}</p>#}
-{#                {% endfor %}#}
-{#            {% endfor %}#}
-{##}
-{#    {% endfor %}#}
 
 
 
