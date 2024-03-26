@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/base_advertisement_style.css' %}">
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/style_for_store_type_1.css' %}">
+{% endblock %}
+
+{% block nav_title %}
+    <div class="nav_category_title">
+        <p></p>
+    </div>
+{% endblock %}
+{% block find %}
+<title>{{ store_page.title }}</title>
+    <div class="store">
+        <div class="store_details">
+            <div class="store_details_title">
+                <p>{{ store_page.title }}</p>
+            </div>
+            <div class="store_details_description">
+                <p>{{ store_page.description }}</p>
+            </div>
+        </div>
+        <div class="store_contacts">
+            <div class="store_contacts_img">
+                <img src="{{ store_page.logo_image.url }}" alt="{{ store_page.logo_image.url }}">
+            </div>
+            <div class="store_contacts_items">
+                <div class="store_region_title">
+                    <p>{{ oblast.area }}</p>
+                    <p>{{ store_page.region.area }}</p>
+                    <p>{{ store_page.title }}</p>
+                </div>
+                <div class="store_telephone">
+                    <img src="{% static 'img/icons/telefon.gif' %}" alt="{% static 'img/icons/telefon.gif' %}">
+                    <p>{{ store_page.phone_num }}</p>
+                </div>
+                <div class="store_email">
+                    <img src="{% static 'img/icons/email.gif' %}" alt="{% static 'img/icons/email.gif' %}">
+                    <a href="mailto:{{ store_page.email }}">Отправить письмо</a>
+                </div>
+                <div class="store_site">
+                    <img src="{% static 'img/icons/site.png' %}" alt="{% static 'img/icons/site.png' %}">
+                    <a href="{{ store_page.url }}">Сайт магазина</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="search_table">
+        <nav class="table_topics_search_location">
+            <select name="#" id="#" class="table_topics slct">
+                <option value="#">Все разделы</option>
+            </select>
+            <input type="text" placeholder="Поиск по тексту" class="table_search">
+            <select name="#" id="#" class="table_location slct">
+                <option value="#">Любое расположение</option>
+            </select>
+        </nav>
+        <div class="checkbox">
+            <div class="checkbox_list">
+                <div class="checkbox_input_label">
+                    <input id="1" type="checkbox">
+                    <label for="1" class="checkbox_label">Только в заголовках</label>
+                </div>
+                <div class="checkbox_input_label">
+                    <input id="2" type="checkbox">
+                    <label for="2" class="checkbox_label">С фото</label>
+                </div>
+                <div class="checkbox_input_label">
+                    <input id="3" type="checkbox">
+                    <label for="3" class="checkbox_label">С видео</label>
+                </div>
+            </div>
+            <div class="checkbox_button">
+                <input type="image" name="submit" src="{% static 'img/poisk.png' %}">
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block filter %}
+    {% if category_bread_crumbs or region_bread_crumbs %}
+        <div class="advertisement_breadcrumbs">
+            <a href="{% url 'advertisement'%}">Все объявления ...</a>
+            {% if region_bread_crumbs %}
+                {% for bread_crumbs in region_bread_crumbs %}
+                   <a href="{% url 'advertisement'  %}?region={{ bread_crumbs.id }}">{{ bread_crumbs.area }} ...</a>
+                {% endfor %}
+            {% endif %}
+            {% if category_bread_crumbs %}
+                {% for bread_crumbs in category_bread_crumbs %}
+                   <a href="{% url 'advertisement_by_category' bread_crumbs.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}">{{ bread_crumbs.title }} ...</a>
+                {% endfor %}
+            {% endif %}
+        </div>
+    {% endif %}
+    <div class="category_navigation_bar">
+        <div class="category_wrapper">
+            {% if category %}
+                <div class="category_list">
+                    {% for cat in category %}
+                        {% if cat %}
+                            {% if cat.advertisement_counts != 0 %}
+                            <a href="{% url 'advertisement_by_category' cat.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}" class="category">
+                                {{ cat.title }}, {{ cat.advertisement_counts }}
+                            </a>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="sort_bar">
+        <div class="sort_wrapper">
+            <div class="number_of_advertisements">
+                Найдено: {{ ads_found }}
+            </div>
+            <div class="number_of_advertisements_per_page">
+                <p>
+                    Выводить по:
+                </p>
+                <a href="?sort=3{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                    30
+                </a>
+                <a href="?sort=6{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                    60
+                </a>
+                <a href="?sort=9{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                    90
+                </a>
+            </div>
+            <div class="type_sorted">
+                <a href="?view_type=1{% if region_param.id %}&region={{ region_param.id }}{% endif %}" class="type_sorted_img">
+                    <img src="{% static 'img/sort1.png' %}" alt="">
+                </a>
+                <a href="?view_type=0{% if region_param.id %}&region={{ region_param.id }}{% endif %}" class="type_sorted_img">
+                    <img src="{% static 'img/sort2.png' %}" alt="">
+                </a>
+            </div>
+            <div class="sorted_by_price_or_date">
+                <p>
+                    Сортировать:
+                </p>
+                <a href="?date={{ date }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                    Дата
+                </a>
+                <a href="?price={{ date }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                    Цена
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="store_ads_list_wrapper">
+            <div class="store_ads_list">
+                {% for store_ad in page_obj %}
+                    <div class="store_ad">
+                        <a href="#" class="store_ad_img">
+                            <img src="{{ store_ad.preview_image.url }}" alt="{{ store_ad.preview_image.url }}">
+                        </a>
+                        <div class="store_ad_favorite_button">
+                            <img class="favorite_img" id="{{ store_ad.id }}" src="{% static 'img/favorite.png' %}" alt="">
+                        </div>
+                        <div class="store_ad_info">
+                            <a href="#" class="store_ad_link">{{ store_ad.title }}</a>
+                            {% if store_ad.price %}
+                                <p class="store_ad_info_price">{{ store_ad.price }} руб.</p>
+                            {% endif %}
+                            <p>{{ store_ad.category }}</p>
+                            <p class="store_ad_info_bearer">{{ store_ad.bearer }}</p>
+                            <p>{{ store_ad.region }}</p>
+                            {% if store_ad.date_of_create.date == date_today %}
+                                <p>Сегодня</p>
+                            {% elif store_ad.date_of_create.date == date_yesterday %}
+                                <p>Вчера</p>
+                            {% else %}
+                                <p>{{ store_ad.date_of_create|date:"d b. Y H:i" }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block paginator %}
+    <div class="paginator">
+        <div class="paginator_wrapper">
+            <nav class="list_pages">
+                <ul>
+                    {% if page_obj.has_previous %}
+                    <li class="">
+                        <a href="?page={{ page_obj.previous_page_number }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}"><</a>
+                    </li>
+                    {% endif %}
+                    {% if page_obj.has_other_pages %}
+                        {% for page in page_obj.paginator.page_range %}
+                            {% if page_obj.number == page %}
+                                <li class="page_num page_num_selected">{{ page }}</li>
+                            {% elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                                <li class="page_num">
+                                    <a href="?page={{ page }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">{{ page }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                        <li class="">
+                            <a href="?page={{ page_obj.next_page_number }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">></a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script src="{% static 'js/store_advertisement.js' %}"></script>
+{% endblock %}

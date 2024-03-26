@@ -182,6 +182,7 @@ def get_my_store(request):
     return render(request, 'personal_account/my_store.html', context)
 
 
+# Открывает страницу выбранного в ЛК магазина
 def get_store_page(request, slug):
     store_page = Store.objects.get(user=request.user, slug=slug)
     oblast = Region.objects.get(id=store_page.region.parent_id)
@@ -198,23 +199,23 @@ def get_store_page(request, slug):
 def edit_store(request, store_id):
     store = Store.objects.get(user=request.user, id=store_id)
     if request.method == 'POST':
-        edit_store = StoreForm(request.POST, request.FILES, instance=store)
-        if edit_store.is_valid():
-            updated_store = edit_store.save(commit=False)
+        edit_selected_store = StoreForm(request.POST, request.FILES, instance=store)
+        if edit_selected_store.is_valid():
+            updated_store = edit_selected_store.save(commit=False)
             updated_store.user = request.user
             updated_store.save()
             messages.success(request, f"Магазин {store} успешно изменён!")
             return redirect('users:my_store')
 
     else:
-        edit_store = StoreForm(instance=store)
+        edit_selected_store = StoreForm(instance=store)
 
     oblast = Region.objects.filter(type='Область')
     selected_oblast = Region.objects.get(id=store.region.parent_id)
     categories = Category.objects.all()
     category_list = Category.objects.filter(level__lte=1)
     context = {
-        'edit_store': edit_store,
+        'edit_store': edit_selected_store,
         'oblast': oblast,
         'selected_oblast': selected_oblast,
         'categories': categories,

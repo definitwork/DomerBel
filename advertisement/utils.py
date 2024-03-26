@@ -71,3 +71,22 @@ def get_region_variables(region_request):
         region_bread_crumbs = ''
         region_param = ''
         return region_filter, region_param, region_bread_crumbs
+
+
+def get_view_type_for_store(view_type):
+    if view_type.get('view_type'):
+        view_type = view_type.get('view_type')
+        if type(view_type) == str:
+            if view_type == '1':
+                return 1, 'store_detail_page_type_2.html'
+            else:
+                return 0, 'store_detail_page_type_1.html'
+        elif view_type.get('view_type'):
+            if view_type.get('view_type') == '0':
+                return 1, 'store_detail_page_type_2.html'
+            else:
+                return 0, 'store_detail_page_type_1.html'
+        else:
+            return 0, 'store_detail_page_type_1.html'
+    else:
+        return 0, 'store_detail_page_type_1.html'
