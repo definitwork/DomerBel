@@ -555,7 +555,7 @@
     height: 115px;
     width: 140px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
 
     & img {
         max-width: 100%;
