@@ -58,6 +58,19 @@ class PhotoPublication(models.Model):
         return self.publication
 
 
+class ImagesForPublications(models.Model):
+    photo = models.ImageField(upload_to='images/publications', verbose_name='Фото')
+    advertisement = models.ForeignKey('Publication', on_delete=models.CASCADE, verbose_name='Фотография')
+
+    class Meta:
+        verbose_name = 'Фото публикации'
+        verbose_name_plural = 'Фото публикаций'
+        ordering = ["-id"]
+
+    def __str__(self):
+        return self.advertisement
+
+
 class Publication(models.Model):
     category = models.CharField(max_length=255, verbose_name='Категория')
     title = models.CharField(max_length=255, verbose_name='Заголовок')
@@ -65,8 +78,6 @@ class Publication(models.Model):
     announcement = models.TextField(verbose_name='Анонс')
     description = models.TextField(verbose_name='Текст с описанием')
     video_link = models.URLField(blank=True, null=True, verbose_name='Ссылка на видео')
-    preview_image = models.ImageField(upload_to='images/publications',
-                                      verbose_name='Главная фотография')
     date_of_create = models.DateTimeField(auto_now_add=True,verbose_name='Дата создания')
     counter_views = models.IntegerField(default=0, verbose_name='Счетчик просмотров')
     moderated = models.BooleanField(default=False, verbose_name='Прошло модерацию')
