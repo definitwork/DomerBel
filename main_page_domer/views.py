@@ -56,8 +56,7 @@ def get_stores_by_category(request, category_slug):
                                                               'store_counts',
                                                               cumulative=True,
                                                               extra_filters={"region__in": region_filter['region__in']})
-    category_queryset = category_queryset_an.filter(parent_id=category.id)
-    print(category_queryset)
+    # category_queryset = category_queryset_an.filter(parent_id=category.id)
     store_queryset = Store.objects.filter(Q(category__in=category_queryset_an) |
                                                           Q(category__slug=category.slug),
                                                           **region_filter,
@@ -120,6 +119,66 @@ def get_store_by_title(request, store_slug):
         "region_bread_crumbs": region_bread_crumbs,
         "region_param": region_param,
         "page_obj": page_obj,
+        'date': state_sort_by_date,
+        'view_type': view_type,
+    }
+    response = render(request, html, context)
+    response.set_cookie('sort', sort_for_paginator)
+    response.set_cookie('date', state_sort_by_date)
+    response.set_cookie('sorted_by', order_by)
+    response.set_cookie('view_type', view_type)
+
+    return response
+
+
+def get_store_by_title_and_category(request, store_slug, category_slug):
+    order_by = sorted_by(request.COOKIES.get('sorted_by'))
+    sort_for_paginator = sorted_by_number(request.COOKIES.get('sort'))
+    state_sort_by_date = request.COOKIES.get('date', 0)
+    view_type, html = get_view_type_for_store(request.COOKIES)
+    region_filter, region_param, region_bread_crumbs = get_region_variables(request.GET.get('region'))
+
+    if request.GET.get('date') or request.GET.get('price'):
+        state_sort_by_date, order_by = sorted_by_date_or_price(request.GET)
+    if request.GET.get('sort'):
+        sort_for_paginator = sorted_by_number(request.GET.get('sort'))
+    if request.GET.get('view_type'):
+        view_type, html = get_view_type_for_store(request.GET)
+
+    store_page = Store.objects.get(slug=store_slug)
+    oblast = Region.objects.get(id=store_page.region.parent_id)
+    category_queryset_all = Category.objects.all()
+    category_list = Category.objects.filter(level__lte=1)
+    category = get_object_or_404(category_queryset_all, slug=category_slug)
+    category_bread_crumbs = category.get_ancestors(ascending=False, include_self=True)
+    category_queryset_an = Category.objects.add_related_count(category.get_descendants(),
+                                                              Advertisement,
+                                                              'category',
+                                                              'advertisement_counts',
+                                                              cumulative=True,
+                                                              extra_filters={"region__in": region_filter['region__in'],})
+    category_queryset = category_queryset_an.filter(parent_id=category.id)
+    advertisement_queryset = Advertisement.objects.filter(Q(category__in=category_queryset_an) |
+                                                          Q(category__slug=category.slug), store=store_page,
+                                                          **region_filter,
+                                                          is_active=True).select_related(
+                                                          'category',
+                                                          'region')
+
+    page_obj = variables_for_paginator(advertisement_queryset,
+                                       request.GET.get('page'),
+                                       sort_for_paginator)
+
+    context = {
+        'store_page': store_page,
+        'oblast': oblast,
+        "category_list": category_list,
+        "ads_found": advertisement_queryset.count(),
+        "category": category_queryset,
+        "category_bread_crumbs": category_bread_crumbs,
+        "region_bread_crumbs": region_bread_crumbs,
+        "region_param": region_param,
+        'page_obj': page_obj,
         'date': state_sort_by_date,
         'view_type': view_type,
     }

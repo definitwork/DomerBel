@@ -1,3 +1,25 @@
+.store_advertisement_breadcrumbs {
+    display: flex;
+    position: relative;
+    margin-top: 10px;
+    gap: 5px;
+
+    &::after {
+        position: absolute;
+        bottom: -5px;
+        content: '';
+        display: block;
+        width: 100%;
+        height: 1px;
+        background: lightgray;
+    }
+    & p {
+        color: #333333;
+        font-size: 13px;
+        flex-wrap: wrap;
+        font-family: Trebuchet MS;
+    }
+}
 
 .store_ads_list_wrapper {
     display: flex;

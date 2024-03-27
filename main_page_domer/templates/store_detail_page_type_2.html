@@ -81,16 +81,16 @@
 {% endblock %}
 {% block filter %}
     {% if category_bread_crumbs or region_bread_crumbs %}
-        <div class="advertisement_breadcrumbs">
-            <a href="{% url 'advertisement'%}">Все объявления ...</a>
+        <div class="store_advertisement_breadcrumbs">
+            <p>Все объявления ...</p>
             {% if region_bread_crumbs %}
                 {% for bread_crumbs in region_bread_crumbs %}
-                   <a href="{% url 'advertisement'  %}?region={{ bread_crumbs.id }}">{{ bread_crumbs.area }} ...</a>
+                   <p>{{ bread_crumbs.area }} ...</p>
                 {% endfor %}
             {% endif %}
             {% if category_bread_crumbs %}
                 {% for bread_crumbs in category_bread_crumbs %}
-                   <a href="{% url 'advertisement_by_category' bread_crumbs.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}">{{ bread_crumbs.title }} ...</a>
+                   <p>{{ bread_crumbs.title }} ...</p>
                 {% endfor %}
             {% endif %}
         </div>
@@ -101,9 +101,11 @@
                 <div class="category_list">
                     {% for cat in category %}
                         {% if cat %}
-                            <a href="{% url 'advertisement_by_category' cat.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}" class="category">
-                                {{ cat.title }}, {{ cat.advertisement_counts }}
-                            </a>
+                            {% if cat.advertisement_counts != 0 %}
+                                <a href="{% url 'store_by_title_and_category' store_slug=store_page.slug category_slug=cat.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}" class="category">
+                                    {{ cat.title }}, {{ cat.advertisement_counts }}
+                                </a>
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -115,7 +117,7 @@
     <div class="sort_bar">
         <div class="sort_wrapper">
             <div class="number_of_advertisements">
-                Найдено: {{ ads_found }}
+                Найдено в магазине: {{ ads_found }}
             </div>
             <div class="number_of_advertisements_per_page">
                 <p>
