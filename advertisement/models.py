@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
+from django.utils.timezone import make_aware
 from mptt.models import MPTTModel, TreeForeignKey
 
 from django.conf import settings
@@ -18,8 +19,7 @@ class PhotoAdvertisement(models.Model):
         verbose_name_plural = 'Фото объявлений'
 
     def __str__(self):
-        return self.advertisement
-
+        return f'{self.advertisement.id}-{self.id}'
 
 class Advertisement(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -62,7 +62,7 @@ class Advertisement(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        self.date_of_deactivate = datetime.now() + timedelta(days=180)
+        self.date_of_deactivate = make_aware(datetime.now() + timedelta(days=180))
         super(Advertisement, self).save(*args, **kwargs)
 
 

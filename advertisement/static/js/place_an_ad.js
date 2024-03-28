@@ -64,49 +64,79 @@ fetch("http://127.0.0.1:8000/api/v1/add_store/categories/")
 function show_category(event) {
     if (event.target === get_element_select_category_0 && event.target.value !== '0' && event.target.value !== status_category_0) {
         status_category_0 = event.target.value
-        fetch(`http://127.0.0.1:8000/api/v1/get_category_list/${event.target.value}`)
+        fetch(`http://127.0.0.1:8000/api/v1/get_category_list/?id=${event.target.value}`)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data)
-                get_element_select_category_1.style.display = "flex";
-                get_element_select_category_1.innerHTML = `<option value="0">---------</option>`
-                get_element_select_category_1.innerHTML += data.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)
+                information_list.innerHTML = '';
+                let category = document.createElement('p')
+                category.classList.add('category_level_1')
+                category.innerHTML += `
+            <select class="input_field select_class" name="category" id="select_category_1" style="margin-top: 5px;">
+                <option value="0">---------</option>
+                ${data.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)}
+            </select>
+
+                `
+                    event.target.parentElement.parentElement.append(category)
+                // get_element_select_category_1.style.display = "flex";
+                // get_element_select_category_1.innerHTML = `<option value="0">---------</option>`
+                // get_element_select_category_1.innerHTML += data.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)
                 event.target.addEventListener('change', () => {
-                    get_element_select_category_1.innerHTML = ''
-                    get_element_select_category_2.innerHTML = ''
-                    get_element_select_category_2.style.display = "none";
-                    get_element_select_category_3.innerHTML = ''
-                    get_element_select_category_3.style.display = "none";
                     information_list.innerHTML = '';
+                    // document.querySelector('#select_category_1').innerHTML = ''
+                    if (document.querySelector('.category_level_1')){
+                    document.querySelector('.category_level_1').remove()}
+                    if (document.querySelector('.category_level_2')){
+                    document.querySelector('.category_level_2').remove()}
+                    if (document.querySelector('.category_level_3')){
+                    document.querySelector('.category_level_3').remove()}
+                    // get_element_select_category_2.innerHTML = ''
+                    // get_element_select_category_2.style.display = "none";
+                    // get_element_select_category_3.innerHTML = ''
+                    // get_element_select_category_3.style.display = "none";
+
 
                 })
             })
     }
-    if (event.target === get_element_select_category_1 && event.target.value !== '0' && event.target.value !== status_category_1) {
+    if (event.target === document.querySelector('#select_category_1') && event.target.value !== '0' && event.target.value !== status_category_1) {
         status_category_1 = event.target.value
-        fetch(`http://127.0.0.1:8000/api/v1/get_category_list/${event.target.value}`)
+        fetch(`http://127.0.0.1:8000/api/v1/get_category_list/?id=${event.target.value}`)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data)
                 if (data.length !== 0) {
-                    get_element_select_category_2.style.display = "flex";
-                    get_element_select_category_2.innerHTML = `<option value="0">---------</option>`
-                    get_element_select_category_2.innerHTML += data.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)
+                    information_list.innerHTML = '';
+                    let category = document.createElement('p')
+                category.classList.add('category_level_2')
+                category.innerHTML += `
+            <select class="input_field select_class" name="category" id="select_category_2" style="margin-top: 5px;">
+                <option value="0">---------</option>
+                ${data.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)}
+            </select>
+
+                `
+                    event.target.parentElement.parentElement.append(category)
+                    // get_element_select_category_2.style.display = "flex";
+                    // get_element_select_category_2.innerHTML = `<option value="0">---------</option>`
+                    // get_element_select_category_2.innerHTML += data.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)
                     event.target.addEventListener('change', () => {
-                        get_element_select_category_2.innerHTML = ''
-                        get_element_select_category_3.innerHTML = ''
-                        get_element_select_category_3.style.display = "none";
                         information_list.innerHTML = '';
+                        // document.querySelector('#select_category_2').innerHTML = ''
+                        if (document.querySelector('.category_level_2')){
+                            document.querySelector('.category_level_2').remove()}
+                        // get_element_select_category_3.innerHTML = ''
+                        if (document.querySelector('.category_level_3')){
+                            document.querySelector('.category_level_3').remove()}
+                        // get_element_select_category_3.style.display = "none";
+
 
                     })
                 } else {
-                    fetch(`http://127.0.0.1:8000/api/v1/get_field_list/${event.target.value}`)
+                    fetch(`http://127.0.0.1:8000/api/v1/get_field_list/?id=${event.target.value}`)
                         .then((response) => response.json())
                         .then((data) => {
-                            console.log('johan', data)
                             information_list.innerHTML = '';
                             for (let i of data) {
-                                console.log(i)
                                 if (i.spisok === null) {
                                     information_list.innerHTML += ` 
  <div class="" style="display: flex;">
@@ -142,30 +172,42 @@ function show_category(event) {
 
             })
     }
-    if (event.target === get_element_select_category_2 && event.target.value !== '0' && event.target.value !== status_category_2) {
+    if (event.target === document.querySelector('#select_category_2') && event.target.value !== '0' && event.target.value !== status_category_2) {
         status_category_2 = event.target.value
-        fetch(`http://127.0.0.1:8000/api/v1/get_category_list/${event.target.value}`)
+        fetch(`http://127.0.0.1:8000/api/v1/get_category_list/?id=${event.target.value}`)
             .then((response) => response.json())
 
             .then((data) => {
-                console.log(data)
                 if (data.length !== 0) {
-                    get_element_select_category_3.style.display = "flex";
-                    get_element_select_category_3.innerHTML = `<option value="0">---------</option>`
-                    get_element_select_category_3.innerHTML += data.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)
+                    information_list.innerHTML = '';
+                    let category = document.createElement('p')
+                category.classList.add('category_level_3')
+                category.innerHTML += `
+            <select class="input_field select_class" name="category" id="select_category_3" style="margin-top: 5px;">
+                <option value="0">---------</option>
+                ${data.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)}
+            </select>
+
+                `
+                    event.target.parentElement.parentElement.append(category)
+                    // get_element_select_category_3.style.display = "flex";
+                    // get_element_select_category_3.innerHTML = `<option value="0">---------</option>`
+                    // get_element_select_category_3.innerHTML += data.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)
                     event.target.addEventListener('change', () => {
-                        get_element_select_category_3.innerHTML = ''
                         information_list.innerHTML = '';
+                        if (document.querySelector('.category_level_3')){
+                            document.querySelector('.category_level_3').remove()}
+                        // document.querySelector('#select_category_3').innerHTML = ''
+
 
                     })
                 } else {
-                    fetch(`http://127.0.0.1:8000/api/v1/get_field_list/${event.target.value}`)
+                    information_list.innerHTML = '';
+                    fetch(`http://127.0.0.1:8000/api/v1/get_field_list/?id=${event.target.value}`)
                         .then((response) => response.json())
                         .then((data) => {
-                            console.log('johan', data)
                             information_list.innerHTML = '';
                             for (let i of data) {
-                                console.log(i)
                                 if (i.spisok === null) {
                                     information_list.innerHTML += ` <div class="" style="display: flex;">
 <div class="information_label label_fields">${i.title}</div>
@@ -198,15 +240,13 @@ function show_category(event) {
                 }
             })
     }
-    if (event.target === get_element_select_category_3 && event.target.value !== '0' && event.target.value !== status_category_2) {
+    if (event.target === document.querySelector('#select_category_3') && event.target.value !== '0' && event.target.value !== status_category_2) {
         status_category_3 = event.target.value
-        fetch(`http://127.0.0.1:8000/api/v1/get_field_list/${event.target.value}`)
+        fetch(`http://127.0.0.1:8000/api/v1/get_field_list/?id=${event.target.value}`)
             .then((response) => response.json())
             .then((data) => {
-                console.log('johan', data)
                 information_list.innerHTML = '';
                 for (let i of data) {
-                    console.log(i)
                     if (i.spisok === null) {
                         information_list.innerHTML += ` <div class="" style="display: flex;">
 <div class="information_label label_fields">${i.title}</div>
@@ -244,7 +284,7 @@ function show_category(event) {
 
 
 function show_additional_information(event) {
-    if (event.target.className === "input_field select_class select_info" && event.target.value !== evTarg){
+    if (event.target.className === "input_field select_class select_info" && event.target.value !== status_element_two){
         status_element_two = event.target.value
         let elementtwo = ''
         for (let i of event.target.children){
@@ -255,7 +295,7 @@ function show_additional_information(event) {
         }
         if (elementtwo) {
 
-        fetch(`http://127.0.0.1:8000/api/v1/get_elementtwo_list/${elementtwo}`)
+        fetch(`http://127.0.0.1:8000/api/v1/get_elementtwo_list/?slug=${elementtwo}`)
             .then((response) => response.json())
             .then((data) => {
                 if (data.length > 0) {
@@ -343,7 +383,6 @@ function remove_img (event) {
         inputElementArray = inputElementArray.filter(file => file.name !== target.dataset.name);
         for (let i of inputElementArray) {
             dt.items.add(i)
-            console.log(i)
         }
         z = dt.files
         inputElement.files = z
@@ -365,6 +404,14 @@ addAdvButton.addEventListener('click', save_advertisement)
 function save_advertisement() {
     let data = new FormData(addAdver);
     data.append("preview_img", main_img.name)
+    if (data.get("Цена")) {
+        data.append("price", data.get("Цена"))
+    }
+    else if (data.get("Арендная плата")) {
+        data.append("price", data.get("Арендная плата"))
+    }
+
+
     fetch(`http://127.0.0.1:8000/api/v1/save_advertisement/`, {
         method: "POST",
         headers: {
@@ -372,9 +419,5 @@ function save_advertisement() {
         },
         body: data,
     })
-    for (let i of data){
-        // console.log(i)
-        }
-    console.log(main_img)
 }
 

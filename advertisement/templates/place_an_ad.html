@@ -10,7 +10,7 @@
 {% block content %}
     <form action="" method="POST" enctype="multipart/form-data" id="add_adver">
         {% csrf_token %}
-        <div class="title">
+        <div class="title_adver">
             <p class="title_label label_fields">Заголовок</p>
             <input type="text" name="title" class="information_item-input">
         </div>
@@ -37,24 +37,24 @@
                         <option value="0">---------</option>
                     </select>
                 </p>
-                <p class="category_level_1">
-                    <select class="input_field select_class" id="select_category_1" name="category"
-                            style="margin-top: 5px; display: none;">
-                        <option value="0">---------</option>
-                    </select>
-                </p>
-                <p class="category_level_2">
-                    <select class="input_field select_class" id="select_category_2" name="category"
-                            style="margin-top: 5px; display: none;">
-                        <option value="0">---------</option>
-                    </select>
-                </p>
-                <p class="category_level_3">
-                    <select class="input_field select_class" id="select_category_3" name="category"
-                            style="margin-top: 5px;display: none;">
-                        <option value="0">---------</option>
-                    </select>
-                </p>
+{#                <p class="category_level_1">#}
+{#                    <select class="input_field select_class" id="select_category_1" name="category"#}
+{#                            style="margin-top: 5px; display: none;">#}
+{#                        <option value="0">---------</option>#}
+{#                    </select>#}
+{#                </p>#}
+{#                <p class="category_level_2">#}
+{#                    <select class="input_field select_class" id="select_category_2" name="category"#}
+{#                            style="margin-top: 5px; display: none;">#}
+{#                        <option value="0">---------</option>#}
+{#                    </select>#}
+{#                </p>#}
+{#                <p class="category_level_3">#}
+{#                    <select class="input_field select_class" id="select_category_3" name="category"#}
+{#                            style="margin-top: 5px;display: none;">#}
+{#                        <option value="0">---------</option>#}
+{#                    </select>#}
+{#                </p>#}
             </div>
         </div>
 
