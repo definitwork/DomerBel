@@ -6,9 +6,6 @@ const get_element_select_category_0 = document.querySelector("#select_category_0
 const region_hidden = document.querySelector(".region_hidden")
 const category_select = document.querySelector(".category_select");
 category_select.addEventListener('click', show_category)
-const get_element_select_category_1 = document.querySelector("#select_category_1");
-const get_element_select_category_2 = document.querySelector("#select_category_2");
-const get_element_select_category_3 = document.querySelector("#select_category_3");
 let status_category_0 = ''
 let status_category_1 = ''
 let status_category_2 = ''
@@ -25,7 +22,6 @@ function show_oblast() {
             let array = data.filter(function (i) {
                 return i.level === 0
             })
-            // get_element_select_city.innerHTML = `<option value="0">---------</option>`
             get_element_select_oblast.innerHTML += array.map((elem) => `<option value=${elem.id}>${elem.area}</option>`)
         })
 }
@@ -47,9 +43,6 @@ function show_city(event) {
         region_hidden.style.display = "none";
     }
 }
-
-
-// let get_category = document.querySelector("#select_category");
 
 fetch("http://127.0.0.1:8000/api/v1/add_store/categories/")
     .then((response) => response.json())
@@ -77,25 +70,18 @@ function show_category(event) {
             </select>
 
                 `
-                    event.target.parentElement.parentElement.append(category)
-                // get_element_select_category_1.style.display = "flex";
-                // get_element_select_category_1.innerHTML = `<option value="0">---------</option>`
-                // get_element_select_category_1.innerHTML += data.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)
+                event.target.parentElement.parentElement.append(category)
                 event.target.addEventListener('change', () => {
                     information_list.innerHTML = '';
-                    // document.querySelector('#select_category_1').innerHTML = ''
-                    if (document.querySelector('.category_level_1')){
-                    document.querySelector('.category_level_1').remove()}
-                    if (document.querySelector('.category_level_2')){
-                    document.querySelector('.category_level_2').remove()}
-                    if (document.querySelector('.category_level_3')){
-                    document.querySelector('.category_level_3').remove()}
-                    // get_element_select_category_2.innerHTML = ''
-                    // get_element_select_category_2.style.display = "none";
-                    // get_element_select_category_3.innerHTML = ''
-                    // get_element_select_category_3.style.display = "none";
-
-
+                    if (document.querySelector('.category_level_1')) {
+                        document.querySelector('.category_level_1').remove()
+                    }
+                    if (document.querySelector('.category_level_2')) {
+                        document.querySelector('.category_level_2').remove()
+                    }
+                    if (document.querySelector('.category_level_3')) {
+                        document.querySelector('.category_level_3').remove()
+                    }
                 })
             })
     }
@@ -107,29 +93,22 @@ function show_category(event) {
                 if (data.length !== 0) {
                     information_list.innerHTML = '';
                     let category = document.createElement('p')
-                category.classList.add('category_level_2')
-                category.innerHTML += `
+                    category.classList.add('category_level_2')
+                    category.innerHTML += `
             <select class="input_field select_class" name="category" id="select_category_2" style="margin-top: 5px;">
                 <option value="0">---------</option>
                 ${data.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)}
             </select>
-
                 `
                     event.target.parentElement.parentElement.append(category)
-                    // get_element_select_category_2.style.display = "flex";
-                    // get_element_select_category_2.innerHTML = `<option value="0">---------</option>`
-                    // get_element_select_category_2.innerHTML += data.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)
                     event.target.addEventListener('change', () => {
                         information_list.innerHTML = '';
-                        // document.querySelector('#select_category_2').innerHTML = ''
-                        if (document.querySelector('.category_level_2')){
-                            document.querySelector('.category_level_2').remove()}
-                        // get_element_select_category_3.innerHTML = ''
-                        if (document.querySelector('.category_level_3')){
-                            document.querySelector('.category_level_3').remove()}
-                        // get_element_select_category_3.style.display = "none";
-
-
+                        if (document.querySelector('.category_level_2')) {
+                            document.querySelector('.category_level_2').remove()
+                        }
+                        if (document.querySelector('.category_level_3')) {
+                            document.querySelector('.category_level_3').remove()
+                        }
                     })
                 } else {
                     fetch(`http://127.0.0.1:8000/api/v1/get_field_list/?id=${event.target.value}`)
@@ -140,20 +119,23 @@ function show_category(event) {
                                 if (i.spisok === null) {
                                     information_list.innerHTML += ` 
  <div class="" style="display: flex;">
-<div class="information_label label_fields">${i.title}</div>
+<div class="information_label label_fields">
+${i.title}
+</div>
 <div class="information_select">
 <p class="information_item">
  <input class="information_item-input" type="text" name="${i.title}">
         </p>
 </div>
-
 </div> 
 `
                                 } else {
 
                                     information_list.innerHTML += `
 <div class="" style="display: flex;">
-<div class="information_label label_fields">${i.title}</div>
+<div class="information_label label_fields">
+${i.title}
+</div>
 <div class="information_select">
 <p class="information_item">
             <select class="input_field select_class select_info" id="information_${i.id}" name="${i.title}" style="margin-top: 5px;">
@@ -162,7 +144,6 @@ function show_category(event) {
             </select>
         </p>
 </div>
-
 </div>
                     `
                                 }
@@ -181,25 +162,19 @@ function show_category(event) {
                 if (data.length !== 0) {
                     information_list.innerHTML = '';
                     let category = document.createElement('p')
-                category.classList.add('category_level_3')
-                category.innerHTML += `
+                    category.classList.add('category_level_3')
+                    category.innerHTML += `
             <select class="input_field select_class" name="category" id="select_category_3" style="margin-top: 5px;">
                 <option value="0">---------</option>
                 ${data.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)}
             </select>
-
                 `
                     event.target.parentElement.parentElement.append(category)
-                    // get_element_select_category_3.style.display = "flex";
-                    // get_element_select_category_3.innerHTML = `<option value="0">---------</option>`
-                    // get_element_select_category_3.innerHTML += data.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)
                     event.target.addEventListener('change', () => {
                         information_list.innerHTML = '';
-                        if (document.querySelector('.category_level_3')){
-                            document.querySelector('.category_level_3').remove()}
-                        // document.querySelector('#select_category_3').innerHTML = ''
-
-
+                        if (document.querySelector('.category_level_3')) {
+                            document.querySelector('.category_level_3').remove()
+                        }
                     })
                 } else {
                     information_list.innerHTML = '';
@@ -209,20 +184,24 @@ function show_category(event) {
                             information_list.innerHTML = '';
                             for (let i of data) {
                                 if (i.spisok === null) {
-                                    information_list.innerHTML += ` <div class="" style="display: flex;">
-<div class="information_label label_fields">${i.title}</div>
+                                    information_list.innerHTML += ` 
+ <div class="" style="display: flex;">
+<div class="information_label label_fields">
+${i.title}
+</div>
 <div class="information_select">
 <p class="information_item">
  <input class="information_item-input" type="text" name="${i.title}">
         </p>
 </div>
-
 </div> `
                                 } else {
 
                                     information_list.innerHTML += `
 <div class="" style="display: flex;">
-<div class="information_label label_fields">${i.title}</div>
+<div class="information_label label_fields">
+${i.title}
+</div>
 <div class="information_select">
 <p class="information_item">
             <select class="input_field select_class select_info" id="information_${i.id}" name="${i.title}" style="margin-top: 5px;">
@@ -231,7 +210,6 @@ function show_category(event) {
             </select>
         </p>
 </div>
-
 </div>
                     `
                                 }
@@ -248,20 +226,23 @@ function show_category(event) {
                 information_list.innerHTML = '';
                 for (let i of data) {
                     if (i.spisok === null) {
-                        information_list.innerHTML += ` <div class="" style="display: flex;">
-<div class="information_label label_fields">${i.title}</div>
+                        information_list.innerHTML += ` 
+ <div class="" style="display: flex;">
+<div class="information_label label_fields">
+${i.title}
+</div>
 <div class="information_select">
 <p class="information_item">
  <input class="information_item-input" type="text" name="${i.title}">
         </p>
 </div>
-
 </div> `
                     } else {
-
                         information_list.innerHTML += `
 <div class="" style="display: flex;">
-<div class="information_label label_fields">${i.title}</div>
+<div class="information_label label_fields">
+${i.title}
+</div>
 <div class="information_select">
 <p class="information_item">
             <select class="input_field select_class select_info" id="information_${i.id}" name="${i.title}" style="margin-top: 5px;">
@@ -270,7 +251,6 @@ function show_category(event) {
             </select>
         </p>
 </div>
-
 </div>
 
                     
@@ -282,41 +262,37 @@ function show_category(event) {
 }
 
 
-
 function show_additional_information(event) {
-    if (event.target.className === "input_field select_class select_info" && event.target.value !== status_element_two){
+    if (event.target.className === "input_field select_class select_info" && event.target.value !== status_element_two) {
         status_element_two = event.target.value
         let elementtwo = ''
-        for (let i of event.target.children){
+        for (let i of event.target.children) {
             if (i.value === event.target.value) {
                 elementtwo = i.dataset.elementtwo
                 break
             }
         }
         if (elementtwo) {
-
-        fetch(`http://127.0.0.1:8000/api/v1/get_elementtwo_list/?slug=${elementtwo}`)
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.length > 0) {
-                    if(document.querySelector('.information_item_two')){
-                        document.querySelector('.information_item_two').remove()
-                    }
-                   let z = document.createElement('p')
-                       z.classList.add('information_item')
-                       z.classList.add('information_item_two')
-
-                    z.innerHTML += `
+            fetch(`http://127.0.0.1:8000/api/v1/get_elementtwo_list/?slug=${elementtwo}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.length > 0) {
+                        if (document.querySelector('.information_item_two')) {
+                            document.querySelector('.information_item_two').remove()
+                        }
+                        let elementP = document.createElement('p')
+                        elementP.classList.add('information_item')
+                        elementP.classList.add('information_item_two')
+                        elementP.innerHTML += `
             <select class="input_field select_class select_info_two" name="${event.target.getAttribute('name')}" style="margin-top: 5px;">
                 <option value="0">---------</option>
                 ${data.map((elem) => `<option value=${elem.title}>${elem.title}</option>`)}
             </select>
-
                 `
-                    event.target.parentElement.parentElement.append(z)
-                }
+                        event.target.parentElement.parentElement.append(elementP)
+                    }
 
-            })
+                })
         }
 
     }
@@ -326,7 +302,7 @@ function show_additional_information(event) {
 
 const preview = document.querySelector('.photo_preview')
 preview.addEventListener('click', remove_img)
-let inputElement = document.querySelector("#photo_list");
+const inputElement = document.querySelector("#photo_list");
 inputElement.addEventListener("change", handleFiles, false);
 let inputElementArray = []
 let main_img = ""
@@ -336,14 +312,12 @@ function handleFiles() {
     const fileList = this.files;
     for (let i = 0; i < fileList.length; i++) {
         const file = fileList[i];
-
         if (!file.type.startsWith("image/")) {
             continue;
         }
-
         const img = document.createElement("img");
         img.classList.add("img_preview");
-        if (i === 0){
+        if (i === 0) {
             img.classList.add("main_img");
             main_img = img
         }
@@ -352,7 +326,6 @@ function handleFiles() {
         img.setAttribute('data-id', i)
         const div = document.createElement("div")
         div.classList.add("photo_img")
-
         const div2 = document.createElement("div")
         div2.classList.add("delete_img")
         div2.setAttribute('data-name', fileList[i].name)
@@ -368,17 +341,15 @@ function handleFiles() {
         })(img);
         reader.readAsDataURL(file);
     }
-     inputElementArray = Array.from(inputElement.files);
+    inputElementArray = Array.from(inputElement.files);
 }
 
-
-
-function remove_img (event) {
+function remove_img(event) {
     const dt = new DataTransfer();
     let z = []
     let target = event.target
 
-    if (target.classList.contains("delete_img")){
+    if (target.classList.contains("delete_img")) {
         target.parentElement.remove()
         inputElementArray = inputElementArray.filter(file => file.name !== target.dataset.name);
         for (let i of inputElementArray) {
@@ -387,7 +358,6 @@ function remove_img (event) {
         z = dt.files
         inputElement.files = z
     }
-
     if (target.classList.contains("img_preview")) {
         if (main_img) {
             main_img.classList.remove("main_img")
@@ -406,18 +376,29 @@ function save_advertisement() {
     data.append("preview_img", main_img.name)
     if (data.get("Цена")) {
         data.append("price", data.get("Цена"))
-    }
-    else if (data.get("Арендная плата")) {
+    } else if (data.get("Арендная плата")) {
         data.append("price", data.get("Арендная плата"))
     }
-
-
     fetch(`http://127.0.0.1:8000/api/v1/save_advertisement/`, {
-        method: "POST",
-        headers: {
+        method: "POST", headers: {
             "X-CSRFToken": getCookie("csrftoken"),
-        },
-        body: data,
+        }, body: data,
     })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.error) {
+                if (data.error.title) {
+                    document.querySelector('.title_error').innerHTML = `
+                    ${data.error.title}
+                    `
+                }
+                else {
+                    document.querySelector('.title_error').innerHTML = ""
+                }
+                console.log(data.error)
+            } else {
+                document.location.href = 'http://127.0.0.1:8000/'
+            }
+        })
 }
 

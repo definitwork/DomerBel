@@ -1,5 +1,6 @@
 from rest_framework.decorators import api_view
 from transliterate import slugify
+from rest_framework import status
 
 from advertisement.models import Region, Category, Field, ElementTwo, PhotoAdvertisement, Advertisement
 from api_domer.serializers import GetListOfCitiesSerializer, GetListOfCategoriesSerializer, FieldSerialier, \
@@ -57,30 +58,34 @@ def get_elementtwo_list(request):
 @api_view(['GET', 'POST'])
 def save_advertisement(request):
     additional_information = dict(request.data.copy())
-    serializer = AdvertisementSerializer(data=request.data)
-    if serializer.is_valid(raise_exception=True):
-        keys_to_delete = ['csrfmiddlewaretoken', 'preview_img', 'photo_files']
-        keys_to_delete.extend(serializer.data.keys())
-        for key in keys_to_delete:
-            if key in additional_information:
-                additional_information.pop(key)
-        for i in additional_information:
-            additional_information[i] = additional_information.get(i)[0]
-        new_advertisement = Advertisement(author=request.user, article=serializer.validated_data.get('article'),
-                                          title=serializer.validated_data.get('title'), price=serializer.validated_data.get('price'),
-                                          category=serializer.validated_data.get('category'), bearer=serializer.validated_data.get('bearer'),
-                                          region=serializer.validated_data.get('region'), contact_name=serializer.validated_data.get('contact_name'),
-                                          email=serializer.validated_data.get('email'), phone_num=serializer.validated_data.get('phone_num'),
-                                          description=serializer.validated_data.get('description'), video_link=serializer.validated_data.get('video_link'),
-                                          additional_information=additional_information, slug=slugify(serializer.validated_data.get('title')),
-                                          store=serializer.validated_data.get('store'))
-        new_advertisement.save()
-        if request.data.getlist('photo_files') != ['']:
-            for photo in request.data.getlist('photo_files'):
-                if photo.name == request.data.get("preview_img"):
-                    new_advertisement.preview_image = photo
-                    new_advertisement.save()
-                else:
-                    additional_photo = PhotoAdvertisement(photo=photo, advertisement=new_advertisement)
-                    additional_photo.save()
+    if request.method == "POST":
+        serializer = AdvertisementSerializer(data=request.data)
+        if serializer.is_valid():
+            keys_to_delete = ['csrfmiddlewaretoken', 'preview_img', 'photo_files']
+            keys_to_delete.extend(serializer.data.keys())
+            for key in keys_to_delete:
+                if key in additional_information:
+                    additional_information.pop(key)
+            for i in additional_information:
+                additional_information[i] = ' '.join(additional_information.get(i))
+            new_advertisement = Advertisement(author=request.user, article=serializer.validated_data.get('article'),
+                                              title=serializer.validated_data.get('title'), price=serializer.validated_data.get('price'),
+                                              category=serializer.validated_data.get('category'), bearer=serializer.validated_data.get('bearer'),
+                                              region=serializer.validated_data.get('region'), contact_name=serializer.validated_data.get('contact_name'),
+                                              email=serializer.validated_data.get('email'), phone_num=serializer.validated_data.get('phone_num'),
+                                              description=serializer.validated_data.get('description'), video_link=serializer.validated_data.get('video_link'),
+                                              additional_information=additional_information, slug=slugify(serializer.validated_data.get('title')),
+                                              store=serializer.validated_data.get('store'))
+            new_advertisement.save()
+            if request.data.getlist('photo_files') != ['']:
+                for photo in request.data.getlist('photo_files'):
+                    if photo.name == request.data.get("preview_img"):
+                        new_advertisement.preview_image = photo
+                        new_advertisement.save()
+                    else:
+                        additional_photo = PhotoAdvertisement(photo=photo, advertisement=new_advertisement)
+                        additional_photo.save()
+            return Response({"created": "объявление успешно создано"},status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": serializer.errors},status=status.HTTP_400_BAD_REQUEST)
     return Response()

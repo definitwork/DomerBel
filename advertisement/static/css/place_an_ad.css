@@ -27,6 +27,15 @@
 }
 
 .title_adver {
+    /*display: flex;*/
+    margin-top: 5px;
+}
+.error {
+    display: flex;
+    justify-content: space-around;
+    color: red;
+}
+.title_adver_input {
     display: flex;
     margin-top: 5px;
 }
