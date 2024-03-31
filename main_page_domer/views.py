@@ -187,6 +187,7 @@ def get_store_by_title_and_category(request, store_slug, category_slug):
     response.set_cookie('date', state_sort_by_date)
     response.set_cookie('sorted_by', order_by)
     response.set_cookie('view_type', view_type)
+    response.set_cookie('user_auth', request.user.id)
 
     return response
 

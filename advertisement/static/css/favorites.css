@@ -1,0 +1,80 @@
+.search_table{
+    display: none;
+}
+
+.wraper{
+    height: 100%;
+}
+
+.container{
+    width: 100%;
+    height: 100%;
+}
+
+.favorites-section{
+    padding: 10px 0;
+    border-top: 1px solid lightgray;
+}
+
+.favorites-numbers{
+    padding: 15px 0;
+    FONT: 13px 'Trebuchet MS';
+}
+
+.favorites-list{
+    padding: 10px 0;
+}
+
+.favorite-list__item{
+    display: flex;
+    padding: 5px 0;
+}
+.ads_description_title{
+    margin-left: 20px;
+    font-size: 14px;
+}
+.favorites__date-time{
+    padding: 5px;
+}
+
+.favorites__date-time__date{
+    FONT: 13px 'Trebuchet MS';
+}
+
+.favorites__date-time__time{
+    FONT: 13px 'Trebuchet MS';
+    color: #858585;
+}
+
+.favorites__media{
+    display: flex;
+    justify-content: center;
+    width: 150px;
+    height: 118.2px;
+    padding: 5px;
+    margin-left: 15px;
+
+}
+
+.favorites__img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    
+}
+
+.favorite-list__item__input{
+    margin: 3px 3px 3px 4px;
+}
+
+.delete-favorites{
+    border: 1px solid #AAA;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    padding: 3px;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: #DADADA;
+    FONT: 13px 'Trebuchet MS';
+    color: #555;
+}
