@@ -27,16 +27,14 @@ def get_advertisement_page(request):
     category_list = Category.objects.filter(level__lte=1)
     advertisement_queryset = Advertisement.objects.filter(is_active=True,
                                                           moderated=True, **region_filter).select_related(
-                                                          'category',
-                                                          'region').order_by(order_by)
+        'category',
+        'region').order_by(order_by)
     category_queryset = Category.objects.add_related_count(Category.objects.root_nodes(),
                                                            Advertisement,
                                                            'category',
                                                            'advertisement_counts',
                                                            cumulative=True,
                                                            extra_filters={"region__in": region_filter['region__in']})
-
-
 
     page_obj = variables_for_paginator(advertisement_queryset,
                                        request.GET.get('page'),
@@ -92,8 +90,8 @@ def get_advertisement_by_category(request, category_slug):
                                                           **region_filter,
                                                           is_active=True,
                                                           moderated=True).select_related(
-                                                          'category',
-                                                          'region').order_by(order_by)
+        'category',
+        'region').order_by(order_by)
     page_obj = variables_for_paginator(advertisement_queryset,
                                        request.GET.get('page'),
                                        sort_for_paginator)
@@ -123,11 +121,23 @@ def get_page_place_an_ad(request):
     spisok = Spisok.objects.all()
     category = Category.objects.all()
 
-
-
     context = {
         'spisok': spisok,
         'oblast': oblast,
         'category': category,
     }
     return render(request, 'place_an_ad.html', context)
+
+
+def get_advertisement_details_page(request, id):
+    '''Отдаем страничку с детальным описанием объявления'''
+    advertisement = Advertisement.objects.get(id=id)
+    category_queryset_all = Category.objects.all()
+    category_list = category_queryset_all.filter(level__lte=1)
+    context = {
+        "category_list": category_list,
+        'advertisement': advertisement,
+    }
+    return render(request=request,
+                  template_name='advertisement_details.html',
+                  context=context)
