@@ -20,7 +20,7 @@
             <form action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="buttons_for_delete">
-                    <button>Удалить</button>
+                    <button class="execute_button">Удалить</button>
                     <a href="{% url 'users:my_store' %}"><div class="cancel_button">Отмена</div></a>
                 </div>
             </form>

@@ -19,7 +19,14 @@ def get_list_of_cities(request, id):
 # Отдаёт список всех категорий из модели Category
 @api_view(["GET", "POST"])
 def get_list_of_categories(request):
-    categories = Category.objects.all()
+    categories = Category.objects.filter(level__lte=1)
+    serializer = GetListOfCategoriesSerializer(categories, many=True)
+    return Response(serializer.data)
+
+
+@api_view(["GET", "POST"])
+def get_categories_for_search(request, id):
+    categories = Category.objects.filter(parent_id=id)
     serializer = GetListOfCategoriesSerializer(categories, many=True)
     return Response(serializer.data)
 
