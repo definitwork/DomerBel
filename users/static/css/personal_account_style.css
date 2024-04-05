@@ -213,15 +213,15 @@
 }
 
 .category_hidden {
-    display: flex;
+    display: none;
 }
 
 .category_hidden_2 {
-    display: flex;
+    display: none;
 }
 
 .category_hidden_3 {
-    display: flex;
+    display: none;
 }
 
 .search_category_1 {
