@@ -1,3 +1,28 @@
+// Регионы для поиска магазинов
+let location_opened = document.querySelector(".location_opened");
+    location_opened.addEventListener('click', show_region);
+let get_element_select_region = document.querySelector("#select_region_2");
+let location_hidden = document.querySelector(".location_hidden")
+
+
+function show_region(event){
+    if (event.target.value !== "0"){
+        fetch(`http://127.0.0.1:8000/api/v1/add_store/city/${event.target.value}`)
+            .then((response) => response.json())
+            .then(data => {
+                location_hidden.style.display = "flex";
+                get_element_select_region.innerHTML = `<option value="0">Любое расположение</option>`
+                get_element_select_region.innerHTML += data.map((elem)=>`<option value=${elem.id}>${elem.area}</option>`)
+            })
+    }
+    else {
+        get_element_select_region.innerHTML += "";
+        location_hidden.style.display = "none";
+    }
+}
+
+
+// Выделение объявлений в ЛК поштучно либо сразу всех
 let select_all = document.getElementById('select_all');
 let checkboxes = document.getElementsByName('ads_checkbox');
 

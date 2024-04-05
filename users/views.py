@@ -16,7 +16,10 @@ def get_personal_account_page(request):
     ads = Advertisement.objects.filter(author=request.user, is_active=True).select_related('category', 'region').all().order_by('-date_of_create')
     active_ads_quantity = ads.count()
     inactive_ads_quantity = Advertisement.objects.filter(author=request.user, is_active=False).count()
+    locations = Region.objects.filter(type='Область')
     category_list = Category.objects.filter(level__lte=1)
+
+
     paginator = Paginator(ads, 20)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -25,10 +28,21 @@ def get_personal_account_page(request):
         "ads": ads,
         "active_ads_quantity": active_ads_quantity,
         "inactive_ads_quantity": inactive_ads_quantity,
+        "locations": locations,
         "category_list": category_list,
         "page_obj": page_obj
     }
     return render(request, 'personal_account/personal_account.html', context)
+
+
+def search_of_ads_in_personal_account(request):
+    locations = Region.objects.filter(type='Область')
+    category_list = Category.objects.filter(level__lte=1)
+    context = {
+        "locations": locations,
+        "category_list": category_list,
+    }
+    return render(request, 'personal_account/personal_account_search_results.html', context)
 
 
 def get_personal_account_inactive_adds_page(request):
@@ -36,6 +50,7 @@ def get_personal_account_inactive_adds_page(request):
     ads = Advertisement.objects.filter(author=request.user, is_active=False).select_related('category', 'region').all().order_by('-date_of_create')
     inactive_ads_quantity = ads.count()
     active_ads_quantity = Advertisement.objects.filter(author=request.user, is_active=True).count()
+    locations = Region.objects.filter(type='Область')
     category_list = Category.objects.filter(level__lte=1)
 
     paginator = Paginator(ads, 20)
@@ -46,6 +61,7 @@ def get_personal_account_inactive_adds_page(request):
         "ads": ads,
         "inactive_ads_quantity": inactive_ads_quantity,
         "active_ads_quantity": active_ads_quantity,
+        "locations": locations,
         "category_list": category_list,
         "page_obj": page_obj
     }
