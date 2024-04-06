@@ -1,3 +1,18 @@
+.delete-favorites{
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #AAA;
+    background: #DADADA;
+    align-items: center;
+    justify-content: center;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+    cursor: pointer;
+    color: #333333;
+    width: auto;
+    height: auto;
+}
+
 .search_table{
     display: none;
 }
@@ -92,14 +107,3 @@
         font-size: 13px;
 }
 
-.delete-favorites{
-    border: 1px solid #AAA;
-    margin-top: 3px;
-    margin-bottom: 3px;
-    padding: 3px;
-    text-decoration: none;
-    cursor: pointer;
-    background-color: #DADADA;
-    FONT: 13px 'Trebuchet MS';
-    color: #555;
-}
