@@ -135,7 +135,8 @@ def get_page_place_an_ad(request):
 
 def get_page_place_an_favorites(request):
     context = {}
-
+    category_list = Category.objects.filter(level__lte=1)
+    context["category_list"] = category_list
     json_data = request.GET.get('list')
     data = json.loads(json_data)
     

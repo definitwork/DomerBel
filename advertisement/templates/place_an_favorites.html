@@ -3,6 +3,13 @@
 {% block stylesheet %}
     <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/favorites.css' %}">
 {% endblock %}
+{% block nav_title %}
+    <div class="nav_category_title">
+        <p>
+            Избранное
+        </p>
+    </div>
+{% endblock %}
 {% block content %}
     <section class="favorites-section">
         {% if cards_num %}
@@ -25,7 +32,10 @@
                         {% endif %}
                             <li class="favorites__date-time__time">{{ cart.date_of_create|date:"H:i" }}</li>
                     </ul>
-                    <input class="favorite-list__item__input" id="{{cart.id}}" type="checkbox" name="{{cart.id}}">
+                    <p class="favorite__checkbox">
+                        <input class="favorite-list__item__input" id="{{cart.id}}" type="checkbox" name="{{cart.id}}">
+                        <label>Выделить</label>
+                    </p>
                 </div>
                 <div class="favorites__media">
                     <img src="{{ cart.preview_image.url }}" alt="{{ cart.preview_image.url }}" class="favorites__img">
@@ -34,6 +44,9 @@
                     <a href="#" class="ads_description_title">
                         {{ cart.title }}
                     </a>
+                    <p>{{ cart.price }} руб.</p>
+                    <p style="color: #858585;">{{ cart.category.title }}</p>
+                    <p style="color: #858585;">{{ cart.region.area }}</p>
                 </div>
             </li>
             {% endfor %}
