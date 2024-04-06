@@ -36,11 +36,44 @@ def get_personal_account_page(request):
 
 
 def search_of_ads_in_personal_account(request):
+    """ Поиск среди объявлений пользователя в личном кабинете """
+    category = request.GET.getlist("category")
+    category = [item for item in category if item != '0']
+    search_text = request.GET.get("search_text")
+    region_1 = request.GET.get("region_1")
+    region_2 = request.GET.get("region_2")
+    add_id = request.GET.get("add_id")
+    ads_in_headers = request.GET.get("ads_in_headers")
+    dict_for_filter = {}
+
+    if category != []:
+        dict_for_filter.update({"category__id": category[-1]})
+    if ads_in_headers == "on" and len(search_text) >= 3:
+        dict_for_filter.update({"title__icontains": search_text})
+    elif ads_in_headers == None and len(search_text) >= 3:
+        dict_for_filter.update({"description__icontains": search_text})
+    if region_1 != "0":
+        dict_for_filter.update({"region__parent__id": region_1})
+    if region_2 != "0":
+        dict_for_filter.update({"region__id": region_2})
+    if add_id != "":
+        dict_for_filter.update({"id": add_id})
+
+    ads = Advertisement.objects.filter(author=request.user, **dict_for_filter).select_related('category', 'region').all().order_by('-date_of_create')
+    all_ads_quantity = ads.count()
     locations = Region.objects.filter(type='Область')
     category_list = Category.objects.filter(level__lte=1)
+
+    paginator = Paginator(ads, 20)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     context = {
+        "ads": ads,
+        "all_ads_quantity": all_ads_quantity,
         "locations": locations,
         "category_list": category_list,
+        "page_obj": page_obj
     }
     return render(request, 'personal_account/personal_account_search_results.html', context)
 

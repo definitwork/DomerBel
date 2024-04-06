@@ -363,7 +363,7 @@
         & img {
             border-radius: 5px;
             width: 100%;
-            height: auto;
+            height: 100%;
             object-fit: cover;
         }
 }
@@ -604,7 +604,7 @@ table tr {
     }
 }
 
-.no_ads {
+.ads_quantity, .no_ads {
     display: flex;
     align-items: center;
     padding: 10px;
