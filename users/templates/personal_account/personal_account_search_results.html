@@ -29,7 +29,7 @@
             {% if ads %}
             <form method="POST" action="{% url 'users:delete_or_archive_ads' %}">
                 <div class=ads_status>
-                    <p class="status_active">Найдено объявлений, удовлетворяющих условиям поиска: {{ active_ads_quantity }}</p>
+                    <p class="ads_quantity">В личном кабинете найдено объявлений, удовлетворяющих условиям поиска: {{ all_ads_quantity }}</p>
                 </div>
                 {% csrf_token %}
                 <div class="select_all_ads">
@@ -101,9 +101,12 @@
                 {% endif %}
             </div>
             {% else %}
-            <div class="no_ads">Объявлений, удовлетворяющих условиям поиска, не найдено</div>
+            <div class="no_ads">Объявлений, удовлетворяющих условиям поиска, в личном кабинете не найдено</div>
             {% endif %}
         </div>
     </div>
 </div>
+{% endblock %}
+{% block javascript %}
+    <script src="{% static 'js/personal_account.js' %}"></script>
 {% endblock %}

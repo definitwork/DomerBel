@@ -101,7 +101,7 @@
                     <form method="GET" action="{% url 'users:personal_account_search_results' %}" class="ads_in_profile_search_form">
                         <div class="search_table_column_1">
                             <p class="category_opened">
-                                <select name="category_1" id="select_category_1" class="search_category_1">
+                                <select name="category" id="select_category_1" class="search_category_1">
                                     <option value="0">Все разделы</option>
                                     {% for cat in category_list %}
                                         {% if cat.level == 0 %}
@@ -127,7 +127,7 @@
                         </div>
                         <div class="search_table_column_2">
                             <p class="category_hidden">
-                                <select name="category_2" id="select_category_2" class="search_category_2">
+                                <select name="category" id="select_category_2" class="search_category_2">
                                     <option value="0">Все разделы</option>
                                 </select>
                             </p>
@@ -142,12 +142,12 @@
                         </div>
                         <div class="search_table_column_3">
                             <p class="category_hidden_2">
-                                <select name="category_3" id="select_category_3" class="search_category_3">
+                                <select name="category" id="select_category_3" class="search_category_3">
                                     <option value="0">Все разделы</option>
                                 </select>
                             </p>
                             <p class="category_hidden_3">
-                                <select name="category_4" id="select_category_4" class="search_category_4">
+                                <select name="category" id="select_category_4" class="search_category_4">
                                     <option value="0">Все разделы</option>
                                 </select>
                             </p>
@@ -205,8 +205,7 @@
         {% endblock %}
     </div>
 </div>
+<script src="{% static 'js/modals_for_personal_account.js' %}"></script>
 {% block javascript %}
-    <script src="{% static 'js/modals_for_personal_account.js' %}"></script>
-    <script src="{% static 'js/personal_account.js' %}"></script>
 {% endblock %}
 </html>

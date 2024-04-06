@@ -58,7 +58,7 @@ def get_store_search(request):
         dict_for_filter.update({"category__parent__id": category_1})
     if category_2 != "0":
         dict_for_filter.update({"category__id": category_2})
-    if len(search_text) > 3:
+    if len(search_text) >= 3:
         dict_for_filter.update({"description__icontains": search_text})
     if region_1 != "0":
         dict_for_filter.update({"region__parent__id": region_1})
