@@ -2,6 +2,9 @@ const login_button = document.querySelector(".login_button");
 
 const popup = document.querySelector(".popup");
 const login_popup = document.querySelector(".login_form_popup");
+const question_popup = document.querySelector(".question_popup");
+const entity_button = document.querySelector(".entity");
+const individual_button = document.querySelector(".individual");
 const closing_cross = document.querySelectorAll(".closing_cross");
 
 const register_popup = document.querySelector(".register_form_popup");
@@ -55,6 +58,19 @@ popup.addEventListener("click", (event) => {
 
 register_button.addEventListener("click", () => {
     login_popup.style.display = 'none';
+    question_popup.style.display = 'flex'
+    // register_popup.style.display = 'flex';
+});
+
+individual_button.addEventListener("click", () => {
+    login_popup.style.display = 'none';
+    question_popup.style.display = 'none'
+    register_popup.style.display = 'flex';
+});
+
+entity_button.addEventListener("click", () => {
+    login_popup.style.display = 'none';
+    question_popup.style.display = 'none'
     register_popup.style.display = 'flex';
 });
 

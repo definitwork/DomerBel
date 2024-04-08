@@ -43,6 +43,33 @@
         font-size: 14px;
     }
 }
+.question_popup {
+    position: relative;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 80px 95px;
+    max-width: 500px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 5px;
+}
+.choise_register_container {
+    display: flex;
+    gap: 50px;
+    /* border: 1px solid; */
+}
+.entity, .individual {
+    padding: 10px 47px;
+    background-color: #76b1e6;
+    color: #000000c7;
+    border-radius: 13px;
+    cursor: pointer;
+    font-family: "Trebuchet MS";
+}
+
+
+
 
 .login_form {
     display: flex;

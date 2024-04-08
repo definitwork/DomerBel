@@ -35,6 +35,16 @@
         </div>
         <div class="closing_cross"></div>
     </div>
+    <div class='question_popup'>
+        <div class="choise_register_container">
+            <div class="entity">
+                Юридическое лицо
+            </div>
+            <div class="individual">
+                Физичесое лицо
+            </div>
+        </div>
+    </div>
     <div class="register_form_popup">
         <form id="register_form" method="POST" class="register_form" action="">
             {% csrf_token %}
@@ -44,14 +54,14 @@
             </nav>
             <ul style='margin-bottom: 10px;'>
                 <li style="display: flex;color:red" class="error_name_register"></li>
-{{ register_form.name }}
+                {{ register_form.name }}
                 <li style="display: flex;color:red" class="error_email_register"></li>
-{{ register_form.email }}
+                {{ register_form.email }}
                 <li style="display: flex;color:red" class="error_phone_register"></li>
-{{ register_form.phone }}
+                {{ register_form.phone }}
                 <li style="display: flex;color:red" class="error_pass_not_match_register"></li>
                 <li style="display: flex;color:red" class="error_bad_password_register"></li>
-{{ register_form.help_text }}
+                {{ register_form.help_text }}
                 {{ register_form.password }}
                 {{ register_form.password2 }}
                 <div style="display: flex; align-items:center;>
@@ -60,7 +70,6 @@
                 <li style="display: flex;color:red" class="error_click_captcha"></li>
                 {{ register_form.captcha }}
             </ul>
-            {{ register_form.as_p }}
             <input type="button" id="form_register_button" value="Регистрация"></input>
         </form>
         <button class="return_to_login_button">Вход</button>
