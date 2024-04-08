@@ -246,3 +246,6 @@ def get_help_page(request):
         "category_list": category_list
     }
     return render(request, 'help.html', context)
+
+def register_done(request):
+    return render(request, "message_after_register.html")

@@ -315,6 +315,7 @@ def register_view(request):
             user.first_name = form.cleaned_data.get('name')
             user.phone_number = form.cleaned_data.get('phone')
             user.email = form.cleaned_data.get('email')
+            user.entity = form.cleaned_data.get('entity')
             user.set_password(form.cleaned_data.get('password'))
             user.set_password(form.cleaned_data.get('password2'))
             user.save()

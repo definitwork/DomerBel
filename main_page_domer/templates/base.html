@@ -42,12 +42,23 @@
                 <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
                 <p>Регистрация</p>
             </nav>
-            <ul>
+            <ul style='margin-bottom: 10px;'>
                 <li style="display: flex;color:red" class="error_name_register"></li>
+{{ register_form.name }}
                 <li style="display: flex;color:red" class="error_email_register"></li>
+{{ register_form.email }}
                 <li style="display: flex;color:red" class="error_phone_register"></li>
+{{ register_form.phone }}
                 <li style="display: flex;color:red" class="error_pass_not_match_register"></li>
                 <li style="display: flex;color:red" class="error_bad_password_register"></li>
+{{ register_form.help_text }}
+                {{ register_form.password }}
+                {{ register_form.password2 }}
+                <div style="display: flex; align-items:center;>
+                {{ register_form.entity.label_tag }}   {{ register_form.entity }}
+                </div>
+                <li style="display: flex;color:red" class="error_click_captcha"></li>
+                {{ register_form.captcha }}
             </ul>
             {{ register_form.as_p }}
             <input type="button" id="form_register_button" value="Регистрация"></input>
@@ -158,6 +169,8 @@
                 </div>
             </section>
         </header>
+{% block info_message %}
+        {% endblock %}
         {% block find %}
             <section class="search_table">
                 <nav class="table_topics_search_location">

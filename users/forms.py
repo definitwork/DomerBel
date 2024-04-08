@@ -30,6 +30,7 @@ class RegisterForm(forms.Form):
                                    attrs={'placeholder': 'Введите пароль'}),
                                validators=[validate_password], label='')
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Повторите пароль'}), label='')
+    entity = forms.BooleanField(label='Юридическое лицо', required=False)
     captcha = ReCaptchaField(label='')
 
     def clean(self):

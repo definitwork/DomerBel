@@ -45,6 +45,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
+    entity = models.BooleanField('Юридическое лицо', default=False)
     first_name = models.CharField('Контактное лицо', max_length=255)
     last_name = models.CharField(_("last name"), max_length=150, blank=True)
     phone_number = models.CharField('Номер телефона', max_length=15)
