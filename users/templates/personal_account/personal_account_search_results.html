@@ -15,10 +15,6 @@
 <div class="personal_account_body">
     <div class="body">
         <div class="ads_list">
-            <div class=ads_status>
-                <a href="{% url 'users:personal_account' %}" class="status_active">Активные ({{ active_ads_quantity }})</a>
-                <a href="{% url 'users:inactive_adds' %}" class="status_archive">Архивные ({{ inactive_ads_quantity }})</a>
-            </div>
             {% for message in messages %}
                 {% if message.tags == 'success' %}
                     <div class="success-message">{{ message }}</div>
@@ -32,6 +28,9 @@
             {% endfor %}
             {% if ads %}
             <form method="POST" action="{% url 'users:delete_or_archive_ads' %}">
+                <div class=ads_status>
+                    <p class="ads_quantity">В личном кабинете найдено объявлений, удовлетворяющих условиям поиска: {{ all_ads_quantity }}</p>
+                </div>
                 {% csrf_token %}
                 <div class="select_all_ads">
                     <input type="checkbox" id="select_all"/>
@@ -102,7 +101,7 @@
                 {% endif %}
             </div>
             {% else %}
-            <div class="no_ads">У Вас нет активных объявлений</div>
+            <div class="no_ads">Объявлений, удовлетворяющих условиям поиска, в личном кабинете не найдено</div>
             {% endif %}
         </div>
     </div>

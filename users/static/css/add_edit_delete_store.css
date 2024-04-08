@@ -51,7 +51,7 @@ span {
     font-size: 18px;
 }
 
-form button {
+.execute_button {
     padding: 5px;
     border-radius: 5px;
     border: 1px solid #AAA;

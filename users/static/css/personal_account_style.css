@@ -178,71 +178,173 @@
     border-radius: 5px;
 }
 
-.search_table {
+.search_table_ads_in_profile {
     display: flex;
     flex-direction: column;
     background: #CFE6FE;
-    border: solid 1px #D4D4D4;
     border-radius: 10px;
-    height: 73px;
     padding: 5px;
     gap: 5px;
 }
 
-.table_topics_search_location {
+.ads_in_profile_search_form {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
+    flex-direction: column;
     gap: 5px;
 }
 
-.slct {
-    width: 322px;
+.search_table_column_1 {
+    display: flex;
+    gap: 5px;
+}
+
+.search_table_column_2 {
+    display: flex;
+    gap: 5px;
+}
+
+.search_table_column_3 {
+    display: flex;
+    gap: 5px;
+}
+
+.category_opened {
+    display: flex;
+}
+
+.category_hidden {
+    display: none;
+}
+
+.category_hidden_2 {
+    display: none;
+}
+
+.category_hidden_3 {
+    display: none;
+}
+
+.search_category_1 {
+    width: 189px;
     height: 28px;
     border-radius: 3px;
     font-family: "Trebuchet MS";
     font-size: 12px;
     color: #333333;
-    border: solid 1px #D4D4D4;
+    &:focus {
+        border-radius: 2px;
+        border: 2px solid black;
+    }
 }
 
-.table_search {
+.search_category_2 {
+    width: 189px;
+    height: 28px;
+    border-radius: 3px;
+    font-family: "Trebuchet MS";
+    font-size: 12px;
+    color: #333333;
+    &:focus {
+        border-radius: 2px;
+        border: 2px solid black;
+    }
+}
+
+.search_category_3 {
+    width: 189px;
+    height: 28px;
+    border-radius: 3px;
+    font-family: "Trebuchet MS";
+    font-size: 12px;
+    color: #333333;
+    &:focus {
+        border-radius: 2px;
+        border: 2px solid black;
+    }
+}
+
+.search_category_4 {
+    width: 189px;
+    height: 28px;
+    border-radius: 3px;
+    font-family: "Trebuchet MS";
+    font-size: 12px;
+    color: #333333;
+    &:focus {
+        border-radius: 2px;
+        border: 2px solid black;
+    }
+}
+
+.search_input {
+    display: flex;
+    flex-grow: 1;
     width: 100%;
     height: 28px;
     border-radius: 3px;
     font-family: "Trebuchet MS";
-    font-size: 13px;
     color: #333333;
-    border: solid 1px #D4D4D4;
+    &:focus {
+        border-radius: 2px;
+        border: 2px solid black;
+    }
 }
 
-.search_checkbox_button {
+.location_opened {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
-.search_ads {
+.location_hidden {
+    display: none;
+}
+
+.search_region_1 {
     display: flex;
-    max-width: 189px;
-    width: 100%;
-    & input {
-        font-family: "Trebuchet MS";
-        font-size: 13px;
-        border: solid 1px #D4D4D4;
-        border-radius: 3px;
-        width: 100%;
-        flex-grow: 1;
-        height: 28px;
+    width: 189px;
+    height: 28px;
+    border-radius: 3px;
+    font-family: "Trebuchet MS";
+    font-size: 12px;
+    color: #333333;
+    &:focus {
+        border-radius: 2px;
+        border: 2px solid black;
+    }
+}
+
+.search_region_2 {
+    display: flex;
+    width: 189px;
+    height: 28px;
+    border-radius: 3px;
+    font-family: "Trebuchet MS";
+    font-size: 12px;
+    color: #333333;
+    &:focus {
+        border-radius: 2px;
+        border: 2px solid black;
+    }
+}
+
+.search_add_id {
+    display: flex;
+    width: 189px;
+    height: 28px;
+    border-radius: 3px;
+    font-family: "Trebuchet MS";
+    font-size: 12px;
+    color: #333333;
+    &:focus {
+        border-radius: 2px;
+        border: 2px solid black;
     }
 }
 
 .checkbox_list {
     display: flex;
+    flex-grow: 1;
     align-items: center;
     gap: 10px;
-    max-width: 550px;
-    width: 100%;
 }
 
 .checkbox_label {
@@ -251,17 +353,19 @@
     color: #333333;
 }
 
-.checkbox_button {
+.search_button {
     display: flex;
     justify-content: center;
     align-items: center;
     max-width: 189px;
     width: 100%;
-    & input {
-        border-radius: 5px;
-        width: 100%;
-        height: auto;
-    }
+    border-radius: 5px;
+        & img {
+            border-radius: 5px;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 }
 
 .body {
@@ -433,7 +537,6 @@ table tr {
     justify-content: center;
     padding: 10px 5px 5px 5px;
     width: 125px;
-
 }
 
 .ads_marked {
@@ -500,7 +603,7 @@ table tr {
     }
 }
 
-.no_ads {
+.ads_quantity, .no_ads {
     display: flex;
     align-items: center;
     padding: 10px;

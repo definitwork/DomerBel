@@ -110,6 +110,12 @@
                                 <a href="{% url 'help' %}" class="help">Помощь</a>
                             </li>
                         </ul>
+                        <a href="{% url 'favorites' %}" title="Избранное" class="favorites">
+                            <div class="favorites__star">
+                                <img src="{% static 'img/star.png' %}" alt="" class="favorites__star__img">
+                            </div>
+                            <div class="favorites__quantity">[4]</div>
+                        </a>
                         <div class='user_name'>
                             {% if user.is_authenticated %}
                                 <a href="{% url 'users:logout' %}">Выход</a> |
@@ -117,7 +123,6 @@
                             {% else %}
                                 <p class="login_button">Вход и регистрация</p>
                             {% endif %}
-
                         </div>
                     </nav>
                 </div>
@@ -197,12 +202,12 @@
         <footer>
             <div class="navigate_link">
                 <div class="footer_link">
-                    <a href="#">
+                    <a href="{% url 'place_an_ad' %}">
                         <p>Подать объявление</p>
                     </a>
                 </div>
                 <div class="footer_link">
-                    <a href="#">
+                    <a href="{% url 'advertisement' %}">
                         <p>Объявления</p>
                     </a>
                 </div>
@@ -221,7 +226,7 @@
                 </div>
                 <div class="footer_link">
                     <a href="#">
-                        Карта
+                        Карта сайта
                     </a>
                 </div>
                 <div class="footer_link">

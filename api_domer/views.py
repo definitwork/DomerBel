@@ -17,10 +17,18 @@ def get_list_of_cities(request, id):
     return Response(serializer.data)
 
 
-# Отдаёт список всех категорий из модели Category
+# Отдаёт список всех категорий из модели Category для добавления/редактирования магазина
 @api_view(["GET", "POST"])
 def get_list_of_categories(request):
-    categories = Category.objects.all()
+    categories = Category.objects.filter(level__lte=1)
+    serializer = GetListOfCategoriesSerializer(categories, many=True)
+    return Response(serializer.data)
+
+
+# Отдает список дочерних категорий по родительскому id (для поиска магазиноа и поиска в ЛК)
+@api_view(["GET", "POST"])
+def get_categories_for_search(request, id):
+    categories = Category.objects.filter(parent_id=id)
     serializer = GetListOfCategoriesSerializer(categories, many=True)
     return Response(serializer.data)
 

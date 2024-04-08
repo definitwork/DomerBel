@@ -318,7 +318,7 @@
 
 .header_up_wrapper_navigate_info {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     width: 100%;
 
     & ul {
@@ -328,17 +328,49 @@
         cursor: pointer;
         font-size: 13px;
         color: #307792;
+        margin-right: auto;
     }
 
-    & div {
+    & .user_name {
         font-family: "Trebuchet MS";
         cursor: pointer;
         font-size: 13px;
         color: #307792;
+        margin-left: 20px;
     }
 
     & div:hover {
         color: red;
+        cursor: pointer;
+    }
+
+    & .favorites.active{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: auto;
+        height: auto;
+        overflow: auto;
+        opacity: 1;
+
+        & img{
+            height: 20px;
+            width: 20px;
+        }
+
+        & .favorites__quantity{
+            padding-left: 3px;
+            color: #307792;
+        }
+    }
+
+    & .favorites{
+        height: 0;
+        overflow: hidden;
+        opacity: 0;
+    }
+
+    & .favorites.active:hover{
         cursor: pointer;
     }
 }
