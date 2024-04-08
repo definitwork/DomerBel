@@ -51,6 +51,7 @@ def get_advertisement_page(request):
         "page_obj": page_obj,
         'date': state_sort_by_date,
         'view_type': view_type,
+        'adaptive_navigation': "Доска объявлений. Беларусь",
     }
 
     response = render(request, html, context)
@@ -107,6 +108,7 @@ def get_advertisement_by_category(request, category_slug):
         "page_obj": page_obj,
         'date': state_sort_by_date,
         'view_type': view_type,
+        'adaptive_navigation': f"{category.main_title}. Беларусь",
     }
 
     response = render(request, html, context)
@@ -119,14 +121,10 @@ def get_advertisement_by_category(request, category_slug):
 
 
 def get_page_place_an_ad(request):
-    oblast = Region.objects.filter(type='Область')
-    spisok = Spisok.objects.all()
-    category = Category.objects.all()
-
+    category_list = Category.objects.filter(level__lte=1)
 
     context = {
-        'spisok': spisok,
-        'oblast': oblast,
-        'category': category,
+        "category_list": category_list,
+        'adaptive_navigation': "Добавление объявления",
     }
     return render(request, 'place_an_ad.html', context)

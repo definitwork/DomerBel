@@ -72,17 +72,17 @@
         {% for category in category_list %}
             {% if category.level == 0 %}
                 {% if category.title == 'Транспорт' or category.title == 'Хобби и отдых' %}
-                    <a href="" class="category_footer_item item_0">
+                    <a href="{% url 'advertisement_by_category' category.slug %}" class="category_footer_item item_0">
                         {{ category.title }}
                     </a>
                 {% else %}
                     <p></p>
-                    <a href="" class="category_footer_item item_0">
+                    <a href="{% url 'advertisement_by_category' category.slug %}" class="category_footer_item item_0">
                         {{ category.title }}
                     </a>
                 {% endif %}
             {% else %}
-                <a href="" class="category_footer_item item_1">
+                <a href="{% url 'advertisement_by_category' category.slug %}" class="category_footer_item item_1">
                     {{ category.title }}
                 </a>
             {% endif %}
@@ -134,14 +134,14 @@
                         {% block nav_title %}
                             <div class="nav_category_title">
                                 <p>
-                                    { adaptive_navigation }
+                                    {{ adaptive_navigation }}
                                 </p>
                             </div>
                         {% endblock %}
                         <div class="nav_category_list">
-                            <a href="#">Авто</a>
-                            <a href="#">Работа</a>
-                            <a href="#">Недвижимость</a>
+                            <a href="{% url 'advertisement_by_category' 'avtomobili_s_probegom' %}">Авто</a>
+                            <a href="{% url 'advertisement_by_category' 'rabota' %}">Работа</a>
+                            <a href="{% url 'advertisement_by_category' 'nedvizhimost' %}">Недвижимость</a>
                             <button class="more_button">Ещё...</button>
                         </div>
                     </nav>
