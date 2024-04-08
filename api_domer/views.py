@@ -1,10 +1,11 @@
 from rest_framework.decorators import api_view
 from transliterate import slugify
-from rest_framework import status
+from rest_framework import status, serializers
 
-from advertisement.models import Region, Category, Field, ElementTwo, PhotoAdvertisement, Advertisement
+from advertisement.models import Region, Category, Field, ElementTwo, PhotoAdvertisement, Advertisement, Store
 from api_domer.serializers import GetListOfCitiesSerializer, GetListOfCategoriesSerializer, FieldSerialier, \
-    ElementTwoSerializer, PhotoAdvertisementSerializer, AdvertisementSerializer
+    ElementTwoSerializer, PhotoAdvertisementSerializer, AdvertisementSerializer, StoreSerializer, \
+    AdditionalInformationSerializer
 from rest_framework.response import Response
 
 
@@ -63,19 +64,35 @@ def get_elementtwo_list(request):
         return Response(serializer.data)
 
 
+@api_view(['GET'])
+def get_store_for_advertisement(request):
+    stores = Store.objects.filter(user=request.user.id)
+    serializer = StoreSerializer(stores, many=True)
+    return Response(serializer.data)
+
+
 @api_view(['GET', 'POST'])
 def save_advertisement(request):
     additional_information = dict(request.data.copy())
     if request.method == "POST":
         serializer = AdvertisementSerializer(data=request.data)
-        if serializer.is_valid():
-            keys_to_delete = ['csrfmiddlewaretoken', 'preview_img', 'photo_files']
-            keys_to_delete.extend(serializer.data.keys())
-            for key in keys_to_delete:
-                if key in additional_information:
-                    additional_information.pop(key)
-            for i in additional_information:
-                additional_information[i] = ' '.join(additional_information.get(i))
+        serializer.is_valid()
+        keys_to_delete = ['csrfmiddlewaretoken', 'preview_img', 'photo_files']
+        keys_to_delete.extend(serializer.data.keys())
+        for key in keys_to_delete:
+            if key in additional_information:
+                additional_information.pop(key)
+        key_error = []
+        for i in additional_information:
+            if '' in additional_information.get(i):
+                key_error.append(i)
+        additional_information_filter = Field.objects.filter(id__in=key_error).exclude(error='')
+        serializer_additional_error = AdditionalInformationSerializer(data=additional_information_filter, many=True)
+        serializer_additional_error.is_valid()
+        if serializer.is_valid() and not serializer_additional_error.data:
+            additional_information_save = Field.objects.filter(id__in=additional_information).order_by('id')
+            for i in additional_information_save:
+                additional_information[i.title] = ' '.join(additional_information.pop(f'{i.id}'))
             new_advertisement = Advertisement(author=request.user, article=serializer.validated_data.get('article'),
                                               title=serializer.validated_data.get('title'), price=serializer.validated_data.get('price'),
                                               category=serializer.validated_data.get('category'), bearer=serializer.validated_data.get('bearer'),
@@ -95,5 +112,5 @@ def save_advertisement(request):
                         additional_photo.save()
             return Response({"created": "объявление успешно создано"},status=status.HTTP_201_CREATED)
         else:
-            return Response({"error": serializer.errors},status=status.HTTP_400_BAD_REQUEST)
+            raise serializers.ValidationError({"error_additional": serializer_additional_error.data, "error": serializer.errors})
     return Response()
