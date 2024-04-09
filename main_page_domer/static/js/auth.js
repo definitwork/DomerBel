@@ -1,18 +1,27 @@
-const form_login_button = document.querySelector('#form_login_button')
-const form_register_button = document.querySelector('#form_register_button')
-const error_name_register = document.querySelector('.error_name_register')
-const error_phone_register = document.querySelector('.error_phone_register');
-const error_email_register = document.querySelector('.error_email_register');
-const error_pass_not_match_register = document.querySelector('.error_pass_not_match_register');
-const error_bad_password_register = document.querySelector('.error_bad_password_register')
-const error_click_captcha = document.querySelector('.error_click_captcha')
-const info_massage_popup = document.querySelector('.info_massage_popup')
-// Для обнуленя значения поля
+const form_login_button = document.querySelector('#form_login_button');
+const form_register_button_entity = document.querySelector('.form_register_button_entity');
+const form_register_button_individual = document.querySelector('.form_register_button_individual');
+const error_name_register = document.getElementById('error_name_register');
+const error_phone_register = document.getElementById('error_phone_register');
+const error_email_register = document.getElementById('error_email_register');
+const error_pass_not_match_register = document.getElementById('error_pass_not_match_register');
+const error_bad_password_register = document.getElementById('error_bad_password_register');
+const error_click_captcha = document.getElementById('error_click_captcha');
+const error_name_register1 = document.getElementById('error_name_register1');
+const error_phone_register1 = document.getElementById('error_phone_register1');
+const error_email_register1 = document.getElementById('error_email_register1');
+const error_pass_not_match_register1 = document.getElementById('error_pass_not_match_register1');
+const error_bad_password_register1 = document.getElementById('error_bad_password_register1');
+const error_click_captcha1 = document.getElementById('error_click_captcha1');
+const info_massage_popup = document.querySelector('.info_massage_popup');
+// Для обнуленя getElementById
 const field_password2_register_form = document.querySelector('#id_password2');
 
-
 form_login_button.addEventListener('click', login_fn)
-form_register_button.addEventListener('click', register_fn)
+form_register_button_individual.addEventListener('click', register_fn1)
+form_register_button_entity.addEventListener('click', register_fn2)
+
+
 
 const token = getCookie('csrftoken')
 
@@ -42,20 +51,18 @@ function login_fn() {
 
 
 
-function register_fn() {
-    fetch('http://127.0.0.1:8000/users/register/', {
+function register_fn1() {
+    fetch('http://127.0.0.1:8000/users/register_individual/', {
         method: 'POST',
         headers: {"X-CSRFToken": token},
-        body: new FormData(document.querySelector('#register_form'))
+        body: new FormData(document.querySelector('#register_form_individual'))
     })
         .then(response => response.json())
         .then(data => {
-
+            console.log(data)
             if (data.success) {
                 window.location.href = '/register_done';
                 info_massage_popup.style.display = 'flex';
-
-
             }
 
             if (data.errors) {
@@ -93,6 +100,62 @@ function register_fn() {
                 error_click_captcha.innerHTML = data.errors.captcha;
             } else {
                 error_click_captcha.innerHTML = '';
+            }
+
+        })
+}
+function register_fn2() {
+    fetch('http://127.0.0.1:8000/users/register_entity/', {
+        method: 'POST',
+        headers: {"X-CSRFToken": token},
+        body: new FormData(document.querySelector('#register_form_entity'))
+        
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            if (data.success) {
+                window.location.href = '/register_done';
+                info_massage_popup.style.display = 'flex';
+
+
+            }
+
+            if (data.errors) {
+                reset()
+            }
+
+            if (data.errors.name) {
+                error_name_register1.innerHTML = data.errors.name;
+            } else {
+                error_name_register1.innerHTML = ''
+            }
+
+            if (data.errors.phone) {
+                error_phone_register1.innerHTML = data.errors.phone;
+            } else {
+                error_phone_register1.innerHTML = '';
+            }
+            if (data.errors.email) {
+                error_email_register1.innerHTML = data.errors.email;
+            } else {
+                error_email_register1.innerHTML = '';
+            }
+            if (data.errors.password) {
+                error_bad_password_register1.innerHTML = data.errors.password;
+            } else {
+                error_bad_password_register1.innerHTML = '';
+            }
+            if (data.errors.password2) {
+                error_pass_not_match_register1.innerHTML = data.errors.password2;
+                field_password2_register_form.value = null
+            } else {
+                error_pass_not_match_register1.innerHTML = '';
+            }
+            if (data.errors.captcha) {
+                error_click_captcha1.innerHTML = data.errors.captcha;
+            } else {
+                error_click_captcha1.innerHTML = '';
             }
 
         })

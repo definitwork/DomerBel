@@ -7,7 +7,8 @@ const entity_button = document.querySelector(".entity");
 const individual_button = document.querySelector(".individual");
 const closing_cross = document.querySelectorAll(".closing_cross");
 
-const register_popup = document.querySelector(".register_form_popup");
+const register_popup_individual = document.querySelector(".register_form_individual_popup");
+const register_popup_entity = document.querySelector(".register_form_entity_popup");
 const register_button = document.querySelector(".register_button");
 const return_to_login_button = document.querySelector(".return_to_login_button");
 
@@ -30,6 +31,8 @@ if (login_button) {
     login_popup.style.display = 'flex';
     forget_button.style.display = 'flex';
     forget_popup.style.display = 'none';
+    register_popup_entity.style.display = 'none';
+    register_popup_individual.style.display = 'none';
 });
 }
 
@@ -50,6 +53,8 @@ popup.addEventListener("click", (event) => {
         register_popup.style.display = 'none';
         forget_button.style.display = 'none';
         nav_category_list_popup.style.display = 'none';
+        register_popup_entity.style.display = 'none';
+        register_popup_individual.style.display = 'none';
     }
 });
 
@@ -65,13 +70,15 @@ register_button.addEventListener("click", () => {
 individual_button.addEventListener("click", () => {
     login_popup.style.display = 'none';
     question_popup.style.display = 'none'
-    register_popup.style.display = 'flex';
+    register_popup_entity.style.display = 'none';
+    register_popup_individual.style.display = 'flex';
 });
 
 entity_button.addEventListener("click", () => {
     login_popup.style.display = 'none';
     question_popup.style.display = 'none'
-    register_popup.style.display = 'flex';
+    register_popup_individual.style.display = 'none';
+    register_popup_entity.style.display = 'flex';
 });
 
 return_to_login_button.addEventListener("click", () => {

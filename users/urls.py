@@ -2,16 +2,17 @@ from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, 
     PasswordResetCompleteView
 from django.urls import path, reverse_lazy
 
-from .views import logout_view, login_view, register_view, get_personal_account_page, get_incoming_page, \
+from .views import logout_view, login_view, get_personal_account_page, get_incoming_page, \
     get_outgoing_page, get_sent_page, get_admin_message_page, add_store, get_my_store, edit_store, get_store_page, \
     delete_store, get_user_data_page, get_personal_account_inactive_adds_page, delete_or_archive_selected_ads, \
-    search_of_ads_in_personal_account
+    search_of_ads_in_personal_account, register_view_entity, register_view_individual
 
 app_name = 'users'
 urlpatterns = [
     path('logout/', logout_view, name="logout"),
     path('login/', login_view, name="login"),
-    path('register/', register_view, name="register"),
+    path('register_individual/', register_view_individual, name="register_individual"),
+    path('register_entity/', register_view_entity, name="register_entity"),
     path('password-reset/',
          PasswordResetView.as_view(
              template_name="base.html",

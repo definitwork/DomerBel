@@ -30,7 +30,30 @@ class RegisterForm(forms.Form):
                                    attrs={'placeholder': 'Введите пароль'}),
                                validators=[validate_password], label='')
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Повторите пароль'}), label='')
-    entity = forms.BooleanField(label='Юридическое лицо', required=False)
+    captcha = ReCaptchaField(label='')
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        password2 = cleaned_data.get('password2')
+        if password and password2 and password != password2:
+            self.add_error('password2', 'Пароли не совпадают')
+class RegisterFormEntity(forms.Form):
+    entity = forms.CharField(widget=forms.HiddenInput(), initial="значение?")
+    name = forms.CharField(error_messages={'required': 'Не указано контактное лицо'},
+                           max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Название организации'}), label='')
+    phone = forms.CharField(error_messages={'required': 'Не указан номер телефона'},
+                            widget=forms.TextInput(attrs={'placeholder': 'Номер телефона'}),
+                            validators=[validate_phone], label='')
+    email = forms.CharField(error_messages={'required': 'Не указан email'},
+                            widget=forms.EmailInput(
+                                attrs={'placeholder': 'Введите Вашу почту'}),
+                            validators=[validate_email], label='')
+    password = forms.CharField(error_messages={'required': 'Введите пароль'},
+                               widget=forms.PasswordInput(
+                                   attrs={'placeholder': 'Введите пароль'}),
+                               validators=[validate_password], label='')
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Повторите пароль'}), label='')
     captcha = ReCaptchaField(label='')
 
     def clean(self):

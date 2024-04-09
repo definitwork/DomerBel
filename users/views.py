@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 
 from advertisement.models import Region, Category, Advertisement, Store
 from advertisement.forms import StoreForm
-from .forms import LoginForm, RegisterForm, EditContactDataForm, ChangePasswordForm
+from .forms import LoginForm, RegisterForm, EditContactDataForm, ChangePasswordForm, RegisterFormEntity
 from .models import User
 
 
@@ -307,18 +307,36 @@ def login_view(request):
             return JsonResponse({'errors': 1})
 
 
-def register_view(request):
+def register_view_individual(request):
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
+        print(request.POST)
+        form_individual = RegisterForm(request.POST)
+        if form_individual.is_valid():
             user = User()
-            user.first_name = form.cleaned_data.get('name')
-            user.phone_number = form.cleaned_data.get('phone')
-            user.email = form.cleaned_data.get('email')
-            user.entity = form.cleaned_data.get('entity')
-            user.set_password(form.cleaned_data.get('password'))
-            user.set_password(form.cleaned_data.get('password2'))
+            user.first_name = form_individual.cleaned_data.get('name')
+            user.phone_number = form_individual.cleaned_data.get('phone')
+            user.email = form_individual.cleaned_data.get('email')
+            user.set_password(form_individual.cleaned_data.get('password'))
+            user.set_password(form_individual.cleaned_data.get('password2'))
             user.save()
             return JsonResponse({'success': True})
         else:
-            return JsonResponse({'errors': form.errors})
+            return JsonResponse({'errors': form_individual.errors})
+        
+        
+def register_view_entity(request):
+    if request.method == 'POST':
+        # print(request.POST)
+        form_entity = RegisterFormEntity(request.POST)
+        if form_entity.is_valid():
+            user = User()
+            user.first_name = form_entity.cleaned_data.get('name')
+            user.phone_number = form_entity.cleaned_data.get('phone')
+            user.email = form_entity.cleaned_data.get('email')
+            user.set_password(form_entity.cleaned_data.get('password'))
+            user.set_password(form_entity.cleaned_data.get('password2'))
+            user.save()
+            return JsonResponse({'success': True})
+        else:
+            print(form_entity.errors)
+            return JsonResponse({'errors': form_entity.errors})
