@@ -326,16 +326,17 @@ def register_view_individual(request):
         
 def register_view_entity(request):
     if request.method == 'POST':
-        # print(request.POST)
         form_entity = RegisterFormEntity(request.POST)
         if form_entity.is_valid():
             user = User()
             user.first_name = form_entity.cleaned_data.get('name')
+            user.entity = True
             user.phone_number = form_entity.cleaned_data.get('phone')
             user.email = form_entity.cleaned_data.get('email')
             user.set_password(form_entity.cleaned_data.get('password'))
             user.set_password(form_entity.cleaned_data.get('password2'))
             user.save()
+            print(form_entity.cleaned_data)
             return JsonResponse({'success': True})
         else:
             print(form_entity.errors)

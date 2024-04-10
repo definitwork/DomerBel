@@ -1,3 +1,4 @@
+from cProfile import label
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
@@ -25,7 +26,7 @@ class RegisterForm(forms.Form):
                             widget=forms.EmailInput(
                                 attrs={'id': 'email_register_field', 'placeholder': 'Введите Вашу почту'}),
                             validators=[validate_email], label='')
-    password = forms.CharField(error_messages={'required': 'Введите пароль'},
+    password = forms.CharField(error_messages={'required': 'Пароль должен содержать не менее 8 символов и включать буквы, цифры'},
                                widget=forms.PasswordInput(
                                    attrs={'placeholder': 'Введите пароль'}),
                                validators=[validate_password], label='')
@@ -38,8 +39,11 @@ class RegisterForm(forms.Form):
         password2 = cleaned_data.get('password2')
         if password and password2 and password != password2:
             self.add_error('password2', 'Пароли не совпадают')
+
+        
+
+
 class RegisterFormEntity(forms.Form):
-    entity = forms.CharField(widget=forms.HiddenInput(), initial="значение?")
     name = forms.CharField(error_messages={'required': 'Не указано контактное лицо'},
                            max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Название организации'}), label='')
     phone = forms.CharField(error_messages={'required': 'Не указан номер телефона'},
@@ -49,7 +53,7 @@ class RegisterFormEntity(forms.Form):
                             widget=forms.EmailInput(
                                 attrs={'placeholder': 'Введите Вашу почту'}),
                             validators=[validate_email], label='')
-    password = forms.CharField(error_messages={'required': 'Введите пароль'},
+    password = forms.CharField( help_text="help", error_messages={'required': 'Введите пароль'},
                                widget=forms.PasswordInput(
                                    attrs={'placeholder': 'Введите пароль'}),
                                validators=[validate_password], label='')
@@ -62,6 +66,8 @@ class RegisterFormEntity(forms.Form):
         password2 = cleaned_data.get('password2')
         if password and password2 and password != password2:
             self.add_error('password2', 'Пароли не совпадают')
+
+   
 
 
 class EmailResetForm(forms.Form):
