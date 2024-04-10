@@ -98,7 +98,7 @@
             </ul>
             <input type="button" class="form_register_button_entity" value="Регистрация" name='entity_form'></input>
         </form>
-        <button class="return_to_login_button">Вход</button>
+        <button class="return_to_login_button" id="return_to_login_button_entity" >Вход</button>
         <div class="closing_cross"></div>
     </div>
     <div class="forget_pass_form_popup">
@@ -250,8 +250,6 @@
             {% endif %}
         {% endblock %}
         {% block filter %}
-        {% block info_message %}
-        {% endblock %}
         {% endblock %}
         {% block content %}
         {% endblock %}
