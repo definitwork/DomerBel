@@ -236,7 +236,7 @@
                     </div>
                 </div>
             </section>
-            {% if not user.is_authenticated %}
+            {% comment %} {% if not user.is_authenticated %}
             <div class="info_massage_popup">
                 <div>
                     <p>Здравтвуйте  <strong>{{user.first_name}}!</strong><br></p>
@@ -245,9 +245,12 @@
                 <p>Вы успешно зарегистрировались! <br>
                 Что бы зайти в личный кабинет авторизуйтесь</p>
             </div>
+            {% endif %} {% endcomment %}
 
 
-            {% endif %}
+
+        {% endblock %}
+        {% block info_message %}
         {% endblock %}
         {% block filter %}
         {% endblock %}
