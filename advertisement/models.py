@@ -8,6 +8,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 from django.conf import settings
 
+from users.validators import validate_phone
 
 
 class PhotoAdvertisement(models.Model):
@@ -34,7 +35,7 @@ class Advertisement(models.Model):
                                       verbose_name='Главная фотография')
     counter_views = models.IntegerField(default=0, verbose_name='Счетчик просмотров')
     contact_name = models.CharField(max_length=255, verbose_name='Контактное лицо')
-    phone_num = models.CharField(max_length=255, verbose_name='Телефон')
+    phone_num = models.CharField(max_length=255, verbose_name='Телефон', validators=[validate_phone])
     email = models.EmailField(verbose_name='E-Mail')
     store = models.ForeignKey('Store', on_delete=models.CASCADE, blank=True, null=True, verbose_name="Магазин")
     slug = models.SlugField(unique=True, verbose_name='URL')
