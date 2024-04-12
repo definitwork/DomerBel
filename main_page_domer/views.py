@@ -202,7 +202,7 @@ def get_help_page(request):
 
 # Выводим публикации
 def get_publications(request):
-    publications = Publication.objects.all().order_by('date_of_create')
+    publications = Publication.objects.prefetch_related('photopublication_set').order_by('date_of_create')
     category_list = Category.objects.filter(level__lte=1)
 
     context = {

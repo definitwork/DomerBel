@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
-{% load static %} 
+
+{% load static %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/publication/style.css' %}"/>
+{% endblock stylesheet %}
 
 {% block title %} Пубикации {% endblock title %}
 
@@ -27,24 +32,35 @@
 {% endblock find %}
 
 {% block content %}
-    <section>
-        <div>
-            <p>Найдено записей {{ publications.count }} </p>
+    <section class="section_publications">
+        <div class="publications_category">
+            <p>первый котолог, {{ publications.count }} </p>
         </div>
-        <div>
+        <div class="publications_count">
+            <p>Найдено записей: {{ publications.count }} </p>
+        </div>
+        <ul class="publication_list">
             {% for publication in publications %}
-                <div class="data">
-                    <p> {{ publication.date_of_create }} </p>
-                </div>
-                <div class="img">
-                    <img src="{{ publication.preview_image.url }}" alt="">
-                </div>
-                <div class="text">
-                    <p> {{ publication.title }} </p>
-                <p> {{ publication.announcement }} </p>
-                </div>
+                <li class="publication_list_item">
+                    <a href="#" class="publication_link">
+                        <div class="publication_link_wrap">
+                            <div class="publication_data">
+                                <p> {{ publication.date_of_create }} </p>
+                            </div>
+                            <div class="publication_img">
+                                {% for photo in publication.photopublication_set.all %}
+                                    <img src="{{ photo.photo.url }}" alt="Publication Photo">
+                                {% endfor %}
+                            </div>
+                            <div class="publication_text">
+                                <p class="publication_text_title"> {{ publication.title }} </p>
+                                <p> {{ publication.announcement }} </p>
+                            </div>
+                        </div> 
+                    </a> 
+                </li> 
             {% endfor %}
-        </div>
+        </ul>
     </section>
 {% endblock content %}
 
