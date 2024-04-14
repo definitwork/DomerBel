@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
 
     'drf_yasg',
     "debug_toolbar",
@@ -76,6 +78,8 @@ TEMPLATES = [
         },
     },
 ]
+
+SITE_ID=2
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
