@@ -26,11 +26,45 @@
             </section>
             <section class="details__images__options">
                 <div class="details__images__options_wrap">
-                    <div class="details__images">
-                        <div class="details__images_zoom">
-                            <img src="{% static 'img/zoom.png' %}" alt="{% static 'img/zoom.png' %}">
+                    <div class="details__images_sliders">
+                        <div class="sliders">
+                            <div class="slider-for">
+                                {#                                <div class="slider-for_arrow_prev">#}
+                                {#                                    <img src="{% static 'img/arrow_left.png' %}"#}
+                                {#                                         alt="{% static 'img/arrow_left.png' %}">#}
+                                {#                                </div>#}
+                                <div class="slider-for_image">
+                                    <img src="{{ advertisement.preview_image.url }}"
+                                         alt="{{ advertisement.preview_image.url }}">
+                                </div>
+                                <div class="slider-for_image">
+                                    <img src="{{ advertisement.preview_image.url }}"
+                                         alt="{{ advertisement.preview_image.url }}">
+                                </div>
+                                <div class="slider-for_image">
+                                    <img src="{{ advertisement.preview_image.url }}"
+                                         alt="{{ advertisement.preview_image.url }}">
+                                </div>
+                                <div class="slider-for_image">
+                                    <img src="{{ advertisement.preview_image.url }}"
+                                         alt="{{ advertisement.preview_image.url }}">
+                                </div>
+                                {#                                <div class="slider-for_arrow_next">#}
+                                {#                                    <img src="{% static 'img/arrow_right.png' %}"#}
+                                {#                                         alt="{% static 'img/arrow_right.png' %}">#}
+                                {#                                </div>#}
+                            </div>
                         </div>
-                        <img src="{{ advertisement.preview_image.url }}" alt="{{ advertisement.preview_image.url }}">
+                        <div class="slider-nav">
+                            <div>
+                                <img src="{{ advertisement.preview_image.url }}"
+                                     alt="{{ advertisement.preview_image.url }}">
+                            </div>
+                            <div>
+                                <img src="{{ advertisement.preview_image.url }}"
+                                     alt="{{ advertisement.preview_image.url }}">
+                            </div>
+                        </div>
                     </div>
                     <div class="details__options">
                         <p>Просмотров: {{ advertisement.counter_views }}</p>
@@ -439,5 +473,7 @@
 {% block prefooter %}
 {% endblock %}
 {% block javascript %}
-    <script src="{% static 'js/ad_details.js' %}"></script>
+    <script defer src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script defer src="{% static 'js/ad_details.js' %}"></script>
+    <script defer type="text/javascript" src="{% static 'js/slick.min.js' %}"></script>
 {% endblock %}
