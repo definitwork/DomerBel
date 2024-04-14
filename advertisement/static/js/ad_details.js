@@ -1,6 +1,23 @@
 const more = document.querySelector(".description_more_button");
 const more_popup = document.querySelector(".description_feedback_share_list_modal");
 
+$(document).ready(function () {
+    $('.slider-for').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        fade: true,
+        asNavFor: '.slider-nav'
+    });
+    $('.slider-nav').slick({
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        asNavFor: '.slider-for',
+        dots: true,
+        centerMode: true,
+        focusOnSelect: true
+    });
+})
 
 
 more.addEventListener("click", (event) => {
@@ -14,24 +31,25 @@ document.addEventListener("click", (event) => {
     if (event.target.classList.contains('description_feedback_share_list_modal')
         || event.target.classList.contains('description_feedback_share_list_item_modal')
         || event.target.tagName === "svg" || event.target.tagName === "path") {
-    return
+        return
     }
     more_popup.style.display = "none";
 })
 
-    // console.log(event.target.tagName !== "svg" || event.target.tagName !== "path")
-    // console.log(event.target.classList.contains("description_feedback_share_list_modal")
-    //     ||
-    //     event.target.classList.contains("description_feedback_share_list_item_modal")
-    //     ||
-    //     event.target.tagName !== "svg" || event.target.tagName !== "path")
-    // // more_popup.style.display = "none";
-    // if (!event.target.classList.contains("description_feedback_share_list_modal")
-    //     ||
-    //     !event.target.classList.contains("description_feedback_share_list_item_modal")
-    //     ||
-    //     event.target.tagName !== "svg" || event.target.tagName !== "path"
-    // ) {
-    //     console.log(222)
-    //     more_popup.style.display = "none";
-    // }
+
+// console.log(event.target.tagName !== "svg" || event.target.tagName !== "path")
+// console.log(event.target.classList.contains("description_feedback_share_list_modal")
+//     ||
+//     event.target.classList.contains("description_feedback_share_list_item_modal")
+//     ||
+//     event.target.tagName !== "svg" || event.target.tagName !== "path")
+// // more_popup.style.display = "none";
+// if (!event.target.classList.contains("description_feedback_share_list_modal")
+//     ||
+//     !event.target.classList.contains("description_feedback_share_list_item_modal")
+//     ||
+//     event.target.tagName !== "svg" || event.target.tagName !== "path"
+// ) {
+//     console.log(222)
+//     more_popup.style.display = "none";
+// }
