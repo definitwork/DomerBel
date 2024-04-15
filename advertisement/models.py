@@ -1,6 +1,7 @@
 import calendar
 from datetime import datetime, timedelta
 
+from PIL import Image, ImageDraw, ImageFont
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils.timezone import make_aware
@@ -21,6 +22,20 @@ class PhotoAdvertisement(models.Model):
 
     def __str__(self):
         return f'{self.advertisement.id}-{self.id}'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        photo = Image.open(self.photo.path)
+        draw = ImageDraw.Draw(photo)
+        font = ImageFont.truetype("static/fonts/arial/arial.ttf", 42)
+        width, height = photo.size
+        myword = "ДОМер.бел"
+        # margin = 20
+        # textwidth, textheight = draw.textsize(myword, font)
+        x = width - 10
+        y = height - 15
+        draw.text((x, y), myword, (250, 252, 252, 1), font=font, anchor='rb', features='curs')
+        photo.save(self.photo.path)
 
 class Advertisement(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
