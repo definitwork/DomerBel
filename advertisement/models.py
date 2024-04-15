@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
+from django.utils.timezone import make_aware
 from mptt.models import MPTTModel, TreeForeignKey
 
 from django.conf import settings
@@ -18,8 +19,7 @@ class PhotoAdvertisement(models.Model):
         verbose_name_plural = 'Фото объявлений'
 
     def __str__(self):
-        return self.advertisement
-
+        return f'{self.advertisement.id}-{self.id}'
 
 class Advertisement(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -62,7 +62,7 @@ class Advertisement(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        self.date_of_deactivate = datetime.now() + timedelta(days=180)
+        self.date_of_deactivate = make_aware(datetime.now() + timedelta(days=180))
         super(Advertisement, self).save(*args, **kwargs)
 
 
@@ -85,6 +85,9 @@ class Category(MPTTModel):
 
     def __str__(self):
         return self.title
+    
+    def get_absolute_url(self): # для карты сайта sitemap.xml
+        return "/people/%i/" % self.id
 
 
 class Region(MPTTModel):
@@ -120,10 +123,10 @@ class FieldSet(models.Model):
 
 class Field(models.Model):
     title = models.CharField(max_length=500, verbose_name='Заголовок поля')
-    error = models.CharField(max_length=500, verbose_name='Текст ошибки при неверно введенных данных')
+    error = models.CharField(max_length=500, verbose_name='Текст ошибки при неверно введенных данных', blank=True, null=True)
     spisok = models.ForeignKey('Spisok', on_delete=models.CASCADE, verbose_name='Связь со списком', blank=True, null=True)
     category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Связь с категорией', blank=True, null=True)
-    int_val_list = ArrayField(models.CharField(max_length=1000, blank=True, null=True, verbose_name='Список числовых значений для задания диапазонов фильтрации'), default=list)
+    int_val_list = ArrayField(models.CharField(max_length=1000, blank=True, null=True, verbose_name='Список числовых значений для задания диапазонов фильтрации'), blank=True, null=True, default=list)
     min_val_interval_date = models.IntegerField(verbose_name='Минимально возможный год для выбора', blank=True, null=True)
     max_val_interval_date = models.IntegerField(verbose_name='Максимально возможный год для выбора', blank=True, null=True)
     search = models.CharField(max_length=500, blank=True, null=True)
@@ -134,7 +137,7 @@ class Field(models.Model):
         verbose_name_plural = 'Поля'
 
     def __str__(self):
-        return self.title
+        return f"{self.title}---{self.search}"
 
 
 class Spisok(models.Model):

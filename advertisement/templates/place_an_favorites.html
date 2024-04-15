@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block stylesheet %}
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/favorites.css' %}">
+{% endblock %}
+{% block nav_title %}
+    <div class="nav_category_title">
+        <p>
+            Избранное
+        </p>
+    </div>
+{% endblock %}
+{% block content %}
+    <section class="favorites-section">
+        {% if cards_num %}
+            <div class="favorites-numbers">Найдено записей: {{cards_num}}</div>
+        {% else %}
+            <div class="favorites-numbers">Записей не найдено</div>
+        {% endif %}
+        <ul class="favorites-list">
+            {% if objects %}
+            {% for cart in objects %}
+            <li class="favorite-list__item">
+                <div class="favorites__date-time">
+                    <ul>
+                        {% if cart.date_of_create.date == date_today %}
+                            <li class="favorites__date-time__date">Сегодня</li>
+                        {% elif cart.date_of_create.date == date_yesterday %}
+                            <li class="favorites__date-time__date">Вчера</li>
+                        {% else %}
+                            <li class="favorites__date-time__date">{{ cart.date_of_create|date:"d b. Y" }}</li>
+                        {% endif %}
+                            <li class="favorites__date-time__time">{{ cart.date_of_create|date:"H:i" }}</li>
+                    </ul>
+                    <p class="favorite__checkbox">
+                        <input class="favorite-list__item__input" id="{{cart.id}}" type="checkbox" name="{{cart.id}}">
+                        <label>Выделить</label>
+                    </p>
+                </div>
+                <div class="favorites__media">
+                    <img src="{{ cart.preview_image.url }}" alt="{{ cart.preview_image.url }}" class="favorites__img">
+                </div>
+                <div class="favorites__title">
+                    <a href="#" class="ads_description_title">
+                        {{ cart.title }}
+                    </a>
+                    <p>{{ cart.price }} руб.</p>
+                    <p style="color: #858585;">{{ cart.category.title }}</p>
+                    <p style="color: #858585;">{{ cart.region.area }}</p>
+                </div>
+            </li>
+            {% endfor %}
+            {% endif %}
+        </ul>
+        {% if objects %}
+        <button class="delete-favorites">Удалить выделенные из избранных</button>
+        {% endif %}
+    </section>
+{% endblock %}
+{% block javascript %}
+    <script src="{% static 'js/favorites.js' %}"></script>
+{% endblock %}

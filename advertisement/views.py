@@ -51,6 +51,7 @@ def get_advertisement_page(request):
         "page_obj": page_obj,
         'date': state_sort_by_date,
         'view_type': view_type,
+        'adaptive_navigation': "Доска объявлений. Беларусь",
     }
 
     response = render(request, html, context)
@@ -58,6 +59,7 @@ def get_advertisement_page(request):
     response.set_cookie('date', state_sort_by_date)
     response.set_cookie('sorted_by', order_by)
     response.set_cookie('view_type', view_type)
+    response.set_cookie('user_auth', request.user.id)
 
     return response
 
@@ -107,6 +109,7 @@ def get_advertisement_by_category(request, category_slug):
         "page_obj": page_obj,
         'date': state_sort_by_date,
         'view_type': view_type,
+        'adaptive_navigation': f"{category.main_title}. Беларусь",
     }
 
     response = render(request, html, context)
@@ -119,15 +122,26 @@ def get_advertisement_by_category(request, category_slug):
 
 
 def get_page_place_an_ad(request):
-    oblast = Region.objects.filter(type='Область')
-    spisok = Spisok.objects.all()
-    category = Category.objects.all()
-
-
+    category_list = Category.objects.filter(level__lte=1)
 
     context = {
-        'spisok': spisok,
-        'oblast': oblast,
-        'category': category,
+        "category_list": category_list,
+        'adaptive_navigation': "Добавление объявления",
     }
+    
     return render(request, 'place_an_ad.html', context)
+
+def get_page_place_an_favorites(request):
+    context = {}
+    category_list = Category.objects.filter(level__lte=1)
+    context["category_list"] = category_list
+    json_data = request.GET.get('list')
+    data = json.loads(json_data)
+    
+
+    if len(data):
+        objects = Advertisement.objects.filter(pk__in=data)
+        context['objects'] = objects
+        context['cards_num'] = len(objects)
+
+    return render(request, 'place_an_favorites.html', context)

@@ -73,17 +73,17 @@
         {% for category in category_list %}
             {% if category.level == 0 %}
                 {% if category.title == 'Транспорт' or category.title == 'Хобби и отдых' %}
-                    <a href="" class="category_footer_item item_0">
+                    <a href="{% url 'advertisement_by_category' category.slug %}" class="category_footer_item item_0">
                         {{ category.title }}
                     </a>
                 {% else %}
                     <p></p>
-                    <a href="" class="category_footer_item item_0">
+                    <a href="{% url 'advertisement_by_category' category.slug %}" class="category_footer_item item_0">
                         {{ category.title }}
                     </a>
                 {% endif %}
             {% else %}
-                <a href="" class="category_footer_item item_1">
+                <a href="{% url 'advertisement_by_category' category.slug %}" class="category_footer_item item_1">
                     {{ category.title }}
                 </a>
             {% endif %}
@@ -111,6 +111,12 @@
                                 <a href="{% url 'help' %}" class="help">Помощь</a>
                             </li>
                         </ul>
+                        <a href="{% url 'favorites' %}" title="Избранное" class="favorites">
+                            <div class="favorites__star">
+                                <img src="{% static 'img/star.png' %}" alt="" class="favorites__star__img">
+                            </div>
+                            <div class="favorites__quantity">[4]</div>
+                        </a>
                         <div class='user_name'>
                             {% if user.is_authenticated %}
                                 <a href="{% url 'users:logout' %}">Выход</a> |
@@ -118,7 +124,6 @@
                             {% else %}
                                 <p class="login_button">Вход и регистрация</p>
                             {% endif %}
-
                         </div>
                     </nav>
                 </div>
@@ -133,16 +138,16 @@
                     </div>
                     <nav class="header_down_nav_category">
                         {% block nav_title %}
-                        <div class="nav_category_title">
-                            <p>
-                                { adaptive_navigation }
-                            </p>
-                        </div>
+                            <div class="nav_category_title">
+                                <p>
+                                    {{ adaptive_navigation }}
+                                </p>
+                            </div>
                         {% endblock %}
                         <div class="nav_category_list">
-                            <a href="#">Авто</a>
-                            <a href="#">Работа</a>
-                            <a href="#">Недвижимость</a>
+                            <a href="{% url 'advertisement_by_category' 'avtomobili_s_probegom' %}">Авто</a>
+                            <a href="{% url 'advertisement_by_category' 'rabota' %}">Работа</a>
+                            <a href="{% url 'advertisement_by_category' 'nedvizhimost' %}">Недвижимость</a>
                             <button class="more_button">Ещё...</button>
                         </div>
                     </nav>
@@ -198,12 +203,12 @@
         <footer>
             <div class="navigate_link">
                 <div class="footer_link">
-                    <a href="#">
+                    <a href="{% url 'place_an_ad' %}">
                         <p>Подать объявление</p>
                     </a>
                 </div>
                 <div class="footer_link">
-                    <a href="#">
+                    <a href="{% url 'advertisement' %}">
                         <p>Объявления</p>
                     </a>
                 </div>
@@ -221,8 +226,8 @@
                     </a>
                 </div>
                 <div class="footer_link">
-                    <a href="#">
-                        Карта
+                    <a href="{% url 'site_map' %}">
+                        Карта сайта
                     </a>
                 </div>
                 <div class="footer_link">
