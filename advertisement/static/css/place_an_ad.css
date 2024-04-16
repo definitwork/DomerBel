@@ -1,9 +1,27 @@
+.create_advertisement {
+    max-width: 580px;
+}
 .label_fields {
     min-width: 250px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 0;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
 
+}
+
+.item_input {
+    margin-top: 10px;
+    display: flex;
+}
+
+.select_class_category {
+    margin-top: 10px;
+}
+.select_info_two {
+    margin-top: 10px;
 }
 
 .description_textarea {
@@ -11,37 +29,77 @@
     border: 1px solid #B5B8C8;
     width: 326px;
     height: auto;
+    font-family: "Trebuchet MS";
+    font-size: 13px
 }
 
 .information_item-input {
+    color: black;
     border-radius: 2px;
     border: 1px solid #B5B8C8;
-    width: 326px;
     height: auto;
-    margin-top: 5px;
+    width: 326px;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+    &:focus {
+        border-radius: 2px;
+        border: 2px solid black;
+    }
+}
+
+.additional_information_item {
+    display: flex;
 }
 
 .description {
-    display: flex;
     margin-top: 5px;
 }
 
 .title_adver {
-    /*display: flex;*/
     margin-top: 5px;
 }
 .error {
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-end;
     color: red;
+    margin-right: 10px;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+    padding-top: 2px;
+
 }
+.input_error {
+    border: 1px solid red;
+}
+
+.information_item-input {
+    : {
+        border: 2px solid black;
+    }
+}
+
 .title_adver_input {
     display: flex;
     margin-top: 5px;
+    align-items: center;
+}
+.region_input  {
+    display: flex;
 }
 
-.bearer {
+.city {
+    margin-top: 10px;
+}
+.category_input {
     display: flex;
+}
+.description_input {
+    display: flex;
+}
+.bearer_input {
+    display: flex;
+}
+.bearer {
     margin-top: 5px;
 }
 
@@ -50,36 +108,38 @@
 }
 
 .contact_information {
-    display: flex;
     margin-top: 5px;
+}
+
+.contact_input {
+    display: flex;
 }
 
 .email_information {
-    display: flex;
     margin-top: 5px;
+}
+
+.email_input {
+    display: flex;
 }
 
 .phone_information {
-    display: flex;
     margin-top: 5px;
 }
 
-.link_youtube {
+.phone_input {
     display: flex;
-    margin-top: 5px;
 }
+
 
 .photo {
     display: flex;
-    margin-top: 5px;
+    margin-top: 10px;
 }
 
 .add_adv {
     margin-top: 10px;
     width: 200px;
-}
-
-.photo_file {
 }
 
 .photo_preview {
@@ -88,20 +148,18 @@
     flex-wrap: wrap;
     margin-top: 5px;
     gap: 5px;
+    justify-content: space-between;
 }
 
 .photo_img {
-    max-width: 82px;
-    max-height: 62px;
+    max-width: 106px;
+    max-height: 82px;
     position: relative;
 
     &:hover {
         & .delete_img {
             display: block;
         }
-        /*& .img_preview {*/
-        /*    opacity: 0.5;*/
-        /*}*/
     }
 }
 
@@ -113,7 +171,6 @@
     cursor: pointer;
     opacity: 1;
     &:hover {
-        /*opacity: 0.5;*/
         padding: 2px;
         outline: 2px solid #3CB371;
         transition: 0.1s ease-out;
@@ -140,7 +197,6 @@
         & ~.img_preview {
             opacity: 0.5;
         }
-
     }
 }
 
@@ -149,4 +205,97 @@
     outline: 2px solid #3CB371;
 }
 
+.custom_radio {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+.custom_radio+label {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+    font-family: "Trebuchet MS";
+    font-size: 13px
+  }
+
+.custom_radio+label::before {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border: 1px solid #adb5bd;
+    border-radius: 50%;
+    margin-right: 0.5em;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50% 50%;
+}
+
+.custom_radio:not(:disabled):not(:checked)+label:hover::before {
+    border-color: #b3d7ff;
+}
+
+.custom_radio:not(:disabled):active+label::before {
+    background-color: #89c9a4;
+    border-color: #b3d7ff;
+}
+
+.custom_radio:focus+label::before {
+    box-shadow: 0 0 0 0.2rem rgb(148, 239, 191);
+}
+
+.custom_radio:focus:not(:checked)+label::before {
+    border-color: #6fc593;
+}
+
+.custom_radio:checked+label::before {
+    border-color: #23ad61;
+    background-color: #4ddb8e;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+}
+
+.custom_radio:disabled+label::before {
+    background-color: #e9ecef;
+}
+
+.radio_error {
+  & ~label {
+      &::before{
+          border: 1px solid red;
+      }
+  }
+}
+
+.store_input {
+    display: flex;
+}
+.vendor_code_input {
+    display: flex;
+}
+
+.add_adv {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #AAA;
+    background: #DADADA;
+    text-align: center;
+    justify-content: center;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+    cursor: pointer;
+    color: #333333;
+    position: relative;
+    transition: 0.3s ease;
+    opacity: 1;
+    &:hover {
+        background: #3CB371;
+    }
+    &:active {
+        top: 2px;
+        transition: 0.1s ease;
+    }
+}
 

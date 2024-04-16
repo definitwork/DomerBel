@@ -245,6 +245,15 @@ def get_store_by_title_and_category(request, store_slug, category_slug):
 
     return response
 
+def get_site_map_page(request):
+    category_list = Category.objects.all()
+    
+    
+    context = {}
+    context['nodes'] = category_list
+    
+    return render(request, 'site_map.html', context)
+
 
 def get_help_page(request):
     """ Страница Помощь """

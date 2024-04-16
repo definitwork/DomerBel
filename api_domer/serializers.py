@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from advertisement.models import Region, Category, Field, Spisok, ElementTwo, Element, Advertisement
+from advertisement.models import Region, Category, Field, Spisok, ElementTwo, Element, Advertisement, Store
 
 
 class GetListOfCitiesSerializer(serializers.ModelSerializer):
@@ -44,6 +44,11 @@ class FieldSerialier(serializers.ModelSerializer):
         model = Field
         fields = '__all__'
 
+class StoreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Store
+        fields = ['id', 'title']
+
 
 class PhotoAdvertisementSerializer(serializers.Serializer):
     InMemoryUploadedFile = serializers.ImageField()
@@ -59,3 +64,7 @@ class AdvertisementSerializer(serializers.ModelSerializer):
                   'email', 'phone_num', 'description',
                   'video_link', 'store']
 
+
+class AdditionalInformationSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    error = serializers.CharField()
