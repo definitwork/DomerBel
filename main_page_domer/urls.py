@@ -11,4 +11,5 @@ urlpatterns = [
     path('store/<slug:store_slug>/<slug:category_slug>/', get_store_by_title_and_category, name='store_by_title_and_category'),
     path('help/', get_help_page, name='help'),
     path('site_map/', get_site_map_page, name='site_map'),
+    path('feedback/', get_feedback_page, name='feedback')
 ]
