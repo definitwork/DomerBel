@@ -17,13 +17,7 @@
 {% block find %}
     <section class="search_table_stores">
         <nav class="table_topics_search_location">
-            <select name="#" id="#" class="table_topics slct">
-                <option value="#">Все разделы</option>
-            </select>
-            <input type="text" placeholder="Поиск по тексту" class="table_search">
-            <select name="#" id="#" class="table_location slct">
-                <option value="#">Любое расположение</option>
-            </select>
+            <input type="text" placeholder="Поиск" class="table_search">
             <div class="checkbox_button">
                 <input type="image" name="submit" src="{% static 'img/poisk.png' %}">
             </div>
@@ -33,9 +27,6 @@
 
 {% block content %}
     <section class="section_publications">
-        <div class="publications_category">
-            <p>первый котолог, {{ publications.count }} </p>
-        </div>
         <div class="publications_count">
             <p>Найдено записей: {{ publications.count }} </p>
         </div>
