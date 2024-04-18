@@ -1,0 +1,110 @@
+.delete-favorites{
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #AAA;
+    background: #DADADA;
+    align-items: center;
+    justify-content: center;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+    cursor: pointer;
+    color: #333333;
+    width: auto;
+    height: auto;
+}
+
+.search_table{
+    display: none;
+}
+
+.wraper{
+    height: 100%;
+}
+
+.container{
+    width: 100%;
+    height: 100%;
+}
+
+.favorites-section{
+    padding: 10px 0;
+    border-top: 1px solid lightgray;
+}
+
+.favorites-numbers{
+    padding: 15px 0;
+    FONT: 13px 'Trebuchet MS';
+}
+
+.favorites-list{
+    padding: 10px 0;
+}
+
+.favorite-list__item{
+    display: flex;
+    padding: 5px 0;
+    border-bottom: 1px solid #D4D4D4;
+}
+
+.ads_description_title{
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.favorites__date-time{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5px;
+    max-width: 130px;
+    width: 100%;
+}
+
+.favorites__date-time__date{
+    FONT: 13px 'Trebuchet MS';
+}
+
+.favorites__date-time__time{
+    FONT: 13px 'Trebuchet MS';
+    color: #858585;
+}
+
+.favorites__media{
+    display: flex;
+    justify-content: center;
+    width: 150px;
+    height: 125px;
+    padding: 10px 5px 5px 5px;
+}
+
+.favorites__img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.favorite__checkbox{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+}
+
+.favorite-list__item__input{
+    margin: 3px 3px 3px 4px;
+}
+
+.favorites__title{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-grow: 1;
+    padding: 10px 5px 5px 5px;
+    & p {
+        margin-bottom: 5px;
+        font-family: "Trebuchet MS";
+        font-size: 13px;
+    }
+
+}

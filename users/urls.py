@@ -4,7 +4,8 @@ from django.urls import path, reverse_lazy
 
 from .views import logout_view, login_view, register_view, get_personal_account_page, get_incoming_page, \
     get_outgoing_page, get_sent_page, get_admin_message_page, add_store, get_my_store, edit_store, get_store_page, \
-    delete_store, get_user_data_page, get_personal_account_inactive_adds_page, delete_or_archive_selected_ads
+    delete_store, get_user_data_page, get_personal_account_inactive_adds_page, delete_or_archive_selected_ads, \
+    search_of_ads_in_personal_account
 
 app_name = 'users'
 urlpatterns = [
@@ -33,6 +34,7 @@ urlpatterns = [
         template_name='users/password_reset_complete.html'), name='password_reset_complete'),
 
     path('personal_account/', get_personal_account_page, name='personal_account'),
+    path('personal_account/search_results', search_of_ads_in_personal_account, name="personal_account_search_results"),
     path('personal_account/delete_or_archive_ads/', delete_or_archive_selected_ads, name='delete_or_archive_ads'),
     path('personal_account/archived_adds/', get_personal_account_inactive_adds_page, name='inactive_adds'),
     path('user_data/', get_user_data_page, name='user_data'),

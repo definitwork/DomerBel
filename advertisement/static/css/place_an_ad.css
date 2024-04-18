@@ -1,0 +1,301 @@
+.create_advertisement {
+    max-width: 580px;
+}
+.label_fields {
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+
+}
+
+.item_input {
+    margin-top: 10px;
+    display: flex;
+}
+
+.select_class_category {
+    margin-top: 10px;
+}
+.select_info_two {
+    margin-top: 10px;
+}
+
+.description_textarea {
+    border-radius: 2px;
+    border: 1px solid #B5B8C8;
+    width: 326px;
+    height: auto;
+    font-family: "Trebuchet MS";
+    font-size: 13px
+}
+
+.information_item-input {
+    color: black;
+    border-radius: 2px;
+    border: 1px solid #B5B8C8;
+    height: auto;
+    width: 326px;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+    &:focus {
+        border-radius: 2px;
+        border: 2px solid black;
+    }
+}
+
+.additional_information_item {
+    display: flex;
+}
+
+.description {
+    margin-top: 5px;
+}
+
+.title_adver {
+    margin-top: 5px;
+}
+.error {
+    display: flex;
+    justify-content: flex-end;
+    color: red;
+    margin-right: 10px;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+    padding-top: 2px;
+
+}
+.input_error {
+    border: 1px solid red;
+}
+
+.information_item-input {
+    : {
+        border: 2px solid black;
+    }
+}
+
+.title_adver_input {
+    display: flex;
+    margin-top: 5px;
+    align-items: center;
+}
+.region_input  {
+    display: flex;
+}
+
+.city {
+    margin-top: 10px;
+}
+.category_input {
+    display: flex;
+}
+.description_input {
+    display: flex;
+}
+.bearer_input {
+    display: flex;
+}
+.bearer {
+    margin-top: 5px;
+}
+
+.contact {
+    margin-top: 5px;
+}
+
+.contact_information {
+    margin-top: 5px;
+}
+
+.contact_input {
+    display: flex;
+}
+
+.email_information {
+    margin-top: 5px;
+}
+
+.email_input {
+    display: flex;
+}
+
+.phone_information {
+    margin-top: 5px;
+}
+
+.phone_input {
+    display: flex;
+}
+
+
+.photo {
+    display: flex;
+    margin-top: 10px;
+}
+
+.add_adv {
+    margin-top: 10px;
+    width: 200px;
+}
+
+.photo_preview {
+    display: flex;
+    max-width: 362px;
+    flex-wrap: wrap;
+    margin-top: 5px;
+    gap: 5px;
+    justify-content: space-between;
+}
+
+.photo_img {
+    max-width: 106px;
+    max-height: 82px;
+    position: relative;
+
+    &:hover {
+        & .delete_img {
+            display: block;
+        }
+    }
+}
+
+.img_preview {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: 0.3s ease;
+    cursor: pointer;
+    opacity: 1;
+    &:hover {
+        padding: 2px;
+        outline: 2px solid #3CB371;
+        transition: 0.1s ease-out;
+    }
+
+    &:active {
+        top: 2px;
+        transition: 0.3s ease;
+    }
+}
+
+.delete_img {
+    display: none;
+    position: absolute;
+    cursor: pointer;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    width: 16px;
+    height: 16px;
+    background: url(../img/krestik.svg) no-repeat 100% 100% /100% 100%, rgb(128, 127, 125, 0.5);
+
+    &:hover {
+        & ~.img_preview {
+            opacity: 0.5;
+        }
+    }
+}
+
+.main_img {
+    padding: 2px;
+    outline: 2px solid #3CB371;
+}
+
+.custom_radio {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+.custom_radio+label {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+    font-family: "Trebuchet MS";
+    font-size: 13px
+  }
+
+.custom_radio+label::before {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border: 1px solid #adb5bd;
+    border-radius: 50%;
+    margin-right: 0.5em;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50% 50%;
+}
+
+.custom_radio:not(:disabled):not(:checked)+label:hover::before {
+    border-color: #b3d7ff;
+}
+
+.custom_radio:not(:disabled):active+label::before {
+    background-color: #89c9a4;
+    border-color: #b3d7ff;
+}
+
+.custom_radio:focus+label::before {
+    box-shadow: 0 0 0 0.2rem rgb(148, 239, 191);
+}
+
+.custom_radio:focus:not(:checked)+label::before {
+    border-color: #6fc593;
+}
+
+.custom_radio:checked+label::before {
+    border-color: #23ad61;
+    background-color: #4ddb8e;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+}
+
+.custom_radio:disabled+label::before {
+    background-color: #e9ecef;
+}
+
+.radio_error {
+  & ~label {
+      &::before{
+          border: 1px solid red;
+      }
+  }
+}
+
+.store_input {
+    display: flex;
+}
+.vendor_code_input {
+    display: flex;
+}
+
+.add_adv {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #AAA;
+    background: #DADADA;
+    text-align: center;
+    justify-content: center;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+    cursor: pointer;
+    color: #333333;
+    position: relative;
+    transition: 0.3s ease;
+    opacity: 1;
+    &:hover {
+        background: #3CB371;
+    }
+    &:active {
+        top: 2px;
+        transition: 0.1s ease;
+    }
+}
+

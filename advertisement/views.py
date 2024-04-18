@@ -10,8 +10,6 @@ from .utils import sorted_by_number, variables_for_paginator, sorted_by_date_or_
     get_region_variables
 
 
-# Create your views here.
-
 def get_advertisement_page(request):
     order_by = sorted_by(request.COOKIES.get('sorted_by'))
     sort_for_paginator = sorted_by_number(request.COOKIES.get('sort'))
@@ -29,16 +27,14 @@ def get_advertisement_page(request):
     category_list = Category.objects.filter(level__lte=1)
     advertisement_queryset = Advertisement.objects.filter(is_active=True,
                                                           moderated=True, **region_filter).select_related(
-                                                          'category',
-                                                          'region').order_by(order_by)
+        'category',
+        'region').order_by(order_by)
     category_queryset = Category.objects.add_related_count(Category.objects.root_nodes(),
                                                            Advertisement,
                                                            'category',
                                                            'advertisement_counts',
                                                            cumulative=True,
                                                            extra_filters={"region__in": region_filter['region__in']})
-
-
 
     page_obj = variables_for_paginator(advertisement_queryset,
                                        request.GET.get('page'),
@@ -53,6 +49,7 @@ def get_advertisement_page(request):
         "page_obj": page_obj,
         'date': state_sort_by_date,
         'view_type': view_type,
+        'adaptive_navigation': "Доска объявлений. Беларусь",
     }
 
     response = render(request, html, context)
@@ -60,6 +57,7 @@ def get_advertisement_page(request):
     response.set_cookie('date', state_sort_by_date)
     response.set_cookie('sorted_by', order_by)
     response.set_cookie('view_type', view_type)
+    response.set_cookie('user_auth', request.user.id)
 
     return response
 
@@ -94,8 +92,8 @@ def get_advertisement_by_category(request, category_slug):
                                                           **region_filter,
                                                           is_active=True,
                                                           moderated=True).select_related(
-                                                          'category',
-                                                          'region').order_by(order_by)
+        'category',
+        'region').order_by(order_by)
     page_obj = variables_for_paginator(advertisement_queryset,
                                        request.GET.get('page'),
                                        sort_for_paginator)
@@ -109,6 +107,7 @@ def get_advertisement_by_category(request, category_slug):
         "page_obj": page_obj,
         'date': state_sort_by_date,
         'view_type': view_type,
+        'adaptive_navigation': f"{category.main_title if category.main_title else category.title}. Беларусь",
     }
 
     response = render(request, html, context)
@@ -121,15 +120,41 @@ def get_advertisement_by_category(request, category_slug):
 
 
 def get_page_place_an_ad(request):
-    oblast = Region.objects.filter(type='Область')
-    spisok = Spisok.objects.all()
-    category = Category.objects.all()
-
-
+    category_list = Category.objects.filter(level__lte=1)
 
     context = {
-        'spisok': spisok,
-        'oblast': oblast,
-        'category': category,
+        "category_list": category_list,
+        'adaptive_navigation': "Добавление объявления",
     }
+    
     return render(request, 'place_an_ad.html', context)
+
+
+def get_page_place_an_favorites(request):
+    context = {}
+    category_list = Category.objects.filter(level__lte=1)
+    context["category_list"] = category_list
+    json_data = request.GET.get('list')
+    data = json.loads(json_data)
+    
+
+    if len(data):
+        objects = Advertisement.objects.filter(pk__in=data)
+        context['objects'] = objects
+        context['cards_num'] = len(objects)
+
+    return render(request, 'place_an_favorites.html', context)
+
+
+def get_advertisement_details_page(request, id):
+    '''Отдаем страничку с детальным описанием объявления'''
+    advertisement = Advertisement.objects.get(id=id)
+    category_queryset_all = Category.objects.all()
+    category_list = category_queryset_all.filter(level__lte=1)
+    context = {
+        "category_list": category_list,
+        'advertisement': advertisement,
+    }
+    return render(request=request,
+                  template_name='advertisement_details.html',
+                  context=context)

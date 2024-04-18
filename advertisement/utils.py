@@ -4,13 +4,13 @@ from advertisement.models import Region
 
 
 def sorted_by_number(number):
-    if (number == '3'
-            or number == '6'
-            or number == '9'):
+    if (number == '30'
+            or number == '60'
+            or number == '90'):
         sort_for_paginator = int(number)
         return sort_for_paginator
     else:
-        return 3
+        return 30
 
 
 def variables_for_paginator(queryset, page=1, elements=30):
@@ -71,3 +71,22 @@ def get_region_variables(region_request):
         region_bread_crumbs = ''
         region_param = ''
         return region_filter, region_param, region_bread_crumbs
+
+
+def get_view_type_for_store(view_type):
+    if view_type.get('view_type'):
+        view_type = view_type.get('view_type')
+        if type(view_type) == str:
+            if view_type == '1':
+                return 1, 'store_detail_page_type_2.html'
+            else:
+                return 0, 'store_detail_page_type_1.html'
+        elif view_type.get('view_type'):
+            if view_type.get('view_type') == '0':
+                return 1, 'store_detail_page_type_2.html'
+            else:
+                return 0, 'store_detail_page_type_1.html'
+        else:
+            return 0, 'store_detail_page_type_1.html'
+    else:
+        return 0, 'store_detail_page_type_1.html'

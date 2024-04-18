@@ -5,18 +5,21 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
-from advertisement.models import Region, Category, Advertisement
-from main_page_domer.forms import StoreForm
-from main_page_domer.models import Store
+from advertisement.models import Region, Category, Advertisement, Store
+from advertisement.forms import StoreForm
 from .forms import LoginForm, RegisterForm, EditContactDataForm, ChangePasswordForm
 from .models import User
 
 
 def get_personal_account_page(request):
+    """ Выводит все активные объявления пользователя в ЛК"""
     ads = Advertisement.objects.filter(author=request.user, is_active=True).select_related('category', 'region').all().order_by('-date_of_create')
     active_ads_quantity = ads.count()
     inactive_ads_quantity = Advertisement.objects.filter(author=request.user, is_active=False).count()
+    locations = Region.objects.filter(type='Область')
     category_list = Category.objects.filter(level__lte=1)
+
+
     paginator = Paginator(ads, 20)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -25,16 +28,62 @@ def get_personal_account_page(request):
         "ads": ads,
         "active_ads_quantity": active_ads_quantity,
         "inactive_ads_quantity": inactive_ads_quantity,
+        "locations": locations,
         "category_list": category_list,
         "page_obj": page_obj
     }
     return render(request, 'personal_account/personal_account.html', context)
 
 
+def search_of_ads_in_personal_account(request):
+    """ Поиск среди объявлений пользователя в личном кабинете """
+    category = request.GET.getlist("category")
+    category = [item for item in category if item != '0']
+    search_text = request.GET.get("search_text")
+    region_1 = request.GET.get("region_1")
+    region_2 = request.GET.get("region_2")
+    add_id = request.GET.get("add_id")
+    ads_in_headers = request.GET.get("ads_in_headers")
+    dict_for_filter = {}
+
+    if category != []:
+        dict_for_filter.update({"category__id": category[-1]})
+    if ads_in_headers == "on" and len(search_text) >= 3:
+        dict_for_filter.update({"title__icontains": search_text})
+    elif ads_in_headers == None and len(search_text) >= 3:
+        dict_for_filter.update({"description__icontains": search_text})
+    if region_1 != "0":
+        dict_for_filter.update({"region__parent__id": region_1})
+    if region_2 != "0":
+        dict_for_filter.update({"region__id": region_2})
+    if add_id != "":
+        dict_for_filter.update({"id": add_id})
+
+    ads = Advertisement.objects.filter(author=request.user, **dict_for_filter).select_related('category', 'region').all().order_by('-date_of_create')
+    all_ads_quantity = ads.count()
+    locations = Region.objects.filter(type='Область')
+    category_list = Category.objects.filter(level__lte=1)
+
+    paginator = Paginator(ads, 20)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "ads": ads,
+        "all_ads_quantity": all_ads_quantity,
+        "locations": locations,
+        "category_list": category_list,
+        "page_obj": page_obj
+    }
+    return render(request, 'personal_account/personal_account_search_results.html', context)
+
+
 def get_personal_account_inactive_adds_page(request):
+    """ Выводит все неактивные объявления пользователя в ЛК"""
     ads = Advertisement.objects.filter(author=request.user, is_active=False).select_related('category', 'region').all().order_by('-date_of_create')
     inactive_ads_quantity = ads.count()
     active_ads_quantity = Advertisement.objects.filter(author=request.user, is_active=True).count()
+    locations = Region.objects.filter(type='Область')
     category_list = Category.objects.filter(level__lte=1)
 
     paginator = Paginator(ads, 20)
@@ -45,6 +94,7 @@ def get_personal_account_inactive_adds_page(request):
         "ads": ads,
         "inactive_ads_quantity": inactive_ads_quantity,
         "active_ads_quantity": active_ads_quantity,
+        "locations": locations,
         "category_list": category_list,
         "page_obj": page_obj
     }
@@ -53,11 +103,13 @@ def get_personal_account_inactive_adds_page(request):
 
 def delete_or_archive_selected_ads(request):
     if request.method == "POST":
+        # Удаляет выбранные объявления из активных или архивных
         if 'delete_ads' in request.POST:
             selected_ads = request.POST.getlist('ads_checkbox')
             Advertisement.objects.filter(id__in=selected_ads).delete()
             messages.success(request, "Выбранные объявления удалены!")
             return redirect('users:personal_account')
+        # Переводит выбранные объявления из активных в архивные
         if 'archive_ads' in request.POST:
             selected_ads = request.POST.getlist('ads_checkbox')
             Advertisement.objects.filter(id__in=selected_ads).update(is_active=False)
@@ -179,6 +231,7 @@ def get_my_store(request):
     return render(request, 'personal_account/my_store.html', context)
 
 
+# Открывает страницу выбранного в ЛК магазина
 def get_store_page(request, slug):
     store_page = Store.objects.get(user=request.user, slug=slug)
     oblast = Region.objects.get(id=store_page.region.parent_id)
@@ -195,23 +248,23 @@ def get_store_page(request, slug):
 def edit_store(request, store_id):
     store = Store.objects.get(user=request.user, id=store_id)
     if request.method == 'POST':
-        edit_store = StoreForm(request.POST, request.FILES, instance=store)
-        if edit_store.is_valid():
-            updated_store = edit_store.save(commit=False)
+        edit_selected_store = StoreForm(request.POST, request.FILES, instance=store)
+        if edit_selected_store.is_valid():
+            updated_store = edit_selected_store.save(commit=False)
             updated_store.user = request.user
             updated_store.save()
             messages.success(request, f"Магазин {store} успешно изменён!")
             return redirect('users:my_store')
 
     else:
-        edit_store = StoreForm(instance=store)
+        edit_selected_store = StoreForm(instance=store)
 
     oblast = Region.objects.filter(type='Область')
     selected_oblast = Region.objects.get(id=store.region.parent_id)
     categories = Category.objects.all()
     category_list = Category.objects.filter(level__lte=1)
     context = {
-        'edit_store': edit_store,
+        'edit_store': edit_selected_store,
         'oblast': oblast,
         'selected_oblast': selected_oblast,
         'categories': categories,

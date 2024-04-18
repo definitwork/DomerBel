@@ -1,12 +1,9 @@
 from django.contrib import admin
-from mptt.admin import MPTTModelAdmin
-
+from mptt.admin import MPTTModelAdmin, DraggableMPTTAdmin
 
 from advertisement.models import Advertisement,  Category, Region, PhotoAdvertisement, \
-     FieldSet, Field, Spisok, Element, ElementTwo
+     FieldSet, Field, Spisok, Element, ElementTwo, Store
 
-
-# Register your models here.
 
 class AdvertisementAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
@@ -14,14 +11,32 @@ class AdvertisementAdmin(admin.ModelAdmin):
 
 class CategoryAdmin(MPTTModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
+    mptt_level_indent = 30
+    max_level_indent = 3
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # Ограничиваем уровень вложенности каждой категории
+        return qs.filter(level__lte=self.max_level_indent)
 
 
 class RegionAdmin(MPTTModelAdmin):
     prepopulated_fields = {"slug": ("area",)}
+    mptt_level_indent = 30
+    max_level_indent = 1
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # Ограничиваем уровень вложенности каждого региона
+        return qs.filter(level__lte=self.max_level_indent)
 
 
 class GalleryAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
+
+
+class StoreAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("title",)}
 
 
 admin.site.register(Advertisement, AdvertisementAdmin)
@@ -33,4 +48,5 @@ admin.site.register(Field)
 admin.site.register(Spisok)
 admin.site.register(Element)
 admin.site.register(ElementTwo)
+admin.site.register(Store, StoreAdmin)
 

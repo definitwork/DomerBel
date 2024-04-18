@@ -1,0 +1,170 @@
+.store_advertisement_breadcrumbs {
+    display: flex;
+    position: relative;
+    margin-top: 10px;
+    gap: 5px;
+
+    &::after {
+        position: absolute;
+        bottom: -5px;
+        content: '';
+        display: block;
+        width: 100%;
+        height: 1px;
+        background: lightgray;
+    }
+    & p {
+        color: #333333;
+        font-size: 13px;
+        flex-wrap: wrap;
+        font-family: Trebuchet MS;
+    }
+}
+
+.store_ads_list_wrapper {
+    display: flex;
+    justify-content: start;
+    flex-direction: row-reverse;
+    gap: 30px;
+    width: 100%;
+}
+
+.store_ads_list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+    width: 100%;
+    min-width: 300px;
+}
+
+.store_ad {
+    display: flex;
+
+    gap: 5px;
+
+    height: 120px;
+    position: relative;
+
+    &::after {
+        position: absolute;
+        bottom: 0px;
+        content: '';
+        display: block;
+        width: 100%;
+        height: 1px;
+        background: lightgray;
+    }
+}
+
+.store_ad_favorite_button {
+    display: flex;
+    & img {
+        width: 19px;
+        height: 18px;
+        cursor: pointer;
+        align-self: flex-start;
+    }
+}
+
+.store_ad_info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    color: #858585;
+    max-width: 620px;
+    width: 100%;
+    & a {
+        color: #307792;
+        font-weight: bold;
+        font-size: 16px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    & p {
+        font-size: 13px;
+        font-family: Trebuchet MS;
+    }
+}
+
+.store_ad_info_price {
+    color: #333333;
+}
+
+.store_ad_link {
+    max-height: 32px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.store_ad_img {
+    display: flex;
+    justify-content: center;
+    height: 115px;
+    width: 140px;
+    & img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+}
+
+.sort_wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+}
+
+
+.type_sorted {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: end;
+}
+
+.number_of_advertisements {
+    display: flex;
+    align-items: center;
+    font-family: "Trebuchet MS";
+    font-size: 13px;
+}
+
+.number_of_advertisements_per_page {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    & a {
+        padding: 2px;
+        border: 1px solid black;
+        color: #333333;
+
+        &:hover {
+            color: black;
+            background-color: #3CB371;
+        }
+    }
+
+    & p {
+        font-family: "Trebuchet MS";
+        font-size: 13px;
+    }
+}
+
+.sorted_by_price_or_date {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    & p {
+        font-family: "Trebuchet MS";
+        font-size: 13px;
+    }
+}
+
+
+

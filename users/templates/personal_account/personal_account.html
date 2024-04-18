@@ -4,13 +4,14 @@
 {% block nav_title %}
 <div class="nav_category_title">
     <p>
-        Все разделы. Все регионы.
+        Все разделы. Все регионы
     </p>
 </div>
 {% endblock %}
 {% block line %}
 {% endblock %}
 {% block content %}
+<title>Все разделы. Все регионы</title>
 <div class="personal_account_body">
     <div class="body">
         <div class="ads_list">
@@ -59,15 +60,21 @@
                             </p>
                         </td>
                         <td class="ads_image">
-                            <img src="{{ ad.preview_image.url }}" alt="{{ ad.preview_image.url }}">
+                            <a href="#">
+                                <img src="{{ ad.preview_image.url }}" alt="{{ ad.preview_image.url }}">
+                            </a>
                         </td>
                         <td class="ads_info">
-                            <p class="ads_title">{{ ad.title }}</p>
+                            <a href="#">
+                                <p class="ads_title">{{ ad.title }}</p>
+                            </a>
                             <p>{{ ad.price }} руб.</p>
                             <p style="color: #858585;">{{ ad.category.title }}</p>
                             <p style="color: #858585;">{{ ad.region.area }}</p>
                         </td>
-                        <td class="ads_raised"></td>
+                        <td class="ads_raised">
+                            <p></p>
+                        </td>
                     </tr>
                     {% endfor %}
                 </table>
@@ -99,6 +106,8 @@
             {% endif %}
         </div>
     </div>
-    <script src="{% static 'js/personal_account.js' %}"></script>
 </div>
+{% endblock %}
+{% block javascript %}
+    <script src="{% static 'js/personal_account.js' %}"></script>
 {% endblock %}

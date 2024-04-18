@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/base_advertisement_style.css' %}">
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/style_for_type_1.css' %}">
+{% endblock %}
+{% block nav_title %}
+    <div class="nav_category_title">
+        <p>
+            Магазины. Беларусь
+        </p>
+    </div>
+{% endblock %}
+{% block find %}
+    <section class="search_table_stores">
+        <form method="GET" action="{% url 'stores_search_results' %}" class="store_topics_search_location">
+            <div class="search_table_column_1">
+                <p class="category_opened">
+                    <select name="category_1" id="select_category_1" class="search_category_1">
+                        <option value="0">Все разделы</option>
+                        {% for cat in category_list %}
+                            {% if cat.level == 0 %}
+                                <option value="{{ cat.id }}">{{ cat.title }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </p>
+                <p class="category_hidden">
+                    <select name="category_2" id="select_category_2" class="search_category_2">
+                        <option value="0">Все разделы</option>
+                    </select>
+                </p>
+            </div>
+            <div class="search_table_column_2">
+                <input type="text" name="search_text" placeholder="Поиск по тексту" class="search_input">
+                <p class="location_opened">
+                    <select name="region_1" id="select_region_1" class="search_region_1">
+                        <option value="0">Любое расположение</option>
+                        {% for loc in locations %}
+                            <option value="{{ loc.id }}">{{ loc.area }}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+                <p class="location_hidden">
+                    <select name="region_2" id="select_region_2" class="search_region_2">
+                        <option value="0">Любое расположение</option>
+                    </select>
+                </p>
+                <button class="search_button">
+                    <img src="{% static 'img/poisk.png' %}" alt="{% static 'img/poisk.png' %}">
+                </button>
+            </div>
+        </form>
+    </section>
+{% endblock %}
+<div class="wrapper">
+    <div class="container">
+        {% block filter %}
+            <div class="category_navigation_bar">
+                <div class="category_wrapper">
+                {% if category %}
+                    <div class="category_list">
+                        {% for cat in category %}
+                            {% if cat %}
+                                {% if cat.store_counts != 0 %}
+                                    <a href="{% url 'stores_by_category' cat.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}" class="category">
+                                        {{ cat.title }}, {{ cat.store_counts }}
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+        {% endblock %}
+        {% block content %}
+        <title>Магазины. Беларусь</title>
+            <div class="sort_bar">
+                <div class="sort_wrapper">
+                    <div class="number_of_advertisements">
+                        Найдено записей: {{ stores_found }}
+                    </div>
+
+                </div>
+            </div>
+            <div class="store_list">
+                <table>
+                    {% for store in page_obj %}
+                    <tr class="store_item">
+                        <td class="store_img">
+                            <a href="#" >
+                                <img src="{{ store.logo_image.url }}" alt="{{ store.logo_image.url }}">
+                            </a>
+                        </td>
+                        <td class="store_info">
+                            <a href="{% url 'store_by_title' store.slug %}">
+                                <p class="store_title">{{ store.title }}</p>
+                            </a>
+                            <p style="color: #858585;">{{ store.region }}</p>
+                            {% if store.address %}
+                                <p>{{ store.address }}</p>
+                            {% endif %}
+                            {% if store.phone_num %}
+                                <p>тел. {{ store.phone_num }}</p>
+                            {% endif %}
+                        </td>
+                        <td class="store_category">
+                            <p>{{ store.category }}</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endblock %}
+        {% block paginator %}
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <p class="other_page"><a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a></p>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <p class="current_page">{{ num }}</p>
+                    {% elif num > page_obj.number|add:'-5' and num < page_obj.number|add:'5' %}
+                        <p class="other_page"><a href="?page={{ num }}">{{ num }}</a></p>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <p class="other_page"><a href="?page={{ page_obj.next_page_number }}">Следующая</a></p>
+                {% endif %}
+            </div>
+        {% endblock %}
+    </div>
+</div>
+{% block javascript %}
+<script src="{% static 'js/store_search.js' %}"></script>
+{% endblock %}

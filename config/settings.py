@@ -27,11 +27,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
 
     'drf_yasg',
     "debug_toolbar",
     "rest_framework",
     "corsheaders",
+    'django_dump_load_utf8',
 
     'mptt',
     'django_recaptcha',
@@ -75,6 +78,8 @@ TEMPLATES = [
         },
     },
 ]
+
+SITE_ID=2
 
 WSGI_APPLICATION = 'config.wsgi.application'
 

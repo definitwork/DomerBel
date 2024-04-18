@@ -17,7 +17,7 @@ const nav_category_list_popup = document.querySelector(".nav_category_list_popup
 
 let userIsLoggedIn;
 if (userIsLoggedIn) {
-  login_popup.classList.add("login_button1");
+    login_popup.classList.add("login_button1");
 }
 
 // -> login
@@ -40,7 +40,6 @@ closing_cross.forEach(item => item.addEventListener("click", () => {
 }));
 
 popup.addEventListener("click", (event) => {
-    // console.log(event.currentTarget);
     if (event.target === event.currentTarget) {
         popup.style.display = 'none';
         login_popup.style.display = 'none';
@@ -78,8 +77,6 @@ return_to_login_from_forget.addEventListener("click", () => {
 
 // -> view more
 more_button.addEventListener("click", () => {
-    console.log('joh')
-    // nav_category_list_popup.style.display = 'flex';
     nav_category_list_popup.style.display = 'grid';
     popup.style.display = 'flex';
 });

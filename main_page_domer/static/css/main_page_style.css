@@ -293,12 +293,17 @@
 
 .item_0 {
     color: black;
-
-
 }
 
 .item_2 {
     align-items: start;
+}
+
+.wrapper {
+    display: flex;
+    width: 1045px;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .header_up {
@@ -313,7 +318,7 @@
 
 .header_up_wrapper_navigate_info {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     width: 100%;
 
     & ul {
@@ -323,17 +328,49 @@
         cursor: pointer;
         font-size: 13px;
         color: #307792;
+        margin-right: auto;
     }
 
-    & div {
+    & .user_name {
         font-family: "Trebuchet MS";
         cursor: pointer;
         font-size: 13px;
         color: #307792;
+        margin-left: 20px;
     }
 
     & div:hover {
         color: red;
+        cursor: pointer;
+    }
+
+    & .favorites.active{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: auto;
+        height: auto;
+        overflow: auto;
+        opacity: 1;
+
+        & img{
+            height: 20px;
+            width: 20px;
+        }
+
+        & .favorites__quantity{
+            padding-left: 3px;
+            color: #307792;
+        }
+    }
+
+    & .favorites{
+        height: 0;
+        overflow: hidden;
+        opacity: 0;
+    }
+
+    & .favorites.active:hover{
         cursor: pointer;
     }
 }
@@ -349,7 +386,12 @@
     justify-content: space-between;
     align-items: flex-end;
     margin: 0px 5px 10px 0px;
-    /*margin-bottom: 5px;*/
+}
+
+.header_down_nav_category {
+    display: flex;
+    flex-direction: column;
+    width: 275px;
 }
 
 .nav_category_title p {
@@ -453,19 +495,17 @@
     color: #333333;
 }
 
-.checkbox_button {
+.checkbox {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
 }
 
 .checkbox_list {
     display: flex;
     justify-content: flex-start;
+    max-width: 749px;
     width: 100%;
     gap: 25px;
 }
-
 
 .checkbox_input_label {
     display: flex;
@@ -480,8 +520,17 @@
     color: #333333;
 }
 
-.button_search img {
-    border-radius: 5px;
+.checkbox_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 189px;
+    width: 100%;
+    & input {
+        border-radius: 5px;
+        width: 100%;
+        height: auto;
+    }
 }
 
 .regions_list {
@@ -538,7 +587,7 @@
     height: 115px;
     width: 140px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
 
     & img {
         max-width: 100%;
