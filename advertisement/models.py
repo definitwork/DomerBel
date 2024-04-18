@@ -34,7 +34,7 @@ class PhotoAdvertisement(models.Model):
         # textwidth, textheight = draw.textsize(myword, font)
         x = width - 10
         y = height - 15
-        draw.text((x, y), myword, (250, 252, 252, 1), font=font, anchor='rb', features='curs')
+        draw.text((x, y), myword, (250, 252, 252, 1), font=font, anchor='rb')
         photo.save(self.photo.path)
 
 class Advertisement(models.Model):
