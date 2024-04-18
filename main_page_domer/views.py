@@ -6,17 +6,11 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 
-from advertisement.models import Advertisement, Region, Category, Store
-<<<<<<< HEAD
-from advertisement.utils import get_region_variables, sorted_by, sorted_by_number, get_view_type, \
-    sorted_by_date_or_price, variables_for_paginator, get_view_type_for_store
-from main_page_domer.models import Publication
-=======
-from advertisement.utils import get_region_variables, sorted_by, sorted_by_number, sorted_by_date_or_price, \
-    variables_for_paginator, get_view_type_for_store
+from advertisement.models import Advertisement, Region, Category, Store, Publication
+from advertisement.utils import (get_region_variables, sorted_by, sorted_by_number, sorted_by_date_or_price,
+                                 variables_for_paginator, get_view_type_for_store)
 from config import settings
 from main_page_domer.forms import FeedbackForm
->>>>>>> pre-dev
 
 
 def get_main_page(request):
@@ -251,13 +245,11 @@ def get_store_by_title_and_category(request, store_slug, category_slug):
 
     return response
 
+
 def get_site_map_page(request):
     category_list = Category.objects.all()
-    
-    
     context = {}
     context['nodes'] = category_list
-    
     return render(request, 'site_map.html', context)
 
 
@@ -270,18 +262,18 @@ def get_help_page(request):
     return render(request, 'help.html', context)
 
 
-<<<<<<< HEAD
 # Выводим публикации
 def get_publications(request):
+    """ Страница с всеми публикациями """
     publications = Publication.objects.prefetch_related('photopublication_set').order_by('date_of_create')
     category_list = Category.objects.filter(level__lte=1)
-
     context = {
         'publications': publications,
         'category_list': category_list,
-        }
+    }
     return render(request=request, template_name='publications.html', context=context)
-=======
+
+
 def get_feedback_page(request):
     """ Страница связи с администрацией сайта """
     if request.method == "POST":
@@ -316,4 +308,3 @@ def get_feedback_page(request):
         "category_list": category_list
     }
     return render(request, 'feedback.html', context)
->>>>>>> pre-dev
