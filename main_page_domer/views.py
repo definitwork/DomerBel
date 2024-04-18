@@ -1,11 +1,22 @@
+import smtplib
+
+from django.contrib import messages
+from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 
 from advertisement.models import Advertisement, Region, Category, Store
+<<<<<<< HEAD
 from advertisement.utils import get_region_variables, sorted_by, sorted_by_number, get_view_type, \
     sorted_by_date_or_price, variables_for_paginator, get_view_type_for_store
 from main_page_domer.models import Publication
+=======
+from advertisement.utils import get_region_variables, sorted_by, sorted_by_number, sorted_by_date_or_price, \
+    variables_for_paginator, get_view_type_for_store
+from config import settings
+from main_page_domer.forms import FeedbackForm
+>>>>>>> pre-dev
 
 
 def get_main_page(request):
@@ -103,11 +114,11 @@ def get_stores_by_category(request, category_slug):
                                                               cumulative=True,
                                                               extra_filters={"region__in": region_filter['region__in']})
     store_queryset = Store.objects.filter(Q(category__in=category_queryset_an) |
-                                                          Q(category__slug=category.slug),
-                                                          **region_filter,
-                                                          is_active=True).select_related(
-                                                          'category',
-                                                          'region')
+                                          Q(category__slug=category.slug),
+                                          **region_filter,
+                                          is_active=True).select_related(
+        'category',
+        'region')
     paginator = Paginator(store_queryset, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -142,8 +153,8 @@ def get_store_by_title(request, store_slug):
     category_list = Category.objects.filter(level__lte=1)
     advertisement_queryset = Advertisement.objects.filter(store=store_page, is_active=True,
                                                           moderated=True, **region_filter).select_related(
-                                                          'category',
-                                                          'region').order_by(order_by)
+        'category',
+        'region').order_by(order_by)
     category_queryset = Category.objects.add_related_count(Category.objects.root_nodes(),
                                                            Advertisement,
                                                            'category',
@@ -204,14 +215,15 @@ def get_store_by_title_and_category(request, store_slug, category_slug):
                                                               'category',
                                                               'advertisement_counts',
                                                               cumulative=True,
-                                                              extra_filters={"region__in": region_filter['region__in'],})
+                                                              extra_filters={
+                                                                  "region__in": region_filter['region__in'], })
     category_queryset = category_queryset_an.filter(parent_id=category.id)
     advertisement_queryset = Advertisement.objects.filter(Q(category__in=category_queryset_an) |
                                                           Q(category__slug=category.slug), store=store_page,
                                                           **region_filter,
                                                           is_active=True).select_related(
-                                                          'category',
-                                                          'region')
+        'category',
+        'region')
 
     page_obj = variables_for_paginator(advertisement_queryset,
                                        request.GET.get('page'),
@@ -258,6 +270,7 @@ def get_help_page(request):
     return render(request, 'help.html', context)
 
 
+<<<<<<< HEAD
 # Выводим публикации
 def get_publications(request):
     publications = Publication.objects.prefetch_related('photopublication_set').order_by('date_of_create')
@@ -268,3 +281,39 @@ def get_publications(request):
         'category_list': category_list,
         }
     return render(request=request, template_name='publications.html', context=context)
+=======
+def get_feedback_page(request):
+    """ Страница связи с администрацией сайта """
+    if request.method == "POST":
+        new_feedback_form = FeedbackForm(request.POST)
+
+        if new_feedback_form.is_valid():
+            subject = f'"{new_feedback_form.cleaned_data.get("subject")}" от пользователя {new_feedback_form.cleaned_data.get("email")}'
+            message = new_feedback_form.cleaned_data.get("message")
+
+            try:
+                send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [settings.EMAIL_HOST_USER])
+            except smtplib.SMTPException as mistake:
+                return render(request, 'feedback.html',
+                              {'feedback_form': new_feedback_form, 'error_message': str(mistake)})
+
+            messages.success(request, f"Ваше письмо администрации сайта отправлено")
+            return redirect("feedback")
+
+        feedback_form = FeedbackForm(request.POST)
+        feedback_form.errors.update(new_feedback_form.errors)
+        category_list = Category.objects.filter(level__lte=1)
+        context = {
+            "feedback_form": feedback_form,
+            "category_list": category_list
+        }
+        return render(request, 'feedback.html', context)
+
+    feedback_form = FeedbackForm()
+    category_list = Category.objects.filter(level__lte=1)
+    context = {
+        "feedback_form": feedback_form,
+        "category_list": category_list
+    }
+    return render(request, 'feedback.html', context)
+>>>>>>> pre-dev
