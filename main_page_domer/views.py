@@ -6,11 +6,12 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 
-from advertisement.models import Advertisement, Region, Category, Store, Publication
+from advertisement.models import Advertisement, Region, Category, Store
 from advertisement.utils import (get_region_variables, sorted_by, sorted_by_number, sorted_by_date_or_price,
                                  variables_for_paginator, get_view_type_for_store)
 from config import settings
 from main_page_domer.forms import FeedbackForm
+from main_page_domer.models import Publication
 
 
 def get_main_page(request):

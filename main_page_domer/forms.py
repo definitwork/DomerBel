@@ -1,6 +1,7 @@
 from django import forms
-<<<<<<< HEAD
+from django_recaptcha.fields import ReCaptchaField
 
+from users.validators import validate_email
 from main_page_domer.models import Publication
 
 
@@ -9,11 +10,6 @@ class PublicationForm(forms.ModelForm):
     class Meta:
         model = Publication
         fields = '__all__'
-        
-=======
-from django_recaptcha.fields import ReCaptchaField
-
-from users.validators import validate_email
 
 
 class FeedbackForm(forms.Form):
@@ -24,4 +20,3 @@ class FeedbackForm(forms.Form):
     message = forms.CharField(widget=forms.Textarea(attrs={'class': 'input_field'}), required=True,
                               error_messages={'required': 'Отсутствует текст письма'}, label='Текст письма:')
     captcha = ReCaptchaField(label='')
->>>>>>> pre-dev
