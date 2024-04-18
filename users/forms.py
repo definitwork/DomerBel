@@ -18,7 +18,7 @@ class LoginForm(forms.Form):
 
 class RegisterForm(forms.Form):
     name = forms.CharField(error_messages={'required': 'Не указано контактное лицо'},
-                           max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Контактное лицо'}), label='')
+                           max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Контактное лицо', 'autofocus': True}), label='')
     phone = forms.CharField(error_messages={'required': 'Не указан номер телефона'},
                             widget=forms.TextInput(attrs={'placeholder': 'Номер телефона'}),
                             validators=[validate_phone], label='')
@@ -45,7 +45,7 @@ class RegisterForm(forms.Form):
 
 class RegisterFormEntity(forms.Form):
     name = forms.CharField(error_messages={'required': 'Не указано контактное лицо'},
-                           max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Название организации'}), label='')
+                           max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Название организации', 'autofocus': True}), label='')
     phone = forms.CharField(error_messages={'required': 'Не указан номер телефона'},
                             widget=forms.TextInput(attrs={'placeholder': 'Номер телефона'}),
                             validators=[validate_phone], label='')

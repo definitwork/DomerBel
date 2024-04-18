@@ -17,6 +17,17 @@ const info_massage_popup = document.querySelector('.info_massage_popup');
 // Для обнуленя getElementById
 const field_password2_register_form = document.querySelector('#id_password2');
 
+function checkForEnter(event) {
+    if (event.key === "Enter") {
+        console.log('yyyyyyyyy')
+        // Выполните действия, которые должны произойти при нажатии Enter
+        // Например, отправьте форму:
+        document.getElementById("register_form_individual, register_form_entity, form_login_button").submit();
+    }
+}
+
+
+
 form_login_button.addEventListener('click', login_fn)
 form_register_button_individual.addEventListener('click', register_fn1)
 form_register_button_entity.addEventListener('click', register_fn2)
@@ -38,7 +49,7 @@ function login_fn() {
         .then(data => {
                 console.log(data.errors);
                 if (data.success) {
-                    window.location.href = 'users/personal_account';
+                    window.location.href = 'http://127.0.0.1:8000/users/personal_account/';
                 } else if (data.errors === 1) {
                     login_errors.innerHTML = 'Неверный email или пароль'
                     field_password_login_form.value = null;
@@ -61,7 +72,7 @@ function register_fn1() {
         .then(data => {
             console.log(data)
             if (data.success) {
-                window.location.href = '/register_done';
+                window.location.href = 'http://127.0.0.1:8000/register_done';
                 info_massage_popup.style.display = 'flex';
             }
 
@@ -115,7 +126,7 @@ function register_fn2() {
         .then(data => {
             console.log(data)
             if (data.success) {
-                window.location.href = '/register_done';
+                window.location.href = 'http://127.0.0.1:8000/register_done';
                 info_massage_popup.style.display = 'flex';
 
 

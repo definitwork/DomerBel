@@ -19,7 +19,7 @@
 <body>
 <div class="popup">
     <div class="login_form_popup">
-        <form id="login_form" method="POST" class="login_form" action="">
+        <form id="login_form" method="POST" class="login_form" novalidate>
             {% csrf_token %}
             <nav class="header_login_form_popup nav_popup">
                 <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
@@ -35,23 +35,21 @@
         </div>
         <div class="closing_cross"></div>
     </div>
-    <div class='question_popup'>
-        <div class="choise_register_container">
-            <div class="entity">
-                Юридическое лицо
-            </div>
-            <div class="individual">
-                Физическое лицо
-            </div>
-        </div>
-    </div>
     <div class="register_form_individual_popup">
-        <form  method="POST"class="register_form" id="register_form_individual" action="">
+        <form  method="POST"class="register_form" id="register_form_individual" novalidate">
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
                 <p>Регистрация профиля физического лица</p>
             </nav>
+            <div class="choise_register_container">
+                <div class="entity">
+                    Юридическое лицо
+                </div>
+                <div class='reg_form_button_style'>
+                    Физическое лицо
+                </div>
+            </div>
             <ul style='margin-bottom: 10px;'>
                 <li style="display: flex;color:red" id="error_name_register"></li>
                 {{ register_form.name }}
@@ -68,18 +66,26 @@
                 <li style="display: flex;color:red" id="error_click_captcha"></li>
                 {{ register_form.captcha }}
             </ul>
-            <input type="button" class="form_register_button_individual" value="Регистрация" name="individual_form"></input>
+            <input type="button" class="form_register_button_individual" value="Регистрация" name="individual_form" ></input>
         </form>
         <button class="return_to_login_button">Вход</button>
         <div class="closing_cross"></div>
     </div>
     <div class="register_form_entity_popup">
-        <form  method="POST" class="register_form" id="register_form_entity" action="">
+        <form  method="POST" class="register_form" id="register_form_entity" novalidate >
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
                 <p>Регистрация профиля юридического лица</p>
             </nav>
+            <div class="choise_register_container">
+                <div class='reg_form_button_style'>
+                    Юридическое лицо
+                </div>
+                <div class="individual">
+                    Физическое лицо
+                </div>
+            </div>
             <ul style='margin-bottom: 10px;'>
                 <li style="display: flex;color:red" id="error_name_register1"></li>
                 {{ register_form_entity.name }}
@@ -102,7 +108,7 @@
         <div class="closing_cross"></div>
     </div>
     <div class="forget_pass_form_popup">
-        <form id="forget_pass_form" action="{% url 'users:password_reset' %}" method="POST" class="forget_pass_form">
+        <form id="forget_pass_form" action="{% url 'users:password_reset' %}" method="POST" class="forget_pass_form" novalidate>
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
