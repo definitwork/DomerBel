@@ -1,0 +1,121 @@
+.container {
+  max-width: 1000px;
+  padding: 0 10px;
+  margin: 0 auto;
+}
+
+.header__up {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 2px solid #bdd4e2;
+  margin-bottom: 5px;
+}
+
+.header__up-nav-list {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.header__up-nav-list a {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #3077a0;
+  font-size: 14px;
+}
+.header__up-nav-list a:hover {
+  color: red;
+}
+
+.header__up-user {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #3077a0;
+  font-size: 14px;
+  cursor: pointer;
+}
+.header__up-user:hover {
+  color: red;
+}
+
+.header__bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.header__bottom-nav {
+  padding-bottom: 11px;
+}
+
+.header__bottom-nav-list {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header__bottom-nav-title {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 14px;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.header__bottom-nav-list-item a {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #3077a0;
+  font-size: 14px;
+  cursor: pointer;
+}
+.header__bottom-nav-list-item a:hover {
+  color: red;
+}
+
+.header__bottom-send-wrap {
+  padding-bottom: 11px;
+}
+
+.header__bottom-send {
+  padding: 8px;
+  display: block;
+  background: #3e8ad0;
+  border-radius: 2px;
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  color: white;
+  font-size: 20px;
+}
+
+header {
+  margin-bottom: 5px;
+}
+
+footer {
+  padding: 40px 10px;
+}
+
+.footer__nav-list {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.footer__nav-list-item a {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 14px;
+}
+.footer__nav-list-item a:hover {
+  color: red;
+}/*# sourceMappingURL=base.css.map */
