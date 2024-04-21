@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 {% load static %}
-{% block stylesheet %}
     <link rel="stylesheet" href="{% static 'css/null_for_templates.css' %}">
     <link rel="stylesheet" href="{% static 'css/personal_account_style.css' %}">
     <link rel="stylesheet" href="{% static 'css/user_data.css' %}">
     <link rel="stylesheet" href="{% static 'css/messages.css' %}">
     <link rel="stylesheet" href="{% static 'css/add_edit_delete_store.css' %}">
     <link rel="stylesheet" href="{% static 'css/my_store.css' %}">
-{% endblock %}
+    {% block stylesheet %} {% endblock %}
 {% block popup %}
     <div class="popup_pa">
         <div class="nav_category_list_popup_pa">
@@ -48,7 +47,7 @@
                                     <a href="{% url 'stores' %}" class="shops">Магазины</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="publications">Публикации</a>
+                                    <a href="{% url 'publications' %}" class="publications">Публикации</a>
                                 </li>
                                 <li>
                                     <a href="{% url 'help' %}" class="help">Помощь</a>
@@ -196,6 +195,9 @@
                         </li>
                         <li>
                             <a href="#" class="red_item">Пополнить кошелек</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'users:user_all_publications' %}">Публикации</a>
                         </li>
                     </ul>
                 </nav>

@@ -2,10 +2,10 @@ from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, 
     PasswordResetCompleteView
 from django.urls import path, reverse_lazy
 
-from .views import logout_view, login_view, register_view, get_personal_account_page, get_incoming_page, \
-    get_outgoing_page, get_sent_page, get_admin_message_page, add_store, get_my_store, edit_store, get_store_page, \
-    delete_store, get_user_data_page, get_personal_account_inactive_adds_page, delete_or_archive_selected_ads, \
-    search_of_ads_in_personal_account
+from .views import (logout_view, login_view, register_view, get_personal_account_page, get_incoming_page,
+    get_outgoing_page, get_sent_page, get_admin_message_page, add_store, get_my_store, edit_store, get_store_page,
+    delete_store, get_user_data_page, get_personal_account_inactive_adds_page, delete_or_archive_selected_ads,
+    search_of_ads_in_personal_account, get_user_all_publications)
 
 app_name = 'users'
 urlpatterns = [
@@ -47,4 +47,5 @@ urlpatterns = [
     path('edit_store/<int:store_id>/', edit_store, name='edit_store'),
     path('delete_store/<int:store_id>/', delete_store, name='delete_store'),
     path('store/<slug:slug>/', get_store_page, name='store_page'),
+    path('user_all_publications/', get_user_all_publications, name='user_all_publications'),
 ]
