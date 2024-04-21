@@ -267,12 +267,19 @@ def get_help_page(request):
 def get_publications(request):
     """ Страница с всеми публикациями """
     publications = Publication.objects.prefetch_related('photopublication_set').order_by('date_of_create')
-    category_list = Category.objects.filter(level__lte=1)
     context = {
         'publications': publications,
-        'category_list': category_list,
     }
     return render(request=request, template_name='publications.html', context=context)
+
+
+def get_publication_by_id(request, publication_id):
+    """ Страница публикации по id """
+    publication = Publication.objects.get(id=publication_id)
+    context = {
+        'publication': publication,
+    }
+    return render(request=request, template_name='publication_by_id.html', context=context)
 
 
 def get_feedback_page(request):

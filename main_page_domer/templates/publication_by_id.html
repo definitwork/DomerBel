@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/publication_by_id/style.css' %}"/>
+{% endblock stylesheet %}
+
+{% block title %} Пубикации {% endblock title %}
+
+{% block nav_title %}
+    <div class="nav_category_title">
+        <p>Доска объявлений</p>
+    </div>
+{% endblock nav_title %}
+
+{% block find %}
+    <section class="search_table_stores">
+        <nav class="table_topics_search_location">
+            <input type="text" placeholder="Поиск" class="table_search">
+            <div class="checkbox_button">
+                <input type="image" name="submit" src="{% static 'img/poisk.png' %}">
+            </div>
+        </nav>
+    </section>
+{% endblock find %}
+
+{% block content %}
+    <section class="section_publications">
+        <p class="publication_text_title"> {{ publication.title }} </p>
+        <p> {{ publication.date_of_create }} </p>
+        <div class="publication_link_wrap">
+            <div class="publication_img">
+                {% for photo in publication.photopublication_set.all %}
+                    <img src="{{ photo.photo.url }}" alt="Publication Photo">
+                {% endfor %}
+            </div>
+            <div class="publication_text">
+                <p> {{ publication.description }} </p>
+            </div>
+        </div>
+        <p> Просмотров: {{ publication.counter_views }} </p>
+    </section>
+{% endblock content %}
+
+{% block javascript %}
+    <script src=""></script>
+{% endblock %}

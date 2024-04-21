@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.db import models
 from django.conf import settings
 from advertisement.models import Advertisement
+from users.models import User
 
 
 class Comment(models.Model):
@@ -70,6 +71,7 @@ class PhotoPublication(models.Model):
 
 
 class Publication(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
     category = models.CharField(max_length=255, verbose_name="Категория")
     title = models.CharField(max_length=255, verbose_name="Заголовок")
     slug = models.SlugField(unique=True, verbose_name="URL")

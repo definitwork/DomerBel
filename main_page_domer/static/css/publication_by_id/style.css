@@ -1,0 +1,35 @@
+.section_publications {
+    padding: 15px 0 0 0;
+}
+
+.publication_link_wrap {
+
+
+}
+
+.publication_linck {
+    display: block;
+    &:hover {
+        color: black;
+        background: #E6E6E6;
+    }
+}
+
+.publication_link_wrap {
+    display: flex;
+    flex-direction: column;
+    border: black solid 1px;
+}
+
+.publication_img {
+    min-width: 100px;
+    & img {
+        max-width: 100%;
+    }
+}
+
+.publication_text_title {
+    &:hover {
+        color: red;
+    }
+}

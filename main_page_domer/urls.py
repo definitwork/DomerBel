@@ -13,5 +13,6 @@ urlpatterns = [
     path('help/', get_help_page, name='help'),
     path('site_map/', get_site_map_page, name='site_map'),
     path("publications/", get_publications, name="publications"),
+    path("publication/<int:publication_id>", get_publication_by_id, name="publication_by_id"),
     path('feedback/', get_feedback_page, name='feedback'),
 ]

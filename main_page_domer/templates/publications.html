@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/publication/style.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/publications/style.css' %}"/>
 {% endblock stylesheet %}
 
 {% block title %} Пубикации {% endblock title %}
@@ -12,7 +12,7 @@
     <div class="nav_category_title">
         <p>Доска объявлений</p>
     </div>
-{% endblock nav_title %} 
+{% endblock nav_title %}
 
 {% block find %}
     <section class="search_table_stores">
@@ -33,23 +33,21 @@
         <ul class="publication_list">
             {% for publication in publications %}
                 <li class="publication_list_item">
-                    <a href="#" class="publication_link">
+                    <a href="{% url 'publication_by_id' publication.id %}" class="publication_link">
                         <div class="publication_link_wrap">
                             <div class="publication_data">
                                 <p> {{ publication.date_of_create }} </p>
                             </div>
                             <div class="publication_img">
-                                {% for photo in publication.photopublication_set.all %}
-                                    <img src="{{ photo.photo.url }}" alt="Publication Photo">
-                                {% endfor %}
+                                <img src="{{ publication.photopublication_set.all.0.photo.url }}" alt="Publication Photo">
                             </div>
                             <div class="publication_text">
                                 <p class="publication_text_title"> {{ publication.title }} </p>
                                 <p> {{ publication.announcement }} </p>
                             </div>
-                        </div> 
-                    </a> 
-                </li> 
+                        </div>
+                    </a>
+                </li>
             {% endfor %}
         </ul>
     </section>
