@@ -267,7 +267,7 @@ def get_help_page(request):
 # Выводим публикации
 def get_publications(request):
     """ Страница с всеми публикациями """
-    publications = Publication.objects.prefetch_related('photopublication_set').order_by('date_of_create')
+    publications = Publication.objects.prefetch_related('photopublication_set').order_by('date_of_create').exclude(moderated=False)
     context = {
         'publications': publications,
     }
