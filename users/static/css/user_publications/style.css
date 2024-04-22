@@ -1,20 +1,7 @@
-.section_publications {
+.publication_text {
     display: flex;
     flex-direction: column;
-    padding: 15px 0 0 0;
     gap: 15px;
-}
-
-.publication_list {
-    
-}
-
-.publication_list_item {
-
-}
-
-.publication_link_wrap {
-    
 }
 
 .publication_linck {
@@ -40,5 +27,17 @@
 .publication_text_title {
     &:hover {
         color: red;
+    }
+}
+
+.select_all_ads {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+    max-width: 755px;
+    & label {
+        font-family: "Trebuchet MS";
+        font-size: 13px;
     }
 }

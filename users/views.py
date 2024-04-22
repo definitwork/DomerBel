@@ -8,7 +8,7 @@ from django.shortcuts import redirect, render
 from advertisement.models import Region, Category, Advertisement, Store
 from advertisement.forms import StoreForm
 from main_page_domer.models import Publication
-from .forms import LoginForm, RegisterForm, EditContactDataForm, ChangePasswordForm
+from .forms import LoginForm, PublicationForm, RegisterForm, EditContactDataForm, ChangePasswordForm
 from .models import User
 
 
@@ -323,10 +323,18 @@ def register_view(request):
         else:
             return JsonResponse({'errors': form.errors})
 
-
+@login_required
 def get_user_all_publications(request):
     user_publications = Publication.objects.filter(user = request.user.id)
     context = {
         "user_publications": user_publications,
     }
     return render(request=request, template_name='personal_account/user_all_publications.html', context=context)
+
+@login_required
+def add_user_publication(request):
+    form_publication = PublicationForm()
+    context = {
+        "form_publication": form_publication,
+    }
+    return render(request=request, template_name='personal_account/user_add_publication.html', context=context)

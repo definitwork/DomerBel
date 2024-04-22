@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/publications/style.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/user_publications/style.css' %}">
 {% endblock stylesheet %}
 
 {% block nav_title %}
@@ -21,8 +21,7 @@
     <div class="body">
         <div class="ads_list">
             <div class=ads_status>
-                <a href="#" class="status_active">Добавить</a>
-                <a href="#" class="status_active">Удалить</a>
+                <a href="{% url 'users:user_add_publication' %}" class="status_active">Добавить</a>
             </div>
             {% for message in messages %}
                 {% if message.tags == 'success' %}
@@ -35,6 +34,10 @@
                         </script>
                 {% endif %}
             {% endfor %}
+            <div class="select_all_ads">
+                <input type="checkbox" id="select_all"/>
+                <label for="select_all">Выделить все объявления</label>
+            </div>
             {% if user_publications %}
                 {% for user_publication in user_publications %}
                     <li class="publication_list_item">
@@ -49,6 +52,10 @@
                                 <div class="publication_text">
                                     <p class="publication_text_title"> {{ user_publication.title }} </p>
                                     <p> {{ user_publication.announcement }} </p>
+                                    <p class="ads_checkbox">
+                                        <input type="checkbox" name="ads_checkbox" value="{{ ad.id }}">
+                                        <label>Выделить</label>
+                                    </p>
                                 </div>
                             </div>
                         </a>
@@ -57,6 +64,10 @@
             {% else %}
             <div class="no_ads">У Вас нет публикаций</div>
             {% endif %}
+            <div class="ads_marked">
+                <p>Отмеченные:</p>
+                <button name="delete_ads">Удалить</button>
+            </div>
         </div>
     </div>
 </div>

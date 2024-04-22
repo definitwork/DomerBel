@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from django_recaptcha.fields import ReCaptchaField
 
+from main_page_domer.models import Publication
+
 from .models import User
 from .validators import validate_password, validate_email, validate_phone
 
@@ -107,3 +109,10 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = User
         fields = ("email",)
+
+
+class PublicationForm(forms.ModelForm):
+
+    class Meta:
+        model = Publication
+        fields = '__all__'
