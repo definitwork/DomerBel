@@ -15,16 +15,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  left: 413px;
-  z-index: 1;
-  width: 510px;
-  height: 163px;
+  width: 519px;
+  height: 127px;
   background: #e5e5e5;
   border: 1px solid;
   border-radius: 10px;
   flex-direction: column;
+  margin-left: 215px;
 }
+
 
 .login_form_popup {
   position: relative;
@@ -830,7 +829,5 @@
   margin-left: 100px;
 }
 
-#login_form_error {
-  color: red;
-  font-family: "Trebuchet MS";
-}
+
+

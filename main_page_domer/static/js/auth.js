@@ -82,27 +82,39 @@ function register_fn1() {
 
             if (data.errors.name) {
                 error_name_register.innerHTML = data.errors.name;
+                const name_individual_field = document.getElementById('name_individual_field');
+                name_individual_field.style.border = '1px solid red';
+               
+
             } else {
                 error_name_register.innerHTML = ''
             }
 
             if (data.errors.phone) {
                 error_phone_register.innerHTML = data.errors.phone;
+                const name_individual_field = document.getElementById('phone_individual_field');
+                name_individual_field.style.border = '1px solid red';
             } else {
                 error_phone_register.innerHTML = '';
             }
             if (data.errors.email) {
                 error_email_register.innerHTML = data.errors.email;
+                const email_individual_field = document.getElementById('email_individual_field');
+                email_individual_field.style.border = '1px solid red';
             } else {
                 error_email_register.innerHTML = '';
             }
             if (data.errors.password) {
                 error_bad_password_register.innerHTML = data.errors.password;
+                const password_individual_field = document.getElementById('password_individual_field');
+                password_individual_field.style.border = '1px solid red';
             } else {
                 error_bad_password_register.innerHTML = '';
             }
             if (data.errors.password2) {
                 error_pass_not_match_register.innerHTML = data.errors.password2;
+                const password2_individual_field = document.getElementById('password2_individual_field');
+                password2_individual_field.style.border = '1px solid red';
                 field_password2_register_form.value = null
             } else {
                 error_pass_not_match_register.innerHTML = '';
@@ -112,9 +124,33 @@ function register_fn1() {
             } else {
                 error_click_captcha.innerHTML = '';
             }
-
         })
 }
+name_individual_field.addEventListener('input', () => {
+    name_individual_field.style.border = '1px solid black';
+    error_name_register.innerHTML = '';
+});
+email_individual_field.addEventListener('input', () => {
+    email_individual_field.style.border = '1px solid black';
+    error_email_register.innerHTML = '';
+});
+phone_individual_field.addEventListener('input', () => {
+    phone_individual_field.style.border = '1px solid black';
+    error_phone_register.innerHTML = '';
+});
+password_individual_field.addEventListener('input', () => {
+    password_individual_field.style.border = '1px solid black';
+    error_bad_password_register.innerHTML = '';
+    
+});
+password2_individual_field.addEventListener('input', () => {
+    password2_individual_field.style.border = '1px solid black';
+    error_pass_not_match_register.innerHTML = '';
+});
+
+
+
+
 function register_fn2() {
     fetch('http://127.0.0.1:8000/users/register_entity/', {
         method: 'POST',
@@ -128,8 +164,6 @@ function register_fn2() {
             if (data.success) {
                 window.location.href = 'http://127.0.0.1:8000/register_done';
                 info_massage_popup.style.display = 'flex';
-
-
             }
 
             if (data.errors) {
@@ -138,27 +172,37 @@ function register_fn2() {
 
             if (data.errors.name) {
                 error_name_register1.innerHTML = data.errors.name;
+                const name_entity_field = document.getElementById('name_entity_field');
+                name_entity_field.style.border = '1px solid red';
             } else {
                 error_name_register1.innerHTML = ''
             }
 
             if (data.errors.phone) {
                 error_phone_register1.innerHTML = data.errors.phone;
+                const phone_entity_field = document.getElementById('phone_entity_field');
+                phone_entity_field.style.border = '1px solid red';
             } else {
                 error_phone_register1.innerHTML = '';
             }
             if (data.errors.email) {
                 error_email_register1.innerHTML = data.errors.email;
+                const email_entity_field = document.getElementById('email_entity_field');
+                email_entity_field.style.border = '1px solid red';
             } else {
                 error_email_register1.innerHTML = '';
             }
             if (data.errors.password) {
                 error_bad_password_register1.innerHTML = data.errors.password;
+                const password_entity_field = document.getElementById('password_entity_field');
+                password_entity_field.style.border = '1px solid red';
             } else {
                 error_bad_password_register1.innerHTML = '';
             }
             if (data.errors.password2) {
                 error_pass_not_match_register1.innerHTML = data.errors.password2;
+                const password2_entity_field = document.getElementById('password2_entity_field');
+                password2_entity_field.style.border = '1px solid red';
                 field_password2_register_form.value = null
             } else {
                 error_pass_not_match_register1.innerHTML = '';
@@ -172,8 +216,34 @@ function register_fn2() {
         })
 }
 
+name_entity_field.addEventListener('input', () => {
+    name_entity_field.style.border = '1px solid black';
+    error_name_register1.innerHTML = '';
+});
+email_entity_field.addEventListener('input', () => {
+    email_entity_field.style.border = '1px solid black';
+    error_email_register1.innerHTML = '';
+
+});
+phone_entity_field.addEventListener('input', () => {
+    phone_entity_field.style.border = '1px solid black';
+    error_phone_register1.innerHTML = '';
+
+});
+password_entity_field.addEventListener('input', () => {
+    password_entity_field.style.border = '1px solid black';
+    error_bad_password_register1.innerHTML = '';
+
+});
+password2_entity_field.addEventListener('input', () => {
+    password2_entity_field.style.border = '1px solid black';
+    error_pass_not_match_register1.innerHTML = '';
+
+});
+
 setTimeout(function() {
     info_massage_popup.style.display = "none";
+    window.location.href = 'http://127.0.0.1:8000'
 }, 5000);
 
 

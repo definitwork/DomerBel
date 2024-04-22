@@ -18,19 +18,19 @@ class LoginForm(forms.Form):
 
 class RegisterForm(forms.Form):
     name = forms.CharField(error_messages={'required': 'Не указано контактное лицо'},
-                           max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Контактное лицо', 'autofocus': True}), label='')
+                           max_length=50, widget=forms.TextInput(attrs={'id':'name_individual_field', 'placeholder': 'Контактное лицо', 'autofocus': True}), label='')
     phone = forms.CharField(error_messages={'required': 'Не указан номер телефона'},
-                            widget=forms.TextInput(attrs={'placeholder': 'Номер телефона'}),
+                            widget=forms.TextInput(attrs={'id':'phone_individual_field','placeholder': 'Номер телефона'}),
                             validators=[validate_phone], label='')
     email = forms.CharField(error_messages={'required': 'Не указан email'},
                             widget=forms.EmailInput(
-                                attrs={'id': 'email_register_field', 'placeholder': 'Введите Вашу почту'}),
+                                attrs={'id':'email_individual_field', 'placeholder': 'Введите Вашу почту'}),
                             validators=[validate_email], label='')
     password = forms.CharField(error_messages={'required': 'Пароль должен содержать не менее 8 символов и включать буквы, цифры'},
                                widget=forms.PasswordInput(
-                                   attrs={'placeholder': 'Введите пароль'}),
+                                   attrs={'id':'password_individual_field', 'placeholder': 'Введите пароль'}),
                                validators=[validate_password], label='')
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Повторите пароль'}), label='')
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'id':'password2_individual_field', 'placeholder': 'Повторите пароль'}), label='')
     captcha = ReCaptchaField(label='')
 
     def clean(self):
@@ -45,19 +45,19 @@ class RegisterForm(forms.Form):
 
 class RegisterFormEntity(forms.Form):
     name = forms.CharField(error_messages={'required': 'Не указано контактное лицо'},
-                           max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Название организации', 'autofocus': True}), label='')
+                           max_length=50, widget=forms.TextInput(attrs={'id':'name_entity_field', 'placeholder': 'Название организации', 'autofocus': True}), label='')
     phone = forms.CharField(error_messages={'required': 'Не указан номер телефона'},
-                            widget=forms.TextInput(attrs={'placeholder': 'Номер телефона'}),
+                            widget=forms.TextInput(attrs={'id':'phone_entity_field','placeholder': 'Номер телефона'}),
                             validators=[validate_phone], label='')
     email = forms.CharField(error_messages={'required': 'Не указан email'},
                             widget=forms.EmailInput(
-                                attrs={'placeholder': 'Введите Вашу почту'}),
+                                attrs={'id':'email_entity_field','placeholder': 'Введите Вашу почту'}),
                             validators=[validate_email], label='')
     password = forms.CharField( help_text="help", error_messages={'required': 'Введите пароль'},
                                widget=forms.PasswordInput(
-                                   attrs={'placeholder': 'Введите пароль'}),
+                                   attrs={'id':'password_entity_field','placeholder': 'Введите пароль'}),
                                validators=[validate_password], label='')
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Повторите пароль'}), label='')
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'id':'password2_entity_field','placeholder': 'Повторите пароль'}), label='')
     captcha = ReCaptchaField(label='')
 
     def clean(self):

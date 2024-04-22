@@ -309,7 +309,6 @@ def login_view(request):
 
 def register_view_individual(request):
     if request.method == 'POST':
-        print(request.POST)
         form_individual = RegisterForm(request.POST)
         if form_individual.is_valid():
             user = User()
@@ -336,8 +335,6 @@ def register_view_entity(request):
             user.set_password(form_entity.cleaned_data.get('password'))
             user.set_password(form_entity.cleaned_data.get('password2'))
             user.save()
-            print(form_entity.cleaned_data)
             return JsonResponse({'success': True})
         else:
-            print(form_entity.errors)
             return JsonResponse({'errors': form_entity.errors})
