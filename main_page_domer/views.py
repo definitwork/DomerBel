@@ -11,6 +11,7 @@ from advertisement.utils import (get_region_variables, sorted_by, sorted_by_numb
                                  variables_for_paginator, get_view_type_for_store)
 from config import settings
 from main_page_domer.forms import FeedbackForm
+from main_page_domer.functions import views_counter_publication
 from main_page_domer.models import Publication
 
 
@@ -275,6 +276,7 @@ def get_publications(request):
 
 def get_publication_by_id(request, publication_id):
     """ Страница публикации по id """
+    views_counter_publication(publication_id)
     publication = Publication.objects.get(id=publication_id)
     context = {
         'publication': publication,
