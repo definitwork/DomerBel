@@ -85,4 +85,38 @@
   font-style: normal;
   color: black;
   font-size: 14px;
+}
+
+.region {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template: repeat(3, 1fr)/repeat(3, 1fr);
+  gap: 15px;
+  padding: 40px 0;
+}
+.region a {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #3077a0;
+  font-size: 14px;
+}
+.region a:hover {
+  color: red;
+}
+
+.recent-announcements__title {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 18px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.recent-announcements__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }/*# sourceMappingURL=main.css.map */

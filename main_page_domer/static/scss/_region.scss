@@ -1,0 +1,15 @@
+.region {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    gap: 15px;
+    padding: 40px 0;
+
+    & a {
+        @include fonts($mainColor, 14px, 400);
+
+        &:hover {
+            color: $colorHover;
+        }
+    }
+}
