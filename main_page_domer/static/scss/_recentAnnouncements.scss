@@ -1,4 +1,5 @@
 @import './advertisement';
+@import './recentAnnouncementsItem';
 
 
 .recent-announcements__title {
@@ -10,5 +11,4 @@
 .recent-announcements__list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
 }

@@ -51,23 +51,39 @@
   <h1 class="recent-announcements__title">Последние объявления</h1>
   <div class="recent-announcements-wrap">
     <ul class="recent-announcements__list">
-      {% for cart in adver %}
+      {% for card in adver %}
       <li class="recent-announcements__list-item">
         <article class="recent-announcements__list-item-article">
           <div class="recent-announcements__list-item-article-date">
-            {% if cart.date_of_create.date == date_today %}
+            {% if card.date_of_create.date == date_today %}
             <p>Сегодня</p>
-            {% elif cart.date_of_create.date == date_yesterday %}
+            {% elif card.date_of_create.date == date_yesterday %}
             <p>Вчера</p>
             {% else %}
-            <p>{{ cart.date_of_create|date:"d b. Y" }}</p>
+            <p>{{ card.date_of_create|date:"d b. Y" }}</p>
             {% endif %}
-            <p>{{ cart.date_of_create|date:"H:i" }}</p>
+            <p>{{ card.date_of_create|date:"H:i" }}</p>
           </div>
-          <a href="{% url 'advertisement_details' cart.id %}" class="recent-announcements__list-item-article-img">
-            <img src="" alt="" />
+          <a href="{% url 'advertisement_details' card.id %}" class="recent-announcements__list-item-article-img">
+            <img src="{{ card.preview_image.url }}" alt="{{ card.preview_image.url }}" />
           </a>
-          <div class="recent-announcements__list-item-article-info"></div>
+          <div class="recent-announcements__list-item-article-info">
+            <a href="#" class="recent-announcements__list-item-article-info-link">
+                {{ card.title }}
+            </a>
+            <p class="recent-announcements__list-item-article-info-price">
+                {{ card.price }} руб.
+            </p>
+            <p class="recent-announcements__list-item-article-info-category">
+                {{ card.category }}
+            </p>
+            <p class="recent-announcements__list-item-article-info-company">
+                {{ card.bearer }}
+            </p>
+            <p class="recent-announcements__list-item-article-info-region">
+                {{ card.region }}
+            </p>
+          </div>
         </article>
       </li>
       {% endfor %}

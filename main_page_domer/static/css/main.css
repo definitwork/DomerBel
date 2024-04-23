@@ -4,17 +4,17 @@
   border-radius: 5px;
 }
 
+.main__search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
 .main__search-form-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 5px;
-}
-.main__search-form-item:first-child {
-  margin-bottom: 15px;
-}
-.main__search-form-item:nth-child(2) {
-  margin-bottom: 15px;
 }
 .main__search-form-item:last-child select {
   flex: 1 1 auto;
@@ -90,7 +90,7 @@
 .region {
   display: grid;
   grid-auto-flow: column;
-  grid-template: repeat(3, 1fr)/repeat(3, 1fr);
+  grid-template: repeat(2, 1fr)/repeat(3, 1fr);
   gap: 15px;
   padding: 40px 0;
 }
@@ -103,6 +103,68 @@
 }
 .region a:hover {
   color: red;
+}
+
+.recent-announcements__list-item-article {
+  display: flex;
+  gap: 10px;
+  padding: 10px 5px;
+  border-bottom: 1px solid gray;
+}
+
+.recent-announcements__list-item-article-date {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-self: center;
+}
+.recent-announcements__list-item-article-date p {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 14px;
+}
+
+.recent-announcements__list-item-article-img {
+  max-width: 140px;
+  max-height: 90px;
+}
+.recent-announcements__list-item-article-img img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+  border-radius: 5px;
+}
+
+.recent-announcements__list-item-article-info-link {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #3077a0;
+  font-size: 16px;
+}
+.recent-announcements__list-item-article-info-link:hover {
+  color: red;
+}
+
+.recent-announcements__list-item-article-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.recent-announcements__list-item-article-info p {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: gray;
+  font-size: 14px;
+}
+.recent-announcements__list-item-article-info p:nth-child(2) {
+  color: black;
 }
 
 .recent-announcements__title {
@@ -118,5 +180,4 @@
 .recent-announcements__list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }/*# sourceMappingURL=main.css.map */
