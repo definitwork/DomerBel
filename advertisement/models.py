@@ -1,6 +1,7 @@
 import calendar
 from datetime import datetime, timedelta
 
+from PIL import Image, ImageDraw, ImageFont
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils.timezone import make_aware
@@ -8,6 +9,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 from django.conf import settings
 
+from users.validators import validate_phone
 
 
 class PhotoAdvertisement(models.Model):
@@ -20,6 +22,20 @@ class PhotoAdvertisement(models.Model):
 
     def __str__(self):
         return f'{self.advertisement.id}-{self.id}'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        photo = Image.open(self.photo.path)
+        draw = ImageDraw.Draw(photo)
+        font = ImageFont.truetype("static/fonts/arial/arial.ttf", 42)
+        width, height = photo.size
+        myword = "ДОМер.бел"
+        # margin = 20
+        # textwidth, textheight = draw.textsize(myword, font)
+        x = width - 10
+        y = height - 15
+        draw.text((x, y), myword, (250, 252, 252, 1), font=font, anchor='rb')
+        photo.save(self.photo.path)
 
 class Advertisement(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -34,7 +50,7 @@ class Advertisement(models.Model):
                                       verbose_name='Главная фотография')
     counter_views = models.IntegerField(default=0, verbose_name='Счетчик просмотров')
     contact_name = models.CharField(max_length=255, verbose_name='Контактное лицо')
-    phone_num = models.CharField(max_length=255, verbose_name='Телефон')
+    phone_num = models.CharField(max_length=255, verbose_name='Телефон', validators=[validate_phone])
     email = models.EmailField(verbose_name='E-Mail')
     store = models.ForeignKey('Store', on_delete=models.CASCADE, blank=True, null=True, verbose_name="Магазин")
     slug = models.SlugField(unique=True, verbose_name='URL')
