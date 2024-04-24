@@ -150,7 +150,7 @@ def get_advertisement_details_page(request, id):
     '''Отдаем страничку с детальным описанием объявления'''
     advertisement = Advertisement.objects.get(id=id)
     category_queryset_all = Category.objects.all()
-    category_list = category_queryset_all.filter(level__lte=1)
+    category_list = category_queryset_all.filter(level=0)
     context = {
         "category_list": category_list,
         'advertisement': advertisement,

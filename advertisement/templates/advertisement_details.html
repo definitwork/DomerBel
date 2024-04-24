@@ -1,3 +1,81 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "base.html" %} 
+{% load static %} 
+{% block css %}
+ <link rel="stylesheet" href="{% static "css/details.css"%}"> 
+{% endblock css %} 
+{% block crumbs %}
+<section class="crumbs">
+  <div class="container">
+    <div class="crumbs__wrapper">
+      <ul class="crumbs__list">
+        <li class="crumbs__list-item">
+          <a href="#"> sdajkfd </a>
+        </li>
+        <li class="crumbs__list-item-dots">...</li>
+        <li class="crumbs__list-item">
+          <a href="#"> dfad </a>
+        </li>
+        <li class="crumbs__list-item-dots">...</li>
+        <li class="crumbs__list-item">
+          <a href="#"> adsklgfhasdfsad </a>
+        </li>
+        <li class="crumbs__list-item-dots">...</li>
+        <li class="crumbs__list-item">
+          <a href="#"> k;kaskd;klasjoeqwu </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock crumbs %} 
+{% block content %}
+<section class="details">
+  <div class="container">
+    <div class="details__wrapper">
+      <h1 class="details__title">{{ advertisement.title }}</h1>
+      <div class="details__advertisement-info">
+        {% if advertisement.price %}
+        <p>Цена <span>{{ advertisement.price }}</span> руб.</p>
+        {% endif %}
+        <p>ID:{{ advertisement.id }}</p>
+        <p>
+            {% if advertisement.date_of_create.date == date_today %}
+            Сегодня 
+            {% elif advertisement.date_of_create.date == date_yesterday %}
+            Вчера 
+            {% else %} 
+            {{ advertisement.date_of_create|date:"d b. Y" }}
+            {% endif %}
+            {{ advertisement.date_of_create|date:"H:i" }}
+        </p>
+      </div>
+      <div class="details__advertisement-view-wrap">
+        <div class="details__advertisement-view">
+          <div class="details__advertisement-view-img">
+            <img src="{{ advertisement.preview_image.url }}" alt="{{ advertisement.preview_image.url }}">
+          </div>
+          <ul class="details__advertisement-view-list-img">
+            <li class="details__advertisement-view-list-img-item">
+              <img data-lazy="{{ advertisement.preview_image.url }}" alt="{{ advertisement.preview_image.url }}">
+            </li>
+            {% for photo in advertisement.photoadvertisement_set.all %}
+            <li class="details__advertisement-view-list-img-item">
+              <img data-lazy="{{ photo.photo.url }}" alt="{{ photo.photo.url }}">
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="details__advertisement-options">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
 
+{% block js %}
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="{% static "js/slick.min.js" %}"></script>
+  <script src="{% static "js/slider.js" %}"></script>
+{% endblock js %}
