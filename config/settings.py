@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'mptt',
     'django_recaptcha',
 
-
     'main_page_domer',
     'users',
     'advertisement',
