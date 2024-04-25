@@ -114,7 +114,9 @@ class Chat(models.Model):
         verbose_name_plural = 'Чаты'
 
     def __str__(self):
-        return self.subject
+        chat_participants = self.members.all()
+        first_names = [person.first_name for person in chat_participants]
+        return f'Участники: {", ".join(first_names)}. Тема: {self.subject}'
 
     def get_absolute_url(self):
         return reverse('users:messages', kwargs={'chat_id': self.pk})
@@ -133,4 +135,4 @@ class Message(models.Model):
         ordering = ['pub_date']
 
     def __str__(self):
-        return self.message
+        return f'Чат_id: {self.chat.id}, автор: {self.author.first_name}. Текст: {self.message}'

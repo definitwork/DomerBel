@@ -322,8 +322,8 @@ def view_message(request, chat_id):
 
 
 def delete_dialogs(request):
+    """ Удаление выбранного диалога в ЛК """
     if request.method == "POST":
-        # Удаляет выбранные диалоги
         if 'delete_dialogs' in request.POST:
             selected_dialogs = request.POST.getlist('dialog_checkbox')
             dialogs = Chat.objects.filter(id__in=selected_dialogs)
@@ -335,6 +335,7 @@ def delete_dialogs(request):
 
 
 def delete_user_message(request, message_id, chat_id):
+    """ Удаление сообщения пользователя в открытом диалоге """
     if request.method == "POST":
         if 'delete_message' in request.POST:
             message = get_object_or_404(Message, id=message_id)
