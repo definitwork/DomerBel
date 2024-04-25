@@ -27,7 +27,7 @@ function login_fn() {
         .then(data => {
                 console.log(data.errors);
                 if (data.success) {
-                    window.location.href = 'users/personal_account';
+                    window.location.href = 'http://127.0.0.1:8000/users/personal_account';
                 } else if (data.errors === 1) {
                     login_errors.innerHTML = 'Неверный email или пароль'
                     field_password_login_form.value = null;

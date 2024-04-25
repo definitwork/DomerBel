@@ -120,10 +120,12 @@
                                 <a href="#">{{ advertisement.phone_num }}</a>
                             </li>
                             <li>
+                                {% if user.is_authenticated %}
                                 <div class="description_contacts_list_icon">
                                     <img src="{% static 'img/email.gif' %}" alt="{% static 'img/email.gif' %}">
                                 </div>
-                                <a href="#">Отправить письмо</a>
+                                <a href="{% url 'users:create_dialog' user_id=user.id recipient_id=advertisement.author.id %}?subject={{ advertisement.title|urlencode }}" target="_blank">Написать владельцу объявления</a>
+                                {% endif %}
                             </li>
                         </ul>
                     </div>
@@ -135,7 +137,7 @@
                             <div class="description_feedback_wish_icon">
                                 <img src="{% static 'img/favorite.png' %}" alt="{% static 'img/favorite.png' %}">
                             </div>
-                            <a href="#">Добавить в блокнот</a>
+                            <a href="#">Добавить в Избранное</a>
                         </div>
                         <div class="description_feedback_complaint">
                             <a href="#">Пожаловаться</a>
