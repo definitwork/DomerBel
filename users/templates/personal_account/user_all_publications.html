@@ -47,7 +47,7 @@
                                     <p> {{ user_publication.date_of_create }} </p>
                                 </div>
                                 <div class="publication_img">
-                                    <img src="{{ user_publication.photopublication_set.all.0.photo.url }}" alt="Publication Photo">
+                                    <img src="{{ user_publication.preview_image.url }}" alt="Publication Photo">
                                 </div>
                                 <div class="publication_text">
                                     <p class="publication_text_title"> {{ user_publication.title }} </p>
