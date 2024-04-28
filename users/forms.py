@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from django_recaptcha.fields import ReCaptchaField
 
-from .models import User
+from .models import User, Message
 from .validators import validate_password, validate_email, validate_phone
 
 
@@ -107,3 +107,10 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = User
         fields = ("email",)
+
+
+class MessageForm(forms.ModelForm):
+    message = forms.CharField(required=True, widget=forms.Textarea(attrs={'class': 'message_input'}))
+    class Meta:
+        model = Message
+        fields = ['message']
