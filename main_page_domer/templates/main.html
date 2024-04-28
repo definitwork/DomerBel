@@ -3,9 +3,13 @@
 
 
 <section class="region">
-  {% for region in regions %}
-  <a href="{% url 'advertisement' %}?region={{ region.id }}"> {{ region|upper }} </a>
-  {% endfor %}
+  <ul class="region__list">
+    {% for region in regions %}
+    <li class="region__list-item">
+      <a href="{% url 'advertisement' %}?region={{ region.id }}"> {{ region|upper }} </a>
+    </li>
+    {% endfor %}
+  </ul>
 </section>
 <section class="recent-announcements">
   <h1 class="recent-announcements__title">Последние объявления</h1>
