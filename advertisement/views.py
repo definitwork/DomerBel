@@ -1,13 +1,14 @@
 import codecs
 import json
-
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
-
 from .models import Advertisement, Category, Region, Spisok, Element, ElementTwo, Field
-
 from .utils import sorted_by_number, variables_for_paginator, sorted_by_date_or_price, sorted_by, get_view_type, \
     get_region_variables
+from .forms import UploadFileForm
+from .models import UploadFile
+import openpyxl
+from advertisement.functions_for_bulk_import import save_many_ads_from_excel
 
 
 def get_advertisement_page(request):
@@ -145,3 +146,38 @@ def get_page_place_an_favorites(request):
         context['cards_num'] = len(objects)
 
     return render(request, 'place_an_favorites.html', context)
+
+def get_bulk_import_of_ads(request):
+    """Страница массового импорта объявлений"""
+    context = {
+        'form': UploadFileForm(),
+    }
+    '''Проверь физ лицо или юр лицо!!!!!!'''
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            if form.cleaned_data.get("file").name.endswith('xlsx'):
+                try:
+                    uploud_file = form.cleaned_data.get("file")
+                    book = openpyxl.open(uploud_file,read_only=True)
+                    save_file = UploadFile(file=uploud_file, user=request.user)
+                    save_file.save()
+                    ads = save_many_ads_from_excel(f'./media/{save_file.file.name}',request.user)
+            #         error_ads = ads.get('error_ads')
+            #         context['error_ads'] = error_ads
+                    context['status'] = 'good'
+                except:
+                    context['error'] = 'Невозможно прочитать файл.'
+                    '''Разберись почему постоянно вывдит эту ошибку'''
+        
+            elif form.cleaned_data.get("file").name.endswith('zip'):
+                print('работа с архивом')
+        else:
+            context['error'] = 'Ошибка при загрузке файла. Убедитесь, что загружаемый файл необходимого расширения'
+
+    else:
+        form = UploadFileForm()
+
+    return render(request=request,
+                  template_name='bulk_import_ads.html',
+                   context=context )

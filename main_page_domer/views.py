@@ -1,7 +1,6 @@
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
-
 from advertisement.models import Advertisement, Region, Category, Store
 from advertisement.utils import get_region_variables, sorted_by, sorted_by_number, get_view_type, \
     sorted_by_date_or_price, variables_for_paginator, get_view_type_for_store
@@ -246,3 +245,7 @@ def get_help_page(request):
         "category_list": category_list
     }
     return render(request, 'help.html', context)
+
+
+
+

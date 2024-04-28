@@ -1,10 +1,10 @@
 from django import forms
 from django.forms import ClearableFileInput
 from mptt.forms import TreeNodeChoiceField
-
 from advertisement.models import Region, Category, Store
 from users.models import User
 from users.validators import validate_phone
+from django.core.validators import FileExtensionValidator
 
 class StoreForm(forms.ModelForm):
     region = forms.ModelChoiceField(queryset=Region.objects.filter(type="Город"), label="Регион, город, область",
@@ -39,3 +39,8 @@ class StoreForm(forms.ModelForm):
         model = Store
         fields = ['region', 'address', 'category', 'title', 'slug', 'description', 'url', 'contact_name', 'email',
                   'phone_num', 'video_link', 'logo_image', 'user']
+
+
+class UploadFileForm(forms.Form):
+    '''Форма для массового импорта объявления'''
+    file = forms.FileField( validators = [FileExtensionValidator(allowed_extensions=['xlsx','zip'])])
