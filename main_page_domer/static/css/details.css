@@ -108,10 +108,9 @@
   flex: 0 1 640px;
   border: 2px solid gray;
   border-radius: 5px;
-  max-height: 480px;
+  height: 480px;
 }
 .details__advertisement-view-img img {
-  max-height: inherit;
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
