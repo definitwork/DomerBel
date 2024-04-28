@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from rest_framework.decorators import api_view
 from transliterate import slugify
 from rest_framework import status, serializers
@@ -93,14 +95,13 @@ def save_advertisement(request):
             additional_information_save = Field.objects.filter(id__in=additional_information).order_by('id')
             for i in additional_information_save:
                 additional_information[i.title] = ' '.join(additional_information.pop(f'{i.id}'))
-            new_advertisement = Advertisement(author=request.user, article=serializer.validated_data.get('article'),
+            new_advertisement = Advertisement(author=None if request.user.is_anonymous else request.user, article=serializer.validated_data.get('article'),
                                               title=serializer.validated_data.get('title'), price=serializer.validated_data.get('price'),
                                               category=serializer.validated_data.get('category'), bearer=serializer.validated_data.get('bearer'),
                                               region=serializer.validated_data.get('region'), contact_name=serializer.validated_data.get('contact_name'),
                                               email=serializer.validated_data.get('email'), phone_num=serializer.validated_data.get('phone_num'),
                                               description=serializer.validated_data.get('description'), video_link=serializer.validated_data.get('video_link'),
-                                              additional_information=additional_information, slug=slugify(serializer.validated_data.get('title')),
-                                              store=serializer.validated_data.get('store'))
+                                              additional_information=additional_information, store=serializer.validated_data.get('store'))
             new_advertisement.save()
             if request.data.getlist('photo_files') != ['']:
                 for photo in request.data.getlist('photo_files'):
