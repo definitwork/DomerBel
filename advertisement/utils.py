@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 
-from advertisement.models import Region
+from .models import Region
 
 
 def sorted_by_number(number):

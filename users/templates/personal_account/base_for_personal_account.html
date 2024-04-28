@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 {% load static %}
+<link rel="stylesheet" href="{% static 'css/null_for_templates.css' %}">
+<link rel="stylesheet" href="{% static 'css/personal_account_style.css' %}">
+<link rel="stylesheet" href="{% static 'css/user_data.css' %}">
+<link rel="stylesheet" href="{% static 'css/dialogs_and_messages.css' %}">
+<link rel="stylesheet" href="{% static 'css/add_edit_delete_store.css' %}">
+<link rel="stylesheet" href="{% static 'css/my_store.css' %}">
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/null_for_templates.css' %}">
-    <link rel="stylesheet" href="{% static 'css/personal_account_style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/user_data.css' %}">
-    <link rel="stylesheet" href="{% static 'css/messages.css' %}">
-    <link rel="stylesheet" href="{% static 'css/add_edit_delete_store.css' %}">
-    <link rel="stylesheet" href="{% static 'css/my_store.css' %}">
 {% endblock %}
 {% block popup %}
     <div class="popup_pa">
@@ -183,13 +183,10 @@
                             <a href="{% url 'users:my_store' %}">Мои магазины</a>
                         </li>
                         <li>
-                            <a href="{% url 'users:incoming_messages' %}">Входящие сообщения</a>
+                            <a href="{% url 'users:dialogs' %}">Диалоги</a>
                         </li>
                         <li>
-                            <a href="{% url 'users:outgoing_messages' %}">Исходящие сообщения</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'users:sent_messages' %}">Отправленные сообщения</a>
+                            <a href="{% url 'feedback' %}">Написать администратору</a>
                         </li>
                         <li>
                             <a href="#">История платежей</a>

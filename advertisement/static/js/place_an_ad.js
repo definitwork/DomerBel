@@ -104,6 +104,9 @@ function showCategory(event) {
                         if (document.querySelector('.category_level_3')) {
                             document.querySelector('.category_level_3').remove()
                         }
+                        statusCategory1 = ''
+                        statusCategory2 = ''
+                        statusCategory3 = ''
                     })
                 })
         }
@@ -134,6 +137,8 @@ function showCategory(event) {
                             if (document.querySelector('.category_level_3')) {
                                 document.querySelector('.category_level_3').remove()
                             }
+                            statusCategory2 = ''
+                            statusCategory3 = ''
                         })
                     } else {
                         show_additional_information(event)
@@ -166,6 +171,7 @@ function showCategory(event) {
                             if (document.querySelector('.category_level_3')) {
                                 document.querySelector('.category_level_3').remove()
                             }
+                            statusCategory3 = ''
                         })
                     } else {
                         show_additional_information(event)
@@ -210,16 +216,29 @@ ${i.title}
                     while (minValDate !== i.max_val_interval_date) {
                         minValDate = minValDate + 1
                         dateArray.push(minValDate)
-                    }
+                    } if (i.title == 'Этаж|Этажей в доме'){
                     informationList.innerHTML += `
 <div class="additional_information_item-${i.id}">
 <div class="additional_information_item item_input">
 <div class="information_label label_fields">
-${i.title}
+Этаж
 </div>
 <div class="information_select">
 <p class="information_item">
-            <select class="input_field select_class select_info" id="information_${i.id}" name="${i.id}">
+            <select class="input_field select_class" id="information_${i.id}" name="${i.id}">
+                <option value="">---------</option>
+                ${dateArray.map((elem) => `<option value=${elem}>${elem}</option>`)}
+            </select>
+        </p>
+</div>
+</div>
+<div class="additional_information_item item_input">
+<div class="information_label label_fields">
+Этажей в доме
+</div>
+<div class="information_select">
+<p class="information_item">
+            <select class="input_field select_class" id="element_two-${i.id}" name="${i.id}">
                 <option value="">---------</option>
                 ${dateArray.map((elem) => `<option value=${elem}>${elem}</option>`)}
             </select>
@@ -228,6 +247,24 @@ ${i.title}
 </div>
 </div>
                     `
+                    } else {
+                    informationList.innerHTML += `
+<div class="additional_information_item-${i.id}">
+<div class="additional_information_item item_input">
+<div class="information_label label_fields">
+${i.title}
+</div>
+<div class="information_select">
+<p class="information_item">
+            <select class="input_field select_class" id="information_${i.id}" name="${i.id}">
+                <option value="">---------</option>
+                ${dateArray.map((elem) => `<option value=${elem}>${elem}</option>`)}
+            </select>
+        </p>
+</div>
+</div>
+</div>
+                    `}
                 } else if (i.title === 'Цена' || i.title === 'Арендная плата') {
                     informationList.innerHTML += ` 
 <div class="additional_information_item-price">
@@ -649,6 +686,7 @@ function saveAdvertisement() {
                                 if (document.querySelector(`.additional_${i.id}_error`)) {
                                     document.querySelector(`.additional_${i.id}_error`).remove()
                                     document.getElementById(`information_${i.id}`).classList.remove('input_error')
+                                    document.getElementById(`element_two-${i.id}`).classList.remove('input_error')
                                 }
                             }
 
