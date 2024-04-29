@@ -31,6 +31,7 @@
         <p> {{ publication.date_of_create }} </p>
         <div class="publication_link_wrap">
             <div class="publication_img">
+                <img src="{{ publication.preview_image.url }}" alt="Publication Photo">
                 {% for photo in publication.photopublication_set.all %}
                     <img src="{{ photo.photo.url }}" alt="Publication Photo">
                 {% endfor %}
