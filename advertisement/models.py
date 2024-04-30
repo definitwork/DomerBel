@@ -1,7 +1,6 @@
 import calendar
 from datetime import datetime, timedelta
 
-from PIL import Image, ImageDraw, ImageFont
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils.timezone import make_aware
@@ -119,19 +118,6 @@ class Region(MPTTModel):
 
     def __str__(self):
         return self.area
-
-
-class FieldSet(models.Model):
-    title = models.CharField(max_length=255, verbose_name='Заголовок FieldSet')
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Связь с категориями')
-    fields = models.ManyToManyField('Field', verbose_name='Связь мм с Fields')
-
-    class Meta:
-        verbose_name = 'Набор полей'
-        verbose_name_plural = 'Набор полей'
-
-    def __str__(self):
-        return self.title
 
 
 class Field(models.Model):

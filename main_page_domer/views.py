@@ -108,11 +108,11 @@ def get_stores_by_category(request, category_slug):
                                                               cumulative=True,
                                                               extra_filters={"region__in": region_filter['region__in']})
     store_queryset = Store.objects.filter(Q(category__in=category_queryset_an) |
-                                          Q(category__slug=category.slug),
-                                          **region_filter,
-                                          is_active=True).select_related(
-        'category',
-        'region')
+                                                          Q(category__slug=category.slug),
+                                                          **region_filter,
+                                                          is_active=True).select_related(
+                                                          'category',
+                                                          'region')
     paginator = Paginator(store_queryset, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -147,8 +147,8 @@ def get_store_by_title(request, store_slug):
     category_list = Category.objects.filter(level__lte=1)
     advertisement_queryset = Advertisement.objects.filter(store=store_page, is_active=True,
                                                           moderated=True, **region_filter).select_related(
-        'category',
-        'region').order_by(order_by)
+                                                          'category',
+                                                          'region').order_by(order_by)
     category_queryset = Category.objects.add_related_count(Category.objects.root_nodes(),
                                                            Advertisement,
                                                            'category',
@@ -216,8 +216,8 @@ def get_store_by_title_and_category(request, store_slug, category_slug):
                                                           Q(category__slug=category.slug), store=store_page,
                                                           **region_filter,
                                                           is_active=True).select_related(
-        'category',
-        'region')
+                                                          'category',
+                                                          'region')
 
     page_obj = variables_for_paginator(advertisement_queryset,
                                        request.GET.get('page'),
@@ -247,11 +247,11 @@ def get_store_by_title_and_category(request, store_slug, category_slug):
 
 def get_site_map_page(request):
     category_list = Category.objects.all()
-    
-    
+
+
     context = {}
     context['nodes'] = category_list
-    
+
     return render(request, 'site_map.html', context)
 
 
@@ -298,3 +298,6 @@ def get_feedback_page(request):
         "category_list": category_list
     }
     return render(request, 'feedback.html', context)
+
+def register_done(request):
+    return render(request, "message_after_register.html")
