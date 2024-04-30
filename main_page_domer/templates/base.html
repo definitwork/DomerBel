@@ -19,7 +19,7 @@
 <body>
 <div class="popup">
     <div class="login_form_popup">
-        <form id="login_form" method="POST" class="login_form" action="">
+        <form id="login_form" method="POST" class="login_form" novalidate>
             {% csrf_token %}
             <nav class="header_login_form_popup nav_popup">
                 <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
@@ -35,28 +35,80 @@
         </div>
         <div class="closing_cross"></div>
     </div>
-    <div class="register_form_popup">
-        <form id="register_form" method="POST" class="register_form" action="">
+    <div class="register_form_individual_popup">
+        <form  method="POST"class="register_form" id="register_form_individual" novalidate">
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
-                <p>Регистрация</p>
+                <p>Регистрация профиля физического лица</p>
             </nav>
-            <ul>
-                <li style="display: flex;color:red" class="error_name_register"></li>
-                <li style="display: flex;color:red" class="error_email_register"></li>
-                <li style="display: flex;color:red" class="error_phone_register"></li>
-                <li style="display: flex;color:red" class="error_pass_not_match_register"></li>
-                <li style="display: flex;color:red" class="error_bad_password_register"></li>
+            <div class="choise_register_container">
+                <div class="entity">
+                    Юридическое лицо
+                </div>
+                <div class='reg_form_button_style'>
+                    Физическое лицо
+                </div>
+            </div>
+            <ul style='margin-bottom: 10px;'>
+                <li style="display: flex;color:red" id="error_name_register"></li>
+                {{ register_form.name }}
+                <li style="display: flex;color:red" id="error_email_register"></li>
+                {{ register_form.email }}
+                <li style="display: flex;color:red" id="error_phone_register"></li>
+                {{ register_form.phone }}
+                <li style="display: flex;color:red" id="error_bad_password_register"></li>
+                {{ register_form.password }}
+                <li style="display: flex;color:red" id="error_pass_not_match_register"></li>
+                {{ register_form.password2 }}
+                <div style="display: flex; align-items:center";>
+                </div>
+                <li style="display: flex;color:red" id="error_click_captcha"></li>
+                {{ register_form.captcha }}
             </ul>
-            {{ register_form.as_p }}
-            <input type="button" id="form_register_button" value="Регистрация"></input>
+            <input type="button" class="form_register_button_individual" value="Регистрация" name="individual_form" ></input>
         </form>
         <button class="return_to_login_button">Вход</button>
         <div class="closing_cross"></div>
     </div>
+    <div class="register_form_entity_popup">
+        <form  method="POST" class="register_form" id="register_form_entity" novalidate >
+            {% csrf_token %}
+            <nav class="header_registration_form_popup nav_popup">
+                <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
+                <p>Регистрация профиля юридического лица</p>
+            </nav>
+            <div class="choise_register_container">
+                <div class='reg_form_button_style'>
+                    Юридическое лицо
+                </div>
+                <div class="individual">
+                    Физическое лицо
+                </div>
+            </div>
+            <ul style='margin-bottom: 10px;'>
+                <li style="display: flex;color:red" id="error_name_register1"></li>
+                {{ register_form_entity.name }}
+                <li style="display: flex;color:red" id="error_email_register1"></li>
+                {{ register_form_entity.email }}
+                <li style="display: flex;color:red" id="error_phone_register1"></li>
+                {{ register_form_entity.phone }}
+                <li style="display: flex;color:red" id="error_bad_password_register1"></li>
+                {{ register_form_entity.password }}
+                <li style="display: flex;color:red" id="error_pass_not_match_register1"></li>
+                {{ register_form_entity.password2 }}
+                <div style="display: flex; align-items:center";>
+                </div>
+                <li style="display: flex;color:red" id="error_click_captcha1"></li>
+                {{ register_form_entity.captcha }}
+            </ul>
+            <input type="button" class="form_register_button_entity" value="Регистрация" name='entity_form'></input>
+        </form>
+        <button class="return_to_login_button" id="return_to_login_button_entity" >Вход</button>
+        <div class="closing_cross"></div>
+    </div>
     <div class="forget_pass_form_popup">
-        <form id="forget_pass_form" action="{% url 'users:password_reset' %}" method="POST" class="forget_pass_form">
+        <form id="forget_pass_form" action="{% url 'users:password_reset' %}" method="POST" class="forget_pass_form" novalidate>
             {% csrf_token %}
             <nav class="header_registration_form_popup nav_popup">
                 <img src="{% static 'img/logo.png' %}" alt="{% static 'img/logo.png' %}">
@@ -158,6 +210,7 @@
                 </div>
             </section>
         </header>
+       
         {% block find %}
             <section class="search_table">
                 <nav class="table_topics_search_location">
@@ -189,9 +242,23 @@
                     </div>
                 </div>
             </section>
+            {% comment %} {% if not user.is_authenticated %}
+            <div class="info_massage_popup">
+                <div>
+                    <p>Здравтвуйте  <strong>{{user.first_name}}!</strong><br></p>
+                </div>
+               
+                <p>Вы успешно зарегистрировались! <br>
+                Что бы зайти в личный кабинет авторизуйтесь</p>
+            </div>
+            {% endif %} {% endcomment %}
+
+
+
+        {% endblock %}
+        {% block info_message %}
         {% endblock %}
         {% block filter %}
-
         {% endblock %}
         {% block content %}
         {% endblock %}
