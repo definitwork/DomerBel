@@ -1,6 +1,9 @@
 from rest_framework import serializers
 
+from django.utils import formats
+
 from advertisement.models import Region, Category, Field, Spisok, ElementTwo, Element, Advertisement, Store
+from main_page_domer.models import Publication
 
 
 class GetListOfCitiesSerializer(serializers.ModelSerializer):
@@ -44,6 +47,7 @@ class FieldSerialier(serializers.ModelSerializer):
         model = Field
         fields = '__all__'
 
+
 class StoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Store
@@ -55,7 +59,6 @@ class PhotoAdvertisementSerializer(serializers.Serializer):
 
 
 class AdvertisementSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Advertisement
         fields = ['article', 'title', "price",
@@ -68,3 +71,16 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 class AdditionalInformationSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     error = serializers.CharField()
+
+
+class PublicationSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        """ Переопределяем вывод даты в формате 'd-m-Y H:i' """
+        representation = super().to_representation(instance)
+        representation['date_of_create'] = formats.date_format(instance.date_of_create, "d-m-Y H:i")
+        return representation
+
+    class Meta:
+        model = Publication
+        fields = '__all__'
+        # depth = 1

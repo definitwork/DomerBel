@@ -1,12 +1,17 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.pagination import LimitOffsetPagination
+from rest_framework import status, serializers, generics, filters
 from transliterate import slugify
-from rest_framework import status, serializers
+
 
 from advertisement.models import Region, Category, Field, ElementTwo, PhotoAdvertisement, Advertisement, Store
-from api_domer.serializers import GetListOfCitiesSerializer, GetListOfCategoriesSerializer, FieldSerialier, \
-    ElementTwoSerializer, PhotoAdvertisementSerializer, AdvertisementSerializer, StoreSerializer, \
-    AdditionalInformationSerializer
-from rest_framework.response import Response
+from api_domer.filters import PublicationsFilter
+from api_domer.serializers import (GetListOfCitiesSerializer, GetListOfCategoriesSerializer, FieldSerialier,
+                                   ElementTwoSerializer, AdvertisementSerializer,
+                                   PublicationSerializer, StoreSerializer, AdditionalInformationSerializer)
+from main_page_domer.models import Publication
 
 
 # Отдаёт список городов type='Город' по id выбранной области type='Область' из модели Region
@@ -49,7 +54,8 @@ def get_category_list(request):
 
 @api_view(['GET'])
 def get_field_list(request):
-    fieldlist = Field.objects.filter(category_id=request.query_params.get('id')).select_related('spisok').prefetch_related('spisok__element_set__elementtwo_set').order_by('id')
+    fieldlist = Field.objects.filter(category_id=request.query_params.get('id')).select_related(
+        'spisok').prefetch_related('spisok__element_set__elementtwo_set').order_by('id')
     serializer = FieldSerialier(fieldlist, many=True)
     return Response(serializer.data)
 
@@ -99,7 +105,8 @@ def save_advertisement(request):
                                               region=serializer.validated_data.get('region'), contact_name=serializer.validated_data.get('contact_name'),
                                               email=serializer.validated_data.get('email'), phone_num=serializer.validated_data.get('phone_num'),
                                               description=serializer.validated_data.get('description'), video_link=serializer.validated_data.get('video_link'),
-                                              additional_information=additional_information, slug=slugify(serializer.validated_data.get('title')),
+                                              additional_information=additional_information, slug=slugify(
+                                                  serializer.validated_data.get('title')),
                                               store=serializer.validated_data.get('store'))
             new_advertisement.save()
             if request.data.getlist('photo_files') != ['']:
@@ -110,7 +117,19 @@ def save_advertisement(request):
                     else:
                         additional_photo = PhotoAdvertisement(photo=photo, advertisement=new_advertisement)
                         additional_photo.save()
-            return Response({"created": "объявление успешно создано"},status=status.HTTP_201_CREATED)
+            return Response({"created": "объявление успешно создано"}, status=status.HTTP_201_CREATED)
         else:
-            raise serializers.ValidationError({"error_additional": serializer_additional_error.data, "error": serializer.errors})
+            raise serializers.ValidationError(
+                {"error_additional": serializer_additional_error.data, "error": serializer.errors})
     return Response()
+
+
+class ThisPublicationSeatchListAPIView(generics.ListAPIView):
+    """ Выводим все новости секции """
+    queryset = Publication.objects.all()
+    serializer_class = PublicationSerializer
+    pagination_class = LimitOffsetPagination  # Пагинация
+    # Поиск по заголовку, содержанию и дате
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    search_fields = ['title', 'announcement', 'description']  # Поля, по которым будет выполняться поиск
+    filterset_class = PublicationsFilter

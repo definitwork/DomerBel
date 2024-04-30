@@ -38,6 +38,7 @@ INSTALLED_APPS = [
 
     'mptt',
     'django_recaptcha',
+    'django_filters',
 
 
     'main_page_domer',
@@ -82,6 +83,12 @@ TEMPLATES = [
 SITE_ID=2
 
 WSGI_APPLICATION = 'config.wsgi.application'
+
+# Настройка для пагинатора
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,  # Лимит на количество элементов на странице
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
