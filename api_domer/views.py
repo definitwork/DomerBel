@@ -124,7 +124,7 @@ def save_advertisement(request):
     return Response()
 
 
-class ThisPublicationSeatchListAPIView(generics.ListAPIView):
+class ThisPublicationSearchListAPIView(generics.ListAPIView):
     """ Выводим все новости секции """
     queryset = Publication.objects.all()
     serializer_class = PublicationSerializer
