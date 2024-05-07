@@ -59,12 +59,12 @@
                             </p>
                         </td>
                         <td class="ads_image">
-                            <a href="#">
+                            <a href="{% url 'advertisement_details' ad.id %}">
                                 <img src="{{ ad.preview_image.url }}" alt="{{ ad.preview_image.url }}">
                             </a>
                         </td>
                         <td class="ads_info">
-                            <a href="#">
+                            <a href="{% url 'advertisement_details' ad.id %}">
                                 <p class="ads_title">{{ ad.title }}</p>
                             </a>
                             <p>{{ ad.price }} руб.</p>
