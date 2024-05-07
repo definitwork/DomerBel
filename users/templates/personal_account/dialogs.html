@@ -25,12 +25,14 @@
             {% endif %}
         {% endfor %}
         <form method="POST" class="dialogs" action="{% url 'users:delete_dialogs' %}">
+            {% if chats.count != 0 %}
             <div class="user_dialogs">Ваши диалоги:</div>
             {% csrf_token %}
             <div class="select_all_dialogs">
                 <input type="checkbox" id="select_dialogs"/>
                 <label for="select_dialogs">Выделить все диалоги</label>
             </div>
+            {% endif %}
             {% load user_tags %}
             {% if chats.count == 0 %}
                 <div class="no_dialogs">Нет ни одного начатого диалога</div>
@@ -72,10 +74,12 @@
                     {% endwith %}
                 {% endif %}
             {% endfor %}
+            {% if chats.count != 0 %}
             <div class="dialogs_marked">
                 <p>Отмеченные:</p>
                 <button name="delete_dialogs">Удалить</button>
             </div>
+            {% endif %}
         </form>
     </section>
 {% endblock %}
