@@ -1,4 +1,3 @@
-from curses.ascii import isdigit
 import re
 
 from django.forms import forms

@@ -12,5 +12,6 @@ urlpatterns = [
     path('help/', get_help_page, name='help'),
     path('site_map/', get_site_map_page, name='site_map'),
     path('feedback/', get_feedback_page, name='feedback'),
+    path('complaint_about_adv_id_<int:adv_id>/', get_complaint_page, name='complaint'),
     path('register_done', register_done, name='register_done'),
 ]
