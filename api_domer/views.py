@@ -3,13 +3,13 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework import status, serializers, generics, filters
-from transliterate import slugify
+from slugify import slugify
 
 
 from advertisement.models import Region, Category, Field, ElementTwo, PhotoAdvertisement, Advertisement, Store
 from api_domer.filters import PublicationsFilter
 from api_domer.serializers import (GetListOfCitiesSerializer, GetListOfCategoriesSerializer, FieldSerialier,
-                                   ElementTwoSerializer, AdvertisementSerializer,
+                                   ElementTwoSerializer, AdvertisementSerializer, PublicationSearchSerializer,
                                    PublicationSerializer, StoreSerializer, AdditionalInformationSerializer)
 from main_page_domer.models import Publication
 
@@ -85,6 +85,7 @@ def save_advertisement(request):
         serializer.is_valid()
         keys_to_delete = ['csrfmiddlewaretoken', 'preview_img', 'photo_files']
         keys_to_delete.extend(serializer.data.keys())
+        print(serializer.data.keys())
         for key in keys_to_delete:
             if key in additional_information:
                 additional_information.pop(key)
@@ -127,9 +128,35 @@ def save_advertisement(request):
 class ThisPublicationSearchListAPIView(generics.ListAPIView):
     """ Выводим все новости секции """
     queryset = Publication.objects.all()
-    serializer_class = PublicationSerializer
+    serializer_class = PublicationSearchSerializer
     pagination_class = LimitOffsetPagination  # Пагинация
     # Поиск по заголовку, содержанию и дате
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['title', 'announcement', 'description']  # Поля, по которым будет выполняться поиск
     filterset_class = PublicationsFilter
+
+
+@api_view(['POST'])
+def save_publication(request):
+    if request.method == "POST":
+        print('---------------------------------------------------------------------------')
+        try:
+            query_dict = request.data
+            query_dict['user'] = request.user.id
+            query_dict['slug'] = slugify(str(query_dict['title']))
+            print(query_dict)
+            serializer = PublicationSerializer(data=query_dict)
+
+            if serializer.is_valid():
+                print('---------------------------------------------------------------------------')
+                print(serializer.validated_data)
+                print("serializer ok")
+                serializer.save()
+            else:
+                print("serializer don't ok")
+                for field, errors in serializer.errors.items():
+                    print(f"Поле '{field}' не прошло валидацию. Ошибки: {errors}")
+        except Exception as error:
+            print('error: ', error)
+        print('---------------------------------------------------------------------------')
+    return Response()

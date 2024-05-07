@@ -115,4 +115,4 @@ class PublicationForm(forms.ModelForm):
 
     class Meta:
         model = Publication
-        fields = '__all__'
+        fields = ['title', 'announcement', 'description', 'video_link', ]

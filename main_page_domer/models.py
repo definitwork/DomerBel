@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.db import models
 from django.conf import settings
+from django_ckeditor_5.fields import CKEditor5Field
 from advertisement.models import Advertisement
 from users.models import User
 
@@ -74,9 +75,9 @@ class Publication(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
     title = models.CharField(max_length=255, verbose_name="Заголовок")
     slug = models.SlugField(unique=True, verbose_name="URL")
-    announcement = models.TextField(verbose_name="Анонс")
-    description = models.TextField(verbose_name="Текст с описанием")
-    preview_image  = models.ImageField(upload_to="images/publications", verbose_name="Фото")
+    announcement = CKEditor5Field('Текст статьи', config_name='extends')
+    description = CKEditor5Field('Текст статьи', config_name='extends')
+    preview_image = models.ImageField(upload_to="images/publications", verbose_name="Фото")
     video_link = models.URLField(blank=True, null=True, verbose_name="Ссылка на видео")
     date_of_create = models.DateTimeField(
         auto_now_add=True, verbose_name="Дата создания"

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+from transliterate import slugify
 from django.utils import formats
 
 from advertisement.models import Region, Category, Field, Spisok, ElementTwo, Element, Advertisement, Store
@@ -73,7 +73,7 @@ class AdditionalInformationSerializer(serializers.Serializer):
     error = serializers.CharField()
 
 
-class PublicationSerializer(serializers.ModelSerializer):
+class PublicationSearchSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         """ Переопределяем вывод даты в формате 'd-m-Y H:i' """
         representation = super().to_representation(instance)
@@ -83,4 +83,11 @@ class PublicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Publication
         fields = '__all__'
-        # depth = 1
+
+
+class PublicationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Publication
+        # fields = ['title', 'announcement', 'description', 'preview_image', 'video_link',]
+        fields = "__all__"
