@@ -1,3 +1,4 @@
+from cgi import print_environ_usage
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -11,7 +12,7 @@ from api_domer.filters import PublicationsFilter
 from api_domer.serializers import (GetListOfCitiesSerializer, GetListOfCategoriesSerializer, FieldSerialier,
                                    ElementTwoSerializer, AdvertisementSerializer, PublicationSearchSerializer,
                                    PublicationSerializer, StoreSerializer, AdditionalInformationSerializer)
-from main_page_domer.models import Publication
+from main_page_domer.models import PhotoPublication, Publication
 
 
 # Отдаёт список городов type='Город' по id выбранной области type='Область' из модели Region
@@ -139,19 +140,29 @@ class ThisPublicationSearchListAPIView(generics.ListAPIView):
 @api_view(['POST'])
 def save_publication(request):
     if request.method == "POST":
-        print('---------------------------------------------------------------------------')
         try:
             query_dict = request.data
+            main_img_name = request.data.get('main_img')
+            preview_image_list = request.FILES.getlist('preview_image')
+            if len(preview_image_list) > 1:
+                for preview_img in preview_image_list:
+                    if preview_img.name == main_img_name:
+                        query_dict['preview_image'] = preview_img
+                        preview_image_list.remove(preview_img)
+            else:
+                preview_image_list = []
             query_dict['user'] = request.user.id
             query_dict['slug'] = slugify(str(query_dict['title']))
-            print(query_dict)
             serializer = PublicationSerializer(data=query_dict)
-
             if serializer.is_valid():
-                print('---------------------------------------------------------------------------')
-                print(serializer.validated_data)
-                print("serializer ok")
                 serializer.save()
+                if preview_image_list != []:
+                    for preview_image in preview_image_list:
+                        p = PhotoPublication(
+                            publications = serializer.instance,
+                            photo = preview_image
+                        )
+                        p.save()
             else:
                 print("serializer don't ok")
                 for field, errors in serializer.errors.items():
