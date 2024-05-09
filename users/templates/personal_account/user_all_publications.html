@@ -52,12 +52,13 @@
                                 <div class="publication_text">
                                     <p class="publication_text_title"> {{ user_publication.title }} </p>
                                     <p> {{ user_publication.announcement }} </p>
-                                    <p class="ads_checkbox">
-                                        <input type="checkbox" name="ads_checkbox" value="{{ ad.id }}">
-                                        <label>Выделить</label>
-                                    </p>
                                     <p class="moderation_checkbox">
-                                        <input type="checkbox" name="ads_checkbox" value="{{ user_publication.moderated }}">
+                                        <input type="checkbox" name="ads_checkbox" value="" {% if user_publication.moderated %} checked {% endif %} disabled>
+                                        <label>Прошел модерацию</label>
+                                    </p>
+                                    <p class="ads_checkbox">
+                                        <input type="checkbox" id="ads_checkbox{{ user_publication.id }}" name="ads_checkbox" value="{{ user_publication.id }}">
+                                        <label for="ads_checkbox{{ user_publication.id }}">Выделить для удаления</label>
                                     </p>
                                 </div>
                             </div>
