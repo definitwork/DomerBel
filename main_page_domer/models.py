@@ -1,6 +1,8 @@
 from django.contrib import admin
-from django.db import models
 from django.conf import settings
+from django.db import models
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 from django_ckeditor_5.fields import CKEditor5Field
 from advertisement.models import Advertisement
 from users.models import User
@@ -63,12 +65,17 @@ class PhotoPublication(models.Model):
         "Publication", on_delete=models.CASCADE, verbose_name="Публикация"
     )
 
+    def __str__(self):
+        return f"{self.publications}"
+
     class Meta:
         verbose_name = "Фото публикации"
         verbose_name_plural = "Фото публикаций"
 
-    def __str__(self):
-        return f"{self.publications}"
+
+@receiver(pre_delete, sender=PhotoPublication)
+def photo_publications_delete(sender, instance, **kwargs):
+    instance.photo.delete()
 
 
 class Publication(models.Model):
@@ -85,13 +92,17 @@ class Publication(models.Model):
     counter_views = models.IntegerField(default=0, verbose_name="Счетчик просмотров")
     moderated = models.BooleanField(default=False, verbose_name="Прошло модерацию")
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         verbose_name = "Публикация"
         verbose_name_plural = "Публикации"
 
-    def __str__(self):
-        return self.title
 
+@receiver(pre_delete, sender=Publication)
+def publication_photo_delete(sender, instance, **kwargs):
+    instance.preview_image.delete(False)
 
 class PublicationAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}

@@ -169,5 +169,4 @@ def save_publication(request):
                     print(f"Поле '{field}' не прошло валидацию. Ошибки: {errors}")
         except Exception as error:
             print('error: ', error)
-        print('---------------------------------------------------------------------------')
     return Response()

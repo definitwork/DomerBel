@@ -338,3 +338,14 @@ def add_user_publication(request):
         "form_publication": form_publication,
     }
     return render(request=request, template_name='personal_account/user_add_publication.html', context=context)
+
+
+@login_required
+def delete_publication(request):
+    """ Удаляет выбранные публикации """
+    if request.method == "POST":
+        if 'delete_publication' in request.POST:
+            selected_publications = request.POST.getlist('ads_checkbox')
+            Publication.objects.filter(id__in=selected_publications).delete()
+            messages.success(request, "Выбранные публикации удалены!")
+            return redirect('users:user_all_publications')
