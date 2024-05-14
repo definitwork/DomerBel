@@ -4,33 +4,57 @@ const getElementSelectOblast = document.getElementById("select_oblast");
 const getElementSelectCategory0 = document.getElementById("select_category_0");
 const categorySelect = document.querySelector(".category_select");
       categorySelect.addEventListener('click', showCategory)
-let regionStatus = ''
-let statusCategory0 = ''
-let statusCategory1 = ''
-let statusCategory2 = ''
-let statusCategory3 = ''
+let regionStatus = document.getElementById('select_oblast').value
+let statusCategory0 = document.getElementById('select_category_0') ? document.getElementById('select_category_0').value : ''
+let statusCategory1 = document.getElementById('select_category_1') ? document.getElementById('select_category_1').value : ''
+let statusCategory2 = document.getElementById('select_category_2') ? document.getElementById('select_category_2').value : ''
+let statusCategory3 = document.getElementById('select_category_3') ? document.getElementById('select_category_3').value : ''
 const informationList = document.querySelector(".additional_information");
       informationList.addEventListener('click', showAdditionalInformationTwo)
-let statusElementTwo = ''
+let statusElementTwo = document.querySelector('.information_item.information_item_two') ? document.querySelector('.information_item.information_item_two').dataset.element : ''
 
 
-function showOblast() {
-    fetch(`http://127.0.0.1:8000/api/v1/get_region_list/`)
-        .then((response) => response.json())
-        .then(data => {
-            let array = data.filter(function (i) {
-                return i.level === 0
-            })
-            array.map((elem) => {
-                let optionElem = document.createElement('option')
-                optionElem.setAttribute('value', `${elem.id}`)
-                optionElem.innerText = `${elem.area}`
-                getElementSelectOblast.append(optionElem)
-            })
-        })
-}
+document.getElementById('select_category_0').addEventListener('change', () => {
+                        informationList.innerHTML = '';
+                        document.querySelector('.category_level_1')?.remove()
+                        document.querySelector('.category_level_2')?.remove()
+                        document.querySelector('.category_level_3')?.remove()
+                        statusCategory1 = ''
+                        statusCategory2 = ''
+                        statusCategory3 = ''
+})
 
-showOblast()
+document.getElementById('select_category_1')?.addEventListener('change', () => {
+                        informationList.innerHTML = '';
+                        document.querySelector('.category_level_2')?.remove()
+                        document.querySelector('.category_level_3')?.remove()
+                        statusCategory2 = ''
+                        statusCategory3 = ''
+})
+
+document.getElementById('select_category_2')?.addEventListener('change', () => {
+                        informationList.innerHTML = '';
+                        document.querySelector('.category_level_3')?.remove()
+                        statusCategory3 = ''
+})
+
+// function showOblast() {
+//     fetch(`http://127.0.0.1:8000/api/v1/get_region_list/`)
+//         .then((response) => response.json())
+//         .then(data => {
+//             let array = data.filter(function (i) {
+//                 return i.level === 0
+//             })
+//             array.map((elem) => {
+//                 let optionElem = document.createElement('option')
+//                 optionElem.setAttribute('value', `${elem.id}`)
+//                 optionElem.innerText = `${elem.area}`
+//                 getElementSelectOblast.append(optionElem)
+//             })
+//         })
+// }
+//
+// showOblast()
 
 
 function showCity(event) {
@@ -43,7 +67,7 @@ function showCity(event) {
                     if (document.querySelector('.city')) {
                         document.getElementById('select_city').innerHTML = ` 
                     <option value="">---------</option>
-                    ${data.map((elem) => `<option value=${elem.id}>${elem.area}</option>`)}`
+                    ${data.map((elem) => `<option value="${elem.id}">${elem.area}</option>`)}`
                     } else {
                         let region = document.createElement('p')
                         region.classList.add("city")
@@ -51,7 +75,7 @@ function showCity(event) {
                         region.innerHTML = `
                 <select class="input_field" id="select_city" name="region">
                         <option value="">---------</option>
-                    ${data.map((elem) => `<option value=${elem.id}>${elem.area}</option>`)}
+                    ${data.map((elem) => `<option value="${elem.id}">${elem.area}</option>`)}
                     </select>
                 `
                         event.target.parentElement.parentElement.append(region)
@@ -65,18 +89,19 @@ function showCity(event) {
     }
 }
 
-fetch("http://127.0.0.1:8000/api/v1/add_store/categories/")
-    .then((response) => response.json())
-    .then((data) => {
-        let array = data.filter(function (i) {
-            return i.level === 0
-        })
-        getElementSelectCategory0.innerHTML += array.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)
-
-    })
+// fetch("http://127.0.0.1:8000/api/v1/add_store/categories/")
+//     .then((response) => response.json())
+//     .then((data) => {
+//         let array = data.filter(function (i) {
+//             return i.level === 0
+//         })
+//         getElementSelectCategory0.innerHTML += array.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)
+//
+//     })
 
 function showCategory(event) {
     if (event.target === getElementSelectCategory0 && event.target.value !== statusCategory0) {
+        console.log(event.target.value)
         statusCategory0 = event.target.value
         if (event.target.value !== '') {
             fetch(`http://127.0.0.1:8000/api/v1/get_category_list/?id=${event.target.value}`)
@@ -88,26 +113,27 @@ function showCategory(event) {
                     category.innerHTML += `
             <select class="input_field select_class_category" name="category" id="select_category_1">
                 <option value="">---------</option>
-                ${data.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)}
+                ${data.map((elem) => `<option value="${elem.id}">${elem.title}</option>`)}
             </select>
 
                 `
                     event.target.parentElement.parentElement.append(category)
-                    event.target.addEventListener('change', () => {
-                        informationList.innerHTML = '';
-                        if (document.querySelector('.category_level_1')) {
-                            document.querySelector('.category_level_1').remove()
-                        }
-                        if (document.querySelector('.category_level_2')) {
-                            document.querySelector('.category_level_2').remove()
-                        }
-                        if (document.querySelector('.category_level_3')) {
-                            document.querySelector('.category_level_3').remove()
-                        }
-                        statusCategory1 = ''
-                        statusCategory2 = ''
-                        statusCategory3 = ''
-                    })
+                    // event.target.addEventListener('change', () => {
+                    //     console.log('johan')
+                    //     informationList.innerHTML = '';
+                    //     if (document.querySelector('.category_level_1')) {
+                    //         document.querySelector('.category_level_1').remove()
+                    //     }
+                    //     if (document.querySelector('.category_level_2')) {
+                    //         document.querySelector('.category_level_2').remove()
+                    //     }
+                    //     if (document.querySelector('.category_level_3')) {
+                    //         document.querySelector('.category_level_3').remove()
+                    //     }
+                    //     statusCategory1 = ''
+                    //     statusCategory2 = ''
+                    //     statusCategory3 = ''
+                    // })
                 })
         }
     }
@@ -125,18 +151,15 @@ function showCategory(event) {
                         category.innerHTML += `
             <select class="input_field select_class_category" name="category" id="select_category_2">
                 <option value="">---------</option>
-                ${data.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)}
+                ${data.map((elem) => `<option value="${elem.id}">${elem.title}</option>`)}
             </select>
                 `
                         event.target.parentElement.parentElement.append(category)
+                        console.log('johan11')
                         event.target.addEventListener('change', () => {
                             informationList.innerHTML = '';
-                            if (document.querySelector('.category_level_2')) {
-                                document.querySelector('.category_level_2').remove()
-                            }
-                            if (document.querySelector('.category_level_3')) {
-                                document.querySelector('.category_level_3').remove()
-                            }
+                            document.querySelector('.category_level_2')?.remove()
+                            document.querySelector('.category_level_3')?.remove()
                             statusCategory2 = ''
                             statusCategory3 = ''
                         })
@@ -162,15 +185,13 @@ function showCategory(event) {
                         category.innerHTML += `
             <select class="input_field select_class_category" name="category" id="select_category_3">
                 <option value="">---------</option>
-                ${data.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)}
+                ${data.map((elem) => `<option value="${elem.id}">${elem.title}</option>`)}
             </select>
                 `
                         event.target.parentElement.parentElement.append(category)
                         event.target.addEventListener('change', () => {
                             informationList.innerHTML = '';
-                            if (document.querySelector('.category_level_3')) {
-                                document.querySelector('.category_level_3').remove()
-                            }
+                            document.querySelector('.category_level_3')?.remove()
                             statusCategory3 = ''
                         })
                     } else {
@@ -216,7 +237,7 @@ ${i.title}
                     while (minValDate !== i.max_val_interval_date) {
                         minValDate = minValDate + 1
                         dateArray.push(minValDate)
-                    } if (i.title == 'Этаж|Этажей в доме'){
+                    } if (i.title == 'Этаж'){
                     informationList.innerHTML += `
 <div class="additional_information_item-${i.id}">
 <div class="additional_information_item item_input">
@@ -227,7 +248,7 @@ ${i.title}
 <p class="information_item">
             <select class="input_field select_class" id="information_${i.id}" name="${i.id}">
                 <option value="">---------</option>
-                ${dateArray.map((elem) => `<option value=${elem}>${elem}</option>`)}
+                ${dateArray.map((elem) => `<option value="${elem}">${elem}</option>`)}
             </select>
         </p>
 </div>
@@ -293,7 +314,7 @@ ${i.title}
 <p class="information_item">
             <select class="input_field select_class select_info" id="information_${i.id}" name="${i.id}">
                 <option value="">---------</option>
-                ${i.spisok.element_set?.map((elem) => `<option value=${elem.title} data-elementtwo="${elem.id}">${elem.title}</option>`)}
+                ${i.spisok.element_set?.map((elem) => `<option value="${elem.title}" data-elementtwo="${elem.id}">${elem.title}</option>`)}
             </select>
         </p>
 </div>
@@ -308,19 +329,19 @@ ${i.title}
 
 function showAdditionalInformationTwo(event) {
     if (event.target.className === "input_field select_class select_info" && event.target.value !== statusElementTwo) {
-        statusElementTwo = event.target.value
-        let elementtwo = ''
+        let elementTwo = ''
         for (let i of event.target.children) {
             if (i.value === event.target.value) {
-                elementtwo = i.dataset.elementtwo
+                elementTwo = i.dataset.elementtwo
                 break
             }
         }
-        if (elementtwo) {
-            fetch(`http://127.0.0.1:8000/api/v1/get_elementtwo_list/?slug=${elementtwo}`)
+        if (elementTwo && statusElementTwo !== event.target.value) {
+            fetch(`http://127.0.0.1:8000/api/v1/get_elementtwo_list/?slug=${elementTwo}`)
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.length > 0) {
+                        statusElementTwo = event.target.value
                         if (document.querySelector('.information_item_two')) {
                             document.querySelector('.information_item_two').remove()
                         }
@@ -330,7 +351,7 @@ function showAdditionalInformationTwo(event) {
                         elementP.innerHTML += `
             <select class="input_field select_class select_info_two" id='element_two-${event.target.getAttribute('name')}' name="${event.target.getAttribute('name')}">
                 <option value="">---------</option>
-                ${data.map((elem) => `<option value=${elem.title}>${elem.title}</option>`)}
+                ${data.map((elem) => `<option value="${elem.title}">${elem.title}</option>`)}
             </select>
                 `
                         event.target.parentElement.parentElement.append(elementP)
@@ -350,8 +371,8 @@ preview.addEventListener('click', removeImg)
 const inputElement = document.getElementById("photo_list");
 inputElement.addEventListener("change", handleFiles, false);
 let inputElementArray = []
-let mainImg = ""
-
+let mainImg = document.querySelector('.main_img') ? document.querySelector('.main_img') : ''
+console.log(mainImg)
 function handleFiles() {
     const dt = new DataTransfer();
     const fileList = this.files;
@@ -362,10 +383,11 @@ function handleFiles() {
         }
         const img = document.createElement("img");
         img.classList.add("img_preview");
-        if (i === 0) {
+        if (i === 0 && !document.querySelector('.main_img')) {
             img.classList.add("main_img");
             mainImg = img
         }
+        console.log(mainImg)
         img.file = file;
         img.setAttribute('name', fileList[i].name)
         img.setAttribute('data-id', i)
@@ -386,7 +408,22 @@ function handleFiles() {
         })(img);
         reader.readAsDataURL(file);
     }
-    inputElementArray = Array.from(inputElement.files);
+    if (inputElementArray.length === 0) {
+        inputElementArray = Array.from(inputElement.files)
+        console.log("johan")
+    }
+    else {
+        for (let i of Array.from(inputElement.files)) {
+            inputElementArray.push(i)
+        }
+        let z = []
+        for (let i of inputElementArray) {
+            dt.items.add(i)
+        }
+        z = dt.files
+        inputElement.files = z
+    }
+
 }
 
 function removeImg(event) {
@@ -409,6 +446,7 @@ function removeImg(event) {
         }
         target.classList.add("main_img")
         mainImg = target
+        console.log(mainImg)
     }
 }
 
@@ -716,7 +754,7 @@ function bearerCompanyInfo(event) {
                         <p class="bearer_store">
                             <select class="input_field" name="store" id="select_store">
                                 <option value="">---------</option>
-                                ${data.map((elem) => `<option value=${elem.id}>${elem.title}</option>`)}
+                                ${data.map((elem) => `<option value="${elem.id}">${elem.title}</option>`)}
                             </select>
                         </p>
                     </div>

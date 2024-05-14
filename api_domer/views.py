@@ -76,6 +76,7 @@ def get_store_for_advertisement(request):
 @api_view(['GET', 'POST'])
 def save_advertisement(request):
     additional_information = dict(request.data.copy())
+    print(additional_information)
     if request.method == "POST":
         serializer = AdvertisementSerializer(data=request.data)
         serializer.is_valid()
@@ -94,7 +95,7 @@ def save_advertisement(request):
         if serializer.is_valid() and not serializer_additional_error.data:
             additional_information_save = Field.objects.filter(id__in=additional_information).order_by('id')
             for i in additional_information_save:
-                additional_information[i.title] = ' '.join(additional_information.pop(f'{i.id}'))
+                additional_information[i.title] = ', '.join(additional_information.pop(f'{i.id}'))
             new_advertisement = Advertisement(author=None if request.user.is_anonymous else request.user, article=serializer.validated_data.get('article'),
                                               title=serializer.validated_data.get('title'), price=serializer.validated_data.get('price'),
                                               category=serializer.validated_data.get('category'), bearer=serializer.validated_data.get('bearer'),

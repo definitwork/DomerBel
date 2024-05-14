@@ -25,6 +25,9 @@
                         <p class="region_opened">
                             <select class="input_field" id="select_oblast">
                                 <option value="0">---------</option>
+                                {% for obl in oblast %}
+                                        <option value="{{ obl.id }}">{{ obl.area }}</option>
+                                    {% endfor %}
                             </select>
                         </p>
                     </div>
@@ -37,6 +40,9 @@
                         <p class="category_level_0">
                             <select class="input_field" id="select_category_0" name="category">
                                 <option value="">---------</option>
+                                {% for category in categories %}
+                                        <option value="{{ category.id }}">{{ category.title }}</option>
+                                    {% endfor %}
                             </select>
                         </p>
                     </div>
