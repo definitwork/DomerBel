@@ -60,14 +60,14 @@
             <div class="cart_list">
                 {% for cart in page_obj %}
                     <div class="cart">
-                        <a href="#" class="cart_img">
+                        <a href="{% url 'advertisement_details' cart.id %}" class="cart_img">
                             <img src="{% if cart.preview_image %} {{ cart.preview_image.url }} {% else %}{% static 'no_image.jpg' %}{% endif %}" alt="{% if cart.preview_image %} {{ cart.preview_image.url }} {% else %}{% static 'no_image.jpg' %}{% endif %}">
                         </a>
                         <div class="cart_favorite_button">
                             <img class="favorite_img" id="{{ cart.id }}" src="{% static 'img/favorite.png' %}" alt="">
                         </div>
                         <div class="cart_info">
-                            <a href="#" class="cart_link">{{ cart.title }}</a>
+                            <a href="{% url 'advertisement_details' cart.id %}" class="cart_link">{{ cart.title }}</a>
                             {% if cart.price %}
                                 <p class="cart_info_price">{{ cart.price }} руб.</p>
                             {% endif %}
