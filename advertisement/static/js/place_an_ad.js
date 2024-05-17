@@ -426,13 +426,25 @@ function handleFiles() {
 
 }
 
+let deletedImages = []
 function removeImg(event) {
     const dt = new DataTransfer();
     let z = []
-    let target = event.target
 
+    let target = event.target
     if (target.classList.contains("delete_img")) {
         target.parentElement.remove()
+        if (target.parentElement.children[1].classList.contains("main_img")) {
+            if (document.querySelector('.photo_preview').childElementCount !== 0) {
+                document.querySelector('.photo_preview').children[0].children[1].classList.add("main_img")
+                mainImg = document.querySelector('.photo_preview').children[0].children[1]
+            } else {
+                mainImg = ''
+            }
+        }
+        if (window.location.href === `http://127.0.0.1:8000/advertisement/editing_an_ad/${document.getElementById('add_adver').dataset.advertisement}/`) {
+            deletedImages.push(target.dataset.name)
+        }
         inputElementArray = inputElementArray.filter(file => file.name !== target.dataset.name);
         for (let i of inputElementArray) {
             dt.items.add(i)
@@ -459,7 +471,15 @@ function saveAdvertisement() {
         document.querySelector('.price-hidden').value = document.querySelector('.price').value
     }
     let data = new FormData(addAdvForm);
-    data.append("preview_img", mainImg.name)
+    if (mainImg) {
+        data.append("preview_img", mainImg.name)
+    } else {
+        data.append("preview_img", mainImg)
+    }
+    data.append("deleted_images", deletedImages)
+    if (document.getElementById('add_adver').dataset.advertisement){
+        data.append("advertisement", document.getElementById('add_adver').dataset.advertisement)
+    }
     if (data.has("Цена")) {
         data.append("price", data.get("Цена"))
         data.delete("Цена")
@@ -467,8 +487,9 @@ function saveAdvertisement() {
         data.append("price", data.get("Арендная плата"))
         data.delete("Арендная плата")
     }
+    console.log(deletedImages.length)
     fetch(`http://127.0.0.1:8000/api/v1/save_advertisement/`, {
-        method: "POST", headers: {
+        method: (window.location.href === `http://127.0.0.1:8000/advertisement/editing_an_ad/${document.getElementById('add_adver').dataset.advertisement}/`) ? "PATCH" : "POST", headers: {
             "X-CSRFToken": getCookie("csrftoken"),
         }, body: data,
     })
@@ -480,7 +501,8 @@ function saveAdvertisement() {
                 throw error
             }
             document.location.href = 'http://127.0.0.1:8000/'}).catch( (msg) => {
-           if (msg.data.error.title) {
+            // console.log(msg.data.error)
+                if (msg.data.error.title) {
                         if (document.querySelector('.title_error')) {
                             document.querySelector('.title_error').remove()
                         }

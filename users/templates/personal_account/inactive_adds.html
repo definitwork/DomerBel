@@ -61,7 +61,7 @@
                         </td>
                         <td class="ads_image">
                             <a href="#">
-                                <img src="{{ ad.preview_image.url }}" alt="{{ ad.preview_image.url }}">
+                                <img src="{% if ad.preview_image %} {{ ad.preview_image.url }} {% else %}{% static 'no_image.jpg' %}{% endif %}" alt="{% if ad.preview_image %} {{ ad.preview_image.url }} {% else %}{% static 'no_image.jpg' %}{% endif %}">
                             </a>
                         </td>
                         <td class="ads_info">
