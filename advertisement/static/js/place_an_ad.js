@@ -101,7 +101,7 @@ function showCity(event) {
 
 function showCategory(event) {
     if (event.target === getElementSelectCategory0 && event.target.value !== statusCategory0) {
-        console.log(event.target.value)
+
         statusCategory0 = event.target.value
         if (event.target.value !== '') {
             fetch(`http://127.0.0.1:8000/api/v1/get_category_list/?id=${event.target.value}`)
@@ -119,7 +119,6 @@ function showCategory(event) {
                 `
                     event.target.parentElement.parentElement.append(category)
                     // event.target.addEventListener('change', () => {
-                    //     console.log('johan')
                     //     informationList.innerHTML = '';
                     //     if (document.querySelector('.category_level_1')) {
                     //         document.querySelector('.category_level_1').remove()
@@ -155,7 +154,6 @@ function showCategory(event) {
             </select>
                 `
                         event.target.parentElement.parentElement.append(category)
-                        console.log('johan11')
                         event.target.addEventListener('change', () => {
                             informationList.innerHTML = '';
                             document.querySelector('.category_level_2')?.remove()
@@ -372,7 +370,6 @@ const inputElement = document.getElementById("photo_list");
 inputElement.addEventListener("change", handleFiles, false);
 let inputElementArray = []
 let mainImg = document.querySelector('.main_img') ? document.querySelector('.main_img') : ''
-console.log(mainImg)
 function handleFiles() {
     const dt = new DataTransfer();
     const fileList = this.files;
@@ -387,7 +384,6 @@ function handleFiles() {
             img.classList.add("main_img");
             mainImg = img
         }
-        console.log(mainImg)
         img.file = file;
         img.setAttribute('name', fileList[i].name)
         img.setAttribute('data-id', i)
@@ -410,7 +406,6 @@ function handleFiles() {
     }
     if (inputElementArray.length === 0) {
         inputElementArray = Array.from(inputElement.files)
-        console.log("johan")
     }
     else {
         for (let i of Array.from(inputElement.files)) {
@@ -458,7 +453,6 @@ function removeImg(event) {
         }
         target.classList.add("main_img")
         mainImg = target
-        console.log(mainImg)
     }
 }
 
@@ -487,7 +481,6 @@ function saveAdvertisement() {
         data.append("price", data.get("Арендная плата"))
         data.delete("Арендная плата")
     }
-    console.log(deletedImages.length)
     fetch(`http://127.0.0.1:8000/api/v1/save_advertisement/`, {
         method: (window.location.href === `http://127.0.0.1:8000/advertisement/editing_an_ad/${document.getElementById('add_adver').dataset.advertisement}/`) ? "PATCH" : "POST", headers: {
             "X-CSRFToken": getCookie("csrftoken"),
@@ -501,7 +494,6 @@ function saveAdvertisement() {
                 throw error
             }
             document.location.href = 'http://127.0.0.1:8000/'}).catch( (msg) => {
-            // console.log(msg.data.error)
                 if (msg.data.error.title) {
                         if (document.querySelector('.title_error')) {
                             document.querySelector('.title_error').remove()

@@ -51,7 +51,8 @@ def get_category_list(request):
 
 @api_view(['GET'])
 def get_field_list(request):
-    fieldlist = Field.objects.filter(category_id=request.query_params.get('id')).select_related('spisok').prefetch_related('spisok__element_set__elementtwo_set').order_by('id')
+    fieldlist = Field.objects.filter(category_id=request.query_params.get('id')).select_related(
+        'spisok').prefetch_related('spisok__element_set__elementtwo_set').order_by('id')
     serializer = FieldSerialier(fieldlist, many=True)
     return Response(serializer.data)
 
@@ -76,7 +77,6 @@ def get_store_for_advertisement(request):
 @api_view(['GET', 'POST', 'PATCH'])
 def save_advertisement(request):
     additional_information = dict(request.data.copy())
-    print(additional_information)
     serializer = AdvertisementSerializer(data=request.data)
     serializer.is_valid()
     keys_to_delete = ['csrfmiddlewaretoken', 'preview_img', 'photo_files', 'deleted_images', 'advertisement']
@@ -99,13 +99,6 @@ def save_advertisement(request):
             new_advertisement = Advertisement(author=None if request.user.is_anonymous else request.user,
                                               additional_information=additional_information,
                                               **serializer.validated_data)
-                                              # article=serializer.validated_data.get('article'),
-                                              # title=serializer.validated_data.get('title'), price=serializer.validated_data.get('price'),
-                                              # category=serializer.validated_data.get('category'), bearer=serializer.validated_data.get('bearer'),
-                                              # region=serializer.validated_data.get('region'), contact_name=serializer.validated_data.get('contact_name'),
-                                              # email=serializer.validated_data.get('email'), phone_num=serializer.validated_data.get('phone_num'),
-                                              # description=serializer.validated_data.get('description'), video_link=serializer.validated_data.get('video_link'),
-                                              #  store=serializer.validated_data.get('store'))
             new_advertisement.save()
             if request.data.getlist('photo_files') != ['']:
                 for photo in request.data.getlist('photo_files'):
@@ -115,10 +108,11 @@ def save_advertisement(request):
                     else:
                         additional_photo = PhotoAdvertisement(photo=photo, advertisement=new_advertisement)
                         additional_photo.save()
-            return Response({"created": "объявление успешно создано"},status=status.HTTP_201_CREATED)
+            return Response({"created": "объявление успешно создано"}, status=status.HTTP_201_CREATED)
         else:
+            raise serializers.ValidationError(
+                {"error_additional": serializer_additional_error.data, "error": serializer.errors})
 
-            raise serializers.ValidationError({"error_additional": serializer_additional_error.data, "error": serializer.errors})
     if request.method == 'PATCH':
         if serializer.is_valid() and not serializer_additional_error.data:
             additional_information_save = Field.objects.filter(id__in=additional_information).order_by('id')
@@ -141,66 +135,45 @@ def save_advertisement(request):
                         advertisement.preview_image = photo
                         advertisement.save()
                         preview_img = advertisement.preview_image
-                        print("save in files")
                     else:
                         additional_photo = PhotoAdvertisement(photo=photo, advertisement=advertisement)
                         additional_photo.save()
-                        print('save additional')
 
-            print(advertisement.preview_image)
-            print(preview_img)
             if advertisement.preview_image != preview_img:
                 if not advertisement.preview_image in deleted_images:
                     PhotoAdvertisement.objects.create(photo=advertisement.preview_image,
                                                       advertisement=advertisement)
-                    print("change preview")
                 if preview_img:
                     advertisement.preview_image = preview_img
-                    advertisement.save()
                     PhotoAdvertisement.objects.filter(photo=preview_img).delete()
-                print('save in perview')
+                else:
+                    advertisement.preview_image = None
+                advertisement.save()
 
             if request.data.getlist('deleted_images'):
                 PhotoAdvertisement.objects.filter(photo__in=deleted_images).delete()
-                # advertisement.author = None if request.user.is_anonymous else request.user
-                # advertisement.additional_information = additional_information
-                # advertisement.article = serializer.validated_data.get('article')
-                # advertisement.title = serializer.validated_data.get('title')
-                # advertisement.price = serializer.validated_data.get('price')
-                # advertisement.category = serializer.validated_data.get('category')
-                # advertisement.bearer = serializer.validated_data.get('bearer'),
-                # advertisement.region = serializer.validated_data.get('region')
-                # advertisement.contact_name = serializer.validated_data.get('contact_name')
-                # advertisement.email = serializer.validated_data.get('email')
-                # advertisement.phone_num = serializer.validated_data.get('phone_num')
-                # advertisement.description = serializer.validated_data.get('description')
-                # advertisement.video_link = serializer.validated_data.get('video_link')
-                # advertisement.store = serializer.validated_data.get('store')
 
+            # advertisement.author = None if request.user.is_anonymous else request.user
+            # advertisement.additional_information = additional_information
+            # advertisement.article = serializer.validated_data.get('article')
+            # advertisement.title = serializer.validated_data.get('title')
+            # advertisement.price = serializer.validated_data.get('price')
+            # advertisement.category = serializer.validated_data.get('category')
+            # advertisement.bearer = serializer.validated_data.get('bearer'),
+            # advertisement.region = serializer.validated_data.get('region')
+            # advertisement.contact_name = serializer.validated_data.get('contact_name')
+            # advertisement.email = serializer.validated_data.get('email')
+            # advertisement.phone_num = serializer.validated_data.get('phone_num')
+            # advertisement.description = serializer.validated_data.get('description')
+            # advertisement.video_link = serializer.validated_data.get('video_link')
+            # advertisement.store = serializer.validated_data.get('store')
 
-
-
-                    # print(request.data.get('deleted_images').split(','))
-                    # for i in images:
-                    #     if i.photo in request.data.get('deleted_images').split(','):
-                    #         print(i)
-                    # for image in request.data.getlist('deleted_images'):
-
-                # if request.data.getlist('photo_files') != ['']:
-                #     for photo in request.data.getlist('photo_files'):
-                #         if photo.name == request.data.get("preview_img"):
-                #             advertisement.preview_image = photo
-                #             advertisement.save()
-                #         else:
-                #             additional_photo = PhotoAdvertisement(photo=photo, advertisement=advertisement)
-                #             additional_photo.save()
-                print(johannnn)
-                return Response({"update": "объявление успешно изменено"}, status=status.HTTP_200_OK)
-            else:
-                print(serializer.errors)
-                raise serializers.ValidationError(
-                    {"error_additional": serializer_additional_error.data, "error": serializer.errors})
+            return Response({"update": "объявление успешно изменено"}, status=status.HTTP_200_OK)
+        else:
+            raise serializers.ValidationError(
+                {"error_additional": serializer_additional_error.data, "error": serializer.errors})
     return Response()
+
 
 @api_view(['PUT'])
 def update_advertisement(request):
