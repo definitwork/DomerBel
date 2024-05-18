@@ -38,8 +38,8 @@ class Advertisement(models.Model):
     bearer = models.CharField(max_length=50, choices=[('Частное лицо', 'Частное лицо'), ('Компания', 'Компания')],
                               verbose_name='Податель')
     region = models.ForeignKey('Region', on_delete=models.CASCADE, verbose_name='Регион, город, район')
-    preview_image = models.ImageField(upload_to=upload_to, default='default/no_image.jpg',
-                                      verbose_name='Главная фотография')
+    preview_image = models.ImageField(upload_to=upload_to, verbose_name='Главная фотография',
+                                      blank=True, null=True)
     counter_views = models.IntegerField(default=0, verbose_name='Счетчик просмотров')
     contact_name = models.CharField(max_length=255, verbose_name='Контактное лицо')
     phone_num = models.CharField(max_length=255, verbose_name='Телефон', validators=[validate_phone])
@@ -71,8 +71,9 @@ class Advertisement(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        photo = add_watermark_to_photo(self.preview_image.path)
-        photo.save(self.preview_image.path, "WebP")
+        if self.preview_image:
+            photo = add_watermark_to_photo(self.preview_image.path)
+            photo.save(self.preview_image.path, "WebP")
         self.date_of_deactivate = make_aware(datetime.now() + timedelta(days=180))
         self.slug = unique_slugify(self, self.title)
         super(Advertisement, self).save(*args, **kwargs)

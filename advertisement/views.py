@@ -121,10 +121,14 @@ def get_advertisement_by_category(request, category_slug):
 
 def get_page_place_an_ad(request):
     category_list = Category.objects.filter(level__lte=1)
+    oblast = Region.objects.filter(level=0)
+    categories = Category.objects.filter(level=0)
 
     context = {
         "category_list": category_list,
         'adaptive_navigation': "Добавление объявления",
+        'oblast': oblast,
+        'categories': categories,
     }
     
     return render(request, 'place_an_ad.html', context)
@@ -158,3 +162,41 @@ def get_advertisement_details_page(request, id):
     return render(request=request,
                   template_name='advertisement_details.html',
                   context=context)
+
+
+def editing_an_ad(request, id):
+    advertisement = Advertisement.objects.get(id=id)
+
+    region = Region.objects.all()
+    oblast = region.filter(level=0)
+    selected_oblast = region.get(id=advertisement.region.parent_id)
+    cities = advertisement.region.get_siblings(include_self=True)
+    family_categories = advertisement.category.get_family()
+
+    list_categories = [category.get_siblings(include_self=True) for category in family_categories]
+    categories = {key: value for key, value in zip(family_categories, list_categories)}
+
+    additional_information = advertisement.category.field_set.all().prefetch_related("spisok")
+
+    additional_values = {key: value for key, value in zip(advertisement.additional_information.keys(), map(lambda i: i.split(", "), advertisement.additional_information.values()))}
+
+    additional_values_two = {}
+    for i in additional_values.items():
+        if len(i[1]) > 1:
+            additional_values_two[i[0]] = [i[1][0], ElementTwo.objects.filter(element__title=i[1][0])]
+    for i in additional_information:
+        if i.min_val_interval_date:
+            additional_values_two[i.title] = [str(date) for date in range(i.min_val_interval_date, i.max_val_interval_date + 1)]
+
+
+    context = {
+        'advertisement': advertisement,
+        'oblast': oblast,
+        'selected_oblast': selected_oblast,
+        'cities': cities,
+        'categories': categories,
+        'additional_information': additional_information,
+        'additional_values': additional_values,
+        'additional_values_two': additional_values_two,
+    }
+    return render(request, 'editing_an_ad.html', context)

@@ -55,7 +55,8 @@
                                     </ul>
                                 </div>
                                 <div class="ads_img">
-                                    <img src="{{ cart.preview_image.url }}" alt="{{ cart.preview_image.url }}">
+
+                                    <img src="{% if cart.preview_image %} {{ cart.preview_image.url }} {% else %}{% static 'no_image.jpg' %}{% endif %}" alt="{% if cart.preview_image %} {{ cart.preview_image.url }} {% else %}{% static 'no_image.jpg' %}{% endif %}">
                                 </div>
                                 <div class="ads_description">
                                     <ul>
