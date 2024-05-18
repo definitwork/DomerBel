@@ -363,6 +363,48 @@ function showAdditionalInformationTwo(event) {
     }
 }
 
+const bearerCompany = document.querySelector('.description_radio')
+bearerCompany.addEventListener('click', bearerCompanyInfo)
+
+function bearerCompanyInfo(event) {
+    if (event.target.id === 'bearer_company') {
+        if (!document.querySelector('.bearer_company_store')) {
+            fetch`http://127.0.0.1:8000/api/v1/get_store_for_advertisement/`
+                .then((response) => response.json())
+                .then(data => {
+                    const bearerCompanyStore = document.createElement('div')
+                    bearerCompanyStore.classList.add('bearer_company_store')
+                    bearerCompanyStore.innerHTML = `
+                    <div class="store_input item_input">
+                        <p class="store_label label_fields">
+                        Магазин
+                        </p>
+                    <div class="store_select">
+                        <p class="bearer_store">
+                            <select class="input_field" name="store" id="select_store">
+                                <option value="">---------</option>
+                                ${data.map((elem) => `<option value="${elem.id}">${elem.title}</option>`)}
+                            </select>
+                        </p>
+                    </div>
+                </div>`
+                    const bearerCompanyVendorCode = document.createElement('div')
+                    bearerCompanyVendorCode.classList.add('bearer_company_vendor_code')
+                    bearerCompanyVendorCode.innerHTML = `
+        <div class="vendor_code_input item_input">
+                        <p class="vendor_code_label label_fields">Артикул</p>
+                        <input type="text" name="article" id="article" class="information_item-input">
+                    </div>
+        `
+                    document.querySelector('.bearer_company_additional_info').append(bearerCompanyStore)
+                    document.querySelector('.bearer_company_additional_info').append(bearerCompanyVendorCode)
+                })
+        }
+    } else if (event.target.id === 'bearer_private_person') {
+        document.querySelector('.bearer_company_additional_info').innerHTML = ''
+    }
+}
+
 
 const preview = document.querySelector('.photo_preview')
 preview.addEventListener('click', removeImg)
@@ -470,9 +512,9 @@ function saveAdvertisement() {
     } else {
         data.append("preview_img", mainImg)
     }
-    data.append("deleted_images", deletedImages)
     if (document.getElementById('add_adver').dataset.advertisement){
         data.append("advertisement", document.getElementById('add_adver').dataset.advertisement)
+        data.append("deleted_images", deletedImages)
     }
     if (data.has("Цена")) {
         data.append("price", data.get("Цена"))
@@ -481,7 +523,7 @@ function saveAdvertisement() {
         data.append("price", data.get("Арендная плата"))
         data.delete("Арендная плата")
     }
-    fetch(`http://127.0.0.1:8000/api/v1/save_advertisement/`, {
+    fetch((window.location.href === `http://127.0.0.1:8000/advertisement/editing_an_ad/${document.getElementById('add_adver').dataset.advertisement}/`) ? `http://127.0.0.1:8000/api/v1/update_advertisement/` : `http://127.0.0.1:8000/api/v1/save_advertisement/`, {
         method: (window.location.href === `http://127.0.0.1:8000/advertisement/editing_an_ad/${document.getElementById('add_adver').dataset.advertisement}/`) ? "PATCH" : "POST", headers: {
             "X-CSRFToken": getCookie("csrftoken"),
         }, body: data,
@@ -748,44 +790,3 @@ function saveAdvertisement() {
 
 }
 
-const bearerCompany = document.querySelector('.description_radio')
-bearerCompany.addEventListener('click', bearerCompanyInfo)
-
-function bearerCompanyInfo(event) {
-    if (event.target.id === 'bearer_company') {
-        if (!document.querySelector('.bearer_company_store')) {
-            fetch`http://127.0.0.1:8000/api/v1/get_store_for_advertisement/`
-                .then((response) => response.json())
-                .then(data => {
-                    const bearerCompanyStore = document.createElement('div')
-                    bearerCompanyStore.classList.add('bearer_company_store')
-                    bearerCompanyStore.innerHTML = `
-                    <div class="store_input item_input">
-                        <p class="store_label label_fields">
-                        Магазин
-                        </p>
-                    <div class="store_select">
-                        <p class="bearer_store">
-                            <select class="input_field" name="store" id="select_store">
-                                <option value="">---------</option>
-                                ${data.map((elem) => `<option value="${elem.id}">${elem.title}</option>`)}
-                            </select>
-                        </p>
-                    </div>
-                </div>`
-                    const bearerCompanyVendorCode = document.createElement('div')
-                    bearerCompanyVendorCode.classList.add('bearer_company_vendor_code')
-                    bearerCompanyVendorCode.innerHTML = `
-        <div class="vendor_code_input item_input">
-                        <p class="vendor_code_label label_fields">Артикул</p>
-                        <input type="text" name="article" id="article" class="information_item-input">
-                    </div>
-        `
-                    document.querySelector('.bearer_company_additional_info').append(bearerCompanyStore)
-                    document.querySelector('.bearer_company_additional_info').append(bearerCompanyVendorCode)
-                })
-        }
-    } else if (event.target.id === 'bearer_private_person') {
-        document.querySelector('.bearer_company_additional_info').innerHTML = ''
-    }
-}
