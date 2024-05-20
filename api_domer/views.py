@@ -1,6 +1,3 @@
-from uuid import uuid4
-
-from cgi import print_environ_usage
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -13,7 +10,7 @@ from advertisement.models import Region, Category, Field, ElementTwo, PhotoAdver
 from api_domer.filters import PublicationsFilter
 from api_domer.serializers import (GetListOfCitiesSerializer, GetListOfCategoriesSerializer, FieldSerialier,
                                    ElementTwoSerializer, AdvertisementSerializer, PublicationSearchSerializer,
-                                   PublicationSerializer, StoreSerializer, AdditionalInformationSerializer)
+                                   PublicationSerializer, StoreSerializer)
 from main_page_domer.models import PhotoPublication, Publication
 
 from api_domer.utils import validate_additional_information

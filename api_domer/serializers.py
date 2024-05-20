@@ -86,6 +86,7 @@ class PublicationSearchSerializer(serializers.ModelSerializer):
 
 
 class PublicationSerializer(serializers.ModelSerializer):
+    slug = serializers.CharField()
 
     class Meta:
         model = Publication

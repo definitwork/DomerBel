@@ -80,7 +80,7 @@ class Publication(models.Model):
     """ Модель публикаций """
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
     title = models.CharField(max_length=255, verbose_name="Заголовок")
-    slug = models.SlugField(unique=True, verbose_name="URL")
+    slug = models.SlugField(max_length=255, unique=True, verbose_name="URL")
     announcement = CKEditor5Field('Текст статьи', config_name='extends')
     description = CKEditor5Field('Текст статьи', config_name='extends')
     preview_image = models.ImageField(upload_to="images/publications", verbose_name="Фото")
@@ -108,6 +108,7 @@ def publication_photo_delete(sender, instance, **kwargs):
 class PublicationAdmin(admin.ModelAdmin):
     """ Модель публикации для Админки """
     list_display = ["id", "title"]
+    list_display_links = ["title"]
     prepopulated_fields = {"slug": ("title",)}
     ordering = [
         "date_of_create",
