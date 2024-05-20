@@ -9,7 +9,7 @@
 {% block nav_title %}
     <div class="nav_category_title">
         <p>
-            Все разделы. Все регионы
+            Все публикации
         </p>
     </div>
 {% endblock nav_title %}
@@ -38,16 +38,16 @@
                 <input type="checkbox" id="select_all"/>
                 <label for="select_all">Выделить все публикации</label>
             </div>
-            <div class="ads_marked">
-                <p>Отмеченные:</p>
-                <button name="delete_publication">Удалить</button>
-            </div>
             <form action="{% url 'users:delete_publication' %}" method='POST'>
+                <div class="ads_marked">
+                    <p>Отмеченные:</p>
+                    <button name="delete_publication">Удалить</button>
+                </div>
                 {% csrf_token %}
                 {% if user_publications %}
                     {% for user_publication in user_publications %}
                         <li class="publication_list_item">
-                            <a href="{% url 'publication_by_id' user_publication.id %}" class="publication_link">
+                            <a href="{% url 'users:edit_publication_by_id' user_publication.id %}" class="publication_link">
                                 <div class="publication_link_wrap">
                                     <div class="publication_data">
                                         <p> {{ user_publication.date_of_create }} </p>

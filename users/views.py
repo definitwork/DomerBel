@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 
 from advertisement.models import Region, Category, Advertisement, Store
 from advertisement.forms import StoreForm
-from main_page_domer.models import Publication
+from main_page_domer.models import PhotoPublication, Publication, photo_publications_delete
 from .forms import LoginForm, PublicationForm, RegisterForm, EditContactDataForm, ChangePasswordForm
 from .models import User
 
@@ -325,7 +325,8 @@ def register_view(request):
 
 @login_required
 def get_user_all_publications(request):
-    user_publications = Publication.objects.filter(user = request.user.id)
+    """ Вывод всех публикаций """
+    user_publications = Publication.objects.filter(user = request.user.id).order_by('-date_of_create')
     context = {
         "user_publications": user_publications,
     }
@@ -333,6 +334,7 @@ def get_user_all_publications(request):
 
 @login_required
 def add_user_publication(request):
+    """ Добавление новой публикации """
     form_publication = PublicationForm()
     context = {
         "form_publication": form_publication,
@@ -349,3 +351,18 @@ def delete_publication(request):
             Publication.objects.filter(id__in=selected_publications).delete()
             messages.success(request, "Выбранные публикации удалены!")
             return redirect('users:user_all_publications')
+
+
+@login_required
+def edit_publication(request, publication_id):
+    """ Публикация для редактирования """
+    publication_by_id = Publication.objects.get(id=publication_id)
+    photo_publications_by_id = PhotoPublication.objects.filter(publications=publication_by_id.id)
+    form_publication = PublicationForm(instance=publication_by_id)
+
+    context = {
+        'publication_by_id': publication_by_id,
+        'form_publication': form_publication,
+        'photo_publications_by_id': photo_publications_by_id,
+    }
+    return render(request=request, template_name='personal_account/user_edit_publication.html', context=context)

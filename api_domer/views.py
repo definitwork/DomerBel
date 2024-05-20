@@ -141,7 +141,7 @@ class ThisPublicationSearchListAPIView(generics.ListAPIView):
 def save_publication(request):
     if request.method == "POST":
         try:
-            query_dict = request.data
+            query_dict = request.data.dict()
             main_img_name = request.data.get('main_img')
             preview_image_list = request.FILES.getlist('preview_image')
             if len(preview_image_list) > 1:
@@ -164,9 +164,46 @@ def save_publication(request):
                         )
                         p.save()
             else:
-                print("serializer don't ok")
                 for field, errors in serializer.errors.items():
                     print(f"Поле '{field}' не прошло валидацию. Ошибки: {errors}")
         except Exception as error:
             print('error: ', error)
+    return Response()
+
+
+@api_view(['POST'])
+def edit_publication(request):
+    if request.method == "POST":
+        try:
+            query_dict = request.data.dict()
+            print('=====================================================================')
+            print('1', query_dict)
+            print('=====================================================================')
+        #     main_img_name = request.data.get('main_img')
+        #     preview_image_list = request.FILES.getlist('preview_image')
+        #     if len(preview_image_list) > 1:
+        #         for preview_img in preview_image_list:
+        #             if preview_img.name == main_img_name:
+        #                 query_dict['preview_image'] = preview_img
+        #                 preview_image_list.remove(preview_img)
+        #     else:
+        #         preview_image_list = []
+        #     query_dict['user'] = request.user.id
+        #     query_dict['slug'] = slugify(str(query_dict['title']))
+        #     serializer = PublicationSerializer(data=query_dict)
+        #     if serializer.is_valid():
+        #         serializer.save()
+        #         if preview_image_list != []:
+        #             for preview_image in preview_image_list:
+        #                 p = PhotoPublication(
+        #                     publications = serializer.instance,
+        #                     photo = preview_image
+        #                 )
+        #                 p.save()
+        #     else:
+        #         print("serializer don't ok")
+        #         for field, errors in serializer.errors.items():
+        #             print(f"Поле '{field}' не прошло валидацию. Ошибки: {errors}")
+        except Exception as error:
+            print('2 error: ', error)
     return Response()

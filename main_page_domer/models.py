@@ -60,6 +60,7 @@ class ReasonOfComplaint(models.Model):
 
 
 class PhotoPublication(models.Model):
+    """ Фото для публикаций """
     photo = models.ImageField(upload_to="images/publications", verbose_name="Фото")
     publications = models.ForeignKey(
         "Publication", on_delete=models.CASCADE, verbose_name="Публикация"
@@ -79,6 +80,7 @@ def photo_publications_delete(sender, instance, **kwargs):
 
 
 class Publication(models.Model):
+    """ Модель публикаций """
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
     title = models.CharField(max_length=255, verbose_name="Заголовок")
     slug = models.SlugField(unique=True, verbose_name="URL")
@@ -102,9 +104,13 @@ class Publication(models.Model):
 
 @receiver(pre_delete, sender=Publication)
 def publication_photo_delete(sender, instance, **kwargs):
+    """ Удаление файлов перед удалением экземпляра публикаций """
     instance.preview_image.delete(False)
 
+
 class PublicationAdmin(admin.ModelAdmin):
+    """ Модель публикации для Админки """
+    list_display = ["id", "title"]
     prepopulated_fields = {"slug": ("title",)}
     ordering = [
         "date_of_create",
