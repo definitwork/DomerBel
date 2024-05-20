@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 from main_page_domer.models import Complaint, ReasonOfComplaint, Publication, PublicationAdmin, Comment, PhotoPublication
 
 

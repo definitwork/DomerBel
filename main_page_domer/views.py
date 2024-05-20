@@ -10,9 +10,9 @@ from advertisement.models import Advertisement, Region, Category, Store
 from advertisement.utils import (get_region_variables, sorted_by, sorted_by_number, sorted_by_date_or_price,
                                  variables_for_paginator, get_view_type_for_store)
 from config import settings
-from main_page_domer.forms import FeedbackForm
+from main_page_domer.forms import FeedbackForm, ComplaintForm
+from main_page_domer.models import ReasonOfComplaint, Complaint, Publication
 from main_page_domer.functions import views_counter_publication
-from main_page_domer.models import Publication
 
 
 def get_main_page(request):
@@ -110,11 +110,11 @@ def get_stores_by_category(request, category_slug):
                                                               cumulative=True,
                                                               extra_filters={"region__in": region_filter['region__in']})
     store_queryset = Store.objects.filter(Q(category__in=category_queryset_an) |
-                                          Q(category__slug=category.slug),
-                                          **region_filter,
-                                          is_active=True).select_related(
-        'category',
-        'region')
+                                                          Q(category__slug=category.slug),
+                                                          **region_filter,
+                                                          is_active=True).select_related(
+                                                          'category',
+                                                          'region')
     paginator = Paginator(store_queryset, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -149,8 +149,8 @@ def get_store_by_title(request, store_slug):
     category_list = Category.objects.filter(level__lte=1)
     advertisement_queryset = Advertisement.objects.filter(store=store_page, is_active=True,
                                                           moderated=True, **region_filter).select_related(
-        'category',
-        'region').order_by(order_by)
+                                                          'category',
+                                                          'region').order_by(order_by)
     category_queryset = Category.objects.add_related_count(Category.objects.root_nodes(),
                                                            Advertisement,
                                                            'category',
@@ -218,8 +218,8 @@ def get_store_by_title_and_category(request, store_slug, category_slug):
                                                           Q(category__slug=category.slug), store=store_page,
                                                           **region_filter,
                                                           is_active=True).select_related(
-        'category',
-        'region')
+                                                          'category',
+                                                          'region')
 
     page_obj = variables_for_paginator(advertisement_queryset,
                                        request.GET.get('page'),
@@ -250,8 +250,11 @@ def get_store_by_title_and_category(request, store_slug, category_slug):
 
 def get_site_map_page(request):
     category_list = Category.objects.all()
+
+
     context = {}
     context['nodes'] = category_list
+
     return render(request, 'site_map.html', context)
 
 
@@ -295,9 +298,9 @@ def get_feedback_page(request):
 
             try:
                 send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [settings.EMAIL_HOST_USER])
-            except smtplib.SMTPException as mistake:
+            except smtplib.SMTPException as error:
                 return render(request, 'feedback.html',
-                              {'feedback_form': new_feedback_form, 'error_message': str(mistake)})
+                              {'feedback_form': new_feedback_form, 'error_message': str(error)})
 
             messages.success(request, f"Ваше письмо администрации сайта отправлено")
             return redirect("feedback")
@@ -318,3 +321,53 @@ def get_feedback_page(request):
         "category_list": category_list
     }
     return render(request, 'feedback.html', context)
+
+
+def get_complaint_page(request, adv_id):
+    """ Страница отправки жалобы на объявление """
+    if request.method == "POST":
+        new_complaint_form = ComplaintForm(request.POST)
+
+        if new_complaint_form.is_valid():
+            reason = ReasonOfComplaint.objects.get(id=new_complaint_form.cleaned_data.get("reason"))
+            text = new_complaint_form.cleaned_data.get("text")
+            user = new_complaint_form.cleaned_data.get("email")
+            advertisement = Advertisement.objects.get(id=adv_id)
+            Complaint.objects.create(reason=reason, text=text, user=user, advertisement=advertisement)
+
+            subject = f'Жалоба на объявление id={adv_id}: "{reason.reason}" от пользователя {user}'
+            message = text
+
+            try:
+                send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [settings.EMAIL_HOST_USER])
+            except smtplib.SMTPException as error:
+                return render(request, 'complaint.html',
+                              {'complaint_form': new_complaint_form, 'error_message': str(error)})
+
+            messages.success(request, f"Ваша жалоба на объявление отправлена администрации сайта")
+            return redirect("complaint", adv_id=adv_id)
+
+        complaint_form = ComplaintForm(request.POST)
+        complaint_form.errors.update(new_complaint_form.errors)
+        advertisement = Advertisement.objects.get(id=adv_id)
+        category_list = Category.objects.filter(level__lte=1)
+        context = {
+            "complaint_form": complaint_form,
+            "advertisement": advertisement,
+            "category_list": category_list
+        }
+        return render(request, 'complaint.html', context)
+
+    complaint_form = ComplaintForm()
+    advertisement = Advertisement.objects.get(id=adv_id)
+    category_list = Category.objects.filter(level__lte=1)
+    context = {
+        "complaint_form": complaint_form,
+        "advertisement": advertisement,
+        "category_list": category_list
+    }
+    return render(request, 'complaint.html', context)
+
+
+def register_done(request):
+    return render(request, "message_after_register.html")

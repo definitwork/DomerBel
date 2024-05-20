@@ -55,12 +55,13 @@
                                     </ul>
                                 </div>
                                 <div class="ads_img">
-                                    <img src="{{ cart.preview_image.url }}" alt="{{ cart.preview_image.url }}">
+
+                                    <img src="{% if cart.preview_image %} {{ cart.preview_image.url }} {% else %}{% static 'no_image.jpg' %}{% endif %}" alt="{% if cart.preview_image %} {{ cart.preview_image.url }} {% else %}{% static 'no_image.jpg' %}{% endif %}">
                                 </div>
                                 <div class="ads_description">
                                     <ul>
                                         <li>
-                                            <a href="#" class="ads_description_title">
+                                            <a href="{% url 'advertisement_details' cart.id %}" class="ads_description_title">
                                                 {{ cart.title }}
                                             </a>
                                         </li>

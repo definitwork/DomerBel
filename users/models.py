@@ -1,14 +1,16 @@
 from django.contrib import admin
-from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.models import PermissionsMixin
 from django.core.mail import send_mail
 from django.db import models
-from django.contrib.auth.models import PermissionsMixin
-from django.contrib.auth.base_user import AbstractBaseUser
+from django.urls import reverse
+from django.utils import timezone
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
-from django.utils import timezone
-from django.contrib.auth.base_user import BaseUserManager
+
+from advertisement.models import Advertisement
+from config import settings
 
 
 class UserManager(BaseUserManager):
@@ -45,6 +47,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
+    entity = models.BooleanField('Юридическое лицо', default=False)
     first_name = models.CharField('Контактное лицо', max_length=255)
     last_name = models.CharField(_("last name"), max_length=150, blank=True)
     phone_number = models.CharField('Номер телефона', max_length=15)
@@ -93,3 +96,44 @@ class User(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+
+class Chat(models.Model):
+    DIALOG = 'Д'
+    CHAT = 'Ч'
+    CHAT_TYPE_CHOICES = (
+        (DIALOG, 'Диалог'),
+        (CHAT, 'Чат')
+    )
+
+    type = models.CharField(max_length=1, choices=CHAT_TYPE_CHOICES, default=DIALOG, verbose_name='Тип')
+    subject = models.CharField(max_length=255, verbose_name='Тема диалога')
+    members = models.ManyToManyField(User, verbose_name='Участник')
+
+    class Meta:
+        verbose_name = 'Чат'
+        verbose_name_plural = 'Чаты'
+
+    def __str__(self):
+        chat_participants = self.members.all()
+        first_names = [person.first_name for person in chat_participants]
+        return f'Участники: {", ".join(first_names)}. Тема: {self.subject}'
+
+    def get_absolute_url(self):
+        return reverse('users:messages', kwargs={'chat_id': self.pk})
+
+
+class Message(models.Model):
+    chat = models.ForeignKey(Chat, on_delete=models.SET_NULL, null=True, verbose_name='Чат')
+    author = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    message = models.TextField(verbose_name='Сообщение')
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата сообщения')
+    is_read = models.BooleanField(verbose_name='Прочитано', default=False)
+
+    class Meta:
+        verbose_name = 'Сообщение'
+        verbose_name_plural = 'Сообщения'
+        ordering = ['pub_date']
+
+    def __str__(self):
+        return f'Чат_id: {self.chat.id}, автор: {self.author.first_name}. Текст: {self.message}'

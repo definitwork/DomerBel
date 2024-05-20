@@ -1,3 +1,4 @@
+from cProfile import label
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
@@ -5,7 +6,7 @@ from django_recaptcha.fields import ReCaptchaField
 
 from main_page_domer.models import Publication
 
-from .models import User
+from .models import User, Message
 from .validators import validate_password, validate_email, validate_phone
 
 
@@ -19,19 +20,19 @@ class LoginForm(forms.Form):
 
 class RegisterForm(forms.Form):
     name = forms.CharField(error_messages={'required': 'Не указано контактное лицо'},
-                           max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Контактное лицо'}), label='')
+                           max_length=50, widget=forms.TextInput(attrs={'id':'name_individual_field', 'placeholder': 'Контактное лицо', 'autofocus': True}), label='')
     phone = forms.CharField(error_messages={'required': 'Не указан номер телефона'},
-                            widget=forms.TextInput(attrs={'placeholder': 'Номер телефона'}),
+                            widget=forms.TextInput(attrs={'id':'phone_individual_field','placeholder': 'Номер телефона'}),
                             validators=[validate_phone], label='')
     email = forms.CharField(error_messages={'required': 'Не указан email'},
                             widget=forms.EmailInput(
-                                attrs={'id': 'email_register_field', 'placeholder': 'Введите Вашу почту'}),
+                                attrs={'id':'email_individual_field', 'placeholder': 'Введите Вашу почту'}),
                             validators=[validate_email], label='')
-    password = forms.CharField(error_messages={'required': 'Введите пароль'},
+    password = forms.CharField(error_messages={'required': 'Пароль должен содержать не менее 8 символов и включать буквы, цифры'},
                                widget=forms.PasswordInput(
-                                   attrs={'placeholder': 'Введите пароль'}),
+                                   attrs={'id':'password_individual_field', 'placeholder': 'Введите пароль'}),
                                validators=[validate_password], label='')
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Повторите пароль'}), label='')
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'id':'password2_individual_field', 'placeholder': 'Повторите пароль'}), label='')
     captcha = ReCaptchaField(label='')
 
     def clean(self):
@@ -40,6 +41,35 @@ class RegisterForm(forms.Form):
         password2 = cleaned_data.get('password2')
         if password and password2 and password != password2:
             self.add_error('password2', 'Пароли не совпадают')
+
+
+
+
+class RegisterFormEntity(forms.Form):
+    name = forms.CharField(error_messages={'required': 'Не указано контактное лицо'},
+                           max_length=50, widget=forms.TextInput(attrs={'id':'name_entity_field', 'placeholder': 'Название организации', 'autofocus': True}), label='')
+    phone = forms.CharField(error_messages={'required': 'Не указан номер телефона'},
+                            widget=forms.TextInput(attrs={'id':'phone_entity_field','placeholder': 'Номер телефона'}),
+                            validators=[validate_phone], label='')
+    email = forms.CharField(error_messages={'required': 'Не указан email'},
+                            widget=forms.EmailInput(
+                                attrs={'id':'email_entity_field','placeholder': 'Введите Вашу почту'}),
+                            validators=[validate_email], label='')
+    password = forms.CharField( help_text="help", error_messages={'required': 'Введите пароль'},
+                               widget=forms.PasswordInput(
+                                   attrs={'id':'password_entity_field','placeholder': 'Введите пароль'}),
+                               validators=[validate_password], label='')
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'id':'password2_entity_field','placeholder': 'Повторите пароль'}), label='')
+    captcha = ReCaptchaField(label='')
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        password2 = cleaned_data.get('password2')
+        if password and password2 and password != password2:
+            self.add_error('password2', 'Пароли не совпадают')
+
+
 
 
 class EmailResetForm(forms.Form):
@@ -116,3 +146,10 @@ class PublicationForm(forms.ModelForm):
     class Meta:
         model = Publication
         fields = ['title', 'announcement', 'description', 'video_link', ]
+
+
+class MessageForm(forms.ModelForm):
+    message = forms.CharField(required=True, widget=forms.Textarea(attrs={'class': 'message_input'}))
+    class Meta:
+        model = Message
+        fields = ['message']

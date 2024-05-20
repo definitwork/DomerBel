@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django_recaptcha',
     'django_filters',
 
-
     'main_page_domer',
     'users',
     'advertisement',

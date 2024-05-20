@@ -53,19 +53,19 @@
                         <td class="ads_data">
                             <p>{{ ad.date_of_create }}</p>
                             <p class="green_item">Осталось {{ ad.get_days_till_expiration }} дн.</p>
-                            <p><a href="#">Редактировать</a></p>
+                            <p><a href="{% url 'editing_an_ad' ad.id %}">Редактировать</a></p>
                             <p class="ads_checkbox">
                                 <input type="checkbox" name="ads_checkbox" value="{{ ad.id }}">
                                 <label>Выделить</label>
                             </p>
                         </td>
                         <td class="ads_image">
-                            <a href="#">
-                                <img src="{{ ad.preview_image.url }}" alt="{{ ad.preview_image.url }}">
+                            <a href="{% url 'advertisement_details' ad.id %}">
+                                <img src="{% if ad.preview_image %} {{ ad.preview_image.url }} {% else %}{% static 'no_image.jpg' %}{% endif %}" alt="{% if ad.preview_image %} {{ ad.preview_image.url }} {% else %}{% static 'no_image.jpg' %}{% endif %}">
                             </a>
                         </td>
                         <td class="ads_info">
-                            <a href="#">
+                            <a href="{% url 'advertisement_details' ad.id %}">
                                 <p class="ads_title">{{ ad.title }}</p>
                             </a>
                             <p>{{ ad.price }} руб.</p>

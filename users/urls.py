@@ -2,17 +2,20 @@ from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, 
     PasswordResetCompleteView
 from django.urls import path, reverse_lazy
 
-from .views import (logout_view, login_view, register_view, get_personal_account_page, get_incoming_page,
-                    get_outgoing_page, get_sent_page, get_admin_message_page, add_store, get_my_store,
-                    edit_store, get_store_page, delete_store, get_user_data_page, get_personal_account_inactive_adds_page,
-                    delete_or_archive_selected_ads, search_of_ads_in_personal_account, get_user_all_publications,
-                    add_user_publication, delete_publication, edit_publication)
+from .views import (logout_view, login_view, get_personal_account_page,add_store, get_my_store,
+                    edit_store, get_store_page, delete_store, get_user_data_page,
+                    get_personal_account_inactive_adds_page, delete_or_archive_selected_ads,
+                    register_view_individual, search_of_ads_in_personal_account, get_user_all_publications,
+                    add_user_publication, delete_publication, edit_publication, register_view_entity,
+                    get_all_dialogs, create_dialog, view_message, delete_dialogs, delete_user_message)
 
 app_name = 'users'
+
 urlpatterns = [
     path('logout/', logout_view, name="logout"),
     path('login/', login_view, name="login"),
-    path('register/', register_view, name="register"),
+    path('register_individual/', register_view_individual, name="register_individual"),
+    path('register_entity/', register_view_entity, name="register_entity"),
     path('password-reset/',
          PasswordResetView.as_view(
              template_name="base.html",
@@ -39,15 +42,16 @@ urlpatterns = [
     path('personal_account/delete_or_archive_ads/', delete_or_archive_selected_ads, name='delete_or_archive_ads'),
     path('personal_account/archived_adds/', get_personal_account_inactive_adds_page, name='inactive_adds'),
     path('user_data/', get_user_data_page, name='user_data'),
-    path('incoming_messages/', get_incoming_page, name='incoming_messages'),
-    path('outgoing_messages/', get_outgoing_page, name='outgoing_messages'),
-    path('sent_messages/', get_sent_page, name='sent_messages'),
-    path('admin_messages/', get_admin_message_page, name='admin_messages'),
     path('add_store/', add_store, name='add_store'),
     path('my_store/', get_my_store, name='my_store'),
     path('edit_store/<int:store_id>/', edit_store, name='edit_store'),
     path('delete_store/<int:store_id>/', delete_store, name='delete_store'),
     path('store/<slug:slug>/', get_store_page, name='store_page'),
+    path('dialogs/', get_all_dialogs, name='dialogs'),
+    path('dialogs/create/user:<int:user_id>_and_user:<int:recipient_id>/', create_dialog, name='create_dialog'),
+    path('dialogs/<int:chat_id>/', view_message, name='messages'),
+    path('dialogs/delete_dialogs/', delete_dialogs, name="delete_dialogs"),
+    path('dialogs/<int:chat_id>/delete_user_message/<int:message_id>/', delete_user_message, name="delete_user_message"),
     path('user_all_publications/', get_user_all_publications, name='user_all_publications'),
     path('user_add_publication/', add_user_publication, name='user_add_publication'),
     path('personal_account/delete_publication/', delete_publication, name='delete_publication'),

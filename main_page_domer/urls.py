@@ -15,4 +15,6 @@ urlpatterns = [
     path("publications/", get_publications, name="publications"),
     path("publication/<int:publication_id>", get_publication_by_id, name="publication_by_id"),
     path('feedback/', get_feedback_page, name='feedback'),
+    path('complaint_about_adv_id_<int:adv_id>/', get_complaint_page, name='complaint'),
+    path('register_done', register_done, name='register_done'),
 ]

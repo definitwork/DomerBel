@@ -30,15 +30,11 @@ class Comment(models.Model):
 
 
 class Complaint(models.Model):
-    reason = models.ForeignKey(
-        "ReasonOfComplaint", on_delete=models.CASCADE, verbose_name="Причина жалобы"
-    )
-    text = models.TextField(verbose_name="Текст жалобы")
-    date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания жалобы")
-    user = models.CharField(max_length=255, verbose_name="User")
-    advertisement = models.ForeignKey(
-        Advertisement, on_delete=models.CASCADE, verbose_name="Объявление"
-    )
+    reason = models.ForeignKey('ReasonOfComplaint', on_delete=models.CASCADE, verbose_name='Причина жалобы')
+    text = models.TextField(verbose_name='Обоснование жалобы')
+    date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания жалобы')
+    user = models.CharField(max_length=255, verbose_name='Пользователь, отправивший жалобу')
+    advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE, verbose_name='Объявление, на которое пожаловались')
 
     class Meta:
         verbose_name = "Жалоба"
@@ -52,8 +48,9 @@ class ReasonOfComplaint(models.Model):
     reason = models.CharField("Причина жалобы", max_length=1000)
 
     class Meta:
-        verbose_name = "Причина жалобы"
-        verbose_name_plural = "Причины жалобы"
+        verbose_name = 'Причина жалобы'
+        verbose_name_plural = 'Причины жалобы'
+        ordering = ['id']
 
     def __str__(self):
         return self.reason
