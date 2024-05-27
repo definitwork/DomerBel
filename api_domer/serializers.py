@@ -86,9 +86,8 @@ class PublicationSearchSerializer(serializers.ModelSerializer):
 
 
 class PublicationSerializer(serializers.ModelSerializer):
-    slug = serializers.CharField()
 
     class Meta:
         model = Publication
-        # fields = ['title', 'announcement', 'description', 'preview_image', 'video_link',]
-        fields = "__all__"
+        fields = ['user', 'title', 'announcement', 'description', 'preview_image', 'video_link',]
+        # fields = "__all__"

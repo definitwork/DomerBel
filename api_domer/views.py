@@ -1,3 +1,5 @@
+import os
+from django.conf import settings
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -7,6 +9,7 @@ from slugify import slugify
 
 
 from advertisement.models import Region, Category, Field, ElementTwo, PhotoAdvertisement, Advertisement, Store
+from advertisement.utils_for_models import unique_slugify
 from api_domer.filters import PublicationsFilter
 from api_domer.serializers import (GetListOfCitiesSerializer, GetListOfCategoriesSerializer, FieldSerialier,
                                    ElementTwoSerializer, AdvertisementSerializer, PublicationSearchSerializer,
@@ -192,7 +195,6 @@ def save_publication(request):
             else:
                 preview_image_list = []
             query_dict['user'] = request.user.id
-            query_dict['slug'] = slugify(str(query_dict['title']))
             serializer = PublicationSerializer(data=query_dict)
             if serializer.is_valid():
                 serializer.save()
@@ -219,6 +221,23 @@ def edit_publication(request):
             print('=====================================================================')
             print('1', query_dict)
             print('=====================================================================')
+            Publication.objects.filter(id=query_dict.get("dataId")).update(
+                title=query_dict.get("title"),
+                slug=slugify(str(query_dict.get("title"))),
+                announcement=query_dict.get("announcement"),
+                description=query_dict.get("description"),
+                video_link=query_dict.get("video_link"),
+                moderated=False,
+                )
+
+            photo = Publication.objects.get(id=query_dict.get("dataId"))
+            if photo.preview_image:
+                print(photo.preview_image.path)
+                os.remove(photo.preview_image.path)
+
+            photo.preview_image = query_dict.get('preview_image')
+            photo.save()
+
         #     main_img_name = request.data.get('main_img')
         #     preview_image_list = request.FILES.getlist('preview_image')
         #     if len(preview_image_list) > 1:

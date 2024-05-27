@@ -5,6 +5,7 @@ from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 from django_ckeditor_5.fields import CKEditor5Field
 from advertisement.models import Advertisement
+from advertisement.utils_for_models import unique_slugify
 from users.models import User
 
 
@@ -94,6 +95,10 @@ class Publication(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        self.slug = unique_slugify(self.title)
+        super(Publication, self).save(*args, **kwargs)
+
     class Meta:
         verbose_name = "Публикация"
         verbose_name_plural = "Публикации"
@@ -107,7 +112,7 @@ def publication_photo_delete(sender, instance, **kwargs):
 
 class PublicationAdmin(admin.ModelAdmin):
     """ Модель публикации для Админки """
-    list_display = ["id", "title"]
+    list_display = ["id", "title", "slug"]
     list_display_links = ["title"]
     prepopulated_fields = {"slug": ("title",)}
     ordering = [

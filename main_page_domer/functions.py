@@ -1,7 +1,6 @@
+from django.db.models import F
 from main_page_domer.models import Publication
 
 
-def views_counter_publication(publication_id):
-    data = Publication.objects.get(id=publication_id)
-    data.counter_views += 1
-    data.save()
+def views_counter_publication(publication_slug):
+    Publication.objects.filter(slug=publication_slug).update(counter_views=F('counter_views')+1)
