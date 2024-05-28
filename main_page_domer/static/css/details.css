@@ -88,13 +88,14 @@
   display: flex;
   gap: 20px;
   align-items: flex-start;
+  margin-bottom: 20px;
 }
 
 .details__advertisement-view {
   display: flex;
   align-items: center;
   gap: 5px;
-  flex: 0 1 720px;
+  flex: 1 1 720px;
 }
 
 .details__advertisement-view-list-img {
@@ -106,7 +107,7 @@
 
 .details__advertisement-view-img {
   flex: 0 1 640px;
-  border: 2px solid gray;
+  border: 2px solid #D4D4D4;
   border-radius: 5px;
   height: 480px;
 }
@@ -123,7 +124,7 @@
 .details__advertisement-view-list-img-item {
   width: 74px;
   height: 80px;
-  border: 1px solid gray;
+  border: 1px solid #D4D4D4;
   border-radius: 5px;
   margin: 5px 0;
   cursor: pointer;
@@ -144,6 +145,215 @@
 
 .details__advertisement-options {
   flex: 1 0 220px;
-  padding: 20px;
-  border: 1px solid gray;
+  padding: 20px 12px;
+  border: 1px solid #D4D4D4;
+  border-radius: 5px;
+}
+
+.details__advertisement-options-view {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.details__advertisement-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.details__advertisement-options-list li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.details__advertisement-options-list li:nth-child(1)::before {
+  flex: 0 0 20px;
+  content: "";
+  display: block;
+  height: 20px;
+  background: url(../img/VIP.png) no-repeat center/cover;
+}
+.details__advertisement-options-list li:nth-child(2)::before {
+  flex: 0 0 20px;
+  content: "";
+  display: block;
+  height: 20px;
+  background: url(../img/highlight.png) no-repeat center/cover;
+}
+.details__advertisement-options-list li:nth-child(3)::before {
+  flex: 0 0 20px;
+  content: "";
+  display: block;
+  height: 20px;
+  background: url(../img/special.png) no-repeat center/cover;
+}
+.details__advertisement-options-list li:nth-child(4)::before {
+  flex: 0 0 20px;
+  content: "";
+  display: block;
+  height: 20px;
+  background: url(../img/up.png) no-repeat center/cover;
+}
+.details__advertisement-options-list a {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #3077a0;
+  font-size: 14px;
+}
+.details__advertisement-options-list a:hover {
+  color: red;
+}
+
+.details__advertisement-about {
+  padding: 10px 15px;
+  border: 1px solid #D4D4D4;
+  border-radius: 10px;
+  max-width: 720px;
+}
+
+.details__advertisement-about-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.details__advertisement-about-list-item {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+}
+.details__advertisement-about-list-item p {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 13px;
+}
+
+.details__advertisement-about-list-item-action p {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #3077a0;
+  font-size: 13px;
+  cursor: pointer;
+}
+.details__advertisement-about-list-item-action p:hover {
+  color: red;
+}
+.details__advertisement-about-list-item-action p span:nth-child(2) {
+  display: none;
+}
+
+.details__advertisement-about-list-item-img {
+  max-width: 16px;
+  max-height: 16px;
+}
+.details__advertisement-about-list-item-img img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+}
+
+.details__advertisement-additional-description-list {
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.details__advertisement-additional-description-list-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.details__advertisement-additional-description-list-item-title {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 13px;
+}
+
+.details__advertisement-additional-description-list-item-value {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 13px;
+}
+
+.details__advertisement-additional-description-list-item-value-price {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: red;
+  font-size: 13px;
+}
+
+.details__advertisement-about-description {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 13px;
+  white-space: pre-line;
+  margin-bottom: 20px;
+}
+
+.detials__advertisement-about-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.details__advertisement-add-favorites {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.details__advertisement-add-favorites-img {
+  max-width: 19px;
+  max-height: 19px;
+}
+.details__advertisement-add-favorites-img img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+}
+
+.details__advertisement-add-favorites p {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #3077a0;
+  font-size: 13px;
+  cursor: pointer;
+}
+.details__advertisement-add-favorites p:hover {
+  color: red;
+}
+
+.details__advertisement-add-report {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #3077a0;
+  font-size: 13px;
+  cursor: pointer;
+}
+.details__advertisement-add-report:hover {
+  color: red;
 }/*# sourceMappingURL=details.css.map */

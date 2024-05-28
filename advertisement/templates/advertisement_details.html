@@ -66,9 +66,101 @@
           </ul>
         </div>
         <div class="details__advertisement-options">
-          <p class="details__advertisement-options-viev">
-
+          <p class="details__advertisement-options-view">
+            Просмотров:
           </p>
+          <ul class="details__advertisement-options-list">
+            <li class="details__advertisement-options-list-item">
+              <a href="#">
+                Сделать VIP-объявлением
+              </a>
+            </li>
+            <li class="details__advertisement-options-list-item">
+              <a href="#">
+                Выделить объявление
+              </a>
+            </li>
+            <li class="details__advertisement-options-list-item">
+              <a href="#">
+                Спецразмещение
+              </a>
+            </li>
+            <li class="details__advertisement-options-list-item">
+              <a href="#">
+                Поднять в поиске
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="details__advertisement-about">
+        <ul class="details__advertisement-about-list">
+          <li class="details__advertisement-about-list-item">
+            <div class="details__advertisement-about-list-item-img">
+              <img src="{% static "img/icons/site.png" %}" alt="region">
+            </div>
+            <p>
+              Московский район
+            </p>
+          </li>
+          <li class="details__advertisement-about-list-item">
+            <div class="details__advertisement-about-list-item-img">
+              <img src="{% static "img/icons/user.png" %}" alt="user">
+            </div>
+            <p>
+              Ан Грант
+            </p>
+          </li>
+          <li class="details__advertisement-about-list-item details__advertisement-about-list-item-action">
+            <div class="details__advertisement-about-list-item-img">
+              <img src="{% static "img/icons/telefon.gif" %}" alt="phone">
+            </div>
+            <p>
+              <span>Показать номер телефона</span>
+              <span>+37529232142</span>
+            </p>
+          </li>
+          <li class="details__advertisement-about-list-item details__advertisement-about-list-item-action">
+            <div class="details__advertisement-about-list-item-img">
+              <img src="{% static "img/icons/email.gif" %}" alt="email">
+            </div>
+            <p>
+              Отправить письмо
+            </p>
+          </li>
+        </ul>
+        <ul class="details__advertisement-additional-description-list">
+          {% for title,item in advertisement.additional_information.items %}
+          <li class="details__advertisement-additional-description-list-item">
+            <p class="details__advertisement-additional-description-list-item-title">
+              {{ title }}:
+            </p>
+            <p class="details__advertisement-additional-description-list-item-value 
+            {% if title == 'Цена' %}details__advertisement-additional-description-list-item-value-price{% endif %}"
+            >
+              {{ item }}
+            </p>
+          </li>
+          {% endfor %}
+        </ul>
+        <p class="details__advertisement-about-description">
+          {{ advertisement.description }}
+        </p>
+        <div class="detials__advertisement-about-action">
+          <div class="details__advertisement-add-favorites">
+            <div class="details__advertisement-add-favorites-img">
+              <img src="{% static "img/icons/Edit_Yes.png" %}" alt="star">
+            </div>
+            <p>
+              Добавить в избранное
+            </p>
+          </div>
+          <p class="details__advertisement-add-report">
+            Пожаловаться
+          </p>
+          <div class="details__advertisement-add-share">
+            
+          </div>
         </div>
       </div>
     </div>

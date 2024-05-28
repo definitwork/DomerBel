@@ -86,7 +86,7 @@
 .header__bottom-send {
   padding: 8px;
   display: block;
-  background: #3e8ad0;
+  background: linear-gradient(0deg, #4d95d6, #6e93dd, #c2d6f4);
   border-radius: 2px;
   font-family: "Trebuchet MS", sans-serif;
   font-weight: 600;
@@ -157,7 +157,7 @@ header {
 .main__search-form-item button {
   flex: 0 1 200px;
   padding: 5px;
-  background: #3e8ad0;
+  background: linear-gradient(0deg, #4d95d6, #6e93dd, #c2d6f4);
   font-family: "Trebuchet MS", sans-serif;
   font-weight: 600;
   font-style: normal;
