@@ -6,6 +6,12 @@
 
 @import './variables';
 @import './mixins';
+@import './modals';
 @import "./header";
 @import './mainSearch';
 @import "./footer";
+
+
+.modal__active {
+    display: flex;
+}
