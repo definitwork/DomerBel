@@ -1,5 +1,5 @@
 footer {
-    padding: 40px 10px;
+    padding: 40px 0;
 }
 
 
@@ -7,6 +7,7 @@ footer {
     display: flex;
     align-items: center;
     gap: 25px;
+    flex-wrap: wrap;
 }
 
 .footer__nav-list-item {

@@ -2,10 +2,14 @@
     display: flex;
     align-items: flex-end;
     justify-content: space-between;    
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .header__bottom-nav {
     padding-bottom: 11px;
+    align-self: flex-end;
+    justify-self: center;
 }
 
 
@@ -33,6 +37,11 @@
 
 .header__bottom-send-wrap {
     padding-bottom: 11px;
+    align-self: flex-end;
+
+    & a {
+        text-align: center;
+    }
 }
 
 .header__bottom-send {
@@ -41,4 +50,9 @@
     background: $buttonBg;
     border-radius: 2px;
     @include fonts(white ,20px, 600)
+}
+
+@media (max-width:992px) {
+    .header__bottom-send-wrap {
+    }
 }

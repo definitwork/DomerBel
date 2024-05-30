@@ -162,7 +162,6 @@
     flex-direction: column;
     gap: 5px;
 
-
      & li {
         display: flex;
         align-items: center;
@@ -206,6 +205,7 @@
      }
     
     & a {
+        display: block;
         @include fonts($mainColor, 14px, 400);
         &:hover {
             color: $colorHover;
@@ -439,3 +439,30 @@
     transform: scale(1);
 }
 
+
+@media (max-width:992px) {
+    .details__advertisement-view-wrap {
+        display: initial;
+    }
+    .details__advertisement-options {
+        flex: initial;
+    }
+
+    .details__advertisement-view-img-wrap {
+        flex: 0 1 auto;
+    }
+
+    .details__advertisement-view {
+        margin-bottom: 20px;
+    }
+
+    .details__advertisement-about {
+        margin-top: 20px;
+    }
+
+    .detials__advertisement-about-action  {
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+}

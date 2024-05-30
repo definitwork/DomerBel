@@ -50,7 +50,7 @@
 }
 .magnifier__zoom-main .slick-arrow {
   position: absolute;
-  top: 400px;
+  top: 50%;
   background: url(../img/icons/arrow_right.png);
   width: 40px;
   height: 54px;
@@ -112,6 +112,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  flex-wrap: wrap;
 }
 .header__up-nav-list a {
   font-family: "Trebuchet MS", sans-serif;
@@ -140,10 +141,14 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .header__bottom-nav {
   padding-bottom: 11px;
+  align-self: flex-end;
+  justify-self: center;
 }
 
 .header__bottom-nav-list {
@@ -176,6 +181,10 @@
 
 .header__bottom-send-wrap {
   padding-bottom: 11px;
+  align-self: flex-end;
+}
+.header__bottom-send-wrap a {
+  text-align: center;
 }
 
 .header__bottom-send {
@@ -210,14 +219,18 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 5px;
+}
+.main__search-form-item:nth-child(2) {
+  gap: 15px;
 }
 .main__search-form-item:last-child select {
   flex: 1 1 auto;
 }
 .main__search-form-item input {
-  flex: 1 1 auto;
-  padding: 5px;
+  flex: 1 1 350px;
+  padding: 6px;
   border-radius: 5px;
   font-family: "Trebuchet MS", sans-serif;
   font-weight: 400;
@@ -240,7 +253,7 @@ header {
   font-size: 14px;
 }
 .main__search-form-item select {
-  flex: 0 1 200px;
+  flex: 1 1 200px;
   padding: 5px;
   border-radius: 5px;
   font-family: "Trebuchet MS", sans-serif;
@@ -269,11 +282,18 @@ header {
   display: flex;
   align-items: center;
   gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  flex: 1 1 auto;
 }
 .main__search-form-item-label-wrap label {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex: 1 1 auto;
+}
+.main__search-form-item-label-wrap label input {
+  flex: initial;
 }
 .main__search-form-item-label-wrap label p {
   font-family: "Trebuchet MS", sans-serif;
@@ -284,13 +304,14 @@ header {
 }
 
 footer {
-  padding: 40px 10px;
+  padding: 40px 0;
 }
 
 .footer__nav-list {
   display: flex;
   align-items: center;
   gap: 25px;
+  flex-wrap: wrap;
 }
 
 .footer__nav-list-item a {
