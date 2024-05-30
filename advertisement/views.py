@@ -52,7 +52,7 @@ def get_advertisement_page(request):
         'adaptive_navigation': "Доска объявлений. Беларусь",
     }
 
-    response = render(request, html, context)
+    response = render(request, "advertisementAdd.html", context)
     response.set_cookie('sort', sort_for_paginator)
     response.set_cookie('date', state_sort_by_date)
     response.set_cookie('sorted_by', order_by)
@@ -110,7 +110,7 @@ def get_advertisement_by_category(request, category_slug):
         'adaptive_navigation': f"{category.main_title if category.main_title else category.title}. Беларусь",
     }
 
-    response = render(request, html, context)
+    response = render(request, 'advertisementAddCategory.html', context)
     response.set_cookie('sort', sort_for_paginator)
     response.set_cookie('date', state_sort_by_date)
     response.set_cookie('sorted_by', order_by)

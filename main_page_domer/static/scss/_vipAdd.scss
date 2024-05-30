@@ -1,0 +1,52 @@
+.vip__wrap {
+    flex: 1 1 auto
+}
+
+.vip__title {
+    @include fonts(white, 18px, 400);
+    padding: 10px;
+    text-align: center;
+    background: $vipBg;
+}
+
+
+.vip__list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    & li {
+        padding: 15px 30px;
+        border: 1px solid $vipBg;
+    }
+}
+
+.vip__list-item {
+    & a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+}
+
+.vip__list-item-img {
+    max-width: 187px;
+    max-height: 187px;
+    & img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+}
+
+.vip__list-item-title {
+    @include fonts($mainColor, 18px, 400);
+    text-align: center;
+}
+
+.vip__list-item-district {
+    @include fonts($defaultColor, 13px, 400);
+}
+

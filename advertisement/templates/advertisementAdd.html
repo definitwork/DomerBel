@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static "css/advertisement.css" %}">
+{% endblock css %}
+
+{% block content %}
+<section class="filter">
+    <ul class="filter__list">
+        {% for category in category %}
+        <li class="filter__list-item">
+            <a href="#">
+                {{ category.title }}, <span>{{ category.advertisement_counts }}</span>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+<section class="sort">
+    <div class="sort__ads">
+        Найдено: <span>{{ ads_found }}</span>
+    </div>
+    <ul class="sort__type-list">
+        <li class="sort__type-list-item">
+            <img src="{% static "img/sort1.png" %}" alt="{% static "img/sort1.png" %}">
+        </li>
+        <li class="sort__type-list-item">
+            <img src="{% static "img/sort2.png" %}" alt="{% static "img/sort2.png" %}">
+        </li>
+        <li class="sort__type-list-item">
+            <img src="{% static "img/sort2.png" %}" alt="{% static "img/sort2.png" %}">
+        </li>
+    </ul>
+    <div class="sorted__output">
+        <p>
+            Выводить по:
+        </p>
+        <ul class="sorted__output-list">
+            <li class="sorted__output-list-item">
+                30
+            </li>
+            <li class="sorted__by-list-item">
+                60
+            </li>
+            <li class="sorted__by-list-item">
+                90
+            </li>
+        </ul>
+    </div>
+    <div class="sorted__by">
+        <p>
+            Сортировать:
+        </p>
+        <ul class="sorted__by-list">
+            <li class="sorted__by-list-item">
+                Дата
+            </li>
+            <li class="sorted__by-list-item">
+                Цена
+            </li>
+        </ul>
+    </div>
+</section>
+<section class="advertisement">
+    <ul class="advertisement__list">
+        <li>
+            <article class="advertisement__list-item active__item">
+                <a href="#" class="advertisement__list-item-img">
+                    <img src="{% static "img/ads_img/1.jpg" %}" alt="">
+                </a>
+                <div class="advertisement__list-item-about">
+                    <h3 class="advertisement__list-item-title">
+                        <a href="#">
+                            Дверь межкомнатная гармошка шир. 2000 мм в аренду
+                        </a>
+                    </h3>
+                    <p class="advertisement__list-item-price">
+                        264 руб.
+                    </p>
+                    <ul class="advertisement__list-item-about-text-list">
+                        <li>
+                            Услуги
+                        </li>
+                        <li>
+                            Компания
+                        </li>
+                        <li>
+                            Октябрьский район
+                        </li>
+                        <li>
+                            26 апр. 2024 г. 09:08
+                        </li>
+                    </ul>
+                    <ul class="advertisement__list-item-action">
+                        <li class="advertisement__list-item-action-item">
+                            <img src="{% static "img/special.png" %}" alt="">
+                        </li>
+                        <li class="advertisement__list-item-action-item">
+                            <img src="{% static "img/VIP.png" %}" alt="">
+                        </li>
+                        <li class="advertisement__list-item-action-item">
+                            <img src="{% static "img/highlight.png" %}" alt="">
+                        </li>
+                        <li class="advertisement__list-item-action-item">
+                            <img src="{% static "img/up.png" %}" alt="">
+                        </li>
+                    </ul>
+                </div>
+            </article>
+        </li>
+        <li>
+            <article class="advertisement__list-item">
+                <a href="#" class="advertisement__list-item-img">
+                    <img src="{% static "img/ads_img/1.jpg" %}" alt="">
+                </a>
+                <div class="advertisement__list-item-about">
+                    <h3 class="advertisement__list-item-title">
+                        <a href="#">
+                            Дверь межкомнатная гармошка шир. 2000 мм в аренду
+                        </a>
+                    </h3>
+                    <p class="advertisement__list-item-price">
+                        264 руб.
+                    </p>
+                    <ul class="advertisement__list-item-about-text-list">
+                        <li>
+                            Услуги
+                        </li>
+                        <li>
+                            Компания
+                        </li>
+                        <li>
+                            Октябрьский район
+                        </li>
+                        <li>
+                            26 апр. 2024 г. 09:08
+                        </li>
+                    </ul>
+                    <ul class="advertisement__list-item-action">
+                        <li class="advertisement__list-item-action-item">
+                            <img src="{% static "img/special.png" %}" alt="">
+                        </li>
+                        <li class="advertisement__list-item-action-item">
+                            <img src="{% static "img/VIP.png" %}" alt="">
+                        </li>
+                        <li class="advertisement__list-item-action-item">
+                            <img src="{% static "img/highlight.png" %}" alt="">
+                        </li>
+                        <li class="advertisement__list-item-action-item">
+                            <img src="{% static "img/up.png" %}" alt="">
+                        </li>
+                    </ul>
+                </div>
+            </article>
+        </li>
+        <li>
+            <article class="advertisement__list-item">
+                <a href="#" class="advertisement__list-item-img">
+                    <img src="{% static "img/ads_img/1.jpg" %}" alt="">
+                </a>
+                <div class="advertisement__list-item-about">
+                    <h3 class="advertisement__list-item-title">
+                        <a href="#">
+                            Дверь межкомнатная гармошка шир. 2000 мм в аренду
+                        </a>
+                    </h3>
+                    <p class="advertisement__list-item-price">
+                        264 руб.
+                    </p>
+                    <ul class="advertisement__list-item-about-text-list">
+                        <li>
+                            Услуги
+                        </li>
+                        <li>
+                            Компания
+                        </li>
+                        <li>
+                            Октябрьский район
+                        </li>
+                        <li>
+                            26 апр. 2024 г. 09:08
+                        </li>
+                    </ul>
+                    <ul class="advertisement__list-item-action">
+                        <li class="advertisement__list-item-action-item">
+                            <img src="{% static "img/special.png" %}" alt="">
+                        </li>
+                        <li class="advertisement__list-item-action-item">
+                            <img src="{% static "img/VIP.png" %}" alt="">
+                        </li>
+                        <li class="advertisement__list-item-action-item">
+                            <img src="{% static "img/highlight.png" %}" alt="">
+                        </li>
+                        <li class="advertisement__list-item-action-item">
+                            <img src="{% static "img/up.png" %}" alt="">
+                        </li>
+                    </ul>
+                </div>
+            </article>
+        </li>
+    </ul>
+    <div class="vip__wrap">
+        <h2 class="vip__title">
+          VIP объявления
+        </h2>
+        <ul class="vip__list">
+          <li>
+            <article class="vip__list-item">
+              <a href="#">
+                <div class="vip__list-item-img">
+                  <img src="{% static "img/ads_img/1.jpg" %}" alt="">
+                </div>
+                <h3 class="vip__list-item-title">
+                  Дверь межкомнатная гармошка
+                </h3>
+                <p class="vip__list-item-district">
+                  Октябрьский район
+                </p>
+              </a>
+            </article>
+          </li>
+        </ul>
+      </div>
+</section>
+
+{% comment %} <section class="add">
+    <ul>
+        {% for add in page_obj %}
+        <li>
+            <h2>
+                {{ add.title }}
+            </h2>
+        </li>
+        {% endfor %}
+    </ul>
+</section> {% endcomment %}
+
+{% endblock content %}
+
+{% block js %}
+<script src="{% static "js/advertisementAdd/advertisementAdd.js" %}"></script>
+{% endblock js %}

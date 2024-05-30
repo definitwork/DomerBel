@@ -1,5 +1,6 @@
 @import './advertisement';
 @import './recentAnnouncementsItem';
+@import './vipAdd';
 
 
 .recent-announcements__title {
@@ -11,4 +12,10 @@
 .recent-announcements__list {
     display: flex;
     flex-direction: column;
+}
+
+.recent-announcements-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
 }

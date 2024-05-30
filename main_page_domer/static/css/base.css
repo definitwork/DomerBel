@@ -229,7 +229,7 @@ header {
   flex: 1 1 auto;
 }
 .main__search-form-item input {
-  flex: 1 1 350px;
+  flex: 1 1 400px;
   padding: 6px;
   border-radius: 5px;
   font-family: "Trebuchet MS", sans-serif;

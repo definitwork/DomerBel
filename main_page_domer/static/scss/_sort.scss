@@ -1,0 +1,74 @@
+.sort {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.sort__ads {
+    @include fonts($defaultColor, 14px, 400);
+
+    & span {
+        @include fonts($defaultColor, 16px, 500);
+    }
+}
+
+.sort__type-list {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    & li {
+        cursor: pointer;
+    }
+}
+
+.sorted__output {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    & p {
+        @include fonts($defaultColor, 14px, 400);
+    }
+}
+
+.sorted__output-list {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    & li {
+        border: 1px solid $defaultColor;
+        padding: 5px;
+        color: $defaultColor;
+        cursor: pointer;
+    }
+}
+
+.sorted__by {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    & p {
+        @include fonts($defaultColor, 14px, 400);
+
+    }
+}
+
+.sorted__by-list {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    & li {
+        @include fonts($mainColor, 14px, 400);
+        cursor: pointer;
+
+        &:hover {
+            color: $colorHover;
+        }
+    }
+}
