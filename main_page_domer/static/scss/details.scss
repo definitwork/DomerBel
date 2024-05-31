@@ -42,6 +42,7 @@
     align-items: center;
     gap: 5px;
     min-width: 0;
+    flex: 1 1 auto;
 }
 
 .details__advertisement-view-list-img {
@@ -59,7 +60,7 @@
 
 .details__advertisement-view-img-wrap {
     position: relative;
-    flex: 0 1 640px;
+    flex: 0 1 620px;
     min-width: 0;
 }
 
