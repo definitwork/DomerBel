@@ -38,13 +38,19 @@
             </p>
             <ul class="sorted__output-list">
                 <li class="sorted__output-list-item">
+                    <a href="?sort=30{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
                     30
+                </a>
                 </li>
                 <li class="sorted__by-list-item">
+                    <a href="?sort=60{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
                     60
+                </a>
                 </li>
                 <li class="sorted__by-list-item">
+                    <a href="?sort=90{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
                     90
+                </a>
                 </li>
             </ul>
         </div>
@@ -120,96 +126,7 @@
                     </article>
                 </li>
             {% endfor %}
-            <li>
-                <article class="advertisement__list-item">
-                    <a href="#" class="advertisement__list-item-img">
-                        <img src="{% static "img/ads_img/1.jpg" %}" alt="">
-                    </a>
-                    <div class="advertisement__list-item-about">
-                        <h3 class="advertisement__list-item-title">
-                            <a href="#">
-                                Дверь межкомнатная гармошка шир. 2000 мм в аренду
-                            </a>
-                        </h3>
-                        <p class="advertisement__list-item-price">
-                            264 руб.
-                        </p>
-                        <ul class="advertisement__list-item-about-text-list">
-                            <li>
-                                Услуги
-                            </li>
-                            <li>
-                                Компания
-                            </li>
-                            <li>
-                                Октябрьский район
-                            </li>
-                            <li>
-                                26 апр. 2024 г. 09:08
-                            </li>
-                        </ul>
-                        <ul class="advertisement__list-item-action">
-                            <li class="advertisement__list-item-action-item">
-                                <img src="{% static "img/special.png" %}" alt="">
-                            </li>
-                            <li class="advertisement__list-item-action-item">
-                                <img src="{% static "img/VIP.png" %}" alt="">
-                            </li>
-                            <li class="advertisement__list-item-action-item">
-                                <img src="{% static "img/highlight.png" %}" alt="">
-                            </li>
-                            <li class="advertisement__list-item-action-item">
-                                <img src="{% static "img/up.png" %}" alt="">
-                            </li>
-                        </ul>
-                    </div>
-                </article>
-            </li>
-            <li>
-                <article class="advertisement__list-item">
-                    <a href="#" class="advertisement__list-item-img">
-                        <img src="{% static "img/ads_img/1.jpg" %}" alt="">
-                    </a>
-                    <div class="advertisement__list-item-about">
-                        <h3 class="advertisement__list-item-title">
-                            <a href="#">
-                                Дверь межкомнатная гармошка шир. 2000 мм в аренду
-                            </a>
-                        </h3>
-                        <p class="advertisement__list-item-price">
-                            264 руб.
-                        </p>
-                        <ul class="advertisement__list-item-about-text-list">
-                            <li>
-                                Услуги
-                            </li>
-                            <li>
-                                Компания
-                            </li>
-                            <li>
-                                Октябрьский район
-                            </li>
-                            <li>
-                                26 апр. 2024 г. 09:08
-                            </li>
-                        </ul>
-                        <ul class="advertisement__list-item-action">
-                            <li class="advertisement__list-item-action-item">
-                                <img src="{% static "img/special.png" %}" alt="">
-                            </li>
-                            <li class="advertisement__list-item-action-item">
-                                <img src="{% static "img/VIP.png" %}" alt="">
-                            </li>
-                            <li class="advertisement__list-item-action-item">
-                                <img src="{% static "img/highlight.png" %}" alt="">
-                            </li>
-                            <li class="advertisement__list-item-action-item">
-                                <img src="{% static "img/up.png" %}" alt="">
-                            </li>
-                        </ul>
-                    </div>
-                </article>
-            </li>
+
         </ul>
         <div class="vip__wrap">
             <h2 class="vip__title">
@@ -235,17 +152,35 @@
         </div>
     </section>
 
-    {% comment %} <section class="add">
-    <ul>
-        {% for add in page_obj %}
-        <li>
-            <h2>
-                {{ add.title }}
-            </h2>
-        </li>
-        {% endfor %}
-    </ul>
-</section> {% endcomment %}
+<div class="paginator">
+                <div class="paginator_wrapper">
+                    <nav class="list_pages">
+                        <ul>
+                            {% if page_obj.has_previous %}
+                                <li class="">
+                                    <a href="?page={{ page_obj.previous_page_number }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}"><</a>
+                                </li>
+                            {% endif %}
+                            {% if page_obj.has_other_pages %}
+                                {% for page in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == page %}
+                                        <li class="page_num page_num_selected">{{ page }}</li>
+                                    {% elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                                        <li class="page_num">
+                                            <a href="?page={{ page }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">{{ page }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            {% if page_obj.has_next %}
+                                <li class="">
+                                    <a href="?page={{ page_obj.next_page_number }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">></a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
 
 {% endblock content %}
 

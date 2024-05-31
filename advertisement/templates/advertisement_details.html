@@ -31,7 +31,8 @@
 <div class="magnifier__zoom">
   <div class="magnifier__zoom-main">
     <div>
-      <img src="{{ advertisement.preview_image.url }}" alt="">
+      <img src="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
+                                 alt="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
     </div>
     {% for photo in advertisement.photoadvertisement_set.all %}
     <div>
@@ -41,7 +42,8 @@
   </div>
   <div class="magnifier__zoom-second">
     <div class="magnifier__zoom-second-item">
-      <img data-lazy="{{ advertisement.preview_image.url }}" alt="">
+      <img src="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
+                                 alt="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
     </div>
     {% for photo in advertisement.photoadvertisement_set.all %}
     <div class="magnifier__zoom-second-item">
@@ -77,7 +79,8 @@
           <div class="details__advertisement-view-img-wrap">
             <div class="details__advertisement-view-img">
               <div>
-                <img data-lazy="{{ advertisement.preview_image.url }}" alt="{{ advertisement.preview_image.url }}">
+                <img src="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
+                                 alt="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
               </div>
               {% for photo in advertisement.photoadvertisement_set.all %}
               <div>
@@ -91,7 +94,8 @@
           </div>
           <ul class="details__advertisement-view-list-img">
             <li class="details__advertisement-view-list-img-item">
-              <img data-lazy="{{ advertisement.preview_image.url }}" alt="{{ advertisement.preview_image.url }}">
+              <img src="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
+                                 alt="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
             </li>
             {% for photo in advertisement.photoadvertisement_set.all %}
             <li class="details__advertisement-view-list-img-item">
