@@ -33,7 +33,7 @@
         <ul class="publication_list">
             {% for publication in publications %}
                 <li class="publication_list_item">
-                    <a href="{% url 'publication_by_id' publication.slug %}" class="publication_link">
+                    <a href="{% url 'publication_by_slug' publication.slug %}" class="publication_link">
                         <div class="publication_link_wrap">
                             <div class="publication_data">
                                 <p> {{ publication.date_of_create }} </p>

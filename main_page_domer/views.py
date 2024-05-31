@@ -277,14 +277,14 @@ def get_publications(request):
     return render(request=request, template_name='publications.html', context=context)
 
 
-def get_publication_by_id(request, publication_slug):
-    """ Страница публикации по id """
+def get_publication_by_slug(request, publication_slug):
+    """ Страница публикации по slug """
     views_counter_publication(publication_slug)
     publication = Publication.objects.get(slug=publication_slug)
     context = {
         'publication': publication,
     }
-    return render(request=request, template_name='publication_by_id.html', context=context)
+    return render(request=request, template_name='publication_by_slug.html', context=context)
 
 
 def get_feedback_page(request):
