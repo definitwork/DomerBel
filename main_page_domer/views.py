@@ -19,10 +19,12 @@ def get_main_page(request):
     advertisement_queryset = Advertisement.objects.filter(
         is_active=True, moderated=True).select_related(
         'category', 'region').order_by("-date_of_create")[:10]
+    vip_advertisement = Advertisement.objects.filter(vip=True)
     regions_queryset = Region.objects.filter(level=0)
     category_list = Category.objects.filter(level=0)
     context = {
         "advertisement": advertisement_queryset,
+        "vip_advertisement": vip_advertisement,
         "category_list": category_list,
         "regions": regions_queryset,
     }

@@ -57,21 +57,24 @@
         VIP объявления
       </h2>
       <ul class="recent__announcement-list-vip vip__list">
+          {% for vip in vip_advertisement %}
         <li>
           <article class="recent__announcement-list-vip-item vip__list-item">
-            <a href="#">
+            <a href="{% url 'advertisement_details' vip.id %}">
               <div class="recent__announcement-list-vip-item-img vip__list-item-img">
-                <img src="{% static "img/ads_img/1.jpg" %}" alt="">
+                <img src="{% if vip.preview_image %} {{ vip.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
+                                 alt="{% if vip.preview_image %} {{ vip.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
               </div>
               <h3 class="recent__announcement-list-vip-item-title vip__list-item-title">
-                Дверь межкомнатная гармошка
+                {{ vip.title }}
               </h3>
               <p class="recent__announcement-list-vip-item-district vip__list-item-district">
-                Октябрьский район
+                {{ vip.region }}
               </p>
             </a>
           </article>
         </li>
+          {% endfor %}
       </ul>
     </div>
   </div>

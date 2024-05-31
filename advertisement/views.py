@@ -29,6 +29,7 @@ def get_advertisement_page(request):
                                                           moderated=True, **region_filter).select_related(
         'category',
         'region').order_by("-raise_in_search", order_by)
+    vip_advertisement = advertisement_queryset.filter(vip=True)
     category_queryset = Category.objects.add_related_count(Category.objects.root_nodes(),
                                                            Advertisement,
                                                            'category',
@@ -47,6 +48,7 @@ def get_advertisement_page(request):
         "region_bread_crumbs": region_bread_crumbs,
         "region_param": region_param,
         "page_obj": page_obj,
+        "vip_advertisement": vip_advertisement,
         'date': state_sort_by_date,
         'view_type': view_type,
         'adaptive_navigation': "Доска объявлений. Беларусь",
@@ -94,6 +96,7 @@ def get_advertisement_by_category(request, category_slug):
                                                           moderated=True).select_related(
         'category',
         'region').order_by(order_by)
+    vip_advertisement = advertisement_queryset.filter(vip=True)
     page_obj = variables_for_paginator(advertisement_queryset,
                                        request.GET.get('page'),
                                        sort_for_paginator)
@@ -105,12 +108,13 @@ def get_advertisement_by_category(request, category_slug):
         "region_bread_crumbs": region_bread_crumbs,
         "category_list": category_list,
         "page_obj": page_obj,
+        "vip_advertisement": vip_advertisement,
         'date': state_sort_by_date,
         'view_type': view_type,
         'adaptive_navigation': f"{category.main_title if category.main_title else category.title}. Беларусь",
     }
 
-    response = render(request, 'advertisementAddCategory.html', context)
+    response = render(request, "advertisementAdd.html", context)
     response.set_cookie('sort', sort_for_paginator)
     response.set_cookie('date', state_sort_by_date)
     response.set_cookie('sorted_by', order_by)

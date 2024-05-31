@@ -4,7 +4,36 @@
 {% block css %}
     <link rel="stylesheet" href="{% static "css/advertisement.css" %}">
 {% endblock css %}
-
+{% block crumbs %}
+    {% if category_bread_crumbs or region_bread_crumbs %}
+        <section class="crumbs">
+            <div class="crumbs__wrapper">
+                <ul class="crumbs__list">
+                    <li class="crumbs__list-item">
+                        <a href="{% url 'advertisement' %}">Все объявления</a>
+                    </li>
+                    <li class="crumbs__list-item-dots">...</li>
+                    {% if region_bread_crumbs %}
+                        {% for bread_crumbs in region_bread_crumbs %}
+                            <li class="crumbs__list-item">
+                                <a href="{% url 'advertisement' %}?region={{ bread_crumbs.id }}">{{ bread_crumbs.area }}</a>
+                            </li>
+                            <li class="crumbs__list-item-dots">...</li>
+                        {% endfor %}
+                    {% endif %}
+                    {% if category_bread_crumbs %}
+                        {% for bread_crumbs in category_bread_crumbs %}
+                            <li class="crumbs__list-item">
+                                <a href="{% url 'advertisement_by_category' bread_crumbs.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}">{{ bread_crumbs.title }}</a>
+                            </li>
+                            <li class="crumbs__list-item-dots">...</li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+        </section>
+    {% endif %}
+{% endblock %}
 {% block content %}
     <section class="filter">
         <ul class="filter__list">
@@ -35,19 +64,19 @@
             </p>
             <ul class="sorted__output-list">
                 <li class="sorted__output-list-item">
-                    <a href="?sort=3{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
-                    30
-                </a>
+                    <a href="?sort=30{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                        30
+                    </a>
                 </li>
                 <li class="sorted__by-list-item">
-                    <a href="?sort=6{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
-                    60
-                </a>
+                    <a href="?sort=60{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                        60
+                    </a>
                 </li>
                 <li class="sorted__by-list-item">
-                    <a href="?sort=9{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
-                    90
-                </a>
+                    <a href="?sort=90{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                        90
+                    </a>
                 </li>
             </ul>
         </div>
@@ -57,10 +86,14 @@
             </p>
             <ul class="sorted__by-list">
                 <li class="sorted__by-list-item">
-                    Дата
+                    <a href="?date={{ date }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                        Дата
+                    </a>
                 </li>
                 <li class="sorted__by-list-item">
-                    Цена
+                    <a href="?price={{ date }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+                        Цена
+                    </a>
                 </li>
             </ul>
         </div>
@@ -82,8 +115,8 @@
                             </h3>
                             <p class="advertisement__list-item-price">
                                 {% if card.price %}
-                                {{ card.price }} руб.
-                            {% endif %}
+                                    {{ card.price }} руб.
+                                {% endif %}
                             </p>
                             <ul class="advertisement__list-item-about-text-list">
                                 <li>
@@ -107,24 +140,24 @@
                             </ul>
                             <ul class="advertisement__list-item-action">
                                 {% if card.special_accommodation %}
-                                <li class="advertisement__list-item-action-item">
-                                    <img src="{% static "img/special.png" %}" alt="">
-                                </li>
+                                    <li class="advertisement__list-item-action-item">
+                                        <img src="{% static "img/special.png" %}" alt="">
+                                    </li>
                                 {% endif %}
                                 {% if card.vip %}
-                                <li class="advertisement__list-item-action-item">
-                                    <img src="{% static "img/VIP.png" %}" alt="">
-                                </li>
+                                    <li class="advertisement__list-item-action-item">
+                                        <img src="{% static "img/VIP.png" %}" alt="">
+                                    </li>
                                 {% endif %}
                                 {% if card.highlight_ad %}
-                                <li class="advertisement__list-item-action-item">
-                                    <img src="{% static "img/highlight.png" %}" alt="">
-                                </li>
+                                    <li class="advertisement__list-item-action-item">
+                                        <img src="{% static "img/highlight.png" %}" alt="">
+                                    </li>
                                 {% endif %}
                                 {% if card.raise_in_search %}
-                                <li class="advertisement__list-item-action-item">
-                                    <img src="{% static "img/up.png" %}" alt="">
-                                </li>
+                                    <li class="advertisement__list-item-action-item">
+                                        <img src="{% static "img/up.png" %}" alt="">
+                                    </li>
                                 {% endif %}
                             </ul>
                         </div>
@@ -132,59 +165,70 @@
                 </li>
             {% endfor %}
         </ul>
+
         <div class="vip__wrap">
             <h2 class="vip__title">
                 VIP объявления
             </h2>
             <ul class="vip__list">
-                <li>
-                    <article class="vip__list-item">
-                        <a href="#">
-                            <div class="vip__list-item-img">
-                                <img src="{% static "img/ads_img/1.jpg" %}" alt="">
-                            </div>
-                            <h3 class="vip__list-item-title">
-                                Дверь межкомнатная гармошка
-                            </h3>
-                            <p class="vip__list-item-district">
-                                Октябрьский район
-                            </p>
-                        </a>
-                    </article>
-                </li>
+                {% for vip in vip_advertisement %}
+                    <li>
+                        <article class="vip__list-item">
+                            <a href="{% url 'advertisement_details' vip.id %}">
+                                <div class="vip__list-item-img">
+                                    <img src="{% if vip.preview_image %} {{ vip.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
+                                         alt="{% if vip.preview_image %} {{ vip.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
+                                </div>
+                                <h3 class="vip__list-item-title">
+                                    {{ vip.title }}
+                                </h3>
+                                <p class="vip__list-item-district">
+                                    {{ vip.region }}
+                                </p>
+                            </a>
+                        </article>
+                    </li>
+                {% endfor %}
             </ul>
         </div>
+
     </section>
 
-<div class="paginator">
-                <div class="paginator_wrapper">
-                    <nav class="list_pages">
-                        <ul>
-                            {% if page_obj.has_previous %}
-                                <li class="">
-                                    <a href="?page={{ page_obj.previous_page_number }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}"><</a>
+    <div class="paginator">
+        <div class="paginator_wrapper">
+            <nav class="list_pages">
+                <ul>
+                    {% if page_obj.has_previous %}
+                        <li class="">
+                            <a href="?page=
+
+                                    {{ page_obj.previous_page_number }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}"><</a>
+                        </li>
+                    {% endif %}
+                    {% if page_obj.has_other_pages %}
+                        {% for page in page_obj.paginator.page_range %}
+                            {% if page_obj.number == page %}
+                                <li class="page_num page_num_selected">{{ page }}</li>
+                            {% elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                                <li class="page_num">
+                                    <a href="?page=
+
+                                            {{ page }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">{{ page }}</a>
                                 </li>
                             {% endif %}
-                            {% if page_obj.has_other_pages %}
-                                {% for page in page_obj.paginator.page_range %}
-                                    {% if page_obj.number == page %}
-                                        <li class="page_num page_num_selected">{{ page }}</li>
-                                    {% elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
-                                        <li class="page_num">
-                                            <a href="?page={{ page }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">{{ page }}</a>
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-                            {% endif %}
-                            {% if page_obj.has_next %}
-                                <li class="">
-                                    <a href="?page={{ page_obj.next_page_number }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">></a>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                        <li class="">
+                            <a href="?page=
+
+                                    {{ page_obj.next_page_number }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">></a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
 
 {% endblock content %}
 
