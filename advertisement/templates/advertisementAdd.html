@@ -10,7 +10,7 @@
     <ul class="filter__list">
         {% for category in category %}
         <li class="filter__list-item">
-            <a href="#">
+            <a href="{% url 'advertisement_by_category' category.slug %}">
                 {{ category.title }}, <span>{{ category.advertisement_counts }}</span>
             </a>
         </li>
