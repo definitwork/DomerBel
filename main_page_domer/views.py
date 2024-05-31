@@ -22,7 +22,7 @@ def get_main_page(request):
     regions_queryset = Region.objects.filter(level=0)
     category_list = Category.objects.filter(level=0)
     context = {
-        "adver": advertisement_queryset,
+        "advertisement": advertisement_queryset,
         "category_list": category_list,
         "regions": regions_queryset,
     }
