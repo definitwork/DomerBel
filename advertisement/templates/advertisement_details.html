@@ -1,8 +1,8 @@
-{% extends "base.html" %} 
-{% load static %} 
+{% extends "base.html" %}
+{% load static %}
 {% block css %}
- <link rel="stylesheet" href="{% static "css/details.css"%}"> 
-{% endblock css %} 
+ <link rel="stylesheet" href="{% static "css/details.css"%}">
+{% endblock css %}
 {% block crumbs %}
 <section class="crumbs">
     <div class="crumbs__wrapper">
@@ -25,7 +25,7 @@
       </ul>
     </div>
 </section>
-{% endblock crumbs %} 
+{% endblock crumbs %}
 
 {% block modals %}
 <div class="magnifier__zoom">
@@ -63,10 +63,10 @@
         <p>ID:{{ advertisement.id }}</p>
         <p>
             {% if advertisement.date_of_create.date == date_today %}
-            Сегодня 
+            Сегодня
             {% elif advertisement.date_of_create.date == date_yesterday %}
-            Вчера 
-            {% else %} 
+            Вчера
+            {% else %}
             {{ advertisement.date_of_create|date:"d b. Y" }}
             {% endif %}
             {{ advertisement.date_of_create|date:"H:i" }}
@@ -170,7 +170,7 @@
             <p class="details__advertisement-additional-description-list-item-title">
               {{ title }}:
             </p>
-            <p class="details__advertisement-additional-description-list-item-value 
+            <p class="details__advertisement-additional-description-list-item-value
             {% if title == 'Цена' %}details__advertisement-additional-description-list-item-value-price{% endif %}"
             >
               {{ item }}

@@ -2,7 +2,7 @@ from django.contrib import admin
 from mptt.admin import MPTTModelAdmin, DraggableMPTTAdmin
 
 from advertisement.models import Advertisement,  Category, Region, PhotoAdvertisement, \
-     FieldSet, Field, Spisok, Element, ElementTwo, Store
+     Field, Spisok, Element, ElementTwo, Store
 
 
 class AdvertisementAdmin(admin.ModelAdmin):
@@ -43,7 +43,6 @@ admin.site.register(Advertisement, AdvertisementAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Region, RegionAdmin)
 admin.site.register(PhotoAdvertisement)
-admin.site.register(FieldSet)
 admin.site.register(Field)
 admin.site.register(Spisok)
 admin.site.register(Element)

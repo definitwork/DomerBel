@@ -1,7 +1,6 @@
 import calendar
 from datetime import datetime, timedelta
 
-from PIL import Image, ImageDraw, ImageFont
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils.timezone import make_aware
@@ -9,11 +8,12 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 from django.conf import settings
 
+from .utils_for_models import add_watermark_to_photo, upload_to, unique_slugify
 from users.validators import validate_phone
 
 
 class PhotoAdvertisement(models.Model):
-    photo = models.ImageField(upload_to='images', verbose_name='Фото')
+    photo = models.ImageField(upload_to=upload_to, verbose_name='Фото')
     advertisement = models.ForeignKey('Advertisement', on_delete=models.CASCADE, verbose_name='Фотография')
 
     class Meta:
@@ -25,20 +25,12 @@ class PhotoAdvertisement(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        photo = Image.open(self.photo.path)
-        draw = ImageDraw.Draw(photo)
-        font = ImageFont.truetype("static/fonts/arial/arial.ttf", 42)
-        width, height = photo.size
-        myword = "ДОМер.бел"
-        # margin = 20
-        # textwidth, textheight = draw.textsize(myword, font)
-        x = width - 10
-        y = height - 15
-        draw.text((x, y), myword, (250, 252, 252, 1), font=font, anchor='rb')
-        photo.save(self.photo.path)
+        photo = add_watermark_to_photo(self.photo.path)
+        photo.save(self.photo.path, "WebP")
+
 
 class Advertisement(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     article = models.CharField(max_length=255, blank=True, null=True, verbose_name="Артикул")
     title = models.CharField(max_length=255, verbose_name='Заголовок')
     price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, default=0, verbose_name='Цена')
@@ -46,14 +38,14 @@ class Advertisement(models.Model):
     bearer = models.CharField(max_length=50, choices=[('Частное лицо', 'Частное лицо'), ('Компания', 'Компания')],
                               verbose_name='Податель')
     region = models.ForeignKey('Region', on_delete=models.CASCADE, verbose_name='Регион, город, район')
-    preview_image = models.ImageField(upload_to='images', default='default/no_image.jpg',
-                                      verbose_name='Главная фотография')
+    preview_image = models.ImageField(upload_to=upload_to, verbose_name='Главная фотография',
+                                      blank=True, null=True)
     counter_views = models.IntegerField(default=0, verbose_name='Счетчик просмотров')
     contact_name = models.CharField(max_length=255, verbose_name='Контактное лицо')
     phone_num = models.CharField(max_length=255, verbose_name='Телефон', validators=[validate_phone])
     email = models.EmailField(verbose_name='E-Mail')
     store = models.ForeignKey('Store', on_delete=models.CASCADE, blank=True, null=True, verbose_name="Магазин")
-    slug = models.SlugField(unique=True, verbose_name='URL')
+    slug = models.SlugField(unique=True, blank=True, verbose_name='URL')
     date_of_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания объявления')
     date_of_deactivate = models.DateTimeField(blank=True, null=True, verbose_name='Дата деактивации объявления')
     moderated = models.BooleanField(default=False, verbose_name='Прошло модерацию')
@@ -78,7 +70,12 @@ class Advertisement(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.preview_image:
+            photo = add_watermark_to_photo(self.preview_image.path)
+            photo.save(self.preview_image.path, "WebP")
         self.date_of_deactivate = make_aware(datetime.now() + timedelta(days=180))
+        self.slug = unique_slugify(self, self.title)
         super(Advertisement, self).save(*args, **kwargs)
 
 
@@ -101,7 +98,7 @@ class Category(MPTTModel):
 
     def __str__(self):
         return self.title
-    
+
     def get_absolute_url(self): # для карты сайта sitemap.xml
         return "/people/%i/" % self.id
 
@@ -122,19 +119,6 @@ class Region(MPTTModel):
 
     def __str__(self):
         return self.area
-
-
-class FieldSet(models.Model):
-    title = models.CharField(max_length=255, verbose_name='Заголовок FieldSet')
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Связь с категориями')
-    fields = models.ManyToManyField('Field', verbose_name='Связь мм с Fields')
-
-    class Meta:
-        verbose_name = 'Набор полей'
-        verbose_name_plural = 'Набор полей'
-
-    def __str__(self):
-        return self.title
 
 
 class Field(models.Model):

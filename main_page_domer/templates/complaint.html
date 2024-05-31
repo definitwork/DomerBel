@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/base_advertisement_style.css' %}">
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/feedback.css' %}">
+{% endblock %}
+{% block nav_title %}
+    <div class="nav_category_title">
+        <p>
+            Жалоба на объявление
+        </p>
+    </div>
+{% endblock %}
+{% block find %}
+{% endblock %}
+{% block content %}
+<title>Жалоба на объявление</title>
+<div class="line"></div>
+<div class="wrapper">
+    <div class="container">
+        <section class="send_message_for_feedback">
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <div class="success-message">{{ message }}</div>
+                    <script>
+                        setTimeout(function() {
+                            let successMessage = document.querySelector('.success-message');
+                            successMessage.style.display = 'none';
+                        }, 5000);
+                    </script>
+                {% endif %}
+            {% endfor %}
+            <form class="feedback_form" method="POST" novalidate>
+                <p class="feedback_title">Заполните форму для отправки жалобы на объявление:</p>
+                <p class="feedback_title">ID: {{ advertisement.id }}, размещено {{ advertisement.date_of_create }}. {{ advertisement.title }}</p>
+                {% csrf_token %}
+                <div class="feedback_email">
+                    <label class="label_field"><span>*</span>{{ complaint_form.email.label }}</label>
+                    <p>{{ complaint_form.email }}</p>
+                    {% if complaint_form.email.errors %}
+                        {{ complaint_form.email.errors }}
+                    {% endif %}
+                </div>
+                <div class="feedback_subject">
+                    <label class="label_field"><span>*</span>{{ complaint_form.reason.label }}</label>
+                    <p>{{ complaint_form.reason }}</p>
+                    {% if complaint_form.reason.errors %}
+                        {{ complaint_form.reason.errors }}
+                    {% endif %}
+                </div>
+                <div class="feedback_message">
+                    <label class="label_field"><span>*</span>{{ complaint_form.text.label }}</label>
+                    <p>{{ complaint_form.text }}</p>
+                    {% if complaint_form.text.errors %}
+                        {{ complaint_form.text.errors }}
+                    {% endif %}
+                </div>
+                <div class="feedback_recaptcha">
+                    <label class="label_field"><span>*</span>Подтвердите, что вы человек:</label>
+                    <div class="g-recaptcha" data-sitekey="6LesQF0pAAAAAACYsgZsOAnwA_olJtct3zKAF7gv"></div>
+                </div>
+                <button class="execute_button">Отправить</button>
+            </form>
+        </section>
+    </div>
+</div>
+{% endblock %}

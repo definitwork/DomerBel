@@ -2,23 +2,26 @@ from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.db.models import Count
 from django.http import JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
+from django.urls import reverse
 
-from advertisement.models import Region, Category, Advertisement, Store
 from advertisement.forms import StoreForm
-from .forms import LoginForm, RegisterForm, EditContactDataForm, ChangePasswordForm
-from .models import User
+from advertisement.models import Region, Category, Advertisement, Store
+from .models import User, Chat, Message
+from .forms import LoginForm, RegisterForm, EditContactDataForm, ChangePasswordForm, RegisterFormEntity, MessageForm
 
 
 def get_personal_account_page(request):
     """ Выводит все активные объявления пользователя в ЛК"""
-    ads = Advertisement.objects.filter(author=request.user, is_active=True).select_related('category', 'region').all().order_by('-date_of_create')
+    ads = Advertisement.objects.filter(author=request.user, is_active=True).select_related('category',
+                                                                                           'region').all().order_by(
+        '-date_of_create')
     active_ads_quantity = ads.count()
     inactive_ads_quantity = Advertisement.objects.filter(author=request.user, is_active=False).count()
     locations = Region.objects.filter(type='Область')
     category_list = Category.objects.filter(level__lte=1)
-
 
     paginator = Paginator(ads, 20)
     page_number = request.GET.get("page")
@@ -59,7 +62,9 @@ def search_of_ads_in_personal_account(request):
     if add_id != "":
         dict_for_filter.update({"id": add_id})
 
-    ads = Advertisement.objects.filter(author=request.user, **dict_for_filter).select_related('category', 'region').all().order_by('-date_of_create')
+    ads = Advertisement.objects.filter(author=request.user, **dict_for_filter).select_related('category',
+                                                                                              'region').all().order_by(
+        '-date_of_create')
     all_ads_quantity = ads.count()
     locations = Region.objects.filter(type='Область')
     category_list = Category.objects.filter(level__lte=1)
@@ -80,7 +85,9 @@ def search_of_ads_in_personal_account(request):
 
 def get_personal_account_inactive_adds_page(request):
     """ Выводит все неактивные объявления пользователя в ЛК"""
-    ads = Advertisement.objects.filter(author=request.user, is_active=False).select_related('category', 'region').all().order_by('-date_of_create')
+    ads = Advertisement.objects.filter(author=request.user, is_active=False).select_related('category',
+                                                                                            'region').all().order_by(
+        '-date_of_create')
     inactive_ads_quantity = ads.count()
     active_ads_quantity = Advertisement.objects.filter(author=request.user, is_active=True).count()
     locations = Region.objects.filter(type='Область')
@@ -150,38 +157,6 @@ def get_user_data_page(request):
                'category_list': category_list
                }
     return render(request, 'personal_account/user_data.html', context)
-
-
-def get_incoming_page(request):
-    category_list = Category.objects.filter(level__lte=1)
-    context = {
-        "category_list": category_list,
-    }
-    return render(request, 'personal_account/incoming_messages.html', context)
-
-
-def get_outgoing_page(request):
-    category_list = Category.objects.filter(level__lte=1)
-    context = {
-        "category_list": category_list,
-    }
-    return render(request, 'personal_account/outgoing_messages.html', context)
-
-
-def get_sent_page(request):
-    category_list = Category.objects.filter(level__lte=1)
-    context = {
-        "category_list": category_list,
-    }
-    return render(request, 'personal_account/sent_messages.html', context)
-
-
-def get_admin_message_page(request):
-    category_list = Category.objects.filter(level__lte=1)
-    context = {
-        "category_list": category_list,
-    }
-    return render(request, 'personal_account/admin_message.html', context)
 
 
 # Сохранение экземпляра нового магазина через форму
@@ -286,6 +261,92 @@ def delete_store(request, store_id):
     return render(request, 'personal_account/delete_store.html', context)
 
 
+@login_required
+def get_all_dialogs(request):
+    """ Показывает все диалоги пользователя в ЛК """
+    category_list = Category.objects.filter(level__lte=1)
+    chats = Chat.objects.filter(members__in=[request.user.id])
+    context = {
+        "category_list": category_list,
+        "user_profile": request.user,
+        "chats": chats
+    }
+    return render(request, 'personal_account/dialogs.html', context)
+
+
+@login_required
+def create_dialog(request, user_id, recipient_id):
+    """ Создание нового диалога """
+    subject = request.GET.get("subject")
+    chats = Chat.objects.filter(members__in=[user_id, recipient_id], type=Chat.DIALOG, subject=subject).annotate(
+        c=Count('members')).filter(c=2)
+    if chats.count() == 0:
+        chat = Chat.objects.create(subject=subject)
+        chat.members.add(request.user)
+        chat.members.add(recipient_id)
+    else:
+        chat = chats.first()
+    return redirect(reverse('users:messages', kwargs={'chat_id': chat.id}))
+
+
+@login_required
+def view_message(request, chat_id):
+    # Показывает все сообщения внутри открытого диалога
+    if request.method == "GET":
+        category_list = Category.objects.filter(level__lte=1)
+        try:
+            chat = Chat.objects.get(id=chat_id)
+            if request.user in chat.members.all():
+                chat.message_set.filter(is_read=False).exclude(author=request.user).update(is_read=True)
+            else:
+                chat = None
+        except Chat.DoesNotExist:
+            chat = None
+        context = {
+            "category_list": category_list,
+            "chat": chat,
+            "form": MessageForm()
+        }
+        return render(request, 'personal_account/messages_in_dialog.html', context)
+
+    # Добавляет новое сообщение в открытый диалог
+    if request.method == "POST":
+        form = MessageForm(data=request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.chat_id = chat_id
+            message.author = request.user
+            message.save()
+        context = {'chat_id': chat_id}
+        return redirect(reverse('users:messages', kwargs=context))
+
+
+def delete_dialogs(request):
+    """ Удаление выбранного диалога в ЛК """
+    if request.method == "POST":
+        if 'delete_dialogs' in request.POST:
+            selected_dialogs = request.POST.getlist('dialog_checkbox')
+            dialogs = Chat.objects.filter(id__in=selected_dialogs)
+            for dialog in dialogs:
+                dialog.message_set.all().delete()
+                dialog.delete()
+            messages.success(request, "Выбранные диалоги удалены!")
+            return redirect('users:dialogs')
+
+
+def delete_user_message(request, message_id, chat_id):
+    """ Удаление сообщения пользователя в открытом диалоге """
+    if request.method == "POST":
+        if 'delete_message' in request.POST:
+            message = get_object_or_404(Message, id=message_id)
+            message.delete()
+            messages.success(request, "Сообщение удалено!")
+
+    context = {'chat_id': chat_id}
+    return redirect(reverse('users:messages', kwargs=context))
+
+
+
 def logout_view(request):
     logout(request)
     return redirect('home')
@@ -307,17 +368,34 @@ def login_view(request):
             return JsonResponse({'errors': 1})
 
 
-def register_view(request):
+def register_view_individual(request):
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
+        form_individual = RegisterForm(request.POST)
+        if form_individual.is_valid():
             user = User()
-            user.first_name = form.cleaned_data.get('name')
-            user.phone_number = form.cleaned_data.get('phone')
-            user.email = form.cleaned_data.get('email')
-            user.set_password(form.cleaned_data.get('password'))
-            user.set_password(form.cleaned_data.get('password2'))
+            user.first_name = form_individual.cleaned_data.get('name')
+            user.phone_number = form_individual.cleaned_data.get('phone')
+            user.email = form_individual.cleaned_data.get('email')
+            user.set_password(form_individual.cleaned_data.get('password'))
+            user.set_password(form_individual.cleaned_data.get('password2'))
             user.save()
             return JsonResponse({'success': True})
         else:
-            return JsonResponse({'errors': form.errors})
+            return JsonResponse({'errors': form_individual.errors})
+
+
+def register_view_entity(request):
+    if request.method == 'POST':
+        form_entity = RegisterFormEntity(request.POST)
+        if form_entity.is_valid():
+            user = User()
+            user.first_name = form_entity.cleaned_data.get('name')
+            user.entity = True
+            user.phone_number = form_entity.cleaned_data.get('phone')
+            user.email = form_entity.cleaned_data.get('email')
+            user.set_password(form_entity.cleaned_data.get('password'))
+            user.set_password(form_entity.cleaned_data.get('password2'))
+            user.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'errors': form_entity.errors})
