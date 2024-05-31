@@ -4,7 +4,7 @@ if(!localStorage.getItem("sortType")) {
     localStorage.setItem("sortType", "default__item")
 }
 
-const type = ['second__item','default__item', 'third__item']
+const type = ['second__item','default__item']
 function setSortIcon() {
     sortTypeItem.forEach(item => {
         item.style.opacity = '1'

@@ -13,7 +13,7 @@
     & .advertisement__list-item-img {
         display: block;
         max-width: 180px;
-        max-height: 180px;
+        max-height: 140px;
         & img {
             width: 100%;
             height: 100%;
@@ -23,8 +23,10 @@
     }
     
     & .advertisement__list-item-about{
+        flex: 1 1 auto;
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         gap: 5px;
         position: relative;
     
@@ -87,6 +89,8 @@
     & .advertisement__list-item {
         display: flex;
         flex-direction: column;
+        height: 100%;
+        justify-content: space-between;
         gap: 10px;
         padding: 8px;
         border: 1px solid $gray;
@@ -100,7 +104,7 @@
     & .advertisement__list-item-img {
         display: block;
         & img {
-            max-height: 180px;
+            max-height: 140px;
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -161,89 +165,6 @@
     }
 }
 
-.third__item {
-    flex: 1 1 500px;
-
-    & ~.vip__wrap {
-        flex: 0 0 250px;
-    }
-
-    & .advertisement__list-item {
-        padding: 25px 10px;
-    }
-
-    & .advertisement__list-item-img {
-       display: none;
-    }
-
-    & .advertisement__list-item-about {
-        display: flex;
-        gap: 10px;
-        position: relative;
-    }
-    & .advertisement__list-item-action {
-        order: 1;
-        display: flex;
-        align-items: flex-end;
-
-        & li {
-            width: 18px;
-            height: 18px;
-            & img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                object-position: center;
-            }
-        }
-    }
-
-    & .advertisement__list-item-title{
-        order: 2;
-
-        & a {
-            @include fonts($mainColor, 18px, 600);
-            line-height: 24px;
-
-            &:hover {
-                color: $colorHover;
-            }
-        }
-    }
-
-    & .advertisement__list-item-about-text-list {
-        order: 3;
-
-        & li {
-            @include fonts(gray, 14px, 400);
-            &:nth-child(1) {
-                position: absolute;
-                left: 220px;
-                bottom: -18px;
-            }
-
-            &:nth-child(2) {
-                display: none;
-            }
-
-            &:nth-child(3) {
-                text-align: center;
-            }
-            
-            &:nth-child(4) {
-                position: absolute;
-                left: 80px;
-                bottom: -18px;
-            }
-        }
-    }
-
-    & .advertisement__list-item-price{
-        order: 4;
-        @include fonts($defaultColor, 16px, 500);
-        white-space: nowrap;
-    }
-}
 
 @media (max-width: 992px) {
 
@@ -256,36 +177,6 @@
     .second__item {
         & ~.vip__wrap {
             flex: 1 0 250px;
-        }
-    }
-
-    .third__item {
-        & ~.vip__wrap {
-            flex: 1 0 250px;
-        }
-
-        & .advertisement__list-item {
-            padding: 25px 5px
-        }
-
-        & .advertisement__list-item-title {
-            & a {
-                @include fonts($mainColor, 16px, 600);
-            }
-        }
-
-        & .advertisement__list-item-about {
-            gap: 5px;
-        }
-        
-        & .advertisement__list-item-about-text-list {
-            & li {
-                @include fonts(gray, 14px, 400);
-
-                &:nth-child(1) {
-                    left: 220px;
-                }
-            }
         }
     }
 }
