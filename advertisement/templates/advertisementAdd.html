@@ -67,9 +67,9 @@
     </section>
     <section class="advertisement">
         <ul class="advertisement__list">
-            {% for card in page_obj %}
+            {% for card in page_obj|dictsortreversed:"raise_in_search" %}
                 <li>
-                    <article class="advertisement__list-item active__item">
+                    <article class="advertisement__list-item {% if card.highlight_ad %} active__item {% endif %}">
                         <a href="{% url 'advertisement_details' card.id %}" class="advertisement__list-item-img">
                             <img src="{% if card.preview_image %} {{ card.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
                                  alt="{% if card.preview_image %} {{ card.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
@@ -106,24 +106,31 @@
                                 </li>
                             </ul>
                             <ul class="advertisement__list-item-action">
+                                {% if card.special_accommodation %}
                                 <li class="advertisement__list-item-action-item">
                                     <img src="{% static "img/special.png" %}" alt="">
                                 </li>
+                                {% endif %}
+                                {% if card.vip %}
                                 <li class="advertisement__list-item-action-item">
                                     <img src="{% static "img/VIP.png" %}" alt="">
                                 </li>
+                                {% endif %}
+                                {% if card.highlight_ad %}
                                 <li class="advertisement__list-item-action-item">
                                     <img src="{% static "img/highlight.png" %}" alt="">
                                 </li>
+                                {% endif %}
+                                {% if card.raise_in_search %}
                                 <li class="advertisement__list-item-action-item">
                                     <img src="{% static "img/up.png" %}" alt="">
                                 </li>
+                                {% endif %}
                             </ul>
                         </div>
                     </article>
                 </li>
             {% endfor %}
-
         </ul>
         <div class="vip__wrap">
             <h2 class="vip__title">

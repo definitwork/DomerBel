@@ -28,7 +28,7 @@ def get_advertisement_page(request):
     advertisement_queryset = Advertisement.objects.filter(is_active=True,
                                                           moderated=True, **region_filter).select_related(
         'category',
-        'region').order_by(order_by)
+        'region').order_by("-raise_in_search", order_by)
     category_queryset = Category.objects.add_related_count(Category.objects.root_nodes(),
                                                            Advertisement,
                                                            'category',
