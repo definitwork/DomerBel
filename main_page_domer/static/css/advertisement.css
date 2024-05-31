@@ -113,6 +113,10 @@
   color: red;
 }
 
+.advertisement__list {
+  flex: 0 1 680px;
+}
+
 .default__item .advertisement__list-item {
   display: flex;
   gap: 40px;
