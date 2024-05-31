@@ -11,6 +11,7 @@ function setSortIcon() {
     })
     sortTypeItem[type.findIndex(i => i == localStorage.getItem("sortType"))].style.opacity = '0.5'
 }
+
 setSortIcon()
 
 function setClassAdvertisementList() {
