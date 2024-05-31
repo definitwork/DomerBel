@@ -4,13 +4,13 @@ from .models import Region
 
 
 def sorted_by_number(number):
-    if (number == '30'
-            or number == '60'
-            or number == '90'):
+    if (number == '3'
+            or number == '6'
+            or number == '9'):
         sort_for_paginator = int(number)
         return sort_for_paginator
     else:
-        return 30
+        return 3
 
 
 def variables_for_paginator(queryset, page=1, elements=30):
