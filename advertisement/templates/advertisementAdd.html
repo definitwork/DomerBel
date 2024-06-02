@@ -167,14 +167,15 @@
         </ul>
 
         <div class="vip__wrap">
-            <h2 class="vip__title">
-                VIP объявления
-            </h2>
             <ul class="vip__list">
                 {% for vip in vip_advertisement %}
                     <li>
+                        <h2 class="vip__title">
+                            VIP объявления
+                        </h2>
                         <article class="vip__list-item">
-                            <a href="{% url 'advertisement_details' vip.id %}">
+                            {% comment %} {% url 'advertisement_details' vip.id %} {% endcomment %}
+                            <a href="#">
                                 <div class="vip__list-item-img">
                                     <img src="{% if vip.preview_image %} {{ vip.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
                                          alt="{% if vip.preview_image %} {{ vip.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">

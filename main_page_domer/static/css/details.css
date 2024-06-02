@@ -22,6 +22,10 @@
   background: url(../img/sliderArrow.svg) no-repeat center;
 }
 
+.crumbs ~ .filter {
+  padding: 0;
+}
+
 .crumbs__wrapper {
   padding: 30px 0;
 }
@@ -50,6 +54,65 @@
 }
 .crumbs__list-item a:hover {
   color: red;
+}
+
+.similar {
+  padding-top: 15px;
+}
+
+.similar__title {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.similar__list {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.similar__list-item a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.similar__list-item-img {
+  max-width: 180px;
+  max-height: 180px;
+  border: 1px solid #D4D4D4;
+}
+.similar__list-item-img img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+}
+
+.similar__list-title {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #3077a0;
+  font-size: 14px;
+}
+
+.similar__list-price {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 14px;
+  text-align: center;
 }
 
 .details__title {
@@ -213,7 +276,7 @@
   font-weight: 400;
   font-style: normal;
   color: black;
-  font-size: 13px;
+  font-size: 14px;
   margin-bottom: 10px;
 }
 
@@ -291,7 +354,7 @@
   font-weight: 400;
   font-style: normal;
   color: black;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .details__advertisement-about-list-item-action p {
@@ -299,7 +362,7 @@
   font-weight: 400;
   font-style: normal;
   color: #3077a0;
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
 }
 .details__advertisement-about-list-item-action p:hover {
@@ -339,7 +402,7 @@
   font-weight: 400;
   font-style: normal;
   color: black;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .details__advertisement-additional-description-list-item-value {
@@ -347,7 +410,7 @@
   font-weight: 400;
   font-style: normal;
   color: black;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .details__advertisement-additional-description-list-item-value-price {
@@ -355,7 +418,7 @@
   font-weight: 400;
   font-style: normal;
   color: red;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .details__advertisement-about-description {
@@ -363,7 +426,7 @@
   font-weight: 400;
   font-style: normal;
   color: black;
-  font-size: 13px;
+  font-size: 14px;
   white-space: pre-line;
   margin-bottom: 20px;
 }
@@ -398,7 +461,7 @@
   font-weight: 400;
   font-style: normal;
   color: #3077a0;
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
 }
 .details__advertisement-add-favorites p:hover {
@@ -410,7 +473,7 @@
   font-weight: 400;
   font-style: normal;
   color: #3077a0;
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
 }
 .details__advertisement-add-report:hover {
@@ -445,7 +508,7 @@
   font-weight: 400;
   font-style: normal;
   color: #3077a0;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .details__advertisement-add-share-list-drop {
@@ -483,7 +546,7 @@
   font-weight: 400;
   font-style: normal;
   color: black;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 24px;
 }
 .details__advertisement-add-share-list-drop-item a svg {
@@ -516,7 +579,7 @@
   font-weight: 400;
   font-style: normal;
   color: black;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .details__advertisement-add-share-list-item-drop-btn-active {

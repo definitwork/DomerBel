@@ -6,8 +6,9 @@
   border-top: 1px solid #D4D4D4;
   padding-top: 5px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   grid-template-rows: 1fr 1fr 1fr;
+  align-items: center;
   gap: 5px;
 }
 
@@ -63,11 +64,18 @@
   align-items: center;
   gap: 5px;
 }
-.sorted__output p {
+.sorted__output .active {
   font-family: "Trebuchet MS", sans-serif;
   font-weight: 400;
   font-style: normal;
   color: black;
+  font-size: 14px;
+}
+.sorted__output a {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: gray;
   font-size: 14px;
 }
 
@@ -321,11 +329,11 @@
   flex-direction: column;
   gap: 15px;
 }
-.vip__list li {
+
+.vip__list-item {
   padding: 15px 30px;
   border: 1px solid #ff6163;
 }
-
 .vip__list-item a {
   display: flex;
   flex-direction: column;
@@ -361,6 +369,40 @@
   font-style: normal;
   color: black;
   font-size: 13px;
+}
+
+.crumbs ~ .filter {
+  padding: 0;
+}
+
+.crumbs__wrapper {
+  padding: 30px 0;
+}
+
+.crumbs__list {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.crumbs__list-item-dots {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 14px;
+}
+
+.crumbs__list-item a {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 14px;
+}
+.crumbs__list-item a:hover {
+  color: red;
 }
 
 .advertisement {

@@ -53,12 +53,12 @@
       {% endfor %}
     </ul>
     <div class="recent__announcement-list-vip-wrap vip__wrap">
-      <h2 class="vip__title">
-        VIP объявления
-      </h2>
       <ul class="recent__announcement-list-vip vip__list">
           {% for vip in vip_advertisement %}
         <li>
+          <h2 class="vip__title">
+            VIP объявления
+          </h2>
           <article class="recent__announcement-list-vip-item vip__list-item">
             <a href="{% url 'advertisement_details' vip.id %}">
               <div class="recent__announcement-list-vip-item-img vip__list-item-img">
