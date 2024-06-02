@@ -104,7 +104,8 @@ def save_advertisement(request):
         return Response({"created": "объявление успешно создано"}, status=status.HTTP_201_CREATED)
     else:
         raise serializers.ValidationError(
-            {"error_additional": serializer_additional_error.data, "error": serializer.errors})
+            {"error_additional": serializer_additional_error.data, "error": serializer.errors}
+        )
 
 
 

@@ -200,3 +200,12 @@ def editing_an_ad(request, id):
         'additional_values_two': additional_values_two,
     }
     return render(request, 'editing_an_ad.html', context)
+
+
+# def import_words(request):
+#     with open('./bad_words.txt', "r") as file:
+#         one_string_words = file.readline()
+#         words_list = one_string_words.split(", ")
+#         for w in words_list:
+#             BadWords.objects.create(word=w)
+#     return render(request, template_name='import_words.html')
