@@ -361,9 +361,9 @@
 
 .vip__list-item-img {
   max-width: 187px;
-  max-height: 187px;
 }
 .vip__list-item-img img {
+  max-height: 187px;
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
@@ -526,9 +526,9 @@
 
 .vip__list-item-img {
   max-width: 187px;
-  max-height: 187px;
 }
 .vip__list-item-img img {
+  max-height: 187px;
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
