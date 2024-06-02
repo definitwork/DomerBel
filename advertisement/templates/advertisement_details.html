@@ -34,21 +34,9 @@
                                 {#                                         alt="{% static 'img/arrow_left.png' %}">#}
                                 {#                                </div>#}
                                 <div class="slider-for_image">
-                                    <img src="{{ advertisement.preview_image.url }}"
-                                         alt="{{ advertisement.preview_image.url }}">
+                                    <img src="{% if cart.preview_image %} {{ cart.preview_image.url }} {% else %}{% static 'no_image.jpg' %}{% endif %}" alt="{% if cart.preview_image %} {{ cart.preview_image.url }} {% else %}{% static 'no_image.jpg' %}{% endif %}">
                                 </div>
-                                <div class="slider-for_image">
-                                    <img src="{{ advertisement.preview_image.url }}"
-                                         alt="{{ advertisement.preview_image.url }}">
-                                </div>
-                                <div class="slider-for_image">
-                                    <img src="{{ advertisement.preview_image.url }}"
-                                         alt="{{ advertisement.preview_image.url }}">
-                                </div>
-                                <div class="slider-for_image">
-                                    <img src="{{ advertisement.preview_image.url }}"
-                                         alt="{{ advertisement.preview_image.url }}">
-                                </div>
+
                                 {#                                <div class="slider-for_arrow_next">#}
                                 {#                                    <img src="{% static 'img/arrow_right.png' %}"#}
                                 {#                                         alt="{% static 'img/arrow_right.png' %}">#}
@@ -56,14 +44,6 @@
                             </div>
                         </div>
                         <div class="slider-nav">
-                            <div>
-                                <img src="{{ advertisement.preview_image.url }}"
-                                     alt="{{ advertisement.preview_image.url }}">
-                            </div>
-                            <div>
-                                <img src="{{ advertisement.preview_image.url }}"
-                                     alt="{{ advertisement.preview_image.url }}">
-                            </div>
                         </div>
                     </div>
                     <div class="details__options">
@@ -423,7 +403,6 @@
                         <ul class="same_advertisements_cards_list">
                             <li>
                                 <div class="same_advertisements_card_image">
-                                    <img src="{{ advertisement.preview_image.url }}" alt="">
                                 </div>
                                 <div class="same_advertisement_card_title">
                                     <a href="#">
@@ -434,7 +413,6 @@
                             </li>
                             <li>
                                 <div class="same_advertisements_card_image">
-                                    <img src="{{ advertisement.preview_image.url }}" alt="">
                                 </div>
                                 <div class="same_advertisement_card_title">
                                     <a href="#">
@@ -445,7 +423,6 @@
                             </li>
                             <li>
                                 <div class="same_advertisements_card_image">
-                                    <img src="{{ advertisement.preview_image.url }}" alt="">
                                 </div>
                                 <div class="same_advertisement_card_title">
                                     <a href="#">
@@ -456,7 +433,6 @@
                             </li>
                             <li>
                                 <div class="same_advertisements_card_image">
-                                    <img src="{{ advertisement.preview_image.url }}" alt="">
                                 </div>
                                 <div class="same_advertisement_card_title">
                                     <a href="#">
