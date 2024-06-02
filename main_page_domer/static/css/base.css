@@ -289,10 +289,10 @@ header {
   flex: 1 1 auto;
 }
 .main__search-form-item-label-wrap label {
+  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 10px;
-  flex: 1 1 auto;
 }
 .main__search-form-item-label-wrap label input {
   flex: initial;

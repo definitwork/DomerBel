@@ -2,6 +2,7 @@
 @import '../../../main_page_domer/static/scss/variables';
 @import './slider';
 @import './crumbs';
+@import './similarAds';
 
 
 .details__title {
@@ -155,7 +156,7 @@
 }
 
 .details__advertisement-options-view {
-    @include fonts($defaultColor, 13px, 400);
+    @include fonts($defaultColor, 14px, 400);
     margin-bottom: 10px;
 }
 .details__advertisement-options-list {
@@ -234,13 +235,13 @@
     gap: 35px;
 
     & p {
-        @include fonts($defaultColor, 13px, 400);
+        @include fonts($defaultColor, 14px, 400);
     }
 }
 
 .details__advertisement-about-list-item-action {
     & p {
-        @include fonts($mainColor, 13px, 400);
+        @include fonts($mainColor, 14px, 400);
         cursor: pointer;
 
         &:hover {
@@ -278,19 +279,19 @@
 }
 
 .details__advertisement-additional-description-list-item-title {
-    @include fonts($defaultColor, 13px, 400);
+    @include fonts($defaultColor, 14px, 400);
 }
 
 .details__advertisement-additional-description-list-item-value {
-    @include fonts($defaultColor, 13px, 400);
+    @include fonts($defaultColor, 14px, 400);
 }
 
 .details__advertisement-additional-description-list-item-value-price{
-    @include fonts($colorHover, 13px, 400);
+    @include fonts($colorHover, 14px, 400);
 }
 
 .details__advertisement-about-description {
-    @include fonts($defaultColor, 13px, 400);
+    @include fonts($defaultColor, 14px, 400);
     white-space: pre-line;
     margin-bottom: 20px;
 }
@@ -320,7 +321,7 @@
 
 .details__advertisement-add-favorites{
     & p {
-        @include fonts($mainColor, 13px, 400);
+        @include fonts($mainColor, 14px, 400);
         cursor: pointer;
 
         &:hover {
@@ -330,7 +331,7 @@
 }
 
 .details__advertisement-add-report {
-    @include fonts($mainColor, 13px, 400);
+    @include fonts($mainColor, 14px, 400);
     cursor: pointer;
 
     &:hover {
@@ -364,7 +365,7 @@
         justify-content: center;
         border-radius: 50%;
         padding-top: 2px;
-        @include fonts($mainColor, 13px, 400);
+        @include fonts($mainColor, 14px, 400);
     }
 }
 
@@ -399,7 +400,7 @@
         height: initial;
 
         & p {
-            @include fonts($defaultColor, 13px, 400);
+            @include fonts($defaultColor, 14px, 400);
             line-height: 24px;
         }
 
@@ -430,7 +431,7 @@
         }
 
         & p {
-        @include fonts($defaultColor, 13px, 400);
+        @include fonts($defaultColor, 14px, 400);
         }
     }
 }

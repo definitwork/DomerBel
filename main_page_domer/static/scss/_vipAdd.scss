@@ -14,14 +14,11 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
-
-    & li {
-        padding: 15px 30px;
-        border: 1px solid $vipBg;
-    }
 }
 
 .vip__list-item {
+    padding: 15px 30px;
+        border: 1px solid $vipBg;
     & a {
         display: flex;
         flex-direction: column;
