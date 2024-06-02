@@ -8,20 +8,21 @@
     <div class="crumbs__wrapper">
       <ul class="crumbs__list">
         <li class="crumbs__list-item">
-          <a href="#"> sdajkfd </a>
+          <a href="{% url 'advertisement' %}"> Все объявления </a>
         </li>
         <li class="crumbs__list-item-dots">...</li>
         <li class="crumbs__list-item">
-          <a href="#"> dfad </a>
+          <a href="{% url 'advertisement' %}?region={{ advertisement.region_id }}"> {{ advertisement.region }} </a>
         </li>
         <li class="crumbs__list-item-dots">...</li>
-        <li class="crumbs__list-item">
-          <a href="#"> adsklgfhasdfsad </a>
+        {% for category_crumb in category_crumbs %}
+          <li class="crumbs__list-item">
+          <a href="{% url 'advertisement_by_category' category_crumb.slug %}"> {{ category_crumb.title }} </a>
         </li>
+            {% if not forloop.last %}
         <li class="crumbs__list-item-dots">...</li>
-        <li class="crumbs__list-item">
-          <a href="#"> k;kaskd;klasjoeqwu </a>
-        </li>
+            {% endif %}
+          {% endfor %}
       </ul>
     </div>
 </section>
@@ -106,7 +107,7 @@
         </div>
         <div class="details__advertisement-options">
           <p class="details__advertisement-options-view">
-            Просмотров:
+            Просмотров: {{ advertisement.counter_views }}
           </p>
           <ul class="details__advertisement-options-list">
             <li class="details__advertisement-options-list-item">
@@ -139,7 +140,7 @@
               <img src="{% static "img/icons/site.png" %}" alt="region">
             </div>
             <p>
-              Московский район
+                {{ advertisement.region }}
             </p>
           </li>
           <li class="details__advertisement-about-list-item">
@@ -147,7 +148,7 @@
               <img src="{% static "img/icons/user.png" %}" alt="user">
             </div>
             <p>
-              Ан Грант
+                {{ advertisement.contact_name }}
             </p>
           </li>
           <li class="details__advertisement-about-list-item details__advertisement-about-list-item-action">
@@ -156,7 +157,7 @@
             </div>
             <p>
               <span>Показать номер телефона</span>
-              <span>+37529232142</span>
+              <span>{{ advertisement.phone_number }}</span>
             </p>
           </li>
           <li class="details__advertisement-about-list-item details__advertisement-about-list-item-action">
@@ -194,9 +195,9 @@
               Добавить в избранное
             </p>
           </div>
-          <p class="details__advertisement-add-report">
+          <a href="{% url 'complaint' advertisement.id %}" class="details__advertisement-add-report">
             Пожаловаться
-          </p>
+          </a>
           <ul class="details__advertisement-add-share-list">
             <li class="details__advertisement-add-share-list-item">
               <a href="#">
@@ -208,7 +209,7 @@
               </a>
             </li>
             <li class="details__advertisement-add-share-list-item">
-              <a href="#">
+              <a href="https://vk.com/share.php?url=http://127.0.0.1:8000{{ advertisement.get_absolute_url|urlencode }}" target="_blank" rel="nofollow noopener" title="ВКонтакте">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                       style="background: #07f;">
                      <path d="M12.878 17.304c-5.411 0-8.695-3.755-8.823-9.994h2.74c.086 4.583 2.171 6.528 3.77 6.925V7.31h2.627v3.954c1.542-.17 3.155-1.97 3.698-3.954h2.584c-.414 2.441-2.17 4.24-3.412 4.983 1.242.6 3.24 2.17 4.011 5.01h-2.84c-.6-1.898-2.07-3.369-4.04-3.569v3.57h-.315Z"

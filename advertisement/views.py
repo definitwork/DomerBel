@@ -1,7 +1,7 @@
 import codecs
 import json
 
-from django.db.models import Q
+from django.db.models import Q, F
 from django.shortcuts import render, get_object_or_404
 
 from .models import Advertisement, Category, Region, Spisok, Element, ElementTwo, Field
@@ -154,14 +154,14 @@ def get_page_place_an_favorites(request):
     return render(request, 'place_an_favorites.html', context)
 
 
-def get_advertisement_details_page(request, id):
+def get_advertisement_details_page(request, slug):
     '''Отдаем страничку с детальным описанием объявления'''
-    advertisement = Advertisement.objects.get(id=id)
-    category_queryset_all = Category.objects.all()
-    category_list = category_queryset_all.filter(level=0)
+    advertisement = Advertisement.objects.filter(slug=slug).prefetch_related("photoadvertisement_set")
+    advertisement.update(counter_views=F("counter_views")+1)
+    category_crumbs = Category.objects.get(id=advertisement[0].category_id).get_ancestors(ascending=False, include_self=True)
     context = {
-        "category_list": category_list,
-        'advertisement': advertisement,
+        'advertisement': advertisement[0],
+        "category_crumbs": category_crumbs,
     }
     return render(request=request,
                   template_name='advertisement_details.html',

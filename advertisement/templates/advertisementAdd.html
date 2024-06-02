@@ -18,7 +18,9 @@
                             <li class="crumbs__list-item">
                                 <a href="{% url 'advertisement' %}?region={{ bread_crumbs.id }}">{{ bread_crumbs.area }}</a>
                             </li>
+                            {% if not forloop.last %}
                             <li class="crumbs__list-item-dots">...</li>
+                            {% endif %}
                         {% endfor %}
                     {% endif %}
                     {% if category_bread_crumbs %}
@@ -26,7 +28,9 @@
                             <li class="crumbs__list-item">
                                 <a href="{% url 'advertisement_by_category' bread_crumbs.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}">{{ bread_crumbs.title }}</a>
                             </li>
+                            {% if not forloop.last %}
                             <li class="crumbs__list-item-dots">...</li>
+                            {% endif %}
                         {% endfor %}
                     {% endif %}
                 </ul>
@@ -103,13 +107,13 @@
             {% for card in page_obj|dictsortreversed:"raise_in_search" %}
                 <li>
                     <article class="advertisement__list-item {% if card.highlight_ad %} active__item {% endif %}">
-                        <a href="{% url 'advertisement_details' card.id %}" class="advertisement__list-item-img">
+                        <a href="{% url 'advertisement_details' card.slug %}" class="advertisement__list-item-img">
                             <img src="{% if card.preview_image %} {{ card.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
                                  alt="{% if card.preview_image %} {{ card.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
                         </a>
                         <div class="advertisement__list-item-about">
                             <h3 class="advertisement__list-item-title">
-                                <a href="{% url 'advertisement_details' card.id %}">
+                                <a href="{% url 'advertisement_details' card.slug %}">
                                     {{ card.title }}
                                 </a>
                             </h3>
@@ -174,7 +178,7 @@
                 {% for vip in vip_advertisement %}
                     <li>
                         <article class="vip__list-item">
-                            <a href="{% url 'advertisement_details' vip.id %}">
+                            <a href="{% url 'advertisement_details' vip.slug %}">
                                 <div class="vip__list-item-img">
                                     <img src="{% if vip.preview_image %} {{ vip.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
                                          alt="{% if vip.preview_image %} {{ vip.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">

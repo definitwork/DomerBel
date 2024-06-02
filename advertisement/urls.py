@@ -8,6 +8,6 @@ urlpatterns = [
     path('advertisement/<slug:category_slug>/', get_advertisement_by_category, name='advertisement_by_category'),
     path('place_an_ad/', get_page_place_an_ad, name='place_an_ad'),
     path('favorites/', get_page_place_an_favorites, name='favorites'),
-    path('advertisement_details/<int:id>/', get_advertisement_details_page, name='advertisement_details'),
+    path('advertisement_details/<str:slug>/', get_advertisement_details_page, name='advertisement_details'),
     path('editing_an_ad/<int:id>/', editing_an_ad, name='editing_an_ad'),
 ]

@@ -27,6 +27,7 @@ def get_main_page(request):
         "vip_advertisement": vip_advertisement,
         "category_list": category_list,
         "regions": regions_queryset,
+        "adaptive_navigation": "Общебелорусская доска объявлений"
     }
     return render(request, 'main.html', context)
 
