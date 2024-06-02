@@ -82,18 +82,11 @@
   align-items: center;
   gap: 5px;
 }
-.sorted__output .active {
-  font-family: "Trebuchet MS", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  color: black;
-  font-size: 14px;
-}
 .sorted__output a {
   font-family: "Trebuchet MS", sans-serif;
   font-weight: 400;
   font-style: normal;
-  color: gray;
+  color: black;
   font-size: 14px;
 }
 
@@ -103,6 +96,7 @@
   gap: 10px;
 }
 .sorted__output-list li {
+  opacity: 0.5;
   border: 1px solid black;
   padding: 5px;
   color: black;

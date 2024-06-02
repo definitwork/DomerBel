@@ -26,9 +26,9 @@
 
 .similar__list-item-img {
     max-width: 180px;
-    max-height: 180px;
     border: 1px solid $gray;
     & img {
+        max-height: 180px;
         width: 100%;
         height: 100%;
         object-fit: cover;

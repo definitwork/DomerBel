@@ -30,11 +30,9 @@
     align-items: center;
     gap: 5px;
 
-    & .active {
-        @include fonts($defaultColor, 14px, 400);
-    }
+
     & a {
-        @include fonts(gray, 14px, 400);
+        @include fonts($defaultColor, 14px, 400);
     }
 }
 
@@ -44,6 +42,7 @@
     gap: 10px;
 
     & li {
+        opacity: 0.5;
         border: 1px solid $defaultColor;
         padding: 5px;
         color: $defaultColor;

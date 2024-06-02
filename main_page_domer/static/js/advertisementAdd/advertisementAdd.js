@@ -1,5 +1,7 @@
 const sortTypeItem = document.querySelectorAll('.sort__type-list-item');
 const advertisementList = document.querySelector('.advertisement__list')
+const sortedBy = document.querySelectorAll('.sorted__output-list-item')
+
 if(!localStorage.getItem("sortType")) {
     localStorage.setItem("sortType", "default__item")
 }
@@ -28,3 +30,21 @@ sortTypeItem.forEach(item => {
         setSortIcon()
     })
 })
+
+
+function getCookie(name) {
+    const cookie = document.cookie.split(';')
+    for(let i of cookie) {
+        const [cookieName, cookieValue] = i.trim().split('=');
+        if(cookieName == name) {
+            return cookieValue
+        }
+    }
+}
+
+const sortedType = ['30', '60', '90'];
+function setSortedBy(sort) {
+    sortedBy[sortedType.findIndex(i => i == sort)].style.opacity = '1'
+}
+
+setSortedBy(getCookie('sort'))
