@@ -1,5 +1,8 @@
 const sortTypeItem = document.querySelectorAll('.sort__type-list-item');
-const advertisementList = document.querySelector('.advertisement__list')
+const advertisementList = document.querySelector('.advertisement__list');
+const sortedOutput = document.querySelectorAll('.sorted__output-list-item');
+const sortedBy = document.querySelectorAll('.sorted__by-list-item div')
+
 if(!localStorage.getItem("sortType")) {
     localStorage.setItem("sortType", "default__item")
 }
@@ -28,3 +31,34 @@ sortTypeItem.forEach(item => {
         setSortIcon()
     })
 })
+
+
+function getCookie(name) {
+    const cookie = document.cookie.split(';')
+    for(let i of cookie) {
+        const [cookieName, cookieValue] = i.trim().split('=');
+        if(cookieName == name) {
+            return cookieValue
+        }
+    }
+}
+
+const sortedType = ['30', '60', '90'];
+function setSortedOutput(sort) {
+    sortedOutput[sortedType.findIndex(i => i == sort)].style.opacity = '1'
+}
+
+setSortedOutput(getCookie('sort'))
+
+const sortBy = ['date_of_create', 'price']
+function setSortBy(sort) {
+    if(sort === '-date_of_create') {
+        sortedBy[0].style.transform = 'rotate(0deg)'
+    }else if (sort === '-price') {
+        sortedBy[1].style.transform = 'rotate(0deg)' 
+    }else {
+        sortedBy[sortBy.findIndex(i => i == sort)].style.transform = 'rotate(180deg)' 
+    }
+}
+
+setSortBy(getCookie('sorted_by'))

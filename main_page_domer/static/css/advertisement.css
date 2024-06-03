@@ -64,18 +64,11 @@
   align-items: center;
   gap: 5px;
 }
-.sorted__output .active {
-  font-family: "Trebuchet MS", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  color: black;
-  font-size: 14px;
-}
 .sorted__output a {
   font-family: "Trebuchet MS", sans-serif;
   font-weight: 400;
   font-style: normal;
-  color: gray;
+  color: black;
   font-size: 14px;
 }
 
@@ -85,6 +78,7 @@
   gap: 10px;
 }
 .sorted__output-list li {
+  opacity: 0.5;
   border: 1px solid black;
   padding: 5px;
   color: black;
@@ -109,7 +103,13 @@
   align-items: center;
   gap: 10px;
 }
-.sorted__by-list li {
+
+.sorted__by-list-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.sorted__by-list-item a {
   font-family: "Trebuchet MS", sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -117,8 +117,21 @@
   font-size: 14px;
   cursor: pointer;
 }
-.sorted__by-list li:hover {
+.sorted__by-list-item a:hover {
   color: red;
+}
+
+.sorted__by-list-item-img {
+  max-width: 15px;
+  max-height: 15px;
+}
+.sorted__by-list-item-img img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
 }
 
 .advertisement__list {
@@ -343,9 +356,9 @@
 
 .vip__list-item-img {
   max-width: 187px;
-  max-height: 187px;
 }
 .vip__list-item-img img {
+  max-height: 187px;
   width: 100%;
   height: 100%;
   -o-object-fit: cover;

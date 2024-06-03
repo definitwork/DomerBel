@@ -17,7 +17,31 @@
     <div class="wrapper">
         <div class="modals">
             {% block modals %}
-            
+            <form class="modals__login">
+                <div class="modals__login-logo-wrap">
+                    <div class="modals__login-logo">
+                        <img src="{% static "img/logo.png" %}" alt="">
+                    </div>
+                    <h2>
+                        Логин
+                    </h2>
+                </div>
+                <fieldset class="modals__login-field">
+                    <input type="text" name="" id="" placeholder="Введите вашу почту">
+                    <input type="password" name="" id="" placeholder="Введите пароль">
+                    <button>
+                        Отправить
+                    </button>
+                </fieldset>
+                <fieldset class="modals__login-action">
+                    <a href="#">
+                        Забыли пароль?
+                    </a>
+                    <a href="#">
+                        Регистрация
+                    </a>
+                </fieldset>
+            </form>
             {% endblock modals %}
         </div>
         <div class="container">
@@ -189,5 +213,6 @@
     {% block js %}
     {% endblock %}
     <script src="{% static "js/main/search.js" %}"></script>
+    <script src="{% static "js/main/login.js" %}"></script>
   </body>
 </html>
