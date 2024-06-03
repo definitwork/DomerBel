@@ -48,6 +48,7 @@ class Advertisement(models.Model):
     store = models.ForeignKey('Store', on_delete=models.CASCADE, blank=True, null=True, verbose_name="Магазин")
     slug = models.SlugField(unique=True, blank=True, verbose_name='URL')
     date_of_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания объявления')
+    date_of_change = models.DateTimeField(auto_now=True, verbose_name='Дата изменения объявления')
     date_of_deactivate = models.DateTimeField(blank=True, null=True, verbose_name='Дата деактивации объявления')
     moderated = models.BooleanField(default=False, verbose_name='Прошло модерацию')
     is_active = models.BooleanField(default=False, verbose_name='Объявление активно')

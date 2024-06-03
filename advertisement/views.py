@@ -158,10 +158,15 @@ def get_advertisement_details_page(request, slug):
     '''Отдаем страничку с детальным описанием объявления'''
     advertisement = Advertisement.objects.filter(slug=slug).prefetch_related("photoadvertisement_set")
     advertisement.update(counter_views=F("counter_views")+1)
-    category_crumbs = Category.objects.get(id=advertisement[0].category_id).get_ancestors(ascending=False, include_self=True)
+    category_crumbs = Category.objects.get(id=advertisement[0].category_id).get_ancestors(ascending=False,
+                                                                                          include_self=True)
+    similar_advertisement = Advertisement.objects.filter(moderated=True,
+                                                         is_active=True,
+                                                         category=advertisement[0].category).exclude(id=advertisement[0].id)
     context = {
-        'advertisement': advertisement[0],
+        "advertisement": advertisement[0],
         "category_crumbs": category_crumbs,
+        "similar_advertisement": similar_advertisement
     }
     return render(request=request,
                   template_name='advertisement_details.html',

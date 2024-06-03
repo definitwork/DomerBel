@@ -465,21 +465,23 @@
     Похожие объявления
   </h2>
   <ul class="similar__list">
+      {% for advertisement in similar_advertisement %}
     <li>
       <article class="similar__list-item">
-        <a href="#">
+        <a href="{% url "advertisement_details" advertisement.slug %}">
           <div class="similar__list-item-img">
-            <img src="{% static "img/ads_img/1.jpg" %}" alt="">
+            <img src="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
           </div>
           <h3 class="similar__list-title">
-            Продам коня
+              {{ advertisement.title }}
           </h3>
         </a>
         <p class="similar__list-price">
-          500 тыщ рублей
+            {{ advertisement.price }}
         </p>
       </article>
     </li>
+      {% endfor %}
   </ul>
 </section>
 {% endblock content %}
