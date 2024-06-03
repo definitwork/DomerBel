@@ -95,8 +95,18 @@
           <ul class="details__advertisement-view-list-img">
             <li class="details__advertisement-view-list-img-item">
               <img src="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
-                                 alt="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
+              alt="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
             </li>
+            {% if advertisement.video_link %}
+            <li class="details__advertisement-view-list-img-item">
+              <iframe width="100%" height="100%" src="https://www.youtube.com/embed/{{ advertisement.video_link|cut:"https://www.youtube.com/watch?v=" }}"
+               title="YouTube video player"
+                frameborder="0"
+                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                 referrerpolicy="strict-origin-when-cross-origin" 
+                 allowfullscreen></iframe>
+            </li>
+            {% endif %}
             {% for photo in advertisement.photoadvertisement_set.all %}
             <li class="details__advertisement-view-list-img-item">
               <img data-lazy="{{ photo.photo.url }}" alt="{{ photo.photo.url }}">
