@@ -89,11 +89,17 @@
                     <a href="?date={{ date }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
                         Дата
                     </a>
+                    <div class="sorted__by-list-item-img">
+                        <img src="{% static "img/icons/arrowDown.svg" %}" alt="">
+                    </div>
                 </li>
                 <li class="sorted__by-list-item">
                     <a href="?price={{ date }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
                         Цена
                     </a>
+                    <div class="sorted__by-list-item-img">
+                        <img src="{% static "img/icons/arrowDown.svg" %}" alt="">
+                    </div>
                 </li>
             </ul>
         </div>
