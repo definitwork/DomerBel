@@ -31,9 +31,20 @@
 {% block modals %}
 <div class="magnifier__zoom">
   <div class="magnifier__zoom-main">
+    {% if advertisement.video_link %}
+    <div>
+      <iframe width="100%" height="100%" src="https://www.youtube.com/embed/{{ advertisement.video_link|cut:"https://www.youtube.com/watch?v=" }}"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+          referrerpolicy="strict-origin-when-cross-origin" 
+          allowfullscreen>
+      </iframe>
+    </div>
+    {% endif %}
     <div>
       <img src="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
-                                 alt="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
+      alt="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
     </div>
     {% for photo in advertisement.photoadvertisement_set.all %}
     <div>
@@ -42,6 +53,9 @@
     {% endfor %}
   </div>
   <div class="magnifier__zoom-second">
+    <div class="magnifier__zoom-second-item video">
+      <img data-lazy="https://i.ytimg.com/vi/{{ advertisement.video_link|cut:"https://www.youtube.com/watch?v=" }}/hqdefault.jpg" alt="">
+    </div>
     <div class="magnifier__zoom-second-item">
       <img src="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
                                  alt="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
@@ -79,9 +93,19 @@
         <div class="details__advertisement-view">
           <div class="details__advertisement-view-img-wrap">
             <div class="details__advertisement-view-img">
+              {% if advertisement.video_link %}
+              <div>
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/{{ advertisement.video_link|cut:"https://www.youtube.com/watch?v=" }}"
+                title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                  referrerpolicy="strict-origin-when-cross-origin" 
+                  allowfullscreen></iframe>
+              </div>
+              {% endif %}
               <div>
                 <img src="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
-                                 alt="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
+                  alt="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
               </div>
               {% for photo in advertisement.photoadvertisement_set.all %}
               <div>
@@ -94,20 +118,15 @@
             </div>
           </div>
           <ul class="details__advertisement-view-list-img">
-            <li class="details__advertisement-view-list-img-item">
-              <img src="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
-              alt="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
-            </li>
             {% if advertisement.video_link %}
-            <li class="details__advertisement-view-list-img-item">
-              <iframe width="100%" height="100%" src="https://www.youtube.com/embed/{{ advertisement.video_link|cut:"https://www.youtube.com/watch?v=" }}"
-               title="YouTube video player"
-                frameborder="0"
-                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                 referrerpolicy="strict-origin-when-cross-origin" 
-                 allowfullscreen></iframe>
+            <li class="details__advertisement-view-list-img-item video">
+              <img data-lazy="https://i.ytimg.com/vi/{{ advertisement.video_link|cut:"https://www.youtube.com/watch?v=" }}/hqdefault.jpg" alt="">
             </li>
             {% endif %}
+            <li class="details__advertisement-view-list-img-item">
+              <img data-lazy="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
+              alt="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
+            </li>
             {% for photo in advertisement.photoadvertisement_set.all %}
             <li class="details__advertisement-view-list-img-item">
               <img data-lazy="{{ photo.photo.url }}" alt="{{ photo.photo.url }}">

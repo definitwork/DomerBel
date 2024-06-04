@@ -52,6 +52,9 @@
     align-items: center;
     gap: 5px;
     min-width: 0;
+    position: relative;
+
+
 
     & .slick-current {
         opacity: 1;
@@ -63,6 +66,21 @@
     position: relative;
     flex: 0 1 620px;
     min-width: 0;
+}
+
+.video {
+    &::before {
+        content: "";
+        display: block;
+        width: 25px;
+        height: 17px;
+        background: url(../img/icons/youtubeIcon.svg) no-repeat center / cover, #fff;
+        border-radius: 5px;
+        position: absolute;
+        top: 35px;
+        left: 24px;
+        z-index: 4;
+    }
 }
 
 
