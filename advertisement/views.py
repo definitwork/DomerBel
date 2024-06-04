@@ -1,8 +1,10 @@
-import codecs
 import json
+import random
+from datetime import datetime, timedelta
 
 from django.db.models import Q, F
 from django.shortcuts import render, get_object_or_404
+from django.utils.timezone import get_current_timezone
 
 from .models import Advertisement, Category, Region, Spisok, Element, ElementTwo, Field
 
@@ -156,15 +158,18 @@ def get_page_place_an_favorites(request):
 
 def get_advertisement_details_page(request, slug):
     '''Отдаем страничку с детальным описанием объявления'''
-    advertisement = Advertisement.objects.filter(slug=slug).prefetch_related("photoadvertisement_set")
+    advertisement = Advertisement.objects.filter(slug=slug).prefetch_related("photoadvertisement_set").select_related("category")
+    advertisement_main = advertisement[0]
     advertisement.update(counter_views=F("counter_views")+1)
-    category_crumbs = Category.objects.get(id=advertisement[0].category_id).get_ancestors(ascending=False,
-                                                                                          include_self=True)
+    category_crumbs = advertisement_main.category.get_ancestors(ascending=False, include_self=True)
     similar_advertisement = Advertisement.objects.filter(moderated=True,
                                                          is_active=True,
-                                                         category=advertisement[0].category).exclude(id=advertisement[0].id)
+                                                         date_of_change__gte=(datetime.now(
+                                                             tz=get_current_timezone()) - timedelta(days=50)),
+                                                         category=advertisement_main.category).exclude(id=advertisement_main.id).select_related("category")
+    similar_advertisement = random.sample(list(similar_advertisement), 4 if len(similar_advertisement) >= 4 else len(similar_advertisement))
     context = {
-        "advertisement": advertisement[0],
+        "advertisement": advertisement_main,
         "category_crumbs": category_crumbs,
         "similar_advertisement": similar_advertisement
     }
