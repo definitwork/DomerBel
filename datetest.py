@@ -1,2 +1,3 @@
+from datetime import datetime, timedelta
 
-d = {}
+print((datetime.now() - timedelta(days=50)) > (datetime.now() - timedelta(days=51)))

@@ -28,11 +28,11 @@
             {% endif %}
             <p>{{ card.date_of_create|date:"H:i" }}</p>
           </div>
-          <a href="{% url 'advertisement_details' card.id %}" class="recent-announcements__list-item-article-img">
+          <a href="{% url 'advertisement_details' card.slug %}" class="recent-announcements__list-item-article-img">
             <img src="{% if card.preview_image %} {{ card.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}" alt="{% if card.preview_image %} {{ card.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}" />
           </a>
           <div class="recent-announcements__list-item-article-info">
-            <a href="{% url 'advertisement_details' card.id %}" class="recent-announcements__list-item-article-info-link">
+            <a href="{% url 'advertisement_details' card.slug %}" class="recent-announcements__list-item-article-info-link">
                 {{ card.title }}
             </a>
             <p class="recent-announcements__list-item-article-info-price">
@@ -60,7 +60,7 @@
             VIP объявления
           </h2>
           <article class="recent__announcement-list-vip-item vip__list-item">
-            <a href="{% url 'advertisement_details' vip.id %}">
+            <a href="{% url 'advertisement_details' vip.slug %}">
               <div class="recent__announcement-list-vip-item-img vip__list-item-img">
                 <img src="{% if vip.preview_image %} {{ vip.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
                                  alt="{% if vip.preview_image %} {{ vip.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">

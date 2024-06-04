@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
+from django.urls import reverse
 from django.utils.timezone import make_aware
 from mptt.models import MPTTModel, TreeForeignKey
 
@@ -47,6 +48,7 @@ class Advertisement(models.Model):
     store = models.ForeignKey('Store', on_delete=models.CASCADE, blank=True, null=True, verbose_name="Магазин")
     slug = models.SlugField(unique=True, blank=True, verbose_name='URL')
     date_of_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания объявления')
+    date_of_change = models.DateTimeField(auto_now=True, verbose_name='Дата изменения объявления')
     date_of_deactivate = models.DateTimeField(blank=True, null=True, verbose_name='Дата деактивации объявления')
     moderated = models.BooleanField(default=False, verbose_name='Прошло модерацию')
     is_active = models.BooleanField(default=False, verbose_name='Объявление активно')
@@ -58,16 +60,21 @@ class Advertisement(models.Model):
     description = models.TextField(verbose_name='Описание')
     video_link = models.URLField(blank=True, null=True, verbose_name='Ссылка на видео')  # хранит строку, которая представляет валидный URL-адрес
 
-    def get_days_till_expiration(self):
-        days_till_expiration = self.date_of_deactivate - self.date_of_create
-        return days_till_expiration.days
 
     class Meta:
         verbose_name = 'Объявление'
         verbose_name_plural = 'Объявления'
 
+
     def __str__(self):
         return self.title
+
+    def get_days_till_expiration(self):
+        days_till_expiration = self.date_of_deactivate - self.date_of_create
+        return days_till_expiration.days
+
+    def get_absolute_url(self):
+        return reverse('advertisement_details', kwargs={"slug": self.slug})
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

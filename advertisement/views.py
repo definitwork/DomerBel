@@ -1,8 +1,10 @@
-import codecs
 import json
+import random
+from datetime import datetime, timedelta
 
-from django.db.models import Q
+from django.db.models import Q, F
 from django.shortcuts import render, get_object_or_404
+from django.utils.timezone import get_current_timezone
 
 from .models import Advertisement, Category, Region, Spisok, Element, ElementTwo, Field
 
@@ -154,14 +156,22 @@ def get_page_place_an_favorites(request):
     return render(request, 'place_an_favorites.html', context)
 
 
-def get_advertisement_details_page(request, id):
+def get_advertisement_details_page(request, slug):
     '''Отдаем страничку с детальным описанием объявления'''
-    advertisement = Advertisement.objects.get(id=id)
-    category_queryset_all = Category.objects.all()
-    category_list = category_queryset_all.filter(level=0)
+    advertisement = Advertisement.objects.filter(slug=slug).prefetch_related("photoadvertisement_set").select_related("category")
+    advertisement_main = advertisement[0]
+    advertisement.update(counter_views=F("counter_views")+1)
+    category_crumbs = advertisement_main.category.get_ancestors(ascending=False, include_self=True)
+    similar_advertisement = Advertisement.objects.filter(moderated=True,
+                                                         is_active=True,
+                                                         date_of_change__gte=(datetime.now(
+                                                             tz=get_current_timezone()) - timedelta(days=50)),
+                                                         category=advertisement_main.category).exclude(id=advertisement_main.id).select_related("category")
+    similar_advertisement = random.sample(list(similar_advertisement), 4 if len(similar_advertisement) >= 4 else len(similar_advertisement))
     context = {
-        "category_list": category_list,
-        'advertisement': advertisement,
+        "advertisement": advertisement_main,
+        "category_crumbs": category_crumbs,
+        "similar_advertisement": similar_advertisement
     }
     return render(request=request,
                   template_name='advertisement_details.html',
