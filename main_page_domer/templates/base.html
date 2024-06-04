@@ -42,6 +42,33 @@
                     </a>
                 </fieldset>
             </form>
+            <form class="modals__signIn">
+                <div class="modals__signIn-logo-wrap">
+                    <div class="modals__signIn-logo">
+                        <img src="{% static "img/logo.png" %}" alt="logo">
+                    </div>
+                    <div class="modals__signIn-logo-title-wrap">
+                        <p>
+                            Регистрация профиля 
+                        </p>
+                        <p>
+                            Юридическое лицо
+                        </p>
+                    </div>
+                </div>
+                <fieldset class="modals__signIn-fields">
+                    <input type="text" name="first_name" id="" placeholder="Контактное лицо">
+                    <input type="email" name="email" id="" placeholder="Введите вашу почту">
+                    <input type="tel" name="phone_number" id="" placeholder="Номер телефона">
+                    <div class="modals__signIn-field">
+                        <input type="password" name="password" id="" placeholder="Введите пароль">
+                    </div>
+                    <div class="modals__signIn-field">
+                        <input type="password" name="password2" id="" placeholder="Повторите пароль">
+                    </div>
+                </fieldset>
+                <div class="g-recaptcha" data-sitekey="{{ public_key }}"></div>
+            </form>
             {% endblock modals %}
         </div>
         <div class="container">
@@ -214,5 +241,6 @@
     {% endblock %}
     <script src="{% static "js/main/search.js" %}"></script>
     <script src="{% static "js/main/login.js" %}"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async></script>
   </body>
 </html>

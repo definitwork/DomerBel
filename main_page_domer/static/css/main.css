@@ -1,11 +1,12 @@
 .region__list {
   display: grid;
-  grid-auto-flow: column;
-  grid-template: repeat(2, 1fr)/repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  justify-items: center;
   gap: 15px;
   padding: 40px 0;
 }
 .region__list a {
+  display: block;
   font-family: "Trebuchet MS", sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -341,7 +342,7 @@
 }
 
 .vip__wrap {
-  flex: 1 1 220px;
+  flex: 1 0 220px;
 }
 
 .vip__title {
@@ -356,19 +357,28 @@
 }
 
 .vip__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  align-items: stretch;
+  gap: 15px;
+}
+.vip__list li {
   display: flex;
   flex-direction: column;
-  gap: 15px;
 }
 
 .vip__list-item {
   padding: 15px 30px;
   border: 1px solid #ff6163;
+  flex: 1 1 auto;
+  height: 100%;
 }
 .vip__list-item a {
   display: flex;
+  height: 100%;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
 }
 
@@ -506,7 +516,7 @@
 }
 
 .vip__wrap {
-  flex: 1 1 220px;
+  flex: 1 0 220px;
 }
 
 .vip__title {
@@ -521,19 +531,28 @@
 }
 
 .vip__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  align-items: stretch;
+  gap: 15px;
+}
+.vip__list li {
   display: flex;
   flex-direction: column;
-  gap: 15px;
 }
 
 .vip__list-item {
   padding: 15px 30px;
   border: 1px solid #ff6163;
+  flex: 1 1 auto;
+  height: 100%;
 }
 .vip__list-item a {
   display: flex;
+  height: 100%;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
 }
 
@@ -581,10 +600,11 @@
   display: flex;
   flex-direction: column;
   flex: 1 1 680px;
+  border-top: 1px solid gray;
 }
 
 .recent-announcements-wrap {
   display: flex;
-  align-items: flex-start;
   gap: 10px;
+  flex-wrap: wrap-reverse;
 }/*# sourceMappingURL=main.css.map */

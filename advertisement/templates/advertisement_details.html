@@ -52,9 +52,11 @@
     {% endfor %}
   </div>
   <div class="magnifier__zoom-second">
+    {% if advertisement.video_link %}
     <div class="magnifier__zoom-second-item video">
       <img data-lazy="https://i.ytimg.com/vi/{{ advertisement.video_link|cut:"https://www.youtube.com/watch?v=" }}/hqdefault.jpg" alt="">
     </div>
+    {% endif %}
     <div class="magnifier__zoom-second-item">
       <img src="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
                                  alt="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">

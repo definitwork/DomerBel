@@ -1,0 +1,38 @@
+.modals__signIn {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.modals__signIn-logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.modals__signIn-logo-title-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    @include fonts($defaultColor, 14px, 400);
+}
+
+
+.modals__signIn-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    & input {
+        padding: 10px;
+        border: 1px solid $defaultColor;
+        border-radius: 8px;
+        @include fonts($defaultColor, 14px, 400);
+        width: 100%;
+    }
+}

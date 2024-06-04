@@ -323,7 +323,7 @@
 }
 
 .vip__wrap {
-  flex: 1 1 220px;
+  flex: 1 0 220px;
 }
 
 .vip__title {
@@ -338,19 +338,28 @@
 }
 
 .vip__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  align-items: stretch;
+  gap: 15px;
+}
+.vip__list li {
   display: flex;
   flex-direction: column;
-  gap: 15px;
 }
 
 .vip__list-item {
   padding: 15px 30px;
   border: 1px solid #ff6163;
+  flex: 1 1 auto;
+  height: 100%;
 }
 .vip__list-item a {
   display: flex;
+  height: 100%;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
 }
 

@@ -102,12 +102,12 @@
 
 .modals__login {
   width: 100%;
-  max-width: 420px;
+  max-width: 450px;
   display: flex;
   flex-direction: column;
   gap: 20px;
   background: white;
-  padding: 15px;
+  padding: 40px;
   border-radius: 8px;
 }
 .modals__login fieldset {
@@ -175,6 +175,52 @@
   font-style: normal;
   color: black;
   font-size: 14px;
+}
+
+.modals__signIn {
+  width: 100%;
+  max-width: 420px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modals__signIn-logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.modals__signIn-logo-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 14px;
+}
+
+.modals__signIn-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.modals__signIn-fields input {
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 8px;
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 14px;
+  width: 100%;
 }
 
 .header__up {
