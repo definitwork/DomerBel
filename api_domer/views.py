@@ -7,7 +7,7 @@ from rest_framework import status, serializers
 from advertisement.models import Region, Category, Field, ElementTwo, PhotoAdvertisement, Advertisement, Store
 from api_domer.serializers import GetListOfCitiesSerializer, GetListOfCategoriesSerializer, FieldSerialier, \
     ElementTwoSerializer, PhotoAdvertisementSerializer, AdvertisementSerializer, StoreSerializer, \
-    AdditionalInformationSerializer
+    AdditionalInformationSerializer, UserRegisterSerializer
 from rest_framework.response import Response
 
 from api_domer.utils import validate_additional_information
@@ -160,4 +160,17 @@ def update_advertisement(request):
     else:
         raise serializers.ValidationError(
             {"error_additional": serializer_additional_error.data, "error": serializer.errors})
+
+
+@api_view(["POST"])
+def register_user(request):
+    register_serializer = UserRegisterSerializer(data=request.data)
+    print(request.data)
+    if register_serializer.is_valid():
+        register_serializer.save()
+        print(register_serializer.validated_data)
+        return Response(status=status.HTTP_201_CREATED)
+    else:
+        raise serializers.ValidationError(
+            {"error": register_serializer.errors})
 

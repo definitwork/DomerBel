@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
 
     'drf_yasg',
+    "drf_recaptcha",
     "debug_toolbar",
     "rest_framework",
     "corsheaders",
@@ -174,5 +175,6 @@ CAPTCHA_CHALLENGE_FUNCT = 'users.captcha.random_digit_challenge'  # Функци
 
 RECAPTCHA_PUBLIC_KEY = env_keys.get('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = env_keys.get('RECAPTCHA_PRIVATE_KEY')
+DRF_RECAPTCHA_SECRET_KEY = env_keys.get('RECAPTCHA_PRIVATE_KEY')
 
 

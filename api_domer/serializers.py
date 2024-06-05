@@ -1,6 +1,10 @@
+from drf_recaptcha.fields import ReCaptchaV3Field
 from rest_framework import serializers
 
 from advertisement.models import Region, Category, Field, Spisok, ElementTwo, Element, Advertisement, Store
+from api_domer.validators import validate_password
+from config import settings
+from users.models import User
 
 
 class GetListOfCitiesSerializer(serializers.ModelSerializer):
@@ -44,6 +48,7 @@ class FieldSerialier(serializers.ModelSerializer):
         model = Field
         fields = '__all__'
 
+
 class StoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Store
@@ -55,7 +60,6 @@ class PhotoAdvertisementSerializer(serializers.Serializer):
 
 
 class AdvertisementSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Advertisement
         fields = ['article', 'title', "price",
@@ -68,3 +72,36 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 class AdditionalInformationSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     error = serializers.CharField()
+
+
+class UserRegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(required=True, validators=[validate_password])
+    password2 = serializers.CharField(required=True, validators=[validate_password], write_only=True)
+
+    # captcha = ReCaptchaV3Field(action="example")
+
+    class Meta:
+        model = User
+        fields = ['email', 'first_name', 'entity', 'phone_number', 'password', 'password2']
+
+    def create(self, validated_data):
+        validated_data.pop('password2')
+        return User.objects.create_user(**validated_data)
+
+    def validate(self, data):
+        print(data, '-------------')
+        password = data.get('password')
+        password2 = data.get('password2')
+        if password != password2:
+            raise serializers.ValidationError('Введенные пароли не совпадают')
+        return data
+
+
+# {
+# "email": "santr0k@yandex.ru",
+# "entity": "0",
+# "first_name": "Alexander",
+# "phone_number": "+375447889966",
+# "password": "1QwertY6",
+# "password2": "1QwertY6"
+# }
