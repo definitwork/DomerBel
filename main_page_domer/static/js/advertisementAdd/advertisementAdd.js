@@ -44,7 +44,7 @@ function getCookie(name) {
 }
 
 const sortedType = ['30', '60', '90'];
-function setSortedOutput(sort) {
+function setSortedOutput(sort) {1
     sortedOutput[sortedType.findIndex(i => i == sort)].style.opacity = '1'
 }
 

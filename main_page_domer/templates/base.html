@@ -16,7 +16,6 @@
   <body>
     <div class="wrapper">
         <div class="modals">
-            {% block modals %}
             <form class="modals__login">
                 <div class="modals__login-logo-wrap">
                     <div class="modals__login-logo">
@@ -29,7 +28,7 @@
                 <fieldset class="modals__login-field">
                     <input type="text" name="" id="" placeholder="Введите вашу почту">
                     <input type="password" name="" id="" placeholder="Введите пароль">
-                    <button>
+                    <button class="modals__submit">
                         Отправить
                     </button>
                 </fieldset>
@@ -52,23 +51,48 @@
                             Регистрация профиля 
                         </p>
                         <p>
-                            Юридическое лицо
+                            Физическое лицо
                         </p>
                     </div>
                 </div>
+                <div class="modals__signIn-choice-wrap">
+                    <button type="button" class="modals__signIn-entity legal">
+                        Юридическое лицо
+                    </button>
+                    <button type="button" class="modals__signIn-entity physical">
+                        Физическое лицо
+                    </button>
+                </div>
                 <fieldset class="modals__signIn-fields">
-                    <input type="text" name="first_name" id="" placeholder="Контактное лицо">
-                    <input type="email" name="email" id="" placeholder="Введите вашу почту">
-                    <input type="tel" name="phone_number" id="" placeholder="Номер телефона">
+                    <input type="text" name="first_name" placeholder="Контактное лицо">
+                    <input type="email" name="email" placeholder="Введите вашу почту">
+                    <input type="tel" name="phone_number" placeholder="Номер телефона">
                     <div class="modals__signIn-field">
-                        <input type="password" name="password" id="" placeholder="Введите пароль">
+                        <input type="password" name="password" placeholder="Введите пароль">
                     </div>
                     <div class="modals__signIn-field">
-                        <input type="password" name="password2" id="" placeholder="Повторите пароль">
+                        <input type="password" name="password2" placeholder="Повторите пароль">
                     </div>
                 </fieldset>
-                <div class="g-recaptcha" data-sitekey="{{ public_key }}"></div>
+                <div class="recaptcha-wrapper">
+                    <div id="myrecaptcha" class="g-recaptcha" data-sitekey="{{ public_key }}"></div>
+                        <div class="rc-anchor-checkbox-label">Я не робот</div>
+                        <div class="recaptcha-info"></div>
+                        <div class="rc-anchor-logo-text">reCAPTCHA</div>
+                        <div class="rc-anchor-pt">
+                            <a href="https://www.google.com/intl/en/policies/privacy/" target="_blank">Конфиденициальность</a>
+                            <span aria-hidden="true" role="presentation"> - </span>
+                            <a href="https://www.google.com/intl/en/policies/terms/" target="_blank">Условия пользования</a>
+                    </div>
+                </div>
+                <button type="button" class="modals__submit">
+                    Зарегистрироваться
+                </button>
+                <p class="modals__signUp">
+                    Вход
+                </p>
             </form>
+            {% block modals %}
             {% endblock modals %}
         </div>
         <div class="container">
@@ -241,6 +265,7 @@
     {% endblock %}
     <script src="{% static "js/main/search.js" %}"></script>
     <script src="{% static "js/main/login.js" %}"></script>
+    <script src="{% static "js/signIn.js" %}"></script>
     <script src="https://www.google.com/recaptcha/api.js" async></script>
   </body>
 </html>
