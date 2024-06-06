@@ -1,8 +1,3 @@
-const addPublicationButton = document.querySelector(".button_add_publication");
-addPublicationButton.addEventListener("click", savePublication);
-
-const preview = document.querySelector('.photo_preview');
-preview.addEventListener('click', removeImg);
 const inputElement = document.getElementById("photo_list");
 inputElement.addEventListener("change", handleFiles, false);
 let inputElementArray = [];
@@ -18,19 +13,19 @@ function handleFiles() {
         }
         const img = document.createElement("img");
         img.classList.add("img_preview");
-        if (i === 0) {
+        if (i === 0 && !document.querySelector('.main_img')) {
             img.classList.add("main_img");
-            mainImg = img;
+            mainImg = img
         }
         img.file = file;
-        img.setAttribute('name', fileList[i].name);
-        img.setAttribute('data-id', i);
-        const div = document.createElement("div");
-        div.classList.add("photo_img");
-        const div2 = document.createElement("div");
-        div2.classList.add("delete_img");
-        div2.setAttribute('data-name', fileList[i].name);
-        div.append(div2);
+        img.setAttribute('name', fileList[i].name)
+        img.setAttribute('data-id', i)
+        const div = document.createElement("div")
+        div.classList.add("photo_img")
+        const div2 = document.createElement("div")
+        div2.classList.add("delete_img")
+        div2.setAttribute('data-name', fileList[i].name)
+        div.append(div2)
         div.append(img);
         preview.append(div);
 
@@ -42,32 +37,65 @@ function handleFiles() {
         })(img);
         reader.readAsDataURL(file);
     }
-    inputElementArray = Array.from(inputElement.files);
-};
+    if (inputElementArray.length === 0) {
+        inputElementArray = Array.from(inputElement.files)
+    }
+    else {
+        for (let i of Array.from(inputElement.files)) {
+            inputElementArray.push(i)
+        }
+        let z = []
+        for (let i of inputElementArray) {
+            dt.items.add(i)
+        }
+        z = dt.files
+        inputElement.files = z
+    }
 
+}
+
+const preview = document.querySelector('.photo_preview');
+preview.addEventListener('click', removeImg);
+
+let deletedImages = []
 function removeImg(event) {
     const dt = new DataTransfer();
-    let z = [];
-    let target = event.target;
+    let z = []
 
+    let target = event.target
+    console.log('000', target)
     if (target.classList.contains("delete_img")) {
-        target.parentElement.remove();
+        target.parentElement.remove()
+        if (target.parentElement.children[1].classList.contains("main_img")) {
+            if (document.querySelector('.photo_preview').childElementCount !== 0) {
+                document.querySelector('.photo_preview').children[0].children[1].classList.add("main_img")
+                mainImg = document.querySelector('.photo_preview').children[0].children[1]
+            } else {
+                mainImg = ''
+            }
+        }
+        if (window.location.href === `http://127.0.0.1:8000/users/personal_account/edit_publication/${document.getElementById('add_adver').dataset.slug}/`) {
+            deletedImages.push(target.dataset.name)
+            console.log(deletedImages)
+        }
         inputElementArray = inputElementArray.filter(file => file.name !== target.dataset.name);
         for (let i of inputElementArray) {
             dt.items.add(i)
         }
-        z = dt.files;
-        inputElement.files = z;
+        z = dt.files
+        inputElement.files = z
     }
     if (target.classList.contains("img_preview")) {
         if (mainImg) {
-            mainImg.classList.remove("main_img");
+            mainImg.classList.remove("main_img")
         }
-        target.classList.add("main_img");
-        mainImg = target;
+        target.classList.add("main_img")
+        mainImg = target
     }
-};
+}
 
+const addPublicationButton = document.querySelector(".button_add_publication");
+addPublicationButton.addEventListener("click", savePublication);
 
 function savePublication() {
     const form = document.querySelector(".form_add_publication");
@@ -76,11 +104,13 @@ function savePublication() {
     const description = form.querySelector("textarea[name='description']");
     const preview_image = form.querySelector("input[name='preview_image']");
     const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-    const dataId = form.dataset.id;
+    const dataSlag = form.dataset.slug;
 
     let data = new FormData(form);
-    data.append("main_img", mainImg.name);
-    data.append("dataId", dataId);
+    data.append("main_img", mainImg);
+    data.append("dataSlag", dataSlag);
+    data.append("deletedImages", deletedImages);
+    console.log('11111', data.get('preview_image').name)
 
     fetch(`http://127.0.0.1:8000/api/v1/edit_publication/`, {
         method: "POST",

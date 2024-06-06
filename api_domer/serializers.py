@@ -3,7 +3,7 @@ from transliterate import slugify
 from django.utils import formats
 
 from advertisement.models import Region, Category, Field, Spisok, ElementTwo, Element, Advertisement, Store
-from main_page_domer.models import Publication
+from main_page_domer.models import Publication, PhotoPublication
 
 
 class GetListOfCitiesSerializer(serializers.ModelSerializer):
@@ -85,9 +85,29 @@ class PublicationSearchSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PublicationSerializer(serializers.ModelSerializer):
+class SavePublicationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Publication
         fields = ['user', 'title', 'announcement', 'description', 'preview_image', 'video_link',]
-        # fields = "__all__"
+
+
+class SavePhotoPublicationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = PhotoPublication
+        fields = ['photo', 'publications']
+
+
+class EditPublicationSerializer(serializers.ModelSerializer):
+    preview_image = serializers.ImageField(allow_null=True, required=False)
+    main_img = serializers.CharField()
+
+
+    class Meta:
+        model = Publication
+        fields = ['title', 'announcement', 'description', 'preview_image', 'video_link', 'main_img',]
+
+    # def validate(self, attrs):
+    #     print("Данные сериализатора:", attrs)
+    #     return attrs

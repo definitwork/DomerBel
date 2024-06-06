@@ -432,15 +432,15 @@ def delete_publication(request):
 
 
 @login_required
-def edit_publication(request, publication_id):
+def edit_publication(request, publication_slug):
     """ Публикация для редактирования """
-    publication_by_id = Publication.objects.get(id=publication_id)
-    photo_publications_by_id = PhotoPublication.objects.filter(publications=publication_by_id.id)
-    form_publication = PublicationForm(instance=publication_by_id)
+    publication_by_slug = Publication.objects.get(slug=publication_slug)
+    photo_publications_by_slug_id = PhotoPublication.objects.filter(publications=publication_by_slug.id)
+    form_publication = PublicationForm(instance=publication_by_slug)
 
     context = {
-        'publication_by_id': publication_by_id,
+        'publication_by_id': publication_by_slug,
         'form_publication': form_publication,
-        'photo_publications_by_id': photo_publications_by_id,
+        'photo_publications_by_id': photo_publications_by_slug_id,
     }
     return render(request=request, template_name='personal_account/user_edit_publication.html', context=context)

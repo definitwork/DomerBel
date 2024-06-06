@@ -13,7 +13,8 @@ from advertisement.utils_for_models import unique_slugify
 from api_domer.filters import PublicationsFilter
 from api_domer.serializers import (GetListOfCitiesSerializer, GetListOfCategoriesSerializer, FieldSerialier,
                                    ElementTwoSerializer, AdvertisementSerializer, PublicationSearchSerializer,
-                                   PublicationSerializer, StoreSerializer)
+                                   SavePhotoPublicationSerializer, SavePublicationSerializer, EditPublicationSerializer,
+                                   StoreSerializer)
 from main_page_domer.models import PhotoPublication, Publication
 
 from api_domer.utils import validate_additional_information
@@ -114,7 +115,6 @@ def save_advertisement(request):
             {"error_additional": serializer_additional_error.data, "error": serializer.errors})
 
 
-
 @api_view(['PATCH'])
 def update_advertisement(request):
     additional_information = dict(request.data.copy())
@@ -182,6 +182,7 @@ class ThisPublicationSearchListAPIView(generics.ListAPIView):
 
 @api_view(['POST'])
 def save_publication(request):
+    """ Сохранение новой публикации """
     if request.method == "POST":
         try:
             query_dict = request.data.dict()
@@ -195,19 +196,21 @@ def save_publication(request):
             else:
                 preview_image_list = []
             query_dict['user'] = request.user.id
-            serializer = PublicationSerializer(data=query_dict)
+            serializer = SavePublicationSerializer(data=query_dict)
             if serializer.is_valid():
                 serializer.save()
                 if preview_image_list != []:
                     for preview_image in preview_image_list:
-                        p = PhotoPublication(
-                            publications = serializer.instance,
-                            photo = preview_image
-                        )
-                        p.save()
+                        serializer_for_photo_publication = SavePhotoPublicationSerializer(
+                            data={"publications": serializer.instance.id, "photo":preview_image})
+                        if serializer_for_photo_publication.is_valid():
+                            serializer_for_photo_publication.save()
+                        else:
+                            for field, errors in serializer_for_photo_publication.errors.items():
+                                print("save photo publication", f"Поле '{field}' не прошло валидацию. Ошибки: {errors}")
             else:
                 for field, errors in serializer.errors.items():
-                    print(f"Поле '{field}' не прошло валидацию. Ошибки: {errors}")
+                    print("save publication", f"Поле '{field}' не прошло валидацию. Ошибки: {errors}")
         except Exception as error:
             print('error: ', error)
     return Response()
@@ -215,54 +218,88 @@ def save_publication(request):
 
 @api_view(['POST'])
 def edit_publication(request):
+    """ Сохранение публикации после редактирования """
     if request.method == "POST":
         try:
             query_dict = request.data.dict()
-            print('=====================================================================')
-            print('1', query_dict)
-            print('=====================================================================')
-            Publication.objects.filter(id=query_dict.get("dataId")).update(
-                title=query_dict.get("title"),
-                slug=slugify(str(query_dict.get("title"))),
-                announcement=query_dict.get("announcement"),
-                description=query_dict.get("description"),
-                video_link=query_dict.get("video_link"),
-                moderated=False,
-                )
+            flag_edited_publication = False
+            main_img_name = request.data.get('main_img')
+            edited_publication = Publication.objects.get(slug=query_dict.get("dataSlag"))
+            serializer_edit_publication = EditPublicationSerializer(data=query_dict)
 
-            photo = Publication.objects.get(id=query_dict.get("dataId"))
-            if photo.preview_image:
-                print(photo.preview_image.path)
-                os.remove(photo.preview_image.path)
+            if not request.FILES.get('preview_image'):
+                del query_dict['preview_image']
+                preview_image_list = []
+            else:
+                preview_image_list = request.FILES.getlist('preview_image')
 
-            photo.preview_image = query_dict.get('preview_image')
-            photo.save()
+            if serializer_edit_publication.is_valid() and main_img_name != 'undefined':
+                validated_data = serializer_edit_publication.validated_data
 
-        #     main_img_name = request.data.get('main_img')
-        #     preview_image_list = request.FILES.getlist('preview_image')
-        #     if len(preview_image_list) > 1:
-        #         for preview_img in preview_image_list:
-        #             if preview_img.name == main_img_name:
-        #                 query_dict['preview_image'] = preview_img
-        #                 preview_image_list.remove(preview_img)
-        #     else:
-        #         preview_image_list = []
-        #     query_dict['user'] = request.user.id
-        #     query_dict['slug'] = slugify(str(query_dict['title']))
-        #     serializer = PublicationSerializer(data=query_dict)
-        #     if serializer.is_valid():
-        #         serializer.save()
-        #         if preview_image_list != []:
-        #             for preview_image in preview_image_list:
-        #                 p = PhotoPublication(
-        #                     publications = serializer.instance,
-        #                     photo = preview_image
-        #                 )
-        #                 p.save()
-        #     else:
-        #         print("serializer don't ok")
-        #         for field, errors in serializer.errors.items():
-        #             print(f"Поле '{field}' не прошло валидацию. Ошибки: {errors}")
+                if query_dict.get("title") != edited_publication.title:  # Проверяем изменился ли заголовок
+                    edited_publication.title = validated_data.get("title")
+                    flag_edited_publication = True
+
+                if query_dict.get("announcement") != edited_publication.announcement:  # Проверяем изменилась ли аннотация
+                    edited_publication.announcement = validated_data.get("announcement")
+                    flag_edited_publication = True
+
+                if query_dict.get("description") != edited_publication.description:  # Проверяем изменился ли текст статьи
+                    edited_publication.description = validated_data.get("description")
+                    flag_edited_publication = True
+
+                if query_dict.get("video_link") != edited_publication.video_link:  # Проверяем изменился ли ссылка на видео
+                    edited_publication.video_link = validated_data.get("video_link")
+                    flag_edited_publication = True
+
+                if not preview_image_list:  # Проверяем есть ли новые загруженные картинки
+                    if main_img_name != edited_publication.preview_image:
+                        PhotoPublication.objects.filter(photo=main_img_name).update(photo=edited_publication.preview_image)
+                        edited_publication.preview_image = main_img_name
+                        flag_edited_publication = True
+                else:
+                    new_main_img_file = False
+
+                    for preview_img in preview_image_list:
+                        if preview_img.name == main_img_name:
+                            main_img_name = preview_img
+                            preview_image_list.remove(preview_img)
+                            new_main_img_file = True
+
+                    if main_img_name != edited_publication.preview_image and not new_main_img_file:
+                        PhotoPublication.objects.filter(photo=main_img_name).update(photo=edited_publication.preview_image)
+                        edited_publication.preview_image = main_img_name
+                        flag_edited_publication = True
+                    elif main_img_name != edited_publication.preview_image and new_main_img_file:
+                        p = PhotoPublication(photo=edited_publication.preview_image, publications=edited_publication)
+                        p.save()
+                        edited_publication.preview_image = main_img_name
+                        flag_edited_publication = True
+
+                    if preview_image_list:
+                        flag_edited_publication = True
+                        for preview_image in preview_image_list:
+                            serializer_for_photo_publication = SavePhotoPublicationSerializer(
+                            data={"publications": edited_publication.id, "photo":preview_image})
+                            if serializer_for_photo_publication.is_valid():
+                                serializer_for_photo_publication.save()
+                            else:
+                                for field, errors in serializer_for_photo_publication.errors.items():
+                                    print("save photo publication", f"Поле '{field}' не прошло валидацию. Ошибки: {errors}")
+
+                if query_dict.get('deletedImages'):
+                    deleted_images = query_dict.get('deletedImages').split(',')
+                    PhotoPublication.objects.filter(photo__in=deleted_images).delete()
+                    flag_edited_publication = True
+
+                if flag_edited_publication:
+                    edited_publication.moderated = False
+                    edited_publication.save()
+
+            else:
+                for field, errors in serializer_edit_publication.errors.items():
+                    print('2', f"Поле '{field}' не прошло валидацию. Ошибки: {errors}")
+
         except Exception as error:
             print('2 error: ', error)
     return Response()

@@ -20,7 +20,7 @@
 <div class="personal_account_body">
     <div class="body">
         <div class="wrapper__form">
-            <form action="" method="POST" enctype="multipart/form-data" class="form_add_publication" data-id="{{ publication_by_id.id }}">
+            <form action="" method="POST" enctype="multipart/form-data" id="add_adver" class="form_add_publication" data-slug="{{ publication_by_id.slug }}">
                 {% csrf_token %}
                 {{ form_publication.as_p }}
                 <div class="photo">

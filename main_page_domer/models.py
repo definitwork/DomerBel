@@ -82,8 +82,8 @@ class Publication(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
     title = models.CharField(max_length=255, verbose_name="Заголовок")
     slug = models.SlugField(max_length=255, unique=True, verbose_name="URL")
-    announcement = CKEditor5Field('Текст статьи', config_name='extends')
-    description = CKEditor5Field('Текст статьи', config_name='extends')
+    announcement = CKEditor5Field(config_name='extends', verbose_name='Аннотация')
+    description = CKEditor5Field(config_name='extends', verbose_name='Текст статьи')
     preview_image = models.ImageField(upload_to="images/publications", verbose_name="Фото")
     video_link = models.URLField(blank=True, null=True, verbose_name="Ссылка на видео")
     date_of_create = models.DateTimeField(

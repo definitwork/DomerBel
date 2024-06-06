@@ -55,5 +55,5 @@ urlpatterns = [
     path('user_all_publications/', get_user_all_publications, name='user_all_publications'),
     path('user_add_publication/', add_user_publication, name='user_add_publication'),
     path('personal_account/delete_publication/', delete_publication, name='delete_publication'),
-    path('personal_account/edit_publication/<int:publication_id>/', edit_publication, name='edit_publication_by_id'),
+    path('personal_account/edit_publication/<str:publication_slug>/', edit_publication, name='edit_publication_by_slug'),
 ]

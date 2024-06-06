@@ -47,7 +47,7 @@
                 {% if user_publications %}
                     {% for user_publication in user_publications %}
                         <li class="publication_list_item">
-                            <a href="{% url 'users:edit_publication_by_id' user_publication.id %}" class="publication_link">
+                            <a href="{% url 'users:edit_publication_by_slug' user_publication.slug %}" class="publication_link">
                                 <div class="publication_link_wrap">
                                     <div class="publication_data">
                                         <p> {{ user_publication.date_of_create }} </p>
