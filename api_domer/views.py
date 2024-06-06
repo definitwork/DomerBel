@@ -202,18 +202,26 @@ def save_publication(request):
                 if preview_image_list != []:
                     for preview_image in preview_image_list:
                         serializer_for_photo_publication = SavePhotoPublicationSerializer(
-                            data={"publications": serializer.instance.id, "photo":preview_image})
+                            data={"publications": serializer.instance.id, "photo": preview_image})
                         if serializer_for_photo_publication.is_valid():
                             serializer_for_photo_publication.save()
                         else:
                             for field, errors in serializer_for_photo_publication.errors.items():
                                 print("save photo publication", f"Поле '{field}' не прошло валидацию. Ошибки: {errors}")
             else:
+                print(1)
+                error_serializer = {'errors': []}
                 for field, errors in serializer.errors.items():
-                    print("save publication", f"Поле '{field}' не прошло валидацию. Ошибки: {errors}")
+                    error_serializer['errors'].append(f"Поле '{field}' не прошло валидацию. Ошибки: {errors}")
+                return Response({"error": "Ошибка валидации данных", "detail": error_serializer},
+                         status=status.HTTP_400_BAD_REQUEST)
+
         except Exception as error:
-            print('error: ', error)
-    return Response()
+            print(2)
+            return Response({"error": "Ошибка при сохранении публикации",
+                     "detail": str(error)}, status=status.HTTP_400_BAD_REQUEST)
+    print(3)
+    return Response({"created": "Публикация успешно сохранена"}, status=status.HTTP_201_CREATED)
 
 
 @api_view(['POST'])
@@ -254,7 +262,8 @@ def edit_publication(request):
 
                 if not preview_image_list:  # Проверяем есть ли новые загруженные картинки
                     if main_img_name != edited_publication.preview_image:
-                        PhotoPublication.objects.filter(photo=main_img_name).update(photo=edited_publication.preview_image)
+                        PhotoPublication.objects.filter(photo=main_img_name).update(
+                            photo=edited_publication.preview_image)
                         edited_publication.preview_image = main_img_name
                         flag_edited_publication = True
                 else:
@@ -267,7 +276,8 @@ def edit_publication(request):
                             new_main_img_file = True
 
                     if main_img_name != edited_publication.preview_image and not new_main_img_file:
-                        PhotoPublication.objects.filter(photo=main_img_name).update(photo=edited_publication.preview_image)
+                        PhotoPublication.objects.filter(photo=main_img_name).update(
+                            photo=edited_publication.preview_image)
                         edited_publication.preview_image = main_img_name
                         flag_edited_publication = True
                     elif main_img_name != edited_publication.preview_image and new_main_img_file:
@@ -280,12 +290,13 @@ def edit_publication(request):
                         flag_edited_publication = True
                         for preview_image in preview_image_list:
                             serializer_for_photo_publication = SavePhotoPublicationSerializer(
-                            data={"publications": edited_publication.id, "photo":preview_image})
+                                data={"publications": edited_publication.id, "photo": preview_image})
                             if serializer_for_photo_publication.is_valid():
                                 serializer_for_photo_publication.save()
                             else:
                                 for field, errors in serializer_for_photo_publication.errors.items():
-                                    print("save photo publication", f"Поле '{field}' не прошло валидацию. Ошибки: {errors}")
+                                    print("save photo publication",
+                                          f"Поле '{field}' не прошло валидацию. Ошибки: {errors}")
 
                 if query_dict.get('deletedImages'):
                     deleted_images = query_dict.get('deletedImages').split(',')

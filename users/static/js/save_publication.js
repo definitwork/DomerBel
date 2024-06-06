@@ -91,15 +91,14 @@ function savePublication() {
     })
     .then(response => {
         if (response.ok) {
-            console.log("Публикация успешно сохранена.");
-            title.value = "";
-            announcement.value = "";
-            description.value = "";
-            preview_image.value = "";
             document.location.href = 'http://127.0.0.1:8000/users/user_all_publications/';
         } else {
             console.log("Ошибка сохранения публикации.");
         }
+        return response.json()
+    })
+    .then(response => {
+        console.log(response);
     })
     .catch(error => {
         console.error("Error:", error);
