@@ -16,7 +16,7 @@
   <body>
     <div class="wrapper">
         <div class="modals">
-            <form class="modals__login">
+            <form class="modals__login" id="login_form" enctype="multipart/form-data">
                 <div class="modals__login-logo-wrap">
                     <div class="modals__login-logo">
                         <img src="{% static "img/logo.png" %}" alt="">
@@ -26,9 +26,9 @@
                     </h2>
                 </div>
                 <fieldset class="modals__login-field">
-                    <input type="text" name="" id="" placeholder="Введите вашу почту">
-                    <input type="password" name="" id="" placeholder="Введите пароль">
-                    <button class="modals__submit">
+                    <input type="text" name="email" id="login_email" placeholder="Введите вашу почту">
+                    <input type="password" name="password" id="login_password" placeholder="Введите пароль">
+                    <button type="button" class="modals__submit" id="login_button">
                         Отправить
                     </button>
                 </fieldset>
@@ -41,7 +41,7 @@
                     </a>
                 </fieldset>
             </form>
-            <form class="modals__signIn">
+            <form class="modals__signIn" enctype="multipart/form-data"  id="registration_form">
                 <div class="modals__signIn-logo-wrap">
                     <div class="modals__signIn-logo">
                         <img src="{% static "img/logo.png" %}" alt="logo">
@@ -85,7 +85,7 @@
                             <a href="https://www.google.com/intl/en/policies/terms/" target="_blank">Условия пользования</a>
                     </div>
                 </div>
-                <button type="button" class="modals__submit">
+                <button type="button" class="modals__submit" id="registration_button">
                     Зарегистрироваться
                 </button>
                 <p class="modals__signUp">
@@ -122,9 +122,22 @@
                             </li>
                         </ul>
                     </nav>
-                    <p class="header__up-user">
+                    {% if user.is_authenticated %}
+                        <div class="">
+                        {% if user.is_superuser %}
+                        <a href="{% url "admin:index" %}" class="">Админка</a>
+                        {% endif %}
+                        <div class="">
+                        <a href="#" class="">{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.email }}{% endif %}</a>
+                        <p class="">|</p>
+                        <p class="" id="logout_button">Выйти</p>
+                        </div>
+                        </div>
+                    {% else %}
+                        <p class="header__up-user">
                         Вход и регистрация
-                    </p>
+                        </p>
+                    {% endif %}
                 </div>
                 <div class="header__bottom">
                     <a href="{% url "home" %}" class="header__logo">
@@ -264,6 +277,7 @@
     {% block js %}
     {% endblock %}
     <script src="{% static "js/main/search.js" %}"></script>
+    <script src="{% static "js/autorization.js" %}"></script>
     <script src="{% static "js/main/login.js" %}"></script>
     <script src="{% static "js/signIn.js" %}"></script>
     <script src="https://www.google.com/recaptcha/api.js" async></script>

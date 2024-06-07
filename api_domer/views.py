@@ -1,13 +1,15 @@
 from uuid import uuid4
 
-from rest_framework.decorators import api_view
+from django.contrib.auth import authenticate, login, logout
+from rest_framework.decorators import api_view, parser_classes
+from rest_framework.parsers import MultiPartParser, FormParser
 from transliterate import slugify
 from rest_framework import status, serializers
 
 from advertisement.models import Region, Category, Field, ElementTwo, PhotoAdvertisement, Advertisement, Store
 from api_domer.serializers import GetListOfCitiesSerializer, GetListOfCategoriesSerializer, FieldSerialier, \
     ElementTwoSerializer, PhotoAdvertisementSerializer, AdvertisementSerializer, StoreSerializer, \
-    AdditionalInformationSerializer, UserRegisterSerializer
+    AdditionalInformationSerializer, UserRegisterSerializer, UserLoginSerializer
 from rest_framework.response import Response
 
 from api_domer.utils import validate_additional_information
@@ -163,14 +165,36 @@ def update_advertisement(request):
 
 
 @api_view(["POST"])
-def register_user(request):
-    register_serializer = UserRegisterSerializer(data=request.data)
-    print(request.data)
-    if register_serializer.is_valid():
-        register_serializer.save()
-        print(register_serializer.validated_data)
+def registration_user(request):
+    registration_serializer = UserRegisterSerializer(data=request.data, context={"request": request})
+    if registration_serializer.is_valid():
+        registration_serializer.save()
         return Response(status=status.HTTP_201_CREATED)
     else:
         raise serializers.ValidationError(
-            {"error": register_serializer.errors})
+            {"errors": registration_serializer.errors})
+
+
+@api_view(["POST"])
+def login_user(request):
+    login_serializer = UserLoginSerializer(data=request.data, context={"request": request})
+    if login_serializer.is_valid():
+        user = authenticate(**login_serializer.validated_data)
+        if user is not None:
+            login(request, user)
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        else:
+            raise serializers.ValidationError({"user_undefined": "Пользователь не найден"})
+    else:
+        raise serializers.ValidationError(
+            {"errors": login_serializer.errors})
+
+
+@api_view(["GET"])
+def logout_user(request):
+    try:
+        logout(request)
+        return Response(status=status.HTTP_205_RESET_CONTENT)
+    except Exception:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 

@@ -1,4 +1,5 @@
-from drf_recaptcha.fields import ReCaptchaV3Field
+from django.contrib.auth import authenticate, login
+from drf_recaptcha.fields import ReCaptchaV3Field, ReCaptchaV2Field
 from rest_framework import serializers
 
 from advertisement.models import Region, Category, Field, Spisok, ElementTwo, Element, Advertisement, Store
@@ -78,14 +79,15 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(required=True, validators=[validate_password])
     password2 = serializers.CharField(required=True, validators=[validate_password], write_only=True)
 
-    # captcha = ReCaptchaV3Field(action="example")
+    recaptcha = ReCaptchaV2Field(write_only=True)
 
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'entity', 'phone_number', 'password', 'password2']
+        fields = ['email', 'first_name', 'entity', 'phone_number', 'password', 'password2', 'recaptcha']
 
     def create(self, validated_data):
         validated_data.pop('password2')
+        validated_data.pop('recaptcha')
         return User.objects.create_user(**validated_data)
 
     def validate(self, data):
@@ -95,6 +97,12 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         if password != password2:
             raise serializers.ValidationError('Введенные пароли не совпадают')
         return data
+
+
+class UserLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField(write_only=True, error_messages={'blank': 'Обязательное поле'})
+    password = serializers.CharField(write_only=True, error_messages={'blank': 'Обязательное поле'})
+
 
 
 # {
