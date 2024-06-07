@@ -121,7 +121,7 @@ function savePublication() {
     })
     .then(response => {
         if (response.ok) {
-            // document.location.href = 'http://127.0.0.1:8000/users/user_all_publications/';
+            document.location.href = 'http://127.0.0.1:8000/users/user_all_publications/';
         } else {
             console.log("Ошибка сохранения публикации.");
         }
