@@ -107,7 +107,7 @@ function savePublication() {
     const dataSlag = form.dataset.slug;
 
     let data = new FormData(form);
-    data.append("main_img", mainImg);
+    data.append("main_img", mainImg.name);
     data.append("dataSlag", dataSlag);
     data.append("deletedImages", deletedImages);
     console.log('11111', data.get('preview_image').name)
@@ -121,17 +121,16 @@ function savePublication() {
     })
     .then(response => {
         if (response.ok) {
-            console.log("Публикация успешно сохранена.");
-            // title.value = "";
-            // announcement.value = "";
-            // description.value = "";
-            // preview_image.value = "";
             // document.location.href = 'http://127.0.0.1:8000/users/user_all_publications/';
         } else {
             console.log("Ошибка сохранения публикации.");
         }
+        return response.json()
+    })
+    .then(response => {
+        console.log(response);
     })
     .catch(error => {
         console.error("Error:", error);
     });
-};
+}
