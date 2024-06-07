@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from django_recaptcha.fields import ReCaptchaField
 
+from main_page_domer.models import Publication
+
 from .models import User, Message
 from .validators import validate_password, validate_email, validate_phone
 
@@ -40,7 +42,7 @@ class RegisterForm(forms.Form):
         if password and password2 and password != password2:
             self.add_error('password2', 'Пароли не совпадают')
 
-        
+
 
 
 class RegisterFormEntity(forms.Form):
@@ -67,7 +69,7 @@ class RegisterFormEntity(forms.Form):
         if password and password2 and password != password2:
             self.add_error('password2', 'Пароли не совпадают')
 
-   
+
 
 
 class EmailResetForm(forms.Form):
@@ -137,6 +139,13 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = User
         fields = ("email",)
+
+
+class PublicationForm(forms.ModelForm):
+
+    class Meta:
+        model = Publication
+        fields = ['title', 'announcement', 'description', 'video_link', ]
 
 
 class MessageForm(forms.ModelForm):

@@ -2,11 +2,12 @@ from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, 
     PasswordResetCompleteView
 from django.urls import path, reverse_lazy
 
-from .views import logout_view, login_view, get_personal_account_page, \
-    add_store, get_my_store, edit_store, get_store_page, \
-    delete_store, get_user_data_page, get_personal_account_inactive_adds_page, delete_or_archive_selected_ads, \
-    search_of_ads_in_personal_account, register_view_entity, register_view_individual, get_all_dialogs, create_dialog, view_message, \
-    delete_dialogs, delete_user_message
+from .views import (logout_view, login_view, get_personal_account_page,add_store, get_my_store,
+                    edit_store, get_store_page, delete_store, get_user_data_page,
+                    get_personal_account_inactive_adds_page, delete_or_archive_selected_ads,
+                    register_view_individual, search_of_ads_in_personal_account, get_user_all_publications,
+                    add_user_publication, delete_publication, edit_publication, register_view_entity,
+                    get_all_dialogs, create_dialog, view_message, delete_dialogs, delete_user_message)
 
 app_name = 'users'
 
@@ -50,5 +51,9 @@ urlpatterns = [
     path('dialogs/create/user:<int:user_id>_and_user:<int:recipient_id>/', create_dialog, name='create_dialog'),
     path('dialogs/<int:chat_id>/', view_message, name='messages'),
     path('dialogs/delete_dialogs/', delete_dialogs, name="delete_dialogs"),
-    path('dialogs/<int:chat_id>/delete_user_message/<int:message_id>/', delete_user_message, name="delete_user_message")
+    path('dialogs/<int:chat_id>/delete_user_message/<int:message_id>/', delete_user_message, name="delete_user_message"),
+    path('user_all_publications/', get_user_all_publications, name='user_all_publications'),
+    path('user_add_publication/', add_user_publication, name='user_add_publication'),
+    path('personal_account/delete_publication/', delete_publication, name='delete_publication'),
+    path('personal_account/edit_publication/<str:publication_slug>/', edit_publication, name='edit_publication_by_slug'),
 ]

@@ -48,7 +48,7 @@
                                     <a href="{% url 'stores' %}" class="shops">Магазины</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="publications">Публикации</a>
+                                    <a href="{% url 'publications' %}" class="publications">Публикации</a>
                                 </li>
                                 <li>
                                     <a href="{% url 'help' %}" class="help">Помощь</a>
@@ -193,6 +193,9 @@
                         </li>
                         <li>
                             <a href="#" class="red_item">Пополнить кошелек</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'users:user_all_publications' %}">Публикации</a>
                         </li>
                     </ul>
                 </nav>

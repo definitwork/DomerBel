@@ -2,7 +2,7 @@ import random
 import os
 
 from uuid import uuid4
-from transliterate import slugify
+from slugify import slugify
 from PIL import Image, ImageDraw, ImageFont
 from hashlib import md5
 
@@ -36,12 +36,9 @@ def add_watermark_to_photo(photo):
     photo = Image.alpha_composite(photo, watermark_text)
     return photo
 
-def unique_slugify(instance, slug):
+def unique_slugify(slug):
     """ Генератор уникальных SLUG для
         моделей, в случае существования
         такого SLUG."""
-    model = instance.__class__
-    unique_slug = slugify(slug)
-    while model.objects.filter(slug=unique_slug).exists():
-        unique_slug = f'{unique_slug}-{uuid4().hex[:8]}'
+    unique_slug = f'{uuid4()}-{slugify(slug)}'
     return unique_slug

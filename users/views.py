@@ -10,7 +10,8 @@ from django.urls import reverse
 from advertisement.forms import StoreForm
 from advertisement.models import Region, Category, Advertisement, Store
 from .models import User, Chat, Message
-from .forms import LoginForm, RegisterForm, EditContactDataForm, ChangePasswordForm, RegisterFormEntity, MessageForm
+from main_page_domer.models import PhotoPublication, Publication, photo_publications_delete
+from .forms import LoginForm, PublicationForm, RegisterForm, EditContactDataForm, ChangePasswordForm, RegisterFormEntity, MessageForm
 
 
 def get_personal_account_page(request):
@@ -399,3 +400,47 @@ def register_view_entity(request):
             return JsonResponse({'success': True})
         else:
             return JsonResponse({'errors': form_entity.errors})
+
+@login_required
+def get_user_all_publications(request):
+    """ Вывод всех публикаций """
+    user_publications = Publication.objects.filter(user = request.user.id).order_by('-date_of_create')
+    context = {
+        "user_publications": user_publications,
+    }
+    return render(request=request, template_name='personal_account/user_all_publications.html', context=context)
+
+@login_required
+def add_user_publication(request):
+    """ Добавление новой публикации """
+    form_publication = PublicationForm()
+    context = {
+        "form_publication": form_publication,
+    }
+    return render(request=request, template_name='personal_account/user_add_publication.html', context=context)
+
+
+@login_required
+def delete_publication(request):
+    """ Удаляет выбранные публикации """
+    if request.method == "POST":
+        if 'delete_publication' in request.POST:
+            selected_publications = request.POST.getlist('ads_checkbox')
+            Publication.objects.filter(id__in=selected_publications).delete()
+            messages.success(request, "Выбранные публикации удалены!")
+            return redirect('users:user_all_publications')
+
+
+@login_required
+def edit_publication(request, publication_slug):
+    """ Публикация для редактирования """
+    publication_by_slug = Publication.objects.get(slug=publication_slug)
+    photo_publications_by_slug_id = PhotoPublication.objects.filter(publications=publication_by_slug.id)
+    form_publication = PublicationForm(instance=publication_by_slug)
+
+    context = {
+        'publication_by_id': publication_by_slug,
+        'form_publication': form_publication,
+        'photo_publications_by_id': photo_publications_by_slug_id,
+    }
+    return render(request=request, template_name='personal_account/user_edit_publication.html', context=context)

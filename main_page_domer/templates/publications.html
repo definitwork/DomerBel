@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/publications/style.css' %}"/>
+{% endblock stylesheet %}
+
+{% block title %} Пубикации {% endblock title %}
+
+{% block nav_title %}
+    <div class="nav_category_title">
+        <p>Доска объявлений</p>
+    </div>
+{% endblock nav_title %}
+
+{% block find %}
+    <section class="search_table_stores">
+        <nav class="table_topics_search_location">
+            <input type="text" placeholder="Поиск" class="table_search">
+            <div class="checkbox_button">
+                <input type="image" name="submit" src="{% static 'img/poisk.png' %}">
+            </div>
+        </nav>
+    </section>
+{% endblock find %}
+
+{% block content %}
+    <section class="section_publications">
+        <div class="publications_count">
+            <p>Найдено записей: {{ publications.count }} </p>
+        </div>
+        <ul class="publication_list">
+            {% for publication in publications %}
+                <li class="publication_list_item">
+                    <a href="{% url 'publication_by_slug' publication.slug %}" class="publication_link">
+                        <div class="publication_link_wrap">
+                            <div class="publication_data">
+                                <p> {{ publication.date_of_create }} </p>
+                            </div>
+                            <div class="publication_img">
+                                <img src="{{ publication.preview_image.url }}" alt="Publication Photo">
+                            </div>
+                            <div class="publication_text">
+                                <p class="publication_text_title"> {{ publication.title }} </p>
+                                <p> {{ publication.announcement }} </p>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endblock content %}
+
+{% block javascript %}
+    <script src=""></script>
+{% endblock %}
