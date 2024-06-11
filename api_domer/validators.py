@@ -15,3 +15,9 @@ def validate_password(password_string):
             raise serializers.ValidationError('В пароле должен быть хотя бы один символ нижнего регистра')
         if str(password_string).islower():
             raise serializers.ValidationError('В пароле должен быть хотя бы один символ верхнего регистра')
+
+
+def validate_phone(phone_number):
+    # Валидация белорусского номера телефона
+    if not re.match(r'^(\+375|80)(29|25|44|33)(\d{3})(\d{2})(\d{2})$', phone_number):
+        raise serializers.ValidationError('Некорректный ввод номера телефона \n 80/+375')
