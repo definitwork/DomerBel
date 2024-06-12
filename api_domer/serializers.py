@@ -91,11 +91,10 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return User.objects.create_user(**validated_data)
 
     def validate(self, data):
-        print(data, '-------------')
         password = data.get('password')
         password2 = data.get('password2')
         if password != password2:
-            raise serializers.ValidationError('Введенные пароли не совпадают')
+            raise serializers.ValidationError({"password":["Введенные пароли не совпадают"], "password2":[""]})
         return data
 
 

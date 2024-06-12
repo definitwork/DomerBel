@@ -64,9 +64,15 @@
                     </button>
                 </div>
                 <fieldset class="modals__signIn-fields">
-                    <input type="text" name="first_name" placeholder="Контактное лицо">
-                    <input type="email" name="email" placeholder="Введите вашу почту">
+                    <div class="modals__signIn-field">
+                        <input type="text" name="first_name" placeholder="Контактное лицо">
+                    </div>
+                    <div class="modals__signIn-field">
+                        <input type="email" name="email" placeholder="Введите вашу почту">
+                    </div>
+                    <div class="modals__signIn-field">
                     <input type="tel" name="phone_number" placeholder="Номер телефона">
+                    </div>
                     <div class="modals__signIn-field">
                         <input type="password" name="password" placeholder="Введите пароль">
                     </div>
@@ -74,23 +80,32 @@
                         <input type="password" name="password2" placeholder="Повторите пароль">
                     </div>
                 </fieldset>
-                <div class="recaptcha-wrapper">
-                    <div id="myrecaptcha" class="g-recaptcha" data-sitekey="{{ public_key }}"></div>
-                        <div class="rc-anchor-checkbox-label">Я не робот</div>
-                        <div class="recaptcha-info"></div>
-                        <div class="rc-anchor-logo-text">reCAPTCHA</div>
-                        <div class="rc-anchor-pt">
-                            <a href="https://www.google.com/intl/en/policies/privacy/" target="_blank">Конфиденициальность</a>
-                            <span aria-hidden="true" role="presentation"> - </span>
-                            <a href="https://www.google.com/intl/en/policies/terms/" target="_blank">Условия пользования</a>
-                    </div>
-                </div>
-                <button type="button" class="modals__submit" id="registration_button">
+                <div class="g-recaptcha" data-sitekey="{{ public_key }}" data-expired-callback="expiredCallbackRecaptcha" data-callback="callbackRecaptcha"></div>
+                <button data-action='submit' type="button" class="modals__submit" id="registration_button">
                     Зарегистрироваться
                 </button>
                 <p class="modals__signUp">
                     Вход
                 </p>
+            </form>
+            <form class="modals__reset-password">
+                <div class="modals__login-logo-wrap">
+                    <div class="modals__login-logo">
+                        <img src="{% static "img/logo.png" %}" alt="">
+                    </div>
+                    <h2>
+                        Сбросить пароль
+                    </h2>
+                </div>
+                <fieldset class="modals__reset-password-field">
+                    <input type="email" name="resetPasswordEmail" placeholder="Введите вашу почту">
+                </fieldset>
+                <button class="modals__submit">
+                    Отправить
+                </button>
+                <a href="#">
+                    Назад
+                </a>
             </form>
             {% block modals %}
             {% endblock modals %}
@@ -280,6 +295,7 @@
     <script src="{% static "js/autorization.js" %}"></script>
     <script src="{% static "js/main/login.js" %}"></script>
     <script src="{% static "js/signIn.js" %}"></script>
+    <script src="{% static "js/main/resetPassword.js" %}"></script>
     <script src="https://www.google.com/recaptcha/api.js" async></script>
   </body>
 </html>

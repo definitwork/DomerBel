@@ -169,7 +169,7 @@ def registration_user(request):
     registration_serializer = UserRegisterSerializer(data=request.data, context={"request": request})
     if registration_serializer.is_valid():
         registration_serializer.save()
-        return Response(status=status.HTTP_201_CREATED)
+        return Response({'success': 'Вы успешно зарегистрированы'}, status=status.HTTP_201_CREATED)
     else:
         raise serializers.ValidationError(
             {"errors": registration_serializer.errors})

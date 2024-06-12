@@ -39,20 +39,13 @@
 .modals__login-action {
     justify-content: space-between;
     padding: 0 10px;
-
-    & a {
-        @include fonts($mainColor, 14px, 400);
-
-        &:hover {
-            color: $colorHover;
-        }
-    }
 }
 
 .modals__login-logo-wrap {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
 
     & h2 {
         @include fonts($defaultColor, 14px, 400);

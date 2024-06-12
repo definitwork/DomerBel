@@ -28,13 +28,6 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  & input {
-    padding: 10px;
-    border: 1px solid $defaultColor;
-    border-radius: 8px;
-    @include fonts($defaultColor, 14px, 400);
-    width: 100%;
-  }
 }
 
 .modals__signIn-choice-wrap {

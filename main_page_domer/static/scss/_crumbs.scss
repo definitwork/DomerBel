@@ -17,7 +17,7 @@
 }
 
 .crumbs__list-item-dots {
-    @include fonts($defaultColor, 14px, 400)
+    @include fonts($defaultColor, 14px, 400);
 }
 
 .crumbs__list-item {
