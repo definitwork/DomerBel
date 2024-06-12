@@ -104,12 +104,12 @@ class UserLoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True, error_messages={'blank': 'Обязательное поле'})
 
 
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField(write_only=True, error_messages={'blank': 'Обязательное поле'})
+    recaptcha = ReCaptchaV2Field(write_only=True)
 
-# {
-# "email": "santr0k@yandex.ru",
-# "entity": "0",
-# "first_name": "Alexander",
-# "phone_number": "+375447889966",
-# "password": "1QwertY6",
-# "password2": "1QwertY6"
-# }
+    def validate_email(self, email):
+        if not User.objects.filter(email=email).exists():
+            raise serializers.ValidationError({"errors": "Пользователь с таким Email не найден"})
+        else:
+            return email
