@@ -1,6 +1,11 @@
 from uuid import uuid4
 
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+from django.urls import reverse_lazy
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
 from transliterate import slugify
@@ -9,10 +14,12 @@ from rest_framework import status, serializers
 from advertisement.models import Region, Category, Field, ElementTwo, PhotoAdvertisement, Advertisement, Store
 from api_domer.serializers import GetListOfCitiesSerializer, GetListOfCategoriesSerializer, FieldSerialier, \
     ElementTwoSerializer, PhotoAdvertisementSerializer, AdvertisementSerializer, StoreSerializer, \
-    AdditionalInformationSerializer, UserRegisterSerializer, UserLoginSerializer
+    AdditionalInformationSerializer, UserRegisterSerializer, UserLoginSerializer, PasswordResetSerializer
 from rest_framework.response import Response
 
 from api_domer.utils import validate_additional_information
+from config.settings import env_keys
+from users.models import User
 
 
 # Отдаёт список городов type='Город' по id выбранной области type='Область' из модели Region
@@ -186,15 +193,50 @@ def login_user(request):
         else:
             raise serializers.ValidationError({"user_undefined": "Пользователь не найден"})
     else:
-        raise serializers.ValidationError(
-            {"errors": login_serializer.errors})
+        raise serializers.ValidationError({"errors": login_serializer.errors})
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def logout_user(request):
     try:
         logout(request)
         return Response(status=status.HTTP_205_RESET_CONTENT)
     except Exception:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def password_reset(request):
+    password_reset_serializer = PasswordResetSerializer(data=request.data, context={"request": request})
+    if password_reset_serializer.is_valid():
+        email = password_reset_serializer.validated_data.get('email')
+        url = env_keys.get("URL")
+        user = User.objects.get(email=email)
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        token = default_token_generator.make_token(user)
+        activation_url = reverse_lazy('users:password_reset_confirm', kwargs={'uidb64': uid, 'token': token})
+        send_mail(
+            subject='Восстановление пароля',
+            message=f'''
+            Вы получили это письмо, потому что Вы (или кто-то другой) запросили восстановление пароля от учётной записи 
+            на сайте {url}, которая связана с этим адресом электронной почты.
+            
+            Для восстановления пароля перейдите по данной ссылке: 
+            
+            {url}{activation_url}
+            
+            Спасибо, что используете наш сайт!
+            
+            Команда сайта {url}
+            
+            
+            Если вы не запрашивали восстановление пароля, то проигнорируйте это сообщение''',
+            recipient_list=[email],
+            fail_silently=False)
+        return Response({'success': 'На ваш адрес электронной почты было отправлено письмо для восстановления '
+                                    'пароля. Если письмо не пришло, проверьте папку спам.'},
+                        status=status.HTTP_200_OK)
+    else:
+        raise serializers.ValidationError(
+            {"errors": password_reset_serializer.errors})
 

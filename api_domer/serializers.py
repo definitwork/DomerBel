@@ -3,7 +3,7 @@ from drf_recaptcha.fields import ReCaptchaV3Field, ReCaptchaV2Field
 from rest_framework import serializers
 
 from advertisement.models import Region, Category, Field, Spisok, ElementTwo, Element, Advertisement, Store
-from api_domer.validators import validate_password
+from api_domer.validators import validate_password, validate_phone
 from config import settings
 from users.models import User
 
@@ -78,6 +78,7 @@ class AdditionalInformationSerializer(serializers.Serializer):
 class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(required=True, validators=[validate_password])
     password2 = serializers.CharField(required=True, validators=[validate_password], write_only=True)
+    phone_number = serializers.CharField(validators=[validate_phone])
 
     recaptcha = ReCaptchaV2Field(write_only=True)
 
@@ -103,12 +104,12 @@ class UserLoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True, error_messages={'blank': 'Обязательное поле'})
 
 
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField(write_only=True, error_messages={'blank': 'Обязательное поле'})
+    recaptcha = ReCaptchaV2Field(write_only=True)
 
-# {
-# "email": "santr0k@yandex.ru",
-# "entity": "0",
-# "first_name": "Alexander",
-# "phone_number": "+375447889966",
-# "password": "1QwertY6",
-# "password2": "1QwertY6"
-# }
+    def validate_email(self, email):
+        if not User.objects.filter(email=email).exists():
+            raise serializers.ValidationError({"errors": "Пользователь с таким Email не найден"})
+        else:
+            return email

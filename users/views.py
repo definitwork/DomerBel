@@ -1,16 +1,15 @@
 from django.contrib import messages
-from django.contrib.auth import logout, authenticate, login, update_session_auth_hash
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Count
-from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 
 from advertisement.forms import StoreForm
 from advertisement.models import Region, Category, Advertisement, Store
 from .models import User, Chat, Message
-from .forms import LoginForm, RegisterForm, EditContactDataForm, ChangePasswordForm, RegisterFormEntity, MessageForm
+from .forms import EditContactDataForm, ChangePasswordForm, MessageForm
 
 
 def get_personal_account_page(request):
@@ -347,55 +346,5 @@ def delete_user_message(request, message_id, chat_id):
 
 
 
-def logout_view(request):
-    logout(request)
-    return redirect('home')
 
 
-def login_view(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password')
-            user = authenticate(request, email=email, password=password)
-            if user is not None:
-                login(request, user)
-                return JsonResponse({'success': True})
-            else:
-                return JsonResponse({'errors': 1})
-        else:
-            return JsonResponse({'errors': 1})
-
-
-def register_view_individual(request):
-    if request.method == 'POST':
-        form_individual = RegisterForm(request.POST)
-        if form_individual.is_valid():
-            user = User()
-            user.first_name = form_individual.cleaned_data.get('name')
-            user.phone_number = form_individual.cleaned_data.get('phone')
-            user.email = form_individual.cleaned_data.get('email')
-            user.set_password(form_individual.cleaned_data.get('password'))
-            user.set_password(form_individual.cleaned_data.get('password2'))
-            user.save()
-            return JsonResponse({'success': True})
-        else:
-            return JsonResponse({'errors': form_individual.errors})
-
-
-def register_view_entity(request):
-    if request.method == 'POST':
-        form_entity = RegisterFormEntity(request.POST)
-        if form_entity.is_valid():
-            user = User()
-            user.first_name = form_entity.cleaned_data.get('name')
-            user.entity = True
-            user.phone_number = form_entity.cleaned_data.get('phone')
-            user.email = form_entity.cleaned_data.get('email')
-            user.set_password(form_entity.cleaned_data.get('password'))
-            user.set_password(form_entity.cleaned_data.get('password2'))
-            user.save()
-            return JsonResponse({'success': True})
-        else:
-            return JsonResponse({'errors': form_entity.errors})
