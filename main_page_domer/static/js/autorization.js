@@ -30,7 +30,6 @@ function callbackRecaptcha() {
 
 function expiredCallbackRecaptcha() {
   registrationButton.removeEventListener("click", registration);
-
 }
 function registration() {
   const data = new FormData(registrationForm);
@@ -48,7 +47,13 @@ function registration() {
       if (data.errors) {
         throw new Error(JSON.stringify(data.errors));
       }
-      console.log(data);
+      if (data.success) {
+        const notificationModal = document.querySelector(".modals__notification");
+        registrationForm.classList.remove("modal__active");
+        notificationModal.classList.add("modal__active");
+        const notificationText = document.querySelector(".modals__notification-text");
+        notificationText.innerText = data.success;
+      }
     })
     .catch((err) => {
       const data = JSON.parse(err.message);
@@ -58,7 +63,7 @@ function registration() {
       delete data["recaptcha"];
       // reseting recaptcha field
       grecaptcha.reset();
-      generatingErrorSField(data);
+      generatingErrorSField(data, ".modals__signIn");
     });
 }
 /**
@@ -67,14 +72,16 @@ function registration() {
  * @param {Object} data - An object containing input field names as keys and error messages as values.
  */
 
-function generatingErrorSField(data) {
+function generatingErrorSField(data, fieldForm) {
   for (let i in data) {
-    const field = document.querySelector(`.modals__signIn input[name="${i}"]`);
+    const field = document.querySelector(`${fieldForm} input[name="${i}"]`);
     if (field.parentElement.children.length > 1) field.parentElement.children[0].remove();
     const p = document.createElement("p");
-    p.classList.add("modals__signIn-error");
-    p.innerText = data[i];
-    field.parentElement.prepend(p);
+    if (data[i] !== "") {
+      p.classList.add("modals__signIn-error");
+      p.innerText = data[i];
+      field.parentElement.prepend(p);
+    }
     field.style.borderColor = "red";
     /**
      * Removes the first child element of the parent element of the field if it exists,
@@ -99,17 +106,31 @@ function login() {
     },
     body: data,
   })
-    .then((resp) => resp.json())
+    .then((resp) => {
+      if (resp.status === 205) window.location.reload();
+      return resp.json();
+    })
     .then((data) => {
       console.log(data);
+      if (data.errors) throw new Error(JSON.stringify(data.errors));
+    })
+    .catch((err) => {
+      const data = JSON.parse(err.message);
+      if (data["recaptcha"]) {
+        loginButton.removeEventListener("click", registration);
+      }
+      delete data["recaptcha"];
+      generatingErrorSField(data, ".modals__login");
     });
 }
 
 function logout() {
   fetch("http://127.0.0.1:8000/api/v1/logout/", {
-    method: "GET",
+    method: "POST",
     headers: {
       "X-CSRFToken": getCookie("csrftoken"),
     },
+  }).then((resp) => {
+    if (resp.status === 205) window.location.reload();
   });
 }

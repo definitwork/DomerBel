@@ -2,7 +2,6 @@ const modal = document.querySelector('.modals');
 const signIn = document.querySelector('.modals__signIn');
 const signUp = document.querySelector('.modals__login')
 const signInBtn = document.querySelector('.modals__login-action').children[1];
-const resetPasswordBtn = document.querySelector('.modals__login-action').children[0];
 const switchToLoginBtn = document.querySelector('.modals__signUp');
 const choiceChildren = document.querySelector('.modals__signIn-choice-wrap').children;
 const switchTitle = document.querySelector('.modals__signIn-logo-title-wrap').children[1];

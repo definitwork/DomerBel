@@ -191,7 +191,7 @@ def login_user(request):
             login(request, user)
             return Response(status=status.HTTP_205_RESET_CONTENT)
         else:
-            raise serializers.ValidationError({"user_undefined": "Пользователь не найден"})
+            raise serializers.ValidationError({"errors": {"email": "Пользователь не найден. Проверьте правильность введенных данных.", "password": ''}})
     else:
         raise serializers.ValidationError({"errors": login_serializer.errors})
 
@@ -231,6 +231,7 @@ def password_reset(request):
             
             
             Если вы не запрашивали восстановление пароля, то проигнорируйте это сообщение''',
+            from_email=None,
             recipient_list=[email],
             fail_silently=False)
         return Response({'success': 'На ваш адрес электронной почты было отправлено письмо для восстановления '

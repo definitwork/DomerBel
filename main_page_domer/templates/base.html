@@ -14,7 +14,7 @@
     <title>{{ title }}</title>
   </head>
   <body>
-    <div class="wrapper">
+    <div class="wrapper" data-url="{{ url }}">
         <div class="modals">
             <form class="modals__login" id="login_form" enctype="multipart/form-data">
                 <div class="modals__login-logo-wrap">
@@ -22,12 +22,16 @@
                         <img src="{% static "img/logo.png" %}" alt="">
                     </div>
                     <h2>
-                        Логин
+                        Авторизация
                     </h2>
                 </div>
                 <fieldset class="modals__login-field">
-                    <input type="text" name="email" id="login_email" placeholder="Введите вашу почту">
-                    <input type="password" name="password" id="login_password" placeholder="Введите пароль">
+                    <div class="modals__signIn-field">
+                        <input type="text" name="email" id="login_email" placeholder="Введите вашу почту">
+                    </div>
+                    <div class="modals__signIn-field">
+                        <input type="password" name="password" id="login_password" placeholder="Введите пароль">
+                    </div>
                     <button type="button" class="modals__submit" id="login_button">
                         Отправить
                     </button>
@@ -98,15 +102,48 @@
                     </h2>
                 </div>
                 <fieldset class="modals__reset-password-field">
-                    <input type="email" name="resetPasswordEmail" placeholder="Введите вашу почту">
+                    <input type="email" name="email" placeholder="Введите вашу почту">
                 </fieldset>
-                <button class="modals__submit">
+                <div class="g-recaptcha" 
+                data-sitekey="{{ public_key }}"
+                data-expired-callback="expiredCallbackResetRecaptcha"
+                data-callback="callbackResetRecaptcha"
+                ></div>
+                <button type='button' class="modals__submit" id="resetSubmitBtn">
                     Отправить
                 </button>
                 <a href="#">
                     Назад
                 </a>
             </form>
+            <div class="modals__notification">
+                <div class="modals__notification-success">
+                    <svg width="48.000000" height="48.000000" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <desc>
+                                Created with Pixso.
+                        </desc>
+                        <defs>
+                            <clipPath id="clip946_10107">
+                                <rect id="Checkmark Circle" width="48.000000" height="48.000000" fill="white" fill-opacity="0"/>
+                            </clipPath>
+                        </defs>
+                        <g clip-path="url(#clip946_10107)">
+                            <path id="Shape" d="M24 4C35.04 4 44 12.95 44 24C44 35.04 35.04 44 24 44C12.95 44 4 35.04 4 24C4 12.95 12.95 4 24 4ZM32.63 17.61C32.17 17.16 31.45 17.13 30.96 17.52L30.86 17.61L20.75 27.73L17.13 24.11C16.64 23.62 15.85 23.62 15.36 24.11C14.91 24.57 14.87 25.29 15.27 25.78L15.36 25.88L19.86 30.38C20.32 30.83 21.04 30.86 21.53 30.47L21.63 30.38L32.63 19.38C33.12 18.89 33.12 18.1 32.63 17.61Z" fill="#008060" fill-opacity="1.000000" fill-rule="nonzero"/>
+                        </g>
+                    </svg>
+                </div>
+                <p class="modals__notification-text">
+                    ПРЫКОЛЬНАЯ МОДАЛОЧКА
+                </p>
+                <div class="modals__notification-action-wrap">
+                    <button type="button" class="modals__notification-close">
+                        OK
+                    </button>
+                    <button type="button" class="modals__notification-signIn">
+                        Войти
+                    </button>
+                </div>
+            </div>
             {% block modals %}
             {% endblock modals %}
         </div>
@@ -139,14 +176,14 @@
                     </nav>
                     {% if user.is_authenticated %}
                         <div class="">
-                        {% if user.is_superuser %}
-                        <a href="{% url "admin:index" %}" class="">Админка</a>
-                        {% endif %}
-                        <div class="">
-                        <a href="#" class="">{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.email }}{% endif %}</a>
-                        <p class="">|</p>
-                        <p class="" id="logout_button">Выйти</p>
-                        </div>
+                            {% if user.is_superuser %}
+                                <a href="{% url "admin:index" %}" class="">Админка</a>
+                            {% endif %}
+                            <div class="">
+                                <a href="#" class="">{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.email }}{% endif %}</a>
+                                <p class="">|</p>
+                                <p class="" id="logout_button">Выйти</p>
+                            </div>
                         </div>
                     {% else %}
                         <p class="header__up-user">
@@ -296,6 +333,8 @@
     <script src="{% static "js/main/login.js" %}"></script>
     <script src="{% static "js/signIn.js" %}"></script>
     <script src="{% static "js/main/resetPassword.js" %}"></script>
+    <script src="{% static "js/main/setUrl.js" %}"></script>
+    <script src="{% static "js/main/notification.js" %}"></script>
     <script src="https://www.google.com/recaptcha/api.js" async></script>
   </body>
 </html>

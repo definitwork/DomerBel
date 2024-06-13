@@ -110,6 +110,6 @@ class PasswordResetSerializer(serializers.Serializer):
 
     def validate_email(self, email):
         if not User.objects.filter(email=email).exists():
-            raise serializers.ValidationError({"errors": "Пользователь с таким Email не найден"})
+            raise serializers.ValidationError("Пользователь с таким Email не найден")
         else:
             return email
