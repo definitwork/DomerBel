@@ -6,6 +6,15 @@ const switchToLoginBtn = document.querySelector('.modals__signUp');
 const choiceChildren = document.querySelector('.modals__signIn-choice-wrap').children;
 const switchTitle = document.querySelector('.modals__signIn-logo-title-wrap').children[1];
 const inputFirstName = document.querySelector('.modals__signIn-fields input[name="first_name"]');
+const cross = document.querySelectorAll('.cross');
+
+cross.forEach(item => {
+    item.addEventListener('click', () => {
+        item.parentElement.classList.remove('modal__active')
+        item.parentElement.parentElement.classList.remove('modal__active')
+        item.parentElement.classList.remove('modals__active-resetPassword')
+    })
+})
 
 signInBtn.addEventListener('click', () => {
     for(let i of modal.children) {

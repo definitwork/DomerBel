@@ -11,6 +11,10 @@
   z-index: 10;
   padding: 0 15px;
 
+  & form {
+    position: relative;
+  }
+
   & input {
     padding: 10px;
     border: 1px solid $defaultColor;
@@ -80,6 +84,14 @@
   margin-bottom: 10px;
 }
 
+.cross {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
 
 @import "./magnifierZoom";
 @import "./modalsLogin";
