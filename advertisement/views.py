@@ -8,8 +8,9 @@ from .utils import sorted_by_number, variables_for_paginator, sorted_by_date_or_
 from .forms import UploadFileForm
 from .models import UploadFile
 import openpyxl
-from advertisement.functions_for_bulk_import import save_many_ads_from_excel
-
+from zipfile import ZipFile
+from advertisement.functions_for_bulk_import import save_many_ads_from_excel, save_many_ads_from_zip
+from django.http import FileResponse
 
 def get_advertisement_page(request):
     order_by = sorted_by(request.COOKIES.get('sorted_by'))
@@ -157,30 +158,59 @@ def get_bulk_import_of_ads(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             if form.cleaned_data.get("file").name.endswith('xlsx'):
+                '''Работа с электронной таблицей'''
                 try:
                     uploud_file = form.cleaned_data.get("file")
                     book = openpyxl.open(uploud_file,read_only=True)
                     save_file = UploadFile(file=uploud_file, user=request.user)
                     save_file.save()
                     ads = save_many_ads_from_excel(f'./media/{save_file.file.name}',request.user)
-            #         error_ads = ads.get('error_ads')
-            #         context['error_ads'] = error_ads
-                    context['status'] = 'good'
+                    save_file.delete()
+                    if ads != True:
+                        file_error = ads.get('file')
+                        '''ТУТ надо отдать файл  ошибками пользователю'''
+                        return FileResponse(open(file_error, "rb"))
+                    else:
+                        context['answer'] = 'Объявления успешно сохранены'
                 except:
-                    context['error'] = 'Невозможно прочитать файл.'
-                    '''Разберись почему постоянно вывдит эту ошибку'''
-        
+                    context['answer'] = 'Невозможно прочитать файл.'
             elif form.cleaned_data.get("file").name.endswith('zip'):
-                print('работа с архивом')
+                '''Работа с электронным архивом'''
+                try:
+                    uploud_zip = form.cleaned_data.get("file")
+                    with ZipFile(uploud_zip,'r') as zip:
+                        files_from_zip = zip.namelist()
+                    save_zip = UploadFile(file=uploud_zip, user=request.user)
+                    save_zip.save()
+                    ads = save_many_ads_from_zip(f'./media/{save_zip.file.name}', request.user)
+                    save_zip.delete()
+                    if ads != True:
+                        file_error = ads.get('file')
+                        context['answer'] = 'Несколько объявлений не были сохранены. Чтобы посмотреть объявления с ошибками скачайте файл.'
+                        context['file'] = 1
+                    else:
+                        context['answer'] = 'Объявления успешно сохранены'
+
+                except:
+                    print('не прошла проверка')
+                    context['answer'] = 'Невозможно прочитать файл'
         else:
             context['error'] = 'Ошибка при загрузке файла. Убедитесь, что загружаемый файл необходимого расширения'
-
     else:
         form = UploadFileForm()
-
     return render(request=request,
                   template_name='bulk_import_ads.html',
-                   context=context )
+                  context = context)
+
+# def download_file_with_error_ads(request):
+#     '''Отдает файл с объявлениями, где найдены были ошибки, при массовом импорте объявлений'''
+#     if request.method == 'GET':
+#         email = request.user.email
+#         path = f'./media/files_for_bulk_import_of_ads/{email}/error_{email}.xlsx'
+#         return FileResponse(open(path, "rb"))
+
+
+
 
 def get_advertisement_details_page(request, id):
     '''Отдаем страничку с детальным описанием объявления'''
@@ -193,4 +223,16 @@ def get_advertisement_details_page(request, id):
     }
     return render(request=request,
                   template_name='advertisement_details.html',
+                  context=context)
+
+
+
+def get_instructions_for_bulk_import_of_ads(request):
+    regions = Region.objects.all()
+    categories = Category.objects.prefetch_related('field_set').all()
+    fields = categories.fielf_set.all()
+
+    context = {}
+    return render(request=request,
+                  template_name='instructions_for_bulk_import_of_ads.html',
                   context=context)

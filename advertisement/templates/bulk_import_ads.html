@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -10,8 +11,15 @@
     <form method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Отправить">
+        <input type="submit" value="Отправить" id="send">
     </form>
-    {{ error }}
+    <div class="answer" id="answer">
+        <p>{{ answer }}</p>
+        {% if file == 1 %}
+        <input type="button" value="Скачать файл" id="download">
+        <a href="http://127.0.0.1:8000/advertisement/download_file_with_error_ads/"> Скачать </a>
+        {% endif %}
+    </div>
+<script src="{% static 'js/bulk_import_ads.js' %}"></script>
 </body>
 </html>

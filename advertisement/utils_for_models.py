@@ -2,7 +2,7 @@ import random
 import os
 
 from uuid import uuid4
-from transliterate import slugify
+from slugify import slugify
 from PIL import Image, ImageDraw, ImageFont
 from hashlib import md5
 
@@ -25,7 +25,8 @@ def add_watermark_to_photo(photo):
     photo = Image.open(photo)
     draw = ImageDraw.Draw(photo)
     width, height = photo.size
-    font = ImageFont.truetype("arial_bolditalicmt.ttf", int(width / 100 * 6))
+    # font = ImageFont.truetype("arial_bolditalicmt.ttf", int(width / 100 * 6))
+    font = ImageFont.truetype("./main_page_domer/static/fonts/arial/arial_bolditalicmt.ttf", int(width / 100 * 6))
     watermark_word = "ДОМер.бел"
     x = width - 10
     y = height - 10

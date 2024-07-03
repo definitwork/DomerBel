@@ -229,9 +229,9 @@ class Store(models.Model):
         return self.title
     
 class UploadFile(models.Model):
-    '''Модель для сохранения массового импорта обявлений'''
+    '''Модель для сохранения файла для массового импорта обявлений'''
     def get(instance,filename):
-        '''Ф-ция, возращает путь, по которому хранитьс файл для массого импорта обвлений'''
+        '''Ф-ция, возращает путь, по которому хранитьс файл для массого импорта объявлений'''
         return f'files_for_bulk_import_of_ads/{instance.user.email}/{filename}'
 
     time_upload_file = models.DateTimeField(auto_now_add=True)
@@ -243,4 +243,4 @@ class UploadFile(models.Model):
         verbose_name_plural = 'Загруженные файлы'
 
         def __str__(self):
-            return self.file
+            return self.time_upload_file
