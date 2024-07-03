@@ -1,0 +1,192 @@
+.advertisement__list {
+    flex: 0 1 680px;
+}
+
+.default__item {
+    & .advertisement__list-item {
+        display: flex;
+        gap: 40px;
+        padding: 5px;
+        border-bottom: 1px solid $gray;
+    }
+
+    & ~.vip__wrap {
+        flex: 1 0 250px;
+    }
+    
+    & .advertisement__list-item-img {
+        display: block;
+        max-width: 180px;
+        max-height: 140px;
+        & img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+    
+    & .advertisement__list-item-about{
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 5px;
+        position: relative;
+    
+        &::before {
+            content: "";
+            display: block;
+            width: 18px;
+            height: 18px;
+            background: url(../img/favorite.png) no-repeat center/cover;
+            position: absolute;
+            top: 0;
+            left: -25px
+        }
+    }
+    
+    & .advertisement__list-item-title {
+        & a {
+            @include fonts($mainColor, 16px, 400);
+            &:hover {
+                color: $colorHover;
+            }
+        }
+    }
+    
+    & .advertisement__list-item-price {
+        @include fonts($defaultColor, 14px, 400);
+    }
+    
+    & .advertisement__list-item-about-text-list {
+        & li {
+            @include fonts(gray, 14px, 400);
+        }
+    }
+    
+    & .advertisement__list-item-action {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        align-self: flex-end;
+    
+    
+        & li {
+            max-width: 18px;
+            max-height: 18px;
+            & img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
+            }
+        }
+    }
+    
+}
+.second__item {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px 15px;
+    flex: 1 1 auto;
+    & .advertisement__list-item {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 8px;
+        border: 1px solid $gray;
+    }
+
+    & ~.vip__wrap {
+        flex: 0 0 250px;
+    }
+    
+
+    & .advertisement__list-item-img {
+        display: block;
+        & img {
+            max-height: 140px;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+
+    & .advertisement__list-item-title {
+        & a {
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 180px;
+            @include fonts($mainColor, 16px, 400);
+        }
+    }
+
+    & .advertisement__list-item-price {
+        @include fonts(gray, 14px, 400);
+        margin: 5px 0;
+    }
+
+    & .advertisement__list-item-about-text-list {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        & li {
+            @include fonts(gray, 14px, 400);
+            &:nth-child(1) {
+                display: none;
+            }
+            
+            &:nth-child(2) {
+                display: none;
+            }
+        }
+    }
+
+    & .advertisement__list-item-action{
+        display: none;
+    }
+
+    & .advertisement__list-item-about {
+        position: relative;
+        &::after {
+            content: "";
+            display: block;
+            width: 18px;
+            height: 18px;
+            position: absolute;
+            background: url(../img/favorite.png) no-repeat center/cover;
+            bottom: 0px;
+            right: 0px;
+            cursor: pointer;
+        }
+    }
+}
+
+
+@media (max-width: 992px) {
+
+    .default__item{
+        flex: 1 1 auto;
+        & ~.vip__wrap {
+            flex: 1 0 250px;
+        }
+    }
+    .second__item {
+        & ~.vip__wrap {
+            flex: 1 0 250px;
+        }
+    }
+}
+
+
+
+.active__item {
+    background: $activeItem;
+}

@@ -1,94 +1,84 @@
-{% extends 'base.html' %}
-{% load static %}
-<title>Главная</title>
+{% extends 'base.html' %} {% load static %} {% block css %} <link rel="stylesheet" href="{% static "css/main.css" %}">
+{% endblock css %} {% block content %}
 
-{% block nav_title %}
-    <div class="nav_category_title">
-        <p>
-            Общебелорусская доска объявлений
-        </p>
+
+<section class="region">
+  <ul class="region__list">
+    {% for region in regions %}
+    <li class="region__list-item">
+      <a href="{% url 'advertisement' %}?region={{ region.id }}"> {{ region|upper }} </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+<section class="recent-announcements">
+  <h1 class="recent-announcements__title">Последние объявления</h1>
+  <div class="recent-announcements-wrap">
+    <ul class="recent-announcements__list">
+      {% for card in advertisement %}
+      <li class="recent-announcements__list-item">
+        <article class="recent-announcements__list-item-article">
+          <div class="recent-announcements__list-item-article-date">
+            {% if card.date_of_create.date == date_today %}
+            <p>Сегодня</p>
+            {% elif card.date_of_create.date == date_yesterday %}
+            <p>Вчера</p>
+            {% else %}
+            <p>{{ card.date_of_create|date:"d b. Y" }}</p>
+            {% endif %}
+            <p>{{ card.date_of_create|date:"H:i" }}</p>
+          </div>
+          <a href="{% url 'advertisement_details' card.slug %}" class="recent-announcements__list-item-article-img">
+            <img src="{% if card.preview_image %} {{ card.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}" alt="{% if card.preview_image %} {{ card.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}" />
+          </a>
+          <div class="recent-announcements__list-item-article-info">
+            <a href="{% url 'advertisement_details' card.slug %}" class="recent-announcements__list-item-article-info-link">
+                {{ card.title }}
+            </a>
+            <p class="recent-announcements__list-item-article-info-price">
+                {{ card.price }} руб.
+            </p>
+            <p class="recent-announcements__list-item-article-info-category">
+                {{ card.category }}
+            </p>
+            <p class="recent-announcements__list-item-article-info-company">
+                {{ card.bearer }}
+            </p>
+            <p class="recent-announcements__list-item-article-info-region">
+                {{ card.region }}
+            </p>
+          </div>
+        </article>
+      </li>
+      {% endfor %}
+    </ul>
+    <div class="recent__announcement-list-vip-wrap vip__wrap">
+      <ul class="recent__announcement-list-vip vip__list">
+          {% for vip in vip_advertisement %}
+        <li>
+          <h2 class="vip__title">
+            VIP объявления
+          </h2>
+          <article class="recent__announcement-list-vip-item vip__list-item">
+            <a href="{% url 'advertisement_details' vip.slug %}">
+              <div class="recent__announcement-list-vip-item-img vip__list-item-img">
+                <img src="{% if vip.preview_image %} {{ vip.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
+                                 alt="{% if vip.preview_image %} {{ vip.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
+              </div>
+              <h3 class="recent__announcement-list-vip-item-title vip__list-item-title">
+                {{ vip.title }}
+              </h3>
+              <p class="recent__announcement-list-vip-item-district vip__list-item-district">
+                {{ vip.region }}
+              </p>
+            </a>
+          </article>
+        </li>
+          {% endfor %}
+      </ul>
     </div>
-{% endblock %}
-{% block filter %}
-    <section class="regions">
-        <ul class="regions_list">
-            {% for region in regions %}
-                <li>
-                    <a href="{% url 'advertisement' %}?region={{ region.id }}" class="minsk reg">{{ region.area|upper }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-    </section>
-{% endblock %}
-{% block content %}
-    <main>
-        <section>
-            <div class="vip_cart_and_ads">
-                <div class="vip_cart_list">
-                    <a href="#" class="vip_cart">
-                        <p class="vip_cart_header">VIP Объявление</p>
-                    </a>
-                    <a href="#" class="vip_cart">
-                        <p class="vip_cart_header">VIP Объявление</p>
-                    </a>
-                </div>
-                <div class="ads_wrapper">
-                    <div class="last_ads_title">
-                        Последние объявления
-                    </div>
-
-                    {% for cart in adver %}
-                        <div class="ads_list">
-
-                            <div class="ads">
-
-                                <div class="ads_date_time">
-                                    <ul>
-                                        {% if cart.date_of_create.date == date_today %}
-                                            <li>Сегодня</li>
-                                        {% elif cart.date_of_create.date == date_yesterday %}
-                                            <li>Вчера</li>
-                                        {% else %}
-                                            <li>{{ cart.date_of_create|date:"d b. Y" }}</li>
-                                        {% endif %}
-                                        <li>{{ cart.date_of_create|date:"H:i" }}</li>
-                                    </ul>
-                                </div>
-                                <div class="ads_img">
-                                    <img src="{{ cart.preview_image.url }}" alt="{{ cart.preview_image.url }}">
-                                </div>
-                                <div class="ads_description">
-                                    <ul>
-                                        <li>
-                                            <a href="{% url 'advertisement_details' cart.id %}" class="ads_description_title">
-                                                {{ cart.title }}
-                                            </a>
-                                        </li>
-                                        <li>
-                                            {% if cart.price %}
-                                                {{ cart.price }} руб.
-                                            {% endif %}
-                                        </li>
-                                        <li>
-                                            {{ cart.category }}
-                                        </li>
-                                        <li>
-                                            {{ cart.bearer }}
-                                        </li>
-                                        <li>
-                                            {{ cart.region }}
-                                        </li>
-                                    </ul>
-
-                                </div>
-
-                            </div>
-                            <div class="line"></div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </section>
-    </main>
-
-{% endblock %}
+  </div>
+</section>
+{% endblock %} 
+{% block js %}
+{% endblock js %}

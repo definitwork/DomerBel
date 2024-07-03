@@ -1,7 +1,15 @@
 import codecs
 import json
+from pprint import pprint
+
 from django.db.models import Q
+import random
+from datetime import datetime, timedelta
+
+from django.db.models import Q, F
 from django.shortcuts import render, get_object_or_404
+from django.utils.timezone import get_current_timezone
+
 from .models import Advertisement, Category, Region, Spisok, Element, ElementTwo, Field
 from .utils import sorted_by_number, variables_for_paginator, sorted_by_date_or_price, sorted_by, get_view_type, \
     get_region_variables
@@ -30,7 +38,8 @@ def get_advertisement_page(request):
     advertisement_queryset = Advertisement.objects.filter(is_active=True,
                                                           moderated=True, **region_filter).select_related(
         'category',
-        'region').order_by(order_by)
+        'region').order_by("-raise_in_search", order_by)
+    vip_advertisement = advertisement_queryset.filter(vip=True)
     category_queryset = Category.objects.add_related_count(Category.objects.root_nodes(),
                                                            Advertisement,
                                                            'category',
@@ -49,12 +58,13 @@ def get_advertisement_page(request):
         "region_bread_crumbs": region_bread_crumbs,
         "region_param": region_param,
         "page_obj": page_obj,
+        "vip_advertisement": vip_advertisement,
         'date': state_sort_by_date,
         'view_type': view_type,
         'adaptive_navigation': "Доска объявлений. Беларусь",
     }
 
-    response = render(request, html, context)
+    response = render(request, "advertisementAdd.html", context)
     response.set_cookie('sort', sort_for_paginator)
     response.set_cookie('date', state_sort_by_date)
     response.set_cookie('sorted_by', order_by)
@@ -96,6 +106,7 @@ def get_advertisement_by_category(request, category_slug):
                                                           moderated=True).select_related(
         'category',
         'region').order_by(order_by)
+    vip_advertisement = advertisement_queryset.filter(vip=True)
     page_obj = variables_for_paginator(advertisement_queryset,
                                        request.GET.get('page'),
                                        sort_for_paginator)
@@ -107,12 +118,13 @@ def get_advertisement_by_category(request, category_slug):
         "region_bread_crumbs": region_bread_crumbs,
         "category_list": category_list,
         "page_obj": page_obj,
+        "vip_advertisement": vip_advertisement,
         'date': state_sort_by_date,
         'view_type': view_type,
         'adaptive_navigation': f"{category.main_title if category.main_title else category.title}. Беларусь",
     }
 
-    response = render(request, html, context)
+    response = render(request, "advertisementAdd.html", context)
     response.set_cookie('sort', sort_for_paginator)
     response.set_cookie('date', state_sort_by_date)
     response.set_cookie('sorted_by', order_by)
@@ -123,10 +135,14 @@ def get_advertisement_by_category(request, category_slug):
 
 def get_page_place_an_ad(request):
     category_list = Category.objects.filter(level__lte=1)
+    oblast = Region.objects.filter(level=0)
+    categories = Category.objects.filter(level=0)
 
     context = {
         "category_list": category_list,
         'adaptive_navigation': "Добавление объявления",
+        'oblast': oblast,
+        'categories': categories,
     }
     
     return render(request, 'place_an_ad.html', context)
@@ -146,6 +162,66 @@ def get_page_place_an_favorites(request):
         context['cards_num'] = len(objects)
 
     return render(request, 'place_an_favorites.html', context)
+
+
+def get_advertisement_details_page(request, slug):
+    '''Отдаем страничку с детальным описанием объявления'''
+    advertisement = Advertisement.objects.filter(slug=slug).prefetch_related("photoadvertisement_set").select_related("category")
+    advertisement_main = advertisement[0]
+    advertisement.update(counter_views=F("counter_views")+1)
+    category_crumbs = advertisement_main.category.get_ancestors(ascending=False, include_self=True)
+    similar_advertisement = Advertisement.objects.filter(moderated=True,
+                                                         is_active=True,
+                                                         date_of_change__gte=(datetime.now(
+                                                             tz=get_current_timezone()) - timedelta(days=50)),
+                                                         category=advertisement_main.category).exclude(id=advertisement_main.id).select_related("category")
+    similar_advertisement = random.sample(list(similar_advertisement), 4 if len(similar_advertisement) >= 4 else len(similar_advertisement))
+    context = {
+        "advertisement": advertisement_main,
+        "category_crumbs": category_crumbs,
+        "similar_advertisement": similar_advertisement
+    }
+    return render(request=request,
+                  template_name='advertisement_details.html',
+                  context=context)
+
+
+def editing_an_ad(request, id):
+    advertisement = Advertisement.objects.get(id=id)
+
+    region = Region.objects.all()
+    oblast = region.filter(level=0)
+    selected_oblast = region.get(id=advertisement.region.parent_id)
+    cities = advertisement.region.get_siblings(include_self=True)
+    family_categories = advertisement.category.get_family()
+
+    list_categories = [category.get_siblings(include_self=True) for category in family_categories]
+    categories = {key: value for key, value in zip(family_categories, list_categories)}
+
+    additional_information = advertisement.category.field_set.all().prefetch_related("spisok")
+
+    additional_values = {key: value for key, value in zip(advertisement.additional_information.keys(), map(lambda i: i.split(", "), advertisement.additional_information.values()))}
+
+    additional_values_two = {}
+    for i in additional_values.items():
+        if len(i[1]) > 1:
+            additional_values_two[i[0]] = [i[1][0], ElementTwo.objects.filter(element__title=i[1][0])]
+    for i in additional_information:
+        if i.min_val_interval_date:
+            additional_values_two[i.title] = [str(date) for date in range(i.min_val_interval_date, i.max_val_interval_date + 1)]
+
+
+    context = {
+        'advertisement': advertisement,
+        'oblast': oblast,
+        'selected_oblast': selected_oblast,
+        'cities': cities,
+        'categories': categories,
+        'additional_information': additional_information,
+        'additional_values': additional_values,
+        'additional_values_two': additional_values_two,
+    }
+    return render(request, 'editing_an_ad.html', context)
 
 
 def get_bulk_import_of_ads(request):
@@ -210,29 +286,67 @@ def get_bulk_import_of_ads(request):
 #         return FileResponse(open(path, "rb"))
 
 
-
-
-def get_advertisement_details_page(request, id):
-    '''Отдаем страничку с детальным описанием объявления'''
-    advertisement = Advertisement.objects.get(id=id)
-    category_queryset_all = Category.objects.all()
-    category_list = category_queryset_all.filter(level__lte=1)
-    context = {
-        "category_list": category_list,
-        'advertisement': advertisement,
-    }
-    return render(request=request,
-                  template_name='advertisement_details.html',
-                  context=context)
-
-
-
 def get_instructions_for_bulk_import_of_ads(request):
     regions = Region.objects.all()
-    categories = Category.objects.prefetch_related('field_set').all()
-    fields = categories.fielf_set.all()
+    elements = Element.objects.prefetch_related('spisok').prefetch_related('elementtwo_set').all()
+    spisok_elements = {}
+    for element in elements:
+        spisok_elements[element.spisok_id] = []
+    for element in elements:
+        two_part = element.elementtwo_set.all()
+        if len(two_part) != 0 :
+            for element_two in two_part:
+                value = element.title + ', ' + element_two.title
+                print(value)
+                spisok_elements.get(element.spisok_id).append(value)
+        else:
+            spisok_elements.get(element.spisok_id).append(element.title)
 
-    context = {}
+    value_for_page = {}
+    categories = Category.objects.prefetch_related('field_set').all()
+    main_categories = categories.filter(parent_id=None)
+    subcategories = categories.exclude(parent_id=None)
+
+    fields_elements = {}
+    for category in subcategories:
+        fields = category.field_set.all()
+        for field in fields:
+            spisok = field.spisok_id
+            if spisok != None:
+                fields_elements[field.title] = spisok_elements.get(spisok)
+            else:
+                fields_elements[field.title] = []
+    subcategories_elements = {}
+    for category in subcategories:
+        subcategories_elements[category.title] = []
+    for category in subcategories:
+        for field in category.field_set.all():
+            value = fields_elements.get(field.title)
+            subcategories_elements.get(category.title).append(value)
+
+
+
+
+
+    for category in main_categories:
+                value_for_page[category.title] = []
+                for subcategory in subcategories:
+                    if category.id == subcategory.parent_id:
+                        value_for_page.get(category.title).append(subcategory.title)
+
+
+    #     if category.parent_id == None:
+    #         subcategories = []
+    #         category.title
+    #         childrens_categories = categories.filter(parent_id = category.id)
+    #         for child_category in childrens_categories:
+    #             subcategories.append(child_category.title)
+    #         value_for_page[category.title] = subcategories
+    # category_list = Category.objects.all()
+    #
+    context = {
+
+    }
     return render(request=request,
                   template_name='instructions_for_bulk_import_of_ads.html',
                   context=context)

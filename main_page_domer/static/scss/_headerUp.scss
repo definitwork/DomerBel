@@ -1,0 +1,30 @@
+.header__up {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 2px solid $headerTopBorder;
+    margin-bottom: 5px;
+}
+
+.header__up-nav-list {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+
+    & a {
+        @include fonts($mainColor,14px, 400);
+        &:hover {
+            color:$colorHover;
+        }
+    }
+}
+
+.header__up-user {
+    @include fonts($mainColor,14px, 400);
+    cursor: pointer;
+    &:hover {
+        color:$colorHover;
+    }
+}

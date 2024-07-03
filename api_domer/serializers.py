@@ -1,6 +1,11 @@
+from django.contrib.auth import authenticate, login
+from drf_recaptcha.fields import ReCaptchaV3Field, ReCaptchaV2Field
 from rest_framework import serializers
 
 from advertisement.models import Region, Category, Field, Spisok, ElementTwo, Element, Advertisement, Store
+from api_domer.validators import validate_password, validate_phone
+from config import settings
+from users.models import User
 
 
 class GetListOfCitiesSerializer(serializers.ModelSerializer):
@@ -44,6 +49,7 @@ class FieldSerialier(serializers.ModelSerializer):
         model = Field
         fields = '__all__'
 
+
 class StoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Store
@@ -55,7 +61,6 @@ class PhotoAdvertisementSerializer(serializers.Serializer):
 
 
 class AdvertisementSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Advertisement
         fields = ['article', 'title', "price",
@@ -68,3 +73,43 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 class AdditionalInformationSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     error = serializers.CharField()
+
+
+class UserRegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(required=True, validators=[validate_password])
+    password2 = serializers.CharField(required=True, validators=[validate_password], write_only=True)
+    phone_number = serializers.CharField(validators=[validate_phone])
+
+    recaptcha = ReCaptchaV2Field(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ['email', 'first_name', 'entity', 'phone_number', 'password', 'password2', 'recaptcha']
+
+    def create(self, validated_data):
+        validated_data.pop('password2')
+        validated_data.pop('recaptcha')
+        return User.objects.create_user(**validated_data)
+
+    def validate(self, data):
+        password = data.get('password')
+        password2 = data.get('password2')
+        if password != password2:
+            raise serializers.ValidationError({"password":["Введенные пароли не совпадают"], "password2":[""]})
+        return data
+
+
+class UserLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField(write_only=True, error_messages={'blank': 'Обязательное поле'})
+    password = serializers.CharField(write_only=True, error_messages={'blank': 'Обязательное поле'})
+
+
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField(write_only=True, error_messages={'blank': 'Обязательное поле'})
+    recaptcha = ReCaptchaV2Field(write_only=True)
+
+    def validate_email(self, email):
+        if not User.objects.filter(email=email).exists():
+            raise serializers.ValidationError("Пользователь с таким Email не найден")
+        else:
+            return email
