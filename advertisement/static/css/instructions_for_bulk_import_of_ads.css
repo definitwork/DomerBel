@@ -1,0 +1,11 @@
+.regions{
+    gap:100px;
+}
+
+.cities_or_districts{
+    display: none;
+}
+
+.cities_or_districts__active{
+    display: flex;
+}

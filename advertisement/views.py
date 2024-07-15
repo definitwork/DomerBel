@@ -11,14 +11,14 @@ from django.shortcuts import render, get_object_or_404
 from django.utils.timezone import get_current_timezone
 
 from .models import Advertisement, Category, Region, Spisok, Element, ElementTwo, Field
+from .tasks import save_many_ads_from_zip_task, save_many_ads_from_excel_task
 from .utils import sorted_by_number, variables_for_paginator, sorted_by_date_or_price, sorted_by, get_view_type, \
     get_region_variables
 from .forms import UploadFileForm
 from .models import UploadFile
 import openpyxl
 from zipfile import ZipFile
-from advertisement.functions_for_bulk_import import save_many_ads_from_excel, save_many_ads_from_zip
-from django.http import FileResponse
+# from advertisement.functions_for_bulk_import import save_many_ads_from_excel, save_many_ads_from_zip
 
 def get_advertisement_page(request):
     order_by = sorted_by(request.COOKIES.get('sorted_by'))
@@ -229,7 +229,6 @@ def get_bulk_import_of_ads(request):
     context = {
         'form': UploadFileForm(),
     }
-    '''Проверь физ лицо или юр лицо!!!!!!'''
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -240,12 +239,18 @@ def get_bulk_import_of_ads(request):
                     book = openpyxl.open(uploud_file,read_only=True)
                     save_file = UploadFile(file=uploud_file, user=request.user)
                     save_file.save()
-                    ads = save_many_ads_from_excel(f'./media/{save_file.file.name}',request.user)
+                    ads = save_many_ads_from_excel_task.delay(uploud_file=f'./media/{save_file.file.name}',
+                                                              id=request.user.id,
+                                                              first_name=request.user.first_name,
+                                                              phone_number=request.user.phone_number,
+                                                              email=request.user.email)
                     save_file.delete()
-                    if ads != True:
-                        file_error = ads.get('file')
-                        '''ТУТ надо отдать файл  ошибками пользователю'''
-                        return FileResponse(open(file_error, "rb"))
+                    result = ads.get()
+                    if result != True:
+                        file_error = result.get('file')
+                        context['answer'] = 'Несколько объявлений не были сохранены. Чтобы посмотреть объявления с ошибками скачайте файл.'
+                        context['check'] = 1
+                        context['file'] = f'http://127.0.0.1:8000//{file_error[1:]}'
                     else:
                         context['answer'] = 'Объявления успешно сохранены'
                 except:
@@ -258,17 +263,21 @@ def get_bulk_import_of_ads(request):
                         files_from_zip = zip.namelist()
                     save_zip = UploadFile(file=uploud_zip, user=request.user)
                     save_zip.save()
-                    ads = save_many_ads_from_zip(f'./media/{save_zip.file.name}', request.user)
+                    ads = save_many_ads_from_zip_task.delay(uploud_zip=f'./media/{save_zip.file.name}',
+                                                            id=request.user.id,
+                                                            first_name=request.user.first_name,
+                                                            phone_number=request.user.phone_number,
+                                                            email=request.user.email)
                     save_zip.delete()
-                    if ads != True:
-                        file_error = ads.get('file')
+                    result = ads.get()
+                    if result != True:
+                        file_error = result.get('file')
                         context['answer'] = 'Несколько объявлений не были сохранены. Чтобы посмотреть объявления с ошибками скачайте файл.'
-                        context['file'] = 1
+                        context['check'] = 1
+                        context['file'] = f'http://127.0.0.1:8000//{file_error[1:]}'
                     else:
                         context['answer'] = 'Объявления успешно сохранены'
-
                 except:
-                    print('не прошла проверка')
                     context['answer'] = 'Невозможно прочитать файл'
         else:
             context['error'] = 'Ошибка при загрузке файла. Убедитесь, что загружаемый файл необходимого расширения'
@@ -278,74 +287,18 @@ def get_bulk_import_of_ads(request):
                   template_name='bulk_import_ads.html',
                   context = context)
 
-# def download_file_with_error_ads(request):
-#     '''Отдает файл с объявлениями, где найдены были ошибки, при массовом импорте объявлений'''
-#     if request.method == 'GET':
-#         email = request.user.email
-#         path = f'./media/files_for_bulk_import_of_ads/{email}/error_{email}.xlsx'
-#         return FileResponse(open(path, "rb"))
-
 
 def get_instructions_for_bulk_import_of_ads(request):
+    '''функция, которая отдает страницу с инструкцией по массовому импорту объявлений'''
     regions = Region.objects.all()
-    elements = Element.objects.prefetch_related('spisok').prefetch_related('elementtwo_set').all()
-    spisok_elements = {}
-    for element in elements:
-        spisok_elements[element.spisok_id] = []
-    for element in elements:
-        two_part = element.elementtwo_set.all()
-        if len(two_part) != 0 :
-            for element_two in two_part:
-                value = element.title + ', ' + element_two.title
-                print(value)
-                spisok_elements.get(element.spisok_id).append(value)
-        else:
-            spisok_elements.get(element.spisok_id).append(element.title)
 
-    value_for_page = {}
-    categories = Category.objects.prefetch_related('field_set').all()
-    main_categories = categories.filter(parent_id=None)
-    subcategories = categories.exclude(parent_id=None)
-
-    fields_elements = {}
-    for category in subcategories:
-        fields = category.field_set.all()
-        for field in fields:
-            spisok = field.spisok_id
-            if spisok != None:
-                fields_elements[field.title] = spisok_elements.get(spisok)
-            else:
-                fields_elements[field.title] = []
-    subcategories_elements = {}
-    for category in subcategories:
-        subcategories_elements[category.title] = []
-    for category in subcategories:
-        for field in category.field_set.all():
-            value = fields_elements.get(field.title)
-            subcategories_elements.get(category.title).append(value)
+    categories = Category.objects.all()
 
 
 
-
-
-    for category in main_categories:
-                value_for_page[category.title] = []
-                for subcategory in subcategories:
-                    if category.id == subcategory.parent_id:
-                        value_for_page.get(category.title).append(subcategory.title)
-
-
-    #     if category.parent_id == None:
-    #         subcategories = []
-    #         category.title
-    #         childrens_categories = categories.filter(parent_id = category.id)
-    #         for child_category in childrens_categories:
-    #             subcategories.append(child_category.title)
-    #         value_for_page[category.title] = subcategories
-    # category_list = Category.objects.all()
-    #
     context = {
-
+    'regions': regions,
+    'categories': categories,
     }
     return render(request=request,
                   template_name='instructions_for_bulk_import_of_ads.html',

@@ -1,25 +1,18 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 {% load static %}
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Массовый импорт обявлений</title>
-</head>
-<body>
-    {{request.user.email}}<br>
-    <form method="POST" action="" enctype="multipart/form-data">
+
+{% block content %}
+    <p style="color:black;">{{request.user.email}}</p><br>
+    <form method="POST" action="" enctype="multipart/form-data" style="color:black;">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Отправить" id="send">
     </form>
-    <div class="answer" id="answer">
+    <div class="answer" id="answer" style="color:black;">
         <p>{{ answer }}</p>
-        {% if file == 1 %}
+        {% if check == 1 %}
         <input type="button" value="Скачать файл" id="download">
-        <a href="http://127.0.0.1:8000/advertisement/download_file_with_error_ads/"> Скачать </a>
+        <a href="{{ file }}" style="color:black;"> Скачать </a>
         {% endif %}
     </div>
-<script src="{% static 'js/bulk_import_ads.js' %}"></script>
-</body>
-</html>
+{% endblock content %}
