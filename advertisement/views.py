@@ -290,16 +290,18 @@ def get_bulk_import_of_ads(request):
 
 def get_instructions_for_bulk_import_of_ads(request):
     '''функция, которая отдает страницу с инструкцией по массовому импорту объявлений'''
-    regions = Region.objects.all()
-
-    categories = Category.objects.all()
-
-
+    category_list = Category.objects.filter(level__lte=1)
+    oblast = Region.objects.filter(level=0)
+    categories = Category.objects.filter(level=0)
 
     context = {
-    'regions': regions,
-    'categories': categories,
+        "category_list": category_list,
+        'adaptive_navigation': "Добавление объявления",
+        'oblast': oblast,
+        'categories': categories,
     }
+
+
     return render(request=request,
                   template_name='instructions_for_bulk_import_of_ads.html',
                   context=context)
