@@ -1,17 +1,23 @@
+import codecs
+import json
 import smtplib
+from datetime import datetime
 
+import PIL
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
+from django.utils.timezone import make_aware
 
-from advertisement.models import Advertisement, Region, Category, Store
+from advertisement.models import Advertisement, Region, Category, Store, Element, Field, ElementTwo, PhotoAdvertisement
 from advertisement.utils import get_region_variables, sorted_by, sorted_by_number, sorted_by_date_or_price, \
     variables_for_paginator, get_view_type_for_store
 from config import settings
 from main_page_domer.forms import FeedbackForm, ComplaintForm
 from main_page_domer.models import ReasonOfComplaint, Complaint
+from users.models import User
 
 
 def get_main_page(request):
@@ -352,3 +358,121 @@ def get_complaint_page(request, adv_id):
 
 def register_done(request):
     return render(request, "message_after_register.html")
+
+
+def desc_and_opis(objavl):
+    o = objavl.get("opis").split('<hr>')
+
+    ad_info = {}
+    for i in o[0].split('\n'):
+        if i != objavl.get('zag') and i != '':
+            a = i.split(": ")
+            if a[0] == 'Марка, модель':
+                while a[1][0] == ' ':
+                    a[1] = a[1].replace(' ', '', 1)
+                ad_info[a[0]] = a[1].replace(" ", ", ", 1)
+            elif a[0] == 'Этаж':
+                while a[1][0] == ' ':
+                    a[1] = a[1].replace(' ', '', 1)
+                ad_info[a[0]] = a[1].replace("/", ", ", 1)
+            else:
+                if len(a[1].split(" ")) > 1:
+                    f = ElementTwo.objects.filter(element_id__spisok_id__field__category_id=objavl.get('id_catalog'),
+                                                  title__contains=a[1].split(' ')[-1])
+                    if 'gt' in a[1] or 'lt' in a[1]:
+                        f = ElementTwo.objects.filter(
+                            element_id__spisok_id__field__category_id=objavl.get('id_catalog'),
+                            title__contains=f"{a[1].split(' ')[-2]} {a[1].split(' ')[-1]}")
+                    if f:
+                        for x in f:
+                            if x.title in a[1]:
+                                a[1] = a[1].removesuffix(x.title)
+                                while a[1][-1] == " ":
+                                    a[1] = a[1].removesuffix(' ')
+                                a[1] = f"{a[1]}, {x.title}"
+                                print(a[1])
+                                break
+                while a[1][0] == ' ':
+                    a[1] = a[1].replace(' ', '', 1)
+                ad_info[a[0]] = a[1]
+
+    return ad_info
+
+
+def download_advertis(request):
+    with codecs.open('./new_board.json', 'r', 'utf-8') as json_file:
+        ishod_dump = json.loads(json_file.read())
+        for advertis in ishod_dump:
+
+            new_advertis = Advertisement(author=User.objects.get(id=advertis.get("id_akk")) if advertis.get("id_akk") else None,
+            article= None,
+            title= advertis.get("zag"),
+            price= advertis.get("f_cena_"),
+            category= Category.objects.get(id=advertis.get("id_catalog")),
+            bearer= "Частное лицо" if advertis.get("pols") == "1" else "Компания",
+            region= Region.objects.get(id=advertis.get("id_gorod")),
+            preview_image= advertis.get('small').replace('\\', '').replace('s','b') if advertis.get('small') else None,
+            counter_views= advertis.get("counter"),
+            contact_name= advertis.get("contakt"),
+            phone_num= advertis.get("tel").replace(" ", "").replace("-", ""),
+            email= advertis.get("email"),
+            store= None,
+                                         date_of_create=make_aware(
+                                             datetime.strptime(advertis.get("data"), "%Y-%m-%d %H:%M:%S")),
+                                         date_of_deactivate=make_aware(
+                                             datetime.strptime(advertis.get("data1"), "%Y-%m-%d %H:%M:%S")),
+            moderated= True,
+            is_active= True,
+            vip= False,
+            highlight_ad= False,
+            special_accommodation= False,
+            raise_in_search= False,
+            additional_information= desc_and_opis(advertis),
+            description= advertis.get("opis").split('<hr>')[1],
+            video_link= advertis.get("video_link"))
+
+            # new_advertis.save()
+            # print(new_advertis.additional_information)
+
+            # n = Advertisement.objects.get(id=new_advertis.id)
+            # print(type(n.additional_information))
+    return render(request, "download_adver.html")
+
+
+
+def dowload_user(request):
+    # with codecs.open('./akk.json', 'r', 'utf-8') as json_file:
+    #     ishod_dump = json.loads(json_file.read())
+    #     for i in ishod_dump:
+    #         User.objects.create_user(
+    #             email=i.get('email'),
+    #             first_name=i.get('contakt'),
+    #             phone_number=i.get('tel').replace(' ', ''),
+    #             date_joined=i.get('data'),
+    #             password=i.get('pass')
+    #         )
+
+
+    return render(request, 'download_adver.html')
+
+
+def dowload_photo(request):
+    with codecs.open('./foto_07_07_2024.json', 'r', 'utf-8') as json_file:
+        ishod_dump = json.loads(json_file.read())
+        with codecs.open('./new_id_board.json', 'r', 'utf-8') as json_file:
+            advertis_id = json.loads(json_file.read())
+        for i in ishod_dump:
+            paths = f'foto/{i.get("papka")}/{i.get("id_foto")}b.jpg'
+            try:
+                with codecs.open(f"./media/{paths}", 'r') as file:
+                    pass
+            except FileNotFoundError:
+                print("файл не неайден", paths)
+            except PIL.UnidentifiedImageError:
+                print("файл не неайден",paths)
+            else:
+                advertis = Advertisement.objects.get(id=advertis_id.get(i.get("id")))
+                photo = PhotoAdvertisement(photo=paths, advertisement_id=advertis.id)
+                photo.save()
+
+    return render(request, 'download_adver.html')

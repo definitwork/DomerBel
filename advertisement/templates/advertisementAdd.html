@@ -125,7 +125,7 @@
                             </h3>
                             <p class="advertisement__list-item-price">
                                 {% if card.price %}
-                                    {{ card.price }} руб.
+                                    {{ card.price|floatformat }} руб.
                                 {% endif %}
                             </p>
                             <ul class="advertisement__list-item-about-text-list">
