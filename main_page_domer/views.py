@@ -11,13 +11,14 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.timezone import make_aware
 
-from advertisement.models import Advertisement, Region, Category, Store, Element, Field, ElementTwo, PhotoAdvertisement
-from advertisement.utils import get_region_variables, sorted_by, sorted_by_number, sorted_by_date_or_price, \
-    variables_for_paginator, get_view_type_for_store
+from users.models import User
+from advertisement.models import Advertisement, Region, Category, Store, ElementTwo, PhotoAdvertisement
+from advertisement.utils import (get_region_variables, sorted_by, sorted_by_number, sorted_by_date_or_price,
+                                 variables_for_paginator, get_view_type_for_store)
 from config import settings
 from main_page_domer.forms import FeedbackForm, ComplaintForm
-from main_page_domer.models import ReasonOfComplaint, Complaint
-from users.models import User
+from main_page_domer.models import ReasonOfComplaint, Complaint, Publication
+from main_page_domer.functions import views_counter_publication
 
 
 def get_main_page(request):
@@ -255,6 +256,7 @@ def get_store_by_title_and_category(request, store_slug, category_slug):
 
     return response
 
+
 def get_site_map_page(request):
     category_list = Category.objects.all()
 
@@ -272,6 +274,25 @@ def get_help_page(request):
         "category_list": category_list
     }
     return render(request, 'help.html', context)
+
+
+def get_publications(request):
+    """ Страница с всеми публикациями """
+    publications = Publication.objects.prefetch_related('photopublication_set').order_by('date_of_create').exclude(moderated=False)
+    context = {
+        'publications': publications,
+    }
+    return render(request=request, template_name='publications.html', context=context)
+
+
+def get_publication_by_slug(request, publication_slug):
+    """ Страница публикации по slug """
+    views_counter_publication(publication_slug)
+    publication = Publication.objects.get(slug=publication_slug)
+    context = {
+        'publication': publication,
+    }
+    return render(request=request, template_name='publication_by_slug.html', context=context)
 
 
 def get_feedback_page(request):
@@ -432,10 +453,7 @@ def download_advertis(request):
             video_link= advertis.get("video_link"))
 
             # new_advertis.save()
-            # print(new_advertis.additional_information)
 
-            # n = Advertisement.objects.get(id=new_advertis.id)
-            # print(type(n.additional_information))
     return render(request, "download_adver.html")
 
 

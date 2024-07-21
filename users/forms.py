@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
+from main_page_domer.models import Publication
+
 from .models import User, Message
 from .validators import validate_password, validate_email, validate_phone
 
@@ -67,3 +69,19 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = User
         fields = ("email",)
+
+
+class PublicationForm(forms.ModelForm):
+
+    class Meta:
+        model = Publication
+        fields = ['title', 'announcement', 'description', 'video_link', ]
+
+
+class MessageForm(forms.ModelForm):
+    message = forms.CharField(required=True, widget=forms.Textarea(attrs={'class': 'message_input'}))
+
+    class Meta:
+        model = Message
+        fields = ['message']
+
