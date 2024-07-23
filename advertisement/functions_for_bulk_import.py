@@ -156,13 +156,19 @@ def update_photo(ads_for_save,file_name,uploud_zip,email):
     '''Функция для извлечения preview_image из электронного архива,
     и хэширование имени файла и распределение файлов по приложениям
     и далее в разные папки случайным образом'''
+    print("Start update_photo")
     try:
         with ZipFile(uploud_zip,'r') as zip:
-            image_from_zip = zip.extract(file_name,f'./media/files_for_bulk_import_of_ads/{email}')
+            image_from_zip = zip.extract(f'new_{file_name}',f'./media/files_for_bulk_import_of_ads/{email}')
+        print('1111 '+image_from_zip)
         new_location_image = upload_to(ads_for_save,image_from_zip)
+        print('!!!!!'+new_location_image)
         preview_image = os.replace(f'./{image_from_zip}',f'./media/{new_location_image}')
+        print('finish update_photo')
+
         return f'{new_location_image}'
     except:
+        print("Fail photo")
         return False
 
 def write_file_with_error_ads(list_error,email):
@@ -278,6 +284,7 @@ def save_many_ads_from_zip(uploud_zip,id,first_name,phone_number,email):
                 ads[f'{sheet[1][i].value.lower()}'] = sheet[row_in_excel][i].value
         print(ads)
         if len(ads) != 0:
+            print(ads)
             status_ads = []
             value_artical = check_article(ads,value_author)
             if value_artical != True:
@@ -341,12 +348,15 @@ def save_many_ads_from_zip(uploud_zip,id,first_name,phone_number,email):
                                 ads_for_save.delete()
                                 status_ads.append(f'Невозможно сохранить изображение {ads.get(key)}')
                                 list_ads_error.append(ads)
+                                print(status_ads)
                                 break
                 else:
                     ads_for_save.delete()
                     status_ads.append(f'Невозможно сохранить файл {ads.get("фото1")}')
                     list_ads_error.append(ads)
+                    print(status_ads)
             else:
+                print(status_ads)
                 list_ads_error.append(ads)
         row_in_excel = row_in_excel + 1
     if len(list_ads_error) != 0:

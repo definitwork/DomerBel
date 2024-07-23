@@ -250,6 +250,7 @@ def get_bulk_import_of_ads(request):
                         file_error = result.get('file')
                         context['answer'] = 'Несколько объявлений не были сохранены. Чтобы посмотреть объявления с ошибками скачайте файл.'
                         context['file'] = f'http://127.0.0.1:8000//{file_error[1:]}'
+                        context['error'] = True
                     else:
                         context['answer'] = 'Объявления успешно сохранены'
                 except:
@@ -273,6 +274,7 @@ def get_bulk_import_of_ads(request):
                         file_error = result.get('file')
                         context['answer'] = 'Несколько объявлений не были сохранены. Чтобы посмотреть объявления с ошибками скачайте файл.'
                         context['file'] = f'http://127.0.0.1:8000//{file_error[1:]}'
+                        context['error'] = True
                     else:
                         context['answer'] = 'Объявления успешно сохранены'
                 except:
