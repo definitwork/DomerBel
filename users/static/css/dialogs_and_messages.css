@@ -26,6 +26,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+
     & label {
         font-family: "Trebuchet MS";
         font-size: 13px;

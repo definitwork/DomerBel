@@ -1,6 +1,8 @@
 import calendar
 from datetime import datetime, timedelta
 
+import PIL
+from dirtyfields import DirtyFieldsMixin
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.urls import reverse
@@ -30,7 +32,7 @@ class PhotoAdvertisement(models.Model):
         photo.save(self.photo.path, "WebP")
 
 
-class Advertisement(models.Model):
+class Advertisement(DirtyFieldsMixin, models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     article = models.CharField(max_length=255, blank=True, null=True, verbose_name="Артикул")
     title = models.CharField(max_length=255, verbose_name='Заголовок')
@@ -46,7 +48,7 @@ class Advertisement(models.Model):
     phone_num = models.CharField(max_length=255, verbose_name='Телефон', validators=[validate_phone])
     email = models.EmailField(verbose_name='E-Mail')
     store = models.ForeignKey('Store', on_delete=models.CASCADE, blank=True, null=True, verbose_name="Магазин")
-    slug = models.SlugField(unique=True, blank=True, verbose_name='URL')
+    slug = models.SlugField(unique=True, blank=True, verbose_name='URL', max_length=500)
     date_of_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания объявления')
     date_of_change = models.DateTimeField(auto_now=True, verbose_name='Дата изменения объявления')
     date_of_deactivate = models.DateTimeField(blank=True, null=True, verbose_name='Дата деактивации объявления')
@@ -57,6 +59,7 @@ class Advertisement(models.Model):
     special_accommodation = models.BooleanField(default=False, verbose_name="Спецразмещение")
     raise_in_search = models.BooleanField(default=False, verbose_name="Поднять в поиске")
     additional_information = models.JSONField()
+    additional_information_view = ArrayField(ArrayField(models.CharField(max_length=500)), blank=True, null=True, editable=False)
     description = models.TextField(verbose_name='Описание')
     video_link = models.URLField(blank=True, null=True, verbose_name='Ссылка на видео')  # хранит строку, которая представляет валидный URL-адрес
 
@@ -77,13 +80,21 @@ class Advertisement(models.Model):
         return reverse('advertisement_details', kwargs={"slug": self.slug})
 
     def save(self, *args, **kwargs):
+        if 'additional_information' in self.get_dirty_fields():
+            self.additional_information_view = list(self.additional_information.items())
+        self.slug = unique_slugify(self, self.title)
+        self.date_of_deactivate = make_aware(datetime.now() + timedelta(days=180))
         super().save(*args, **kwargs)
         if self.preview_image:
-            photo = add_watermark_to_photo(self.preview_image.path)
-            photo.save(self.preview_image.path, "WebP")
-        self.date_of_deactivate = make_aware(datetime.now() + timedelta(days=180))
-        self.slug = unique_slugify(self, self.title)
-        super(Advertisement, self).save(*args, **kwargs)
+            try:
+                photo = add_watermark_to_photo(self.preview_image.path)
+                photo.save(self.preview_image.path, "WebP")
+            except FileNotFoundError:
+                self.preview_image = None
+            except PIL.UnidentifiedImageError:
+                self.preview_image = None
+            finally:
+                super(Advertisement, self).save(*args, **kwargs)
 
 
 class Category(MPTTModel):
@@ -129,7 +140,8 @@ class Region(MPTTModel):
 
 
 class Field(models.Model):
-    title = models.CharField(max_length=500, verbose_name='Заголовок поля')
+    title = models.CharField(max_length=500, verbose_name='Заголовок поля', blank=True, null=True)
+    title_ad = models.CharField(max_length=500, blank=True, null=True)
     error = models.CharField(max_length=500, verbose_name='Текст ошибки при неверно введенных данных', blank=True, null=True)
     spisok = models.ForeignKey('Spisok', on_delete=models.CASCADE, verbose_name='Связь со списком', blank=True, null=True)
     category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Связь с категорией', blank=True, null=True)

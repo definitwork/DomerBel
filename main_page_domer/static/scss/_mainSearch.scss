@@ -13,19 +13,12 @@
 .main__search-form-item {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     flex-wrap: wrap;
     gap: 5px;
 
 
     &:nth-child(2) {
         gap: 15px;
-    }
-
-    &:last-child {
-        & select {
-            flex: 1 1 auto;
-        }
     }
 
     & input {
@@ -39,7 +32,7 @@
     }
 
     & select {
-        flex: 1 1 200px;
+        flex: 0 1 200px;
         padding: 5px;
         border-radius: 5px;
         @include fonts($defaultColor,14px, 400);
@@ -54,16 +47,22 @@
     }
 }
 
+.fields {
+    & select {
+        flex: 0 1 320px;
+    }
+}
+
 .main__search-form-item-area{
     display: none;
 }
+
 
 .main__search-form-item-label-wrap {
     display: flex;
     align-items: center;
     gap: 20px;
     flex-wrap: wrap;
-    justify-content: space-between;
     flex: 1 1 auto;
 
     & label {

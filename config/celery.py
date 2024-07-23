@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from celery import Celery
 from celery.schedules import crontab
 
@@ -7,7 +8,18 @@ app = Celery("config")
 app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
 
+'''плановые задачи'''
 app.conf.beat_schedule = {
+    "deactivate_advertisement": {
+        "task": 'main_page_domer.tasks.deactivate_advertisement',
+        # "schedule": timedelta(seconds=10)
+        "schedule": crontab(hour=2, minute=27)
+    },
+    "delete_advertisement": {
+        "task": 'main_page_domer.tasks.delete_advertisement',
+        "schedule": timedelta(seconds=10)
+        # "schedule": crontab(hour=2, minute=27)
+    },
     "delete_everything_in_folder": {
         "task": "advertisement.tasks.delete_everything_in_folder_beat",
         "schedule": crontab(minute=0, hour=0),

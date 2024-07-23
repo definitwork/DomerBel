@@ -1,4 +1,4 @@
-const modal = document.querySelector('.modals');
+// const modal = document.querySelector('.modals');
 const signIn = document.querySelector('.modals__signIn');
 const signUp = document.querySelector('.modals__login')
 const signInBtn = document.querySelector('.modals__login-action').children[1];
