@@ -1,0 +1,496 @@
+import codecs
+import json
+import smtplib
+from datetime import datetime
+
+import PIL
+from django.contrib import messages
+from django.core.mail import send_mail
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.shortcuts import render, get_object_or_404, redirect
+from django.utils.timezone import make_aware
+
+from users.models import User
+from advertisement.models import Advertisement, Region, Category, Store, ElementTwo, PhotoAdvertisement
+from advertisement.utils import (get_region_variables, sorted_by, sorted_by_number, sorted_by_date_or_price,
+                                 variables_for_paginator, get_view_type_for_store)
+from config import settings
+from main_page_domer.forms import FeedbackForm, ComplaintForm
+from main_page_domer.models import ReasonOfComplaint, Complaint, Publication
+from main_page_domer.functions import views_counter_publication
+
+
+def get_main_page(request):
+    """ Отдаём главную страницу """
+    advertisement_queryset = Advertisement.objects.filter(
+        is_active=True, moderated=True).select_related(
+        'category', 'region').order_by("-date_of_create")[:10]
+    vip_advertisement = Advertisement.objects.filter(vip=True)
+    regions_queryset = Region.objects.filter(level=0)
+    category_list = Category.objects.filter(level=0)
+    context = {
+        "advertisement": advertisement_queryset,
+        "vip_advertisement": vip_advertisement,
+        "category_list": category_list,
+        "regions": regions_queryset,
+        "adaptive_navigation": "Общебелорусская доска объявлений"
+    }
+    return render(request, 'main.html', context)
+
+
+def get_stores_page(request):
+    """ Страница со всеми магазинами сайта """
+    locations = Region.objects.filter(type='Область')
+    category_list = Category.objects.filter(level__lte=1)
+    store_queryset = Store.objects.filter(is_active=True).select_related('category', 'region')
+    category_queryset = Category.objects.add_related_count(Category.objects.root_nodes(),
+                                                           Store,
+                                                           'category',
+                                                           'store_counts',
+                                                           cumulative=True)
+    paginator = Paginator(store_queryset, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    context = {
+        "stores_found": store_queryset.count(),
+        "category": category_queryset,
+        "category_list": category_list,
+        "locations": locations,
+        "page_obj": page_obj
+    }
+
+    return render(request, 'stores.html', context)
+
+
+def get_store_search(request):
+    """ Отдаем страницу с результатами поиска по магазинам"""
+    category_1 = request.GET.get("category_1")
+    category_2 = request.GET.get("category_2")
+    search_text = request.GET.get("search_text")
+    region_1 = request.GET.get("region_1")
+    region_2 = request.GET.get("region_2")
+    dict_for_filter = {}
+    if category_1 != "0":
+        dict_for_filter.update({"category__parent__id": category_1})
+    if category_2 != "0":
+        dict_for_filter.update({"category__id": category_2})
+    if len(search_text) >= 3:
+        dict_for_filter.update({"description__icontains": search_text})
+    if region_1 != "0":
+        dict_for_filter.update({"region__parent__id": region_1})
+    if region_2 != "0":
+        dict_for_filter.update({"region__id": region_2})
+
+    store_queryset = Store.objects.filter(is_active=True, **dict_for_filter).select_related('category', 'region')
+    category_queryset = Category.objects.add_related_count(Category.objects.root_nodes(),
+                                                           Store,
+                                                           'category',
+                                                           'store_counts',
+                                                           cumulative=True)
+    locations = Region.objects.filter(type='Область')
+    category_list = Category.objects.filter(level__lte=1)
+
+    paginator = Paginator(store_queryset, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "stores_found": store_queryset.count(),
+        "category": category_queryset,
+        "locations": locations,
+        "category_list": category_list,
+        "page_obj": page_obj
+    }
+
+    return render(request, 'stores_search_results.html', context)
+
+
+def get_stores_by_category(request, category_slug):
+    """Переходы по дочерним категориям магазинов """
+    region_filter, region_param, region_bread_crumbs = get_region_variables(request.GET.get('region'))
+    category_queryset_all = Category.objects.all()
+    category_list = Category.objects.filter(level__lte=1)
+    category = get_object_or_404(category_queryset_all, slug=category_slug)
+    category_queryset_an = Category.objects.add_related_count(category.get_descendants(),
+                                                              Store,
+                                                              'category',
+                                                              'store_counts',
+                                                              cumulative=True,
+                                                              extra_filters={"region__in": region_filter['region__in']})
+    store_queryset = Store.objects.filter(Q(category__in=category_queryset_an) |
+                                                          Q(category__slug=category.slug),
+                                                          **region_filter,
+                                                          is_active=True).select_related(
+                                                          'category',
+                                                          'region')
+    paginator = Paginator(store_queryset, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    context = {
+        "stores_found": store_queryset.count(),
+        "category": category_queryset_an,
+        "region_bread_crumbs": region_bread_crumbs,
+        "region_param": region_param,
+        "category_list": category_list,
+        "page_obj": page_obj
+    }
+    return render(request, 'stores_by_category.html', context)
+
+
+def get_store_by_title(request, store_slug):
+    """ Переход на страницу выбранного магазина с его объявлениями """
+    order_by = sorted_by(request.COOKIES.get('sorted_by'))
+    sort_for_paginator = sorted_by_number(request.COOKIES.get('sort'))
+    state_sort_by_date = request.COOKIES.get('date', 0)
+    view_type, html = get_view_type_for_store(request.COOKIES)
+    region_filter, region_param, region_bread_crumbs = get_region_variables(request.GET.get('region'))
+
+    if request.GET.get('date') or request.GET.get('price'):
+        state_sort_by_date, order_by = sorted_by_date_or_price(request.GET)
+    if request.GET.get('sort'):
+        sort_for_paginator = sorted_by_number(request.GET.get('sort'))
+    if request.GET.get('view_type'):
+        view_type, html = get_view_type_for_store(request.GET)
+
+    store_page = Store.objects.get(slug=store_slug)
+    oblast = Region.objects.get(id=store_page.region.parent_id)
+    category_list = Category.objects.filter(level__lte=1)
+    advertisement_queryset = Advertisement.objects.filter(store=store_page, is_active=True,
+                                                          moderated=True, **region_filter).select_related(
+                                                          'category',
+                                                          'region').order_by(order_by)
+    category_queryset = Category.objects.add_related_count(Category.objects.root_nodes(),
+                                                           Advertisement,
+                                                           'category',
+                                                           'advertisement_counts',
+                                                           cumulative=True,
+                                                           extra_filters={"region__in": region_filter['region__in'],
+                                                                          "category__advertisement__in": advertisement_queryset})
+
+    page_obj = variables_for_paginator(advertisement_queryset,
+                                       request.GET.get('page'),
+                                       sort_for_paginator)
+
+    context = {
+        'store_page': store_page,
+        'oblast': oblast,
+        "category_list": category_list,
+        "ads_found": advertisement_queryset.count(),
+        "category": category_queryset,
+        "region_bread_crumbs": region_bread_crumbs,
+        "region_param": region_param,
+        "page_obj": page_obj,
+        'date': state_sort_by_date,
+        'view_type': view_type,
+    }
+    response = render(request, html, context)
+    response.set_cookie('sort', sort_for_paginator)
+    response.set_cookie('date', state_sort_by_date)
+    response.set_cookie('sorted_by', order_by)
+    response.set_cookie('view_type', view_type)
+    response.set_cookie('user_auth', request.user.id)
+
+    return response
+
+
+def get_store_by_title_and_category(request, store_slug, category_slug):
+    """ Переходы по дочерним категориям объявлений выбранного магазина """
+    order_by = sorted_by(request.COOKIES.get('sorted_by'))
+    sort_for_paginator = sorted_by_number(request.COOKIES.get('sort'))
+    state_sort_by_date = request.COOKIES.get('date', 0)
+    view_type, html = get_view_type_for_store(request.COOKIES)
+    region_filter, region_param, region_bread_crumbs = get_region_variables(request.GET.get('region'))
+
+    if request.GET.get('date') or request.GET.get('price'):
+        state_sort_by_date, order_by = sorted_by_date_or_price(request.GET)
+    if request.GET.get('sort'):
+        sort_for_paginator = sorted_by_number(request.GET.get('sort'))
+    if request.GET.get('view_type'):
+        view_type, html = get_view_type_for_store(request.GET)
+
+    store_page = Store.objects.get(slug=store_slug)
+    oblast = Region.objects.get(id=store_page.region.parent_id)
+    category_queryset_all = Category.objects.all()
+    category_list = Category.objects.filter(level__lte=1)
+    category = get_object_or_404(category_queryset_all, slug=category_slug)
+    category_bread_crumbs = category.get_ancestors(ascending=False, include_self=True)
+    category_queryset_an = Category.objects.add_related_count(category.get_descendants(),
+                                                              Advertisement,
+                                                              'category',
+                                                              'advertisement_counts',
+                                                              cumulative=True,
+                                                              extra_filters={
+                                                                  "region__in": region_filter['region__in'], })
+    category_queryset = category_queryset_an.filter(parent_id=category.id)
+    advertisement_queryset = Advertisement.objects.filter(Q(category__in=category_queryset_an) |
+                                                          Q(category__slug=category.slug), store=store_page,
+                                                          **region_filter,
+                                                          is_active=True).select_related(
+                                                          'category',
+                                                          'region')
+
+    page_obj = variables_for_paginator(advertisement_queryset,
+                                       request.GET.get('page'),
+                                       sort_for_paginator)
+
+    context = {
+        'store_page': store_page,
+        'oblast': oblast,
+        "category_list": category_list,
+        "ads_found": advertisement_queryset.count(),
+        "category": category_queryset,
+        "category_bread_crumbs": category_bread_crumbs,
+        "region_bread_crumbs": region_bread_crumbs,
+        "region_param": region_param,
+        'page_obj': page_obj,
+        'date': state_sort_by_date,
+        'view_type': view_type,
+    }
+    response = render(request, html, context)
+    response.set_cookie('sort', sort_for_paginator)
+    response.set_cookie('date', state_sort_by_date)
+    response.set_cookie('sorted_by', order_by)
+    response.set_cookie('view_type', view_type)
+    response.set_cookie('user_auth', request.user.id)
+
+    return response
+
+
+def get_site_map_page(request):
+    category_list = Category.objects.all()
+
+
+    context = {}
+    context['nodes'] = category_list
+
+    return render(request, 'site_map.html', context)
+
+
+def get_help_page(request):
+    """ Страница Помощь """
+    category_list = Category.objects.filter(level__lte=1)
+    context = {
+        "category_list": category_list
+    }
+    return render(request, 'help.html', context)
+
+
+def get_publications(request):
+    """ Страница с всеми публикациями """
+    publications = Publication.objects.prefetch_related('photopublication_set').order_by('date_of_create').exclude(moderated=False)
+    context = {
+        'publications': publications,
+    }
+    return render(request=request, template_name='publications.html', context=context)
+
+
+def get_publication_by_slug(request, publication_slug):
+    """ Страница публикации по slug """
+    views_counter_publication(publication_slug)
+    publication = Publication.objects.get(slug=publication_slug)
+    context = {
+        'publication': publication,
+    }
+    return render(request=request, template_name='publication_by_slug.html', context=context)
+
+
+def get_feedback_page(request):
+    """ Страница связи с администрацией сайта """
+    if request.method == "POST":
+        new_feedback_form = FeedbackForm(request.POST)
+
+        if new_feedback_form.is_valid():
+            subject = f'"{new_feedback_form.cleaned_data.get("subject")}" от пользователя {new_feedback_form.cleaned_data.get("email")}'
+            message = new_feedback_form.cleaned_data.get("message")
+
+            try:
+                send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [settings.EMAIL_HOST_USER])
+            except smtplib.SMTPException as error:
+                return render(request, 'feedback.html',
+                              {'feedback_form': new_feedback_form, 'error_message': str(error)})
+
+            messages.success(request, f"Ваше письмо администрации сайта отправлено")
+            return redirect("feedback")
+
+        feedback_form = FeedbackForm(request.POST)
+        feedback_form.errors.update(new_feedback_form.errors)
+        category_list = Category.objects.filter(level__lte=1)
+        context = {
+            "feedback_form": feedback_form,
+            "category_list": category_list
+        }
+        return render(request, 'feedback.html', context)
+
+    feedback_form = FeedbackForm()
+    category_list = Category.objects.filter(level__lte=1)
+    context = {
+        "feedback_form": feedback_form,
+        "category_list": category_list
+    }
+    return render(request, 'feedback.html', context)
+
+
+def get_complaint_page(request, adv_id):
+    """ Страница отправки жалобы на объявление """
+    if request.method == "POST":
+        new_complaint_form = ComplaintForm(request.POST)
+
+        if new_complaint_form.is_valid():
+            reason = ReasonOfComplaint.objects.get(id=new_complaint_form.cleaned_data.get("reason"))
+            text = new_complaint_form.cleaned_data.get("text")
+            user = new_complaint_form.cleaned_data.get("email")
+            advertisement = Advertisement.objects.get(id=adv_id)
+            Complaint.objects.create(reason=reason, text=text, user=user, advertisement=advertisement)
+
+            subject = f'Жалоба на объявление id={adv_id}: "{reason.reason}" от пользователя {user}'
+            message = text
+
+            try:
+                send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [settings.EMAIL_HOST_USER])
+            except smtplib.SMTPException as error:
+                return render(request, 'complaint.html',
+                              {'complaint_form': new_complaint_form, 'error_message': str(error)})
+
+            messages.success(request, f"Ваша жалоба на объявление отправлена администрации сайта")
+            return redirect("complaint", adv_id=adv_id)
+
+        complaint_form = ComplaintForm(request.POST)
+        complaint_form.errors.update(new_complaint_form.errors)
+        advertisement = Advertisement.objects.get(id=adv_id)
+        category_list = Category.objects.filter(level__lte=1)
+        context = {
+            "complaint_form": complaint_form,
+            "advertisement": advertisement,
+            "category_list": category_list
+        }
+        return render(request, 'complaint.html', context)
+
+    complaint_form = ComplaintForm()
+    advertisement = Advertisement.objects.get(id=adv_id)
+    category_list = Category.objects.filter(level__lte=1)
+    context = {
+        "complaint_form": complaint_form,
+        "advertisement": advertisement,
+        "category_list": category_list
+    }
+    return render(request, 'complaint.html', context)
+
+
+def register_done(request):
+    return render(request, "message_after_register.html")
+
+
+def desc_and_opis(objavl):
+    o = objavl.get("opis").split('<hr>')
+
+    ad_info = {}
+    for i in o[0].split('\n'):
+        if i != objavl.get('zag') and i != '':
+            a = i.split(": ")
+            if a[0] == 'Марка, модель':
+                while a[1][0] == ' ':
+                    a[1] = a[1].replace(' ', '', 1)
+                ad_info[a[0]] = a[1].replace(" ", ", ", 1)
+            elif a[0] == 'Этаж':
+                while a[1][0] == ' ':
+                    a[1] = a[1].replace(' ', '', 1)
+                ad_info[a[0]] = a[1].replace("/", ", ", 1)
+            else:
+                if len(a[1].split(" ")) > 1:
+                    f = ElementTwo.objects.filter(element_id__spisok_id__field__category_id=objavl.get('id_catalog'),
+                                                  title__contains=a[1].split(' ')[-1])
+                    if 'gt' in a[1] or 'lt' in a[1]:
+                        f = ElementTwo.objects.filter(
+                            element_id__spisok_id__field__category_id=objavl.get('id_catalog'),
+                            title__contains=f"{a[1].split(' ')[-2]} {a[1].split(' ')[-1]}")
+                    if f:
+                        for x in f:
+                            if x.title in a[1]:
+                                a[1] = a[1].removesuffix(x.title)
+                                while a[1][-1] == " ":
+                                    a[1] = a[1].removesuffix(' ')
+                                a[1] = f"{a[1]}, {x.title}"
+                                print(a[1])
+                                break
+                while a[1][0] == ' ':
+                    a[1] = a[1].replace(' ', '', 1)
+                ad_info[a[0]] = a[1]
+
+    return ad_info
+
+
+def download_advertis(request):
+    with codecs.open('./new_board.json', 'r', 'utf-8') as json_file:
+        ishod_dump = json.loads(json_file.read())
+        for advertis in ishod_dump:
+
+            new_advertis = Advertisement(author=User.objects.get(id=advertis.get("id_akk")) if advertis.get("id_akk") else None,
+            article= None,
+            title= advertis.get("zag"),
+            price= advertis.get("f_cena_"),
+            category= Category.objects.get(id=advertis.get("id_catalog")),
+            bearer= "Частное лицо" if advertis.get("pols") == "1" else "Компания",
+            region= Region.objects.get(id=advertis.get("id_gorod")),
+            preview_image= advertis.get('small').replace('\\', '').replace('s','b') if advertis.get('small') else None,
+            counter_views= advertis.get("counter"),
+            contact_name= advertis.get("contakt"),
+            phone_num= advertis.get("tel").replace(" ", "").replace("-", ""),
+            email= advertis.get("email"),
+            store= None,
+                                         date_of_create=make_aware(
+                                             datetime.strptime(advertis.get("data"), "%Y-%m-%d %H:%M:%S")),
+                                         date_of_deactivate=make_aware(
+                                             datetime.strptime(advertis.get("data1"), "%Y-%m-%d %H:%M:%S")),
+            moderated= True,
+            is_active= True,
+            vip= False,
+            highlight_ad= False,
+            special_accommodation= False,
+            raise_in_search= False,
+            additional_information= desc_and_opis(advertis),
+            description= advertis.get("opis").split('<hr>')[1],
+            video_link= advertis.get("video_link"))
+
+            # new_advertis.save()
+
+    return render(request, "download_adver.html")
+
+
+
+def dowload_user(request):
+    # with codecs.open('./akk.json', 'r', 'utf-8') as json_file:
+    #     ishod_dump = json.loads(json_file.read())
+    #     for i in ishod_dump:
+    #         User.objects.create_user(
+    #             email=i.get('email'),
+    #             first_name=i.get('contakt'),
+    #             phone_number=i.get('tel').replace(' ', ''),
+    #             date_joined=i.get('data'),
+    #             password=i.get('pass')
+    #         )
+
+
+    return render(request, 'download_adver.html')
+
+
+def dowload_photo(request):
+    with codecs.open('./foto_07_07_2024.json', 'r', 'utf-8') as json_file:
+        ishod_dump = json.loads(json_file.read())
+        with codecs.open('./new_id_board.json', 'r', 'utf-8') as json_file:
+            advertis_id = json.loads(json_file.read())
+        for i in ishod_dump:
+            paths = f'foto/{i.get("papka")}/{i.get("id_foto")}b.jpg'
+            try:
+                with codecs.open(f"./media/{paths}", 'r') as file:
+                    pass
+            except FileNotFoundError:
+                print("файл не неайден", paths)
+            except PIL.UnidentifiedImageError:
+                print("файл не неайден",paths)
+            else:
+                advertis = Advertisement.objects.get(id=advertis_id.get(i.get("id")))
+                photo = PhotoAdvertisement(photo=paths, advertisement_id=advertis.id)
+                photo.save()
+
+    return render(request, 'download_adver.html')

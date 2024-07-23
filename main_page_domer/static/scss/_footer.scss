@@ -1,0 +1,20 @@
+footer {
+    padding: 40px 0;
+}
+
+
+.footer__nav-list {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.footer__nav-list-item {
+    & a {
+        @include fonts($defaultColor,14px, 400);
+        &:hover {
+            color:$colorHover;
+        }
+    }
+}

@@ -1,0 +1,15 @@
+    @import './variables';
+    @import './mixins';
+    @import './filter';
+    @import './sort';
+    @import './advertisementItem';
+    @import "./vipAdd";
+    @import './crumbs';
+
+
+    .advertisement{
+        display: flex;
+        align-items: flex-end;
+        gap: 15px;
+        flex-wrap: wrap-reverse;
+    }

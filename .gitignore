@@ -162,3 +162,8 @@ cython_debug/
 .idea
 idea/
 
+json/
+media/foto
+
+celerybeat-schedule.db
+
