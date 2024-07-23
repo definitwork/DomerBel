@@ -164,3 +164,6 @@ idea/
 
 json/
 media/foto
+
+celerybeat-schedule.db
+

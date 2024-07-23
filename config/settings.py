@@ -31,10 +31,10 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
 
     'drf_yasg',
-    "drf_recaptcha",
-    "debug_toolbar",
-    "rest_framework",
-    "corsheaders",
+    'drf_recaptcha',
+    'debug_toolbar',
+    'rest_framework',
+    'corsheaders',
     'django_dump_load_utf8',
     'django_ckeditor_5',
 
@@ -276,3 +276,8 @@ CKEDITOR_5_CONFIGS = {
         }
     }
 }
+# Celery settings
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+
+
