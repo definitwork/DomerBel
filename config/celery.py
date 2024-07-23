@@ -12,15 +12,21 @@ app.autodiscover_tasks()
 '''плановые задачи'''
 app.conf.beat_schedule = {
     "deactivate_advertisement": {
-        "task": 'main_page_domer.tasks.deactivate_advertisement',
+        "task": 'advertisement.tasks.deactivate_advertisement',
         # "schedule": timedelta(seconds=10)
-        "schedule": crontab(hour=2, minute=27)
+        "schedule": crontab(hour=0, minute=1)
     },
     "delete_advertisement": {
-        "task": 'main_page_domer.tasks.delete_advertisement',
-        "schedule": timedelta(seconds=10)
-        # "schedule": crontab(hour=2, minute=27)
+        "task": 'advertisement.tasks.delete_advertisement',
+        # "schedule": timedelta(seconds=10)
+        "schedule": crontab(hour=0, minute=1)
     },
+    "deactivate_store": {
+        "task": 'advertisement.tasks.deactivate_store',
+        "schedule": timedelta(seconds=10)
+        # "schedule": crontab(hour=0, minute=1)
+    },
+
 }
 
 if __name__ == '__main__':
