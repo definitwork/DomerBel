@@ -213,12 +213,12 @@ function show_additional_information(event) {
         .then((data) => {
             informationList.innerHTML = '';
             for (let i of data) {
-                if (i.spisok === null && i.min_val_interval_date === 0 && i.title !== 'Цена' && i.title !== 'Арендная плата') {
+                if (i.spisok === null && i.min_val_interval_date === 0 && i.title !== 'Цена' && i.title !== 'Арендная плата' && i.title !== 'Зарплата' && i.title !== 'Минимальная зарплата') {
                     informationList.innerHTML += ` 
 <div class="additional_information_item-${i.id}">
 <div class="additional_information_item item_input">
 <div class="information_label label_fields">
-${i.title}
+${i.title ? i.title : i.title_ad}
 </div>
 <div class="information_select">
 <p class="information_item">
@@ -271,7 +271,7 @@ ${i.title}
 <div class="additional_information_item-${i.id}">
 <div class="additional_information_item item_input">
 <div class="information_label label_fields">
-${i.title}
+${i.title ? i.title : i.title_ad}
 </div>
 <div class="information_select">
 <p class="information_item">
@@ -284,12 +284,12 @@ ${i.title}
 </div>
 </div>
                     `}
-                } else if (i.title === 'Цена' || i.title === 'Арендная плата') {
+                } else if (i.title === 'Цена' || i.title === 'Арендная плата' || i.title === 'Зарплата' || i.title === 'Минимальная зарплата') {
                     informationList.innerHTML += ` 
 <div class="additional_information_item-price">
 <div class="additional_information_item item_input">
 <div class="information_label label_fields">
-${i.title} руб
+${i.title ? i.title : i.title_ad} руб
 </div>
 <div class="information_select">
 <p class="information_item">
@@ -306,7 +306,7 @@ ${i.title} руб
 <div class="additional_information_item-${i.id}">
 <div class="additional_information_item item_input">
 <div class="information_label label_fields">
-${i.title}
+${i.title ? i.title : i.title_ad}
 </div>
 <div class="information_select">
 <p class="information_item">
@@ -522,6 +522,12 @@ function saveAdvertisement() {
     } else if (data.has("Арендная плата")) {
         data.append("price", data.get("Арендная плата"))
         data.delete("Арендная плата")
+    } else if (data.has("Зарплата")) {
+        data.append("price", data.get("Зарплата"))
+        data.delete("Зарплата")
+    } else if (data.has("Минимальная зарплата")) {
+        data.append("price", data.get("Минимальная зарплата"))
+        data.delete("Минимальная зарплата")
     }
     fetch((window.location.href === `http://127.0.0.1:8000/advertisement/editing_an_ad/${document.getElementById('add_adver').dataset.advertisement}/`) ? `http://127.0.0.1:8000/api/v1/update_advertisement/` : `http://127.0.0.1:8000/api/v1/save_advertisement/`, {
         method: (window.location.href === `http://127.0.0.1:8000/advertisement/editing_an_ad/${document.getElementById('add_adver').dataset.advertisement}/`) ? "PATCH" : "POST", headers: {

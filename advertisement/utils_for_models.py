@@ -2,7 +2,7 @@ import random
 import os
 
 from uuid import uuid4
-from transliterate import slugify
+from slugify import slugify
 from PIL import Image, ImageDraw, ImageFont
 from hashlib import md5
 

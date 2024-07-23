@@ -1,5 +1,6 @@
 {% extends "base.html" %} 
-{% load static %} 
+{% load static %}
+{% load advertisement_tags %}
 {% block css %}
  <link rel="stylesheet" href="{% static "css/details.css"%}"> 
 {% endblock css %} 
@@ -77,7 +78,7 @@
       <h1 class="details__title">{{ advertisement.title }}</h1>
       <div class="details__advertisement-info">
         {% if advertisement.price %}
-        <p>Цена <span>{{ advertisement.price }}</span> руб.</p>
+        <p>Цена <span>{{ advertisement.price|floatformat }}</span> руб.</p>
         {% endif %}
         <p>ID:{{ advertisement.id }}</p>
         <p>
@@ -201,7 +202,8 @@
           </li>
         </ul>
         <ul class="details__advertisement-additional-description-list">
-          {% for title,item in advertisement.additional_information.items %}
+          {% for title,item in advertisement.additional_information_view %}
+          {% if title and item %}
           <li class="details__advertisement-additional-description-list-item">
             <p class="details__advertisement-additional-description-list-item-title">
               {{ title }}:
@@ -209,9 +211,10 @@
             <p class="details__advertisement-additional-description-list-item-value 
             {% if title == 'Цена' %}details__advertisement-additional-description-list-item-value-price{% endif %}"
             >
-              {{ item }}
+              {% if title == "Этаж" %} {{item|split_item:", "|first}}/{{item|split_item:", "|last}} {% else %} {{ item }} {% endif %}
             </p>
           </li>
+            {% endif %}
           {% endfor %}
         </ul>
         <p class="details__advertisement-about-description">
