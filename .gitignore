@@ -164,3 +164,8 @@ idea/
 
 json/
 
+
+
+
+celerybeat-schedule.db
+
