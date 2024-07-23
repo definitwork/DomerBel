@@ -11,10 +11,11 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from transliterate import slugify
 from rest_framework import status, serializers
 
-from advertisement.models import Region, Category, Field, ElementTwo, PhotoAdvertisement, Advertisement, Store
+from advertisement.models import Region, Category, Field, ElementTwo, PhotoAdvertisement, Advertisement, Store, Element
 from api_domer.serializers import GetListOfCitiesSerializer, GetListOfCategoriesSerializer, FieldSerialier, \
     ElementTwoSerializer, PhotoAdvertisementSerializer, AdvertisementSerializer, StoreSerializer, \
-    AdditionalInformationSerializer, UserRegisterSerializer, UserLoginSerializer, PasswordResetSerializer
+    AdditionalInformationSerializer, UserRegisterSerializer, UserLoginSerializer, PasswordResetSerializer, \
+    ElementSerializer, GetListOfCategoriesFieldsSerializer
 from rest_framework.response import Response
 
 from api_domer.utils import validate_additional_information
@@ -241,3 +242,17 @@ def password_reset(request):
         raise serializers.ValidationError(
             {"errors": password_reset_serializer.errors})
 
+
+
+@api_view(['GET'])
+def get_element_list(request):
+    elements = Element.objects.filter(spisok_id__field=request.query_params.get('id'))
+    serializer = ElementSerializer(elements, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_subcategory_list(request):
+    categories = Category.objects.filter(parent_id=request.query_params.get('id')).prefetch_related('field_set__spisok__element_set__elementtwo_set')
+    serializer = GetListOfCategoriesFieldsSerializer(categories, many=True)
+    return Response(serializer.data)

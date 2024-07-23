@@ -30,14 +30,12 @@ def check_article(ads,value_author):
     else:
         return True
 
-
 def chek_title(ads):
     '''Функция, проверяющая заголовок объявления'''
     if 'заголовок' in ads and len(str(ads.get("заголовок"))) < 256:
         return True
     else:
         return 'поле "Заголовк" обязательное'
-
 
 def chek_price(ads):
     '''Функция, проверящя цену'''
@@ -59,7 +57,6 @@ def chek_price(ads):
     else:
         return True
 
-
 def chek_category(ads):
     '''Функция, проверяющая категорию объявления'''
     if 'категория' in ads:
@@ -70,7 +67,6 @@ def chek_category(ads):
             return 'некорректно заполнено поле "Категория"'
     else:
         return 'поле "Категория" обязательное'
-
 
 def check_region(ads):
     '''Функция, проверяющаа регион'''
@@ -149,14 +145,12 @@ def check_additional_information(ads,check_category):
     else:
         return ['некорректно заполнено поле категории']
 
-
 def chek_description(ads):
     '''Функция, проверяющаа описание'''
     if 'описание' in ads:
         return True
     else:
         return 'поле "Описание" обязательное'
-
 
 def update_photo(ads_for_save,file_name,uploud_zip,email):
     '''Функция для извлечения preview_image из электронного архива,
@@ -170,7 +164,6 @@ def update_photo(ads_for_save,file_name,uploud_zip,email):
         return f'{new_location_image}'
     except:
         return False
-
 
 def write_file_with_error_ads(list_error,email):
     path = f'./media/files_for_bulk_import_of_ads/{email}/error_{email}.xlsx'
@@ -266,7 +259,6 @@ def save_many_ads_from_excel(uploud_file,id,first_name,phone_number,email):
         return {'file': error_file}
     else:
         return True
-
 
 def save_many_ads_from_zip(uploud_zip,id,first_name,phone_number,email):
     '''Функция для сохранениея обявлений из электронного архива'''

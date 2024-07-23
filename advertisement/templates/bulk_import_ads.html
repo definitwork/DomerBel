@@ -10,7 +10,7 @@
     </form>
     <div class="answer" id="answer" style="color:black;">
         <p>{{ answer }}</p>
-        {% if check == 1 %}
+        {% if answer  == "Несколько объявлений не были сохранены. Чтобы посмотреть объявления с ошибками скачайте файл" %}
         <input type="button" value="Скачать файл" id="download">
         <a href="{{ file }}" style="color:black;"> Скачать </a>
         {% endif %}

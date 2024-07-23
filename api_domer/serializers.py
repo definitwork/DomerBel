@@ -113,3 +113,10 @@ class PasswordResetSerializer(serializers.Serializer):
             raise serializers.ValidationError("Пользователь с таким Email не найден")
         else:
             return email
+
+
+class GetListOfCategoriesFieldsSerializer(serializers.ModelSerializer):
+    field_set = FieldSerialier(many=True)
+    class Meta:
+        model = Category
+        fields = ['id','title','field_set']

@@ -3,7 +3,7 @@
 {% load mptt_tags %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static "css/instructions_for_bulk_import_of_ads.css" %}">
+    <link rel="stylesheet" href="{% static 'css/instructions_for_bulk_import_of_ads.css' %}">
 {% endblock css %}
 
 {% block content %}
@@ -96,42 +96,36 @@
 
 </section>
 <section class="reference_informations">
-    <h2>Ниже приведены установленные на сайте значение для полей в объявлениях:</h2>
-    <ul class="type_fields" style="color: black;">
-        <li>Регионы:</li>
-         <ul class="regions" style="color: black;">
-            {% recursetree regions %}
-                <li class="areas_or_cities">
-                    <p class="one_city">{{ node.area }}</p>
-                    {% if not node.is_leaf_node %}
-                        <ul class="cities_or_districts">
-                            {{ children }}
-                        </ul>
-                    {% endif %}
-                </li>
-            {% endrecursetree %}
-        </ul>
-        <li>Категории:</li>
-<!--        <ul class="regions" style="color: black;">-->
-<!--            {% recursetree categories %}-->
-<!--                <li>-->
-<!--                    {{ node.area }}-->
-<!--                    {% if not node.is_leaf_node %}-->
-<!--                        <ul class="cities_or_districts">-->
-<!--                            {{ children }}-->
-<!--                        </ul>-->
-<!--                    {% endif %}-->
-<!--                </li>-->
-<!--            {% endrecursetree %}-->
-<!--        </ul>-->
+<h2>Ниже приведены установленные на сайте значение для полей в объявлениях:</h2>
+<div class="areas"><br>
+    <h3>Регион:</h3><br>
+    <ul class="areas_list">
+       {% for area in oblast %}
+            <li class="area">
+                <div class="area_title item_title" id={{area.id}}>
+                    <div class="pointer"></div>
+                    <p>{{area.area}}</p>
+                </div>
+                <ol class="cities"></ol>
+            </li><br>
+       {% endfor %}
+    </ul><br>
+    <h3>Категории:</h3><br>
+    <ul class="categories_list">
+        {% for category in categories %}
+            <li class="category" >
+                <div class="category_title item_title" id={{category.id}}>
+                    <div class="pointer"></div>
+                    <p>{{category.title}}</p>
+                </div>
+            </li><br>
+        {% endfor %}
     </ul>
+</div>
 </section>
 <script src="{% static "./js/instructions_for_bulk_import_of_ads.js" %}"></script>
 {% endblock content %}
 
 
 
-<!--{% block js %}-->
-<!--&lt;!&ndash;    <script src="{% static "./js/instructions_for_bulk_import_of_ads.js" %}"></script>&ndash;&gt;-->
-<!--<script src="./js/instructions_for_bulk_import_of_ads.js"></script>-->
-<!--{% endblock js %}-->
+

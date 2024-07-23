@@ -249,7 +249,6 @@ def get_bulk_import_of_ads(request):
                     if result != True:
                         file_error = result.get('file')
                         context['answer'] = 'Несколько объявлений не были сохранены. Чтобы посмотреть объявления с ошибками скачайте файл.'
-                        context['check'] = 1
                         context['file'] = f'http://127.0.0.1:8000//{file_error[1:]}'
                     else:
                         context['answer'] = 'Объявления успешно сохранены'
@@ -273,14 +272,13 @@ def get_bulk_import_of_ads(request):
                     if result != True:
                         file_error = result.get('file')
                         context['answer'] = 'Несколько объявлений не были сохранены. Чтобы посмотреть объявления с ошибками скачайте файл.'
-                        context['check'] = 1
                         context['file'] = f'http://127.0.0.1:8000//{file_error[1:]}'
                     else:
                         context['answer'] = 'Объявления успешно сохранены'
                 except:
                     context['answer'] = 'Невозможно прочитать файл'
         else:
-            context['error'] = 'Ошибка при загрузке файла. Убедитесь, что загружаемый файл необходимого расширения'
+            context['answer'] = 'Ошибка при загрузке файла. Убедитесь, что загружаемый файл необходимого расширения'
     else:
         form = UploadFileForm()
     return render(request=request,
@@ -290,18 +288,12 @@ def get_bulk_import_of_ads(request):
 
 def get_instructions_for_bulk_import_of_ads(request):
     '''функция, которая отдает страницу с инструкцией по массовому импорту объявлений'''
-    category_list = Category.objects.filter(level__lte=1)
     oblast = Region.objects.filter(level=0)
     categories = Category.objects.filter(level=0)
-
     context = {
-        "category_list": category_list,
-        'adaptive_navigation': "Добавление объявления",
         'oblast': oblast,
         'categories': categories,
     }
-
-
     return render(request=request,
                   template_name='instructions_for_bulk_import_of_ads.html',
                   context=context)

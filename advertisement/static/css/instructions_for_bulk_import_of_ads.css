@@ -1,11 +1,26 @@
-.regions{
-    gap:100px;
+.reference_informations{
+    color: black;
 }
 
-.cities_or_districts{
-    display: none;
+
+.pointer{
+    display: flex;
+    width: 10px;
+    height:10px;
+    background: black;
+    border-radius: 50%;
+    margin: auto 3px;
 }
 
-.cities_or_districts__active{
+.copy{
+    display: flex;
+    width: 10px;
+    height:10px;
+    background: red;
+    border-radius: 50%;
+    margin: auto 3px;
+}
+
+.item_title{
     display: flex;
 }
