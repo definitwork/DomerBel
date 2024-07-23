@@ -10,6 +10,7 @@
     flex-direction: column;
     gap: 5px;
     align-self: center;
+    flex: 0 1 120px;
      & p {
         @include fonts($defaultColor,14px, 400);
      }

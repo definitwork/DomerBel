@@ -554,15 +554,11 @@ header {
 .main__search-form-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   flex-wrap: wrap;
   gap: 5px;
 }
 .main__search-form-item:nth-child(2) {
   gap: 15px;
-}
-.main__search-form-item:last-child select {
-  flex: 1 1 auto;
 }
 .main__search-form-item input {
   flex: 1 1 400px;
@@ -589,7 +585,7 @@ header {
   font-size: 14px;
 }
 .main__search-form-item select {
-  flex: 1 1 200px;
+  flex: 0 1 200px;
   padding: 5px;
   border-radius: 5px;
   font-family: "Trebuchet MS", sans-serif;
@@ -610,6 +606,10 @@ header {
   border-radius: 5px;
 }
 
+.fields select {
+  flex: 0 1 320px;
+}
+
 .main__search-form-item-area {
   display: none;
 }
@@ -619,7 +619,6 @@ header {
   align-items: center;
   gap: 20px;
   flex-wrap: wrap;
-  justify-content: space-between;
   flex: 1 1 auto;
 }
 .main__search-form-item-label-wrap label {

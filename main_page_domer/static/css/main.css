@@ -465,6 +465,7 @@
   flex-direction: column;
   gap: 5px;
   align-self: center;
+  flex: 0 1 120px;
 }
 .recent-announcements__list-item-article-date p {
   font-family: "Trebuchet MS", sans-serif;

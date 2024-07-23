@@ -21,7 +21,6 @@ function show_city(event){
 }
 
 let get_category = document.querySelector("#select_category");
-
 fetch("http://127.0.0.1:8000/api/v1/add_store/categories/")
     .then((response) => response.json())
     .then((data) => {
