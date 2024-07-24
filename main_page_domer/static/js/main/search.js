@@ -123,7 +123,6 @@ function getCategoryFunc(event, func) {
     (item) =>
       !item.dataset.level || item.dataset.level > event.target.dataset.level
   )
-  console.log(event.target.value === "");
   if(event.target.dataset.level && fields.children.length > 1){
     for(let item of filterFields){
       item.remove()
