@@ -12,7 +12,6 @@ function getOption(url) {
             item?.search?.split("|")?.length >= 2 &&
             !item?.spisok?.element_set
           ) {
-
             createSelectElement(item, item.search.split("|")[0])
             createSelectElement(item, item.search.split("|")[1])
             return
@@ -42,6 +41,7 @@ function createSelectElement(
     title: "Все разделы",
   }
 ) {
+  console.log(data);
   const select = document.createElement("select")
   select.setAttribute("name", "category__in")
   if (data[0]?.level) {
@@ -53,8 +53,7 @@ function createSelectElement(
       createOptionElement(item, select)
     })
     if (
-      data.spisok.element_set[0]?.elementtwo_set &&
-      data.spisok.element_set[0]?.elementtwo_set.length > 0
+      data?.spisok?.element_set?.some((item) => item?.elementtwo_set && item?.elementtwo_set.length > 0)
     ) {
       select.addEventListener("change", (event) => {
         const id = event.target.value
