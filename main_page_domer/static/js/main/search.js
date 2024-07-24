@@ -33,7 +33,7 @@ function getOption(url) {
 function getInnerList(data, id) {
   const dataModel = data.spisok.element_set.find((item) => item.id == id)
   console.log(data, 'datamodel');
-  createSelectElement(dataModel, data.search.split("|")[1].trim())
+  createSelectElement(dataModel, data?.search?.split("|")[1]?.trim())
 }
 
 function createSelectElement(
@@ -55,6 +55,7 @@ function createSelectElement(
         const id = event.target.value
         getInnerList(data, id)
       })
+      select.dataset.active = true
     }
   } else if (!data?.spisok && !data?.int_val_list && !data.elementtwo_set) {
     data.forEach((item) => {
@@ -64,18 +65,20 @@ function createSelectElement(
       getCategoryFunc(event, getOption)
     )
   } else if (data?.elementtwo_set) {
+    console.log(data);
     select.classList.add("category__mark")
     data?.elementtwo_set.forEach((item) => {
       createOptionElement(item, select)
     })
-    
     fields.children[
       Array.from(fields.children).findIndex((item) =>
         item.classList.contains("category__mark")
       )
     ]?.remove()
     console.log(fields.children);
-
+    console.log(Array.from(fields.children).findIndex(item => {
+      console.log(item.dataset.active === "true");
+    }));
     fields.insertBefore(select, fields.children[2])
     return
   } else {
