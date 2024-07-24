@@ -5,14 +5,14 @@ function getOption(url) {
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data)
       if (data.length === 0) return false
-      if (data[0].spisok && fields.children.length !== 0) {
+      if (data.some(item => item.spisok !== null && item.spisok !== undefined) && fields.children.length !== 0) {
         data.forEach((item) => {
           if (
             item?.search?.split("|")?.length >= 2 &&
             !item?.spisok?.element_set
           ) {
+
             createSelectElement(item, item.search.split("|")[0])
             createSelectElement(item, item.search.split("|")[1])
             return
@@ -22,6 +22,7 @@ function getOption(url) {
         })
         return
       }
+      if (data.some(item => item.search === "")) return
       createSelectElement(data)
     })
     .catch((error) => {
@@ -83,6 +84,10 @@ function createSelectElement(
     )
     fields.insertBefore(select, fields.children[actionSelectIndex + 1])
     return
+  } else if(data?.max_val_interval_date !== 0) {
+    for(let i = data.max_val_interval_date; i >= data.min_val_interval_date ; i--){
+      createOptionElement(i, select)
+    }
   } else {
     if (data.search === null || !data.search) {
       fields.children[
@@ -118,15 +123,19 @@ function getCategoryFunc(event, func) {
     (item) =>
       !item.dataset.level || item.dataset.level > event.target.dataset.level
   )
-  if(filterFields.length > 0) {
-    for (let i of filterFields) {
-      i.remove()
+  console.log(event.target.value === "");
+  if(event.target.dataset.level && fields.children.length > 1){
+    for(let item of filterFields){
+      item.remove()
     }
-    return
+    if(event.target.dataset.level && event.target.value === ""){
+      return
+    }
   }
+  
   if (!func(`http://127.0.0.1:8000/api/v1/categories_for_search/${id}`)) {
     func(`http://127.0.0.1:8000/api/v1/get_field_list/?id=${id}`)
-    return
+  }else{
+    func(`http://127.0.0.1:8000/api/v1/categories_for_search/${id}`)
   }
-  func(`http://127.0.0.1:8000/api/v1/categories_for_search/${id}`)
 }

@@ -607,6 +607,7 @@ header {
 }
 
 .fields select {
+  max-width: 320px;
   flex: 0 1 320px;
 }
 
