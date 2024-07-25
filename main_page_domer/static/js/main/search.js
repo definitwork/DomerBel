@@ -31,6 +31,14 @@ function getOption(url) {
 
 function getInnerList(data, id) {
   const dataModel = data.spisok.element_set.find((item) => item.id == id)
+  if(!dataModel) {
+    fields.children[
+      Array.from(fields.children).findIndex((item) =>
+        item.classList.contains("category__mark")
+      )
+    ]?.remove()
+    return
+  }
   createSelectElement(dataModel, data?.search?.split("|")[1]?.trim())
 }
 
@@ -46,17 +54,18 @@ function createSelectElement(
     select.setAttribute("name", "category__title__in")
     select.dataset.level = data[0]?.level
   }else {
-    select.setAttribute("name", data.title)
+    select.setAttribute("name", titleObj.title || titleObj)
   }
-   console.log(data);
   createOptionElement(titleObj, select)
   if (data?.spisok && data?.spisok !== null) {
     data.spisok.element_set.forEach((item) => {
       createOptionElement(item, select)
     })
+    console.log(111);
     if (
       data?.spisok?.element_set?.some((item) => item?.elementtwo_set && item?.elementtwo_set.length > 0)
     ) {
+      console.log(222);
       select.addEventListener("change", (event) => {
         const id = event.target.options[event.target.selectedIndex].dataset.fetchid
         console.log(data)
@@ -65,6 +74,7 @@ function createSelectElement(
       select.dataset.active = true
     }
   } else if (!data?.spisok && !data?.int_val_list && !data?.elementtwo_set) {
+    console.log(333);
     data?.forEach((item) => {
       createOptionElement(item, select)
     })
@@ -72,6 +82,7 @@ function createSelectElement(
       getCategoryFunc(event, getOption)
     )
   } else if (data?.elementtwo_set && data?.elementtwo_set.length > 0) {
+    console.log(444);
     select.classList.add("category__mark")
     data?.elementtwo_set.forEach((item) => {
       createOptionElement(item, select)
@@ -87,10 +98,12 @@ function createSelectElement(
     fields.insertBefore(select, fields.children[actionSelectIndex + 1])
     return
   } else if(data?.max_val_interval_date !== 0) {
+    console.log(555);
     for(let i = data.max_val_interval_date; i >= data.min_val_interval_date ; i--){
       createOptionElement(i, select)
     }
   } else {
+    console.log(666);
     if (data.search === null || !data.search) {
       fields.children[
         Array.from(fields.children).findIndex((item) =>
