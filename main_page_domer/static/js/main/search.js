@@ -41,12 +41,14 @@ function createSelectElement(
     title: "Все разделы",
   }
 ) {
-  console.log(data);
   const select = document.createElement("select")
-  select.setAttribute("name", "category__in")
   if (data[0]?.level) {
+    select.setAttribute("name", "category__in")
     select.dataset.level = data[0]?.level
+  }else {
+    select.setAttribute("name", data.title)
   }
+   console.log(data);
   createOptionElement(titleObj, select)
   if (data?.spisok && data?.spisok !== null) {
     data.spisok.element_set.forEach((item) => {
