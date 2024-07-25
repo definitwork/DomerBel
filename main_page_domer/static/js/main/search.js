@@ -39,7 +39,7 @@ function getInnerList(data, id) {
     ]?.remove()
     return
   }
-  createSelectElement(dataModel, data?.search?.split("|")[1]?.trim())
+  createSelectElement(dataModel, data?.title)
 }
 
 function createSelectElement(
