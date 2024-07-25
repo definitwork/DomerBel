@@ -214,3 +214,17 @@ def editing_an_ad(request, id):
         'additional_values_two': additional_values_two,
     }
     return render(request, 'editing_an_ad.html', context)
+
+
+def search_result(request):
+    # cop = dict.copy(request.POST)
+    # search = {}
+    # for c in cop:
+    #     if not c in cop[c]:
+    #         print(c)
+    print(request.POST)
+    print(request.POST.get('category__title__in'))
+    # a = Advertisement.objects.filter(category__title__in=request.POST.getlist('category__title__in'))
+    # print(a)
+
+    return render(request, 'advertisementAdd.html')

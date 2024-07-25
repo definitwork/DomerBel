@@ -43,7 +43,7 @@ function createSelectElement(
 ) {
   const select = document.createElement("select")
   if (data[0]?.level) {
-    select.setAttribute("name", "category__in")
+    select.setAttribute("name", "category__title__in")
     select.dataset.level = data[0]?.level
   }else {
     select.setAttribute("name", data.title)
@@ -58,7 +58,8 @@ function createSelectElement(
       data?.spisok?.element_set?.some((item) => item?.elementtwo_set && item?.elementtwo_set.length > 0)
     ) {
       select.addEventListener("change", (event) => {
-        const id = event.target.value
+        const id = event.target.options[event.target.selectedIndex].dataset.fetchid
+        console.log(data)
         getInnerList(data, id)
       })
       select.dataset.active = true
@@ -108,7 +109,8 @@ function createSelectElement(
 
 function createOptionElement(item, parentElement) {
   const option = document.createElement("option")
-  option.value = item.id
+  option.value = item.title
+  option.dataset.fetchid = item.id
   option.textContent = item.title || item.title_ad || item
   parentElement.append(option)
 }
@@ -119,7 +121,7 @@ getCategory.addEventListener("change", (event) => {
 })
 
 function getCategoryFunc(event, func) {
-  const id = event.target.value
+  const id = event.target.options[event.target.selectedIndex].dataset.fetchid
   const filterFields = Array.from(fields.children).filter(
     (item) =>
       !item.dataset.level || item.dataset.level > event.target.dataset.level

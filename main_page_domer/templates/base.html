@@ -296,15 +296,16 @@
             <main>
                 {% block search %}
                     <search class="main__search">
-                    <form class="main__search-form">
+                    <form class="main__search-form" action="{% url 'search_result' %}" method="POST">
+                        {% csrf_token %}
                       <fieldset class="main__search-form-item">
-                        <select name="" class="main__search-form-item-category">
+                        <select name="category__title__in" class="main__search-form-item-category">
                             <option value="">
                                 Все разделы
                             </option>
                           {% for category in category_list %}
                             {% if category.level == 0 %}
-                                <option value="{{ category.id }}">
+                                <option value="{{ category.title }}" data-fetchid="{{ category.id }}">
                                     {{ category }}
                                 </option>
                             {% endif %}
