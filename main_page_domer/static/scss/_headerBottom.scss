@@ -51,33 +51,5 @@
   @include fonts(white, 20px, 600);
 }
 
-.header__up-user-wrap {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 0 1 300px;
-  justify-content: space-between;
-}
 
-.header__up-user-action {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-
-  & a {
-    @include fonts($mainColor, 14px, 400);
-    &:hover {
-      color: $colorHover;
-    }
-  }
-  & p {
-    &:last-child {
-      cursor: pointer;
-      &:hover {
-        color: $colorHover;
-      }
-    }
-    @include fonts($mainColor, 14px, 400);
-  }
-}
 

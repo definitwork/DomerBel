@@ -516,6 +516,21 @@
   color: black;
 }
 
+@media (max-width: 992px) {
+  .recent-announcements__list-item-article {
+    padding: 25px 5px;
+    position: relative;
+  }
+  .recent-announcements__list-item-article-date {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    flex-direction: row;
+  }
+  .recent-announcements__list-item-article-img {
+    max-height: 100px;
+  }
+}
 .vip__wrap {
   flex: 1 0 220px;
 }
