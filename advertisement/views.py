@@ -218,13 +218,15 @@ def editing_an_ad(request, id):
 
 def search_result(request):
     # cop = dict.copy(request.POST)
+    # category = cop.pop('category__title__in')
+    # cop.pop('csrfmiddlewaretoken')
+    # fild = Field.objects.filter(id__in=cop.keys())
     # search = {}
-    # for c in cop:
-    #     if not c in cop[c]:
-    #         print(c)
-    print(request.POST)
-    print(request.POST.get('category__title__in'))
-    # a = Advertisement.objects.filter(category__title__in=request.POST.getlist('category__title__in'))
-    # print(a)
+    # for i in fild:
+    #     search[i.title] = cop.get(f'{i.id}')
+    # print(search)
+    a = Advertisement.objects.filter(additional_information____gte="1999", additional_information__Год_выпуска__lte="2005")
+    # a = Advertisement.objects.filter(additional_information="Год выпуска")
+    print(a)
 
     return render(request, 'advertisementAdd.html')

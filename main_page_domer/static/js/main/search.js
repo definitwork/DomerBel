@@ -54,11 +54,11 @@ function createSelectElement(
     select.setAttribute("name", "category__title__in")
     select.dataset.level = data[0]?.level
   }else {
-    select.setAttribute("name", data.title)
+    select.setAttribute("name", data.id)
   }
   createOptionElement(titleObj, select)
   if (data?.spisok && data?.spisok !== null) {
-    data.spisok.element_set.forEach((item) => {
+    data?.spisok?.element_set?.forEach((item) => {
       createOptionElement(item, select)
     })
     console.log(111);
@@ -84,7 +84,7 @@ function createSelectElement(
     console.log(444);
     console.log(data);
     select.classList.add("category__mark")
-    select.setAttribute("name", fields.children[Array.from(fields.children).findIndex((item) => item.dataset.active)].name)
+//    select.setAttribute("name", fields.children[Array.from(fields.children).findIndex((item) => item.dataset.active)].name)
     data?.elementtwo_set.forEach((item) => {
       createOptionElement(item, select)
     })
