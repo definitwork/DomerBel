@@ -228,5 +228,6 @@ def search_result(request):
     a = Advertisement.objects.filter(additional_information____gte="1999", additional_information__Год_выпуска__lte="2005")
     # a = Advertisement.objects.filter(additional_information="Год выпуска")
     print(a)
+    print(request.POST)
 
     return render(request, 'advertisementAdd.html')

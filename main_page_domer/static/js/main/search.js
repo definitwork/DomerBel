@@ -39,6 +39,10 @@ function getInnerList(data, id) {
     ]?.remove()
     return
   }
+  dataModel.outer_id = +fields.children[Array.from(fields.children).findIndex(
+    (item) => item.dataset.active === "true"
+  )].name
+  console.log(dataModel);
   createSelectElement(dataModel, data?.search?.split("|")[1]?.trim())
 }
 
@@ -55,7 +59,7 @@ function createSelectElement(
     select.setAttribute("name", "category__title__in")
     select.dataset.level = data[0]?.level
   }else {
-    select.setAttribute("name", data.id)
+    select.setAttribute("name", data?.outer_id || data?.id)
   }
   createOptionElement(titleObj, select)
   if (data?.spisok && data?.spisok !== null && !data.elementtwo_set) {
@@ -80,7 +84,6 @@ function createSelectElement(
     )
   } else if (data?.elementtwo_set && data?.elementtwo_set.length > 0) {
     select.classList.add("category__mark")
-//    select.setAttribute("name", fields.children[Array.from(fields.children).findIndex((item) => item.dataset.active)].name)
     data?.elementtwo_set.forEach((item) => {
       createOptionElement(item, select)
     })
