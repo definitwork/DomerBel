@@ -298,14 +298,14 @@
                     <search class="main__search">
                     <form class="main__search-form" action="{% url 'search_result' %}" method="POST">
                         {% csrf_token %}
-                      <fieldset class="main__search-form-item">
-                        <select name="category__title__in" class="main__search-form-item-category">
+                      <fieldset class="main__search-form-item region">
+                        <select name="category__in" class="main__search-form-item-category">
                             <option value="">
                                 Все разделы
                             </option>
                           {% for category in category_list %}
                             {% if category.level == 0 %}
-                                <option value="{{ category.title }}" data-fetchid="{{ category.id }}">
+                                <option value="{{ category.id }}" data-fetchid="{{ category.id }}">
                                     {{ category }}
                                 </option>
                             {% endif %}
@@ -315,14 +315,14 @@
                         <select name="" class="main__search-form-item-area">
                           <option value=""></option>
                         </select>
-                        <select name="" class="main__search-form-item-region">
+                        <select name="region" class="main__search-form-item-region">
                             <option value="">
                                 Любое расположение
                             </option>
                           {% for region in regions %}
                             {% if region.level == 0 %}
-                            <option value="{{ region.id }}">
-                                {{ region }}
+                            <option value="{{ region.id }}" data-fetchid="{{ region.id }}">
+                                {{ region.area }}
                             </option>
                             {% endif %}
                           {% endfor %}

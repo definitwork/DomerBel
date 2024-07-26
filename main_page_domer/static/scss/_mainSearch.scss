@@ -18,11 +18,11 @@
 
 
     &:nth-child(2) {
-        gap: 15px;
+        gap: 5px;
     }
 
     & input {
-        flex: 1 1 400px;
+        flex: 1 1 350px;
         padding: 6px;
         border-radius: 5px;
         @include fonts($defaultColor,14px, 400);

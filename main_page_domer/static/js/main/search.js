@@ -1,5 +1,7 @@
 const fields = document.querySelector(".fields")
 const getCategory = document.querySelector(".main__search-form-item-category")
+const parentRegionElement = document.querySelector(".region")
+const getRegion = document.querySelector(".main__search-form-item-region")
 
 function getOption(url) {
   fetch(url)
@@ -53,13 +55,18 @@ function createSelectElement(
     title: "Все разделы",
   }
 ) {
-  console.log(data);
   const select = document.createElement("select")
-  if (Array.isArray(data) && data?.some(item => item.level)) {
-    select.setAttribute("name", "category__title__in")
+  if (Array.isArray(data) && data?.some(item => item.level) && !data.some(item => item.area)) {
+    select.setAttribute("name", "category__in")
     select.dataset.level = data[0]?.level
   }else {
-    select.setAttribute("name", data?.outer_id || data?.id)
+    console.log(data);
+    if(Array.isArray(data) && data?.some(item => item.area)) {
+      select.setAttribute("name", "region")
+    }
+    else {
+      select.setAttribute("name", data?.outer_id || data?.id)
+    }
   }
   createOptionElement(titleObj, select)
   if (data?.spisok && data?.spisok !== null && !data.elementtwo_set) {
@@ -75,7 +82,7 @@ function createSelectElement(
       })
       select.dataset.active = true
     }
-  } else if (!data?.spisok && !data?.int_val_list && !data?.elementtwo_set) {
+  } else if (!data?.spisok && !data?.int_val_list && !data?.elementtwo_set && !data?.some(item => item.area)) {
     data?.forEach((item) => {
       createOptionElement(item, select)
     })
@@ -114,15 +121,25 @@ function createSelectElement(
       createOptionElement(item, select)
     })
   }
-
+  if(Array.isArray(data) && data?.some(item => item?.area)) {
+    data.forEach(forItem => {
+      createOptionElement(forItem, select)
+    })
+    parentRegionElement.append(select)
+    return
+  }
   fields.append(select)
 }
 
 function createOptionElement(item, parentElement) {
   const option = document.createElement("option")
-  option.value = item.title
+  if(parentElement.dataset.level) {
+    option.value = item.id
+  }else {
+    option.value = item.title || item.id || item
+    }
   option.dataset.fetchid = item.id
-  option.textContent = item.title || item.title_ad || item
+  option.textContent = item.title || item.title_ad || item.area || item
   parentElement.append(option)
 }
 
@@ -130,6 +147,10 @@ getCategory.addEventListener("change", (event) => {
   getCategoryFunc(event, getOption)
   fields.innerHTML = ""
 })
+
+getRegion.addEventListener("change", (event) => {
+ getCategoryFunc(event, getOption)
+})  
 
 function getCategoryFunc(event, func) {
   const id = event.target.options[event.target.selectedIndex].dataset.fetchid
@@ -145,7 +166,14 @@ function getCategoryFunc(event, func) {
       return
     }
   }
-  
+  if(event.target.name === "region") {
+    getRegion?.nextElementSibling?.remove()
+    if(event.target.value === ""){
+      return
+    }
+    func(`http://127.0.0.1:8000/api/v1/get_city_list/${id}`)
+    return
+  }  
   if (!func(`http://127.0.0.1:8000/api/v1/categories_for_search/${id}`)) {
     func(`http://127.0.0.1:8000/api/v1/get_field_list/?id=${id}`)
   }else{

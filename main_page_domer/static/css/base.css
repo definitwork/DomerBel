@@ -558,10 +558,10 @@ header {
   gap: 5px;
 }
 .main__search-form-item:nth-child(2) {
-  gap: 15px;
+  gap: 5px;
 }
 .main__search-form-item input {
-  flex: 1 1 400px;
+  flex: 1 1 350px;
   padding: 6px;
   border-radius: 5px;
   font-family: "Trebuchet MS", sans-serif;
