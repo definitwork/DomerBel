@@ -1,5 +1,5 @@
 import calendar
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import PIL
 from dirtyfields import DirtyFieldsMixin
@@ -73,8 +73,7 @@ class Advertisement(DirtyFieldsMixin, models.Model):
         return self.title
 
     def get_days_till_expiration(self):
-        days_till_expiration = self.date_of_deactivate - self.date_of_create
-        return days_till_expiration.days
+        return self.date_of_deactivate - datetime.now(timezone.utc)
 
     def get_absolute_url(self):
         return reverse('advertisement_details', kwargs={"slug": self.slug})
