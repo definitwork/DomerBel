@@ -1,0 +1,15 @@
+
+.profile {
+  padding-top: 10px; 
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+
+@import "./variables";
+@import "./mixins";
+@import "./profileAside";
+@import './profileMainInfo';
+
+

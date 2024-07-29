@@ -1,0 +1,34 @@
+.profile__aside{
+  padding: 10px;
+  border-radius: 7px;
+  background: $userSearchBg;
+  flex: 0 1 192px;
+  border: 1px solid $gray;
+}
+
+.profile__aside-nav-list {
+  display: flex;
+  flex-direction: column;
+  & a {
+    @include fonts($asideLinksColor, 13px, 400);
+    &:hover {
+      color: $colorHover;
+    }
+  }
+}
+
+.exit {
+  & a {
+    color: $asideExitColor;
+    &:hover {
+      color: $asideExitColor;
+    }
+  }
+}
+
+.priority {
+  & a {
+    color: $colorHover;
+  }
+}
+

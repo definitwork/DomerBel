@@ -646,6 +646,13 @@ header {
   font-size: 14px;
 }
 
+.search__profile {
+  background: #CFE6FE;
+}
+.search__profile .main__search-form-item-label-wrap input[type=text] {
+  flex: 0 1 270px;
+}
+
 footer {
   padding: 40px 0;
 }

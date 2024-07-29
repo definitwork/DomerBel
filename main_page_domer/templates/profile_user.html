@@ -1,16 +1,196 @@
-{% extends "base.html" %}
-{% load static %}
-
-
-
+{% extends "base.html" %} 
+{% load static %} 
 {% block css %}
 <link rel="stylesheet" href="{% static "css/profile.css" %}">
-{% endblock css %}
+{% endblock css %} 
 {% block title %}
-
-{% endblock title %}
-
-
+{% endblock title %} 
+{% block search %}
+<search class="main__search search__profile">
+  <form
+    class="main__search-form"
+    action="{% url 'search_result' %}"
+    method="POST"
+  >
+    {% csrf_token %}
+    <fieldset class="main__search-form-item region">
+      <select name="category" class="main__search-form-item-category">
+        <option value="">Все разделы</option>
+        {% for category in category_list %} {% if category.level == 0 %}
+        <option value="{{ category.id }}" data-fetchid="{{ category.id }}">
+          {{ category }}
+        </option>
+        {% endif %} {% endfor %}
+      </select>
+      <input type="text" name="" placeholder="Поиск по тексту" />
+      <select name="" class="main__search-form-item-area">
+        <option value=""></option>
+      </select>
+      <select name="region" class="main__search-form-item-region">
+        <option value="">Любое расположение</option>
+        {% for region in regions %} {% if region.level == 0 %}
+        <option value="{{ region.id }}" data-fetchid="{{ region.id }}">
+          {{ region.area }}
+        </option>
+        {% endif %} {% endfor %}
+      </select>
+    </fieldset>
+    <fieldset class="main__search-form-item labels">
+      <div class="main__search-form-item-label-wrap">
+        <input type="text" name="" placeholder="№ объявления">
+        <label for="heading">
+          <input type="checkbox" name="" id="heading" />
+          <p>в заголовках</p>
+        </label>
+      </div>
+      <button>Искать</button>
+    </fieldset>
+    <fieldset class="main__search-form-item fields"></fieldset>
+  </form>
+</search>
+{% endblock search %}
 {% block content %}
-
-{% endblock content %}
+<section class="profile">
+  {% block aside %}
+  <aside class="profile__aside">
+    <nav>
+      <ul class="profile__aside-nav-list">
+        <li class="profile__aside-nav-list-item exit">
+          <a href="#">
+            Выход
+          </a>
+        </li>
+        <li class="profile__aside-nav-list-item">
+          <a href="#">
+            Контактные данные
+          </a>
+        </li>
+        <li class="profile__aside-nav-list-item">
+          <a href="#">
+            Мои объявления
+          </a>
+        </li>
+        <li class="profile__aside-nav-list-item priority">
+          <a href="#">
+            Добавить магазин
+          </a>
+        </li>
+        <li class="profile__aside-nav-list-item">
+          <a href="#">
+            Входящие сообщения
+          </a>
+        </li>
+        <li class="profile__aside-nav-list-item">
+          <a href="#">
+            Исходящие сообщения
+          </a>
+        </li>
+        <li class="profile__aside-nav-list-item">
+          <a href="#">
+            Отправленные сообщения
+          </a>
+        </li>
+        <li class="profile__aside-nav-list-item">
+          <a href="#">
+            История платежей
+          </a>
+        </li>
+        <li class="profile__aside-nav-list-item priority">
+          <a href="#">
+            Пополнить кошелек
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+  {% endblock aside %}
+  {% block mainInfo %}
+  <form method="POST" class="main__info">
+    <nav class="main__info-nav">
+      <ul class="main__info-list">
+        <li>
+          <a href="#" class="advertisement__active">
+            Активные (1)
+          </a>
+        </li>
+        <li>
+          <a href="#" class="advertisement__archive">
+            Архивные (0)
+          </a>
+        </li>
+      </ul>
+      <label class="main__info-advertisement-nav-select-all" for="selectAll">
+        <input type="checkbox" name="" id="selectAll">
+        <p>
+          Выделить все объявления
+        </p>
+      </label>
+    </nav>
+    <ul class="main__info-advertisement-list">
+      <li>
+        <article class="main__info-advertisement-list-item">
+          <ul class="main__info-advertisement-list-item-achive">
+            <li>
+              <a href="#">
+                <img src="{% static "img/VIP.png" %}" alt="vip">
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <img src="{% static "img/highlight.png" %}" alt="">
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <img src="{% static "img/special.png" %}" alt="">
+              </a>  
+            </li>
+            <li>
+              <a href="#">
+                <img src="{% static "img/up.png" %}" alt="">
+              </a>
+            </li>
+          </ul>
+          <div class="main__info-advertisement-list-item-about">
+            <p class="main__info-advertisement-list-item-about-date">
+              29 мар. 2024 г. 
+            </p>
+            <p class="main__info-advertisement-list-item-about-time">
+              00:43
+            </p>
+            <p class="main__info-advertisement-list-item-about-remained">
+              Осталось 57 дн.
+            </p>
+            <a href="#" class="main__info-advertisement-list-item-about-edit">
+              редактировать
+            </a>
+            <input type="checkbox" name="">
+          </div>
+          <a href="#" class="main__info-advertisement-list-item-img">
+            <img src="{% static "img/no_image.jpg" %}" alt="">
+          </a>
+          <div class="main__info-advertisement-list-item-title-wrap">
+            <h3>
+              <a href="#">продам комнату в центре минска</a>
+            </h3>
+            <p>
+              Продам комнату
+            </p>
+            <p>
+              Партизанский район
+            </p>
+          </div>
+        </article>
+      </li>
+    </ul>
+    <div class="main__info-action">
+      <p>Отмеченные:</p>
+      <button>Удалить</button>
+      <button>Поместить в архив</button>
+    </div>
+  </form>
+  {% endblock mainInfo %}
+{% endblock content %} 
+{% block js %}
+<script src="{% static "js/profile/selectAdvertisement.js" %}"></script>
+{% endblock js %}
