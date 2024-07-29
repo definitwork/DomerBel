@@ -25,7 +25,7 @@ function getOption(url) {
       }
       if (data.some(item => item.search === "")) return
       console.log(data);
-      createSelectElement(data, Array.isArray(data) && data.some(item => item.area) ? "Любое расположение" : 'Все разделы')
+      createSelectElement(data, Array.isArray(data) && data.some(item => item.area) ? "Любое расположение" : {id: "", title: "Все разделы"})
     })
     .catch((error) => {
       console.error(error, "error obj")
