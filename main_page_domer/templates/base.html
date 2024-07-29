@@ -296,8 +296,7 @@
             <main>
                 {% block search %}
                     <search class="main__search">
-                    <form class="main__search-form" action="{% url 'search_result' %}" method="POST">
-                        {% csrf_token %}
+                    <form class="main__search-form" action="{% url 'search_result' %}" method="GET">
                       <fieldset class="main__search-form-item region">
                         <select name="category" class="main__search-form-item-category">
                             <option value="">
