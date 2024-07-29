@@ -25,7 +25,11 @@ function getOption(url) {
       }
       if (data.some(item => item.search === "")) return
       console.log(data);
-      createSelectElement(data, Array.isArray(data) && data.some(item => item.area) ? "Любое расположение" : {id: "", title: ""})
+      if (Array.isArray(data) && data.some(item=>item.area)) {
+        createSelectElement(data, "Любое расположение")
+        return
+      }
+      createSelectElement(data)
     })
     .catch((error) => {
       console.error(error, "error obj")
@@ -68,7 +72,7 @@ function createSelectElement(
       select.setAttribute("name", data?.outer_id || data?.id)
     }
   }
-  createOptionElement(titleObj, select)
+  createOptionElement(titleObj, select, Array.isArray(data) && data.some(item=>item.area)?"" : undefined)
   if (data?.spisok && data?.spisok !== null && !data.elementtwo_set) {
     data?.spisok?.element_set?.forEach((item) => {
       createOptionElement(item, select)
