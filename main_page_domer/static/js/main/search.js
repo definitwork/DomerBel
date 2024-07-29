@@ -57,7 +57,7 @@ function createSelectElement(
 ) {
   const select = document.createElement("select")
   if (Array.isArray(data) && data?.some(item => item.level) && !data.some(item => item.area)) {
-    select.setAttribute("name", "category__in")
+    select.setAttribute("name", "category")
     select.dataset.level = data[0]?.level
   }else {
     console.log(data);
@@ -106,7 +106,7 @@ function createSelectElement(
     return
   } else if(data?.max_val_interval_date !== 0) {
     for(let i = data.max_val_interval_date; i >= data.min_val_interval_date ; i--){
-      createOptionElement(i, select)
+      createOptionElement(i, select, i)
     }
   } else {
     if (data.search === null || !data.search) {
@@ -118,7 +118,7 @@ function createSelectElement(
       return
     }
     data?.int_val_list?.forEach((item) => {
-      createOptionElement(item, select)
+      createOptionElement(item, select, item)
     })
   }
   if(Array.isArray(data) && data?.some(item => item?.area)) {
@@ -131,12 +131,12 @@ function createSelectElement(
   fields.append(select)
 }
 
-function createOptionElement(item, parentElement) {
+function createOptionElement(item, parentElement, itemList) {
   const option = document.createElement("option")
   if(parentElement.dataset.level) {
     option.value = item.id
   }else {
-    option.value = item.title || item.id || item
+    option.value = item.title || item.id ||itemList
     }
   option.dataset.fetchid = item.id
   option.textContent = item.title || item.title_ad || item.area || item
