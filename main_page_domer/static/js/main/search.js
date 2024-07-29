@@ -24,7 +24,8 @@ function getOption(url) {
         return
       }
       if (data.some(item => item.search === "")) return
-      createSelectElement(data)
+      console.log(data);
+      createSelectElement(data, Array.isArray(data) && data.some(item => item.area) ? "Любое расположение" : null)
     })
     .catch((error) => {
       console.error(error, "error obj")
@@ -60,7 +61,6 @@ function createSelectElement(
     select.setAttribute("name", "category")
     select.dataset.level = data[0]?.level
   }else {
-    console.log(data);
     if(Array.isArray(data) && data?.some(item => item.area)) {
       select.setAttribute("name", "region")
     }
@@ -123,7 +123,7 @@ function createSelectElement(
   }
   if(Array.isArray(data) && data?.some(item => item?.area)) {
     data.forEach(forItem => {
-      createOptionElement(forItem, select, forItem)
+      createOptionElement(forItem, select)
     })
     parentRegionElement.append(select)
     return
@@ -136,7 +136,7 @@ function createOptionElement(item, parentElement, itemList) {
   if(parentElement.dataset.level) {
     option.value = item.id
   }else {
-    option.value = item.title || item.id ||itemList
+    option.value = item.title || item.id || itemList
     }
   option.dataset.fetchid = item.id
   option.textContent = item.title || item.title_ad || item.area || item
