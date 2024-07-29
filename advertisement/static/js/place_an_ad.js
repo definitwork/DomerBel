@@ -72,7 +72,7 @@ function showCity(event) {
   if (event.target.value !== regionStatus) {
     regionStatus = event.target.value
     if (event.target.value !== "0") {
-      fetch(`http://127.0.0.1:8000/api/v1/add_store/city/${event.target.value}`)
+      fetch(`http://127.0.0.1:8000/api/v1/get_city_list/${event.target.value}`)
         .then((response) => response.json())
         .then((data) => {
           if (document.querySelector(".city")) {

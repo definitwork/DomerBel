@@ -3,6 +3,8 @@ import random
 from datetime import datetime, timedelta
 
 from django.db.models import Q, F
+from django.db.models.fields.json import KT
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404
 from django.utils.timezone import get_current_timezone
 
@@ -217,17 +219,76 @@ def editing_an_ad(request, id):
 
 
 def search_result(request):
-    # cop = dict.copy(request.POST)
-    # category = cop.pop('category__title__in')
-    # cop.pop('csrfmiddlewaretoken')
-    # fild = Field.objects.filter(id__in=cop.keys())
-    # search = {}
-    # for i in fild:
-    #     search[i.title] = cop.get(f'{i.id}')
-    # print(search)
-    a = Advertisement.objects.filter(additional_information____gte="1999", additional_information__Год_выпуска__lte="2005")
-    # a = Advertisement.objects.filter(additional_information="Год выпуска")
-    print(a)
+    cop = dict.copy(request.POST)
+    cop.pop('csrfmiddlewaretoken', None)
     print(request.POST)
+    # print(cop)
+    search_parameters = {}
 
-    return render(request, 'advertisementAdd.html')
+    def where_to_look(parameter, model):
+        result = []
+        if parameter:
+            if parameter == ['']:
+                pass
+            elif '' in parameter:
+                while '' in parameter:
+                    parameter.remove('')
+                result = get_object_or_404(model, id=parameter[-1]).get_descendants(include_self=True)
+            else:
+                result = parameter
+        return result
+
+    category = where_to_look(cop.pop('category', None), Category)
+    if category:
+        search_parameters['category__in'] = category
+    region = where_to_look(cop.pop('region', None), Region)
+    if region:
+        search_parameters['region__in'] = region
+    print(search_parameters)
+    try:
+        fild = Field.objects.filter(id__in=cop.keys())
+    except ValueError:
+        raise Http404()
+    search = {}
+    search_kt = {}
+    search_annotate = {}
+    search_Q = {}
+    for i in fild:
+        if "от" not in i.search and cop.get(f'{i.id}') != ['undefined']:
+            print(cop.get(f'{i.id}'))
+            if len(cop.get(f'{i.id}')) > 1 and i.title == 'Этаж':
+                if cop.get(f'{i.id}') == ['undefined', 'undefined']:
+                    pass
+                elif cop.get(f'{i.id}')[0] == 'undefined':
+                    search_kt[i.title] = ', '.join(cop.get(f'{i.id}')).replace('undefined,', ',')
+                else:
+                    search_kt[i.title] = ', '.join(cop.get(f'{i.id}')).replace(', undefined', ',')
+            elif len(cop.get(f'{i.id}')) > 1:
+                search_kt[i.title] = ', '.join(cop.get(f'{i.id}')).replace(', undefined', '')
+            else:
+                search[i.title] = ', '.join(cop.get(f'{i.id}'))
+        elif cop.get(f'{i.id}') != ['undefined']:
+            search_kt[i.title] = cop.get(f'{i.id}')
+    for i, item in enumerate(search_kt):
+        search_annotate[f"find{i}"] = f"additional_information__{item}"
+        if type(search_kt.get(item)) is not str:
+            for index, x in enumerate(search_kt.get(item)):
+                if x != 'undefined':
+                    if index == 0:
+                        search_Q[f"find{i}__gte"] = x
+                    elif index == 1:
+                        search_Q[f"find{i}__lte"] = x
+        else:
+            search_Q[f"find{i}__icontains"] = search_kt.get(item)
+    print(search)
+    print(search_kt)
+    print(search_annotate)
+    print(search_Q)
+    a = Advertisement.objects.annotate(**{key: KT(value) for key, value in search_annotate.items()}).filter(additional_information__contains=search, **search_parameters, **search_Q)
+    print(a)
+
+    context = {
+        "page_obj": a,
+    }
+
+    return render(request, 'advertisementAdd.html', context)

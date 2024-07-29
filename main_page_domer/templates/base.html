@@ -241,7 +241,7 @@
                     {% if user.is_authenticated %}
                         <div class="header__up-user-wrap">
                             {% if user.is_superuser %}
-                                <a href="{% url "admin:index" %}" class="header__up-user">Админка</a>
+                                <a href="{% url 'admin:index' %}" class="header__up-user">Админка</a>
                             {% endif %}
                             <div class="header__up-user-action">
                                 <a href="#" class="">{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.email }}{% endif %}</a>
@@ -256,8 +256,8 @@
                     {% endif %}
                 </div>
                 <div class="header__bottom">
-                    <a href="{% url "home" %}" class="header__logo">
-                        <img src="{% static "img/logo.png" %}" alt="">
+                    <a href="{% url 'home' %}" class="header__logo">
+                        <img src="{% static 'img/logo.png' %}" alt="">
                     </a>
                     <nav class="header__bottom-nav">
                         <h2 class="header__bottom-nav-title">
@@ -299,7 +299,7 @@
                     <form class="main__search-form" action="{% url 'search_result' %}" method="POST">
                         {% csrf_token %}
                       <fieldset class="main__search-form-item region">
-                        <select name="category__in" class="main__search-form-item-category">
+                        <select name="category" class="main__search-form-item-category">
                             <option value="">
                                 Все разделы
                             </option>
