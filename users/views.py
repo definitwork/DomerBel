@@ -36,7 +36,7 @@ def get_personal_account_page(request):
         "category_list": category_list,
         "page_obj": page_obj
     }
-    return render(request, 'personal_account/personal_account.html', context)
+    return render(request, 'profile_user.html', context)
 
 
 def search_of_ads_in_personal_account(request):

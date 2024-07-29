@@ -244,7 +244,7 @@
                                 <a href="{% url "admin:index" %}" class="header__up-user">Админка</a>
                             {% endif %}
                             <div class="header__up-user-action">
-                                <a href="#" class="">{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.email }}{% endif %}</a>
+                                <a href="{% url 'users:personal_account' %}" class="">{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.email }}{% endif %}</a>
                                 <p class="">|</p>
                                 <p class="" id="logout_button">Выйти</p>
                             </div>

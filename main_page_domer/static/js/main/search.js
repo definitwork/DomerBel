@@ -123,7 +123,7 @@ function createSelectElement(
   }
   if(Array.isArray(data) && data?.some(item => item?.area)) {
     data.forEach(forItem => {
-      createOptionElement(forItem, select)
+      createOptionElement(forItem, select, )
     })
     parentRegionElement.append(select)
     return
