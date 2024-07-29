@@ -79,3 +79,13 @@
         }
     }
 }
+
+.search__profile {
+    background: $userSearchBg;
+
+    & .main__search-form-item-label-wrap {
+        & input[type="text"] {
+            flex: 0 1 270px;
+        }
+    }
+}
