@@ -1,0 +1,65 @@
+{% extends "profile_user.html" %} 
+{% load static %} 
+{% block css2 %}
+<link rel="stylesheet" href="{% static "css/profileData.css" %}">
+{% endblock css2 %}
+{% block title %}
+{% endblock title %} 
+  {% block mainInfo %}
+  <div class="form__wrapper">
+    <form method="POST" class="main__info">
+      <h3>
+        Контактные данные пользователя
+      </h3>
+      <label>
+        <p>
+          Контактное лицо
+        </p>
+        <input type="text" name="" placeholder="Иван Иванович">
+      </label>
+      <label>
+        <p>
+          E-MAIL
+        </p>
+        <input type="email" name="" placeholder="user@yandex.ru">
+      </label>
+      <label>
+        <p>
+          Телефон
+        </p>
+        <input type="tel" name="" placeholder="Телефон">
+      </label>
+      <button>
+        Изменить
+      </button>
+    </form>
+    <form method="POST">
+      <h3>
+        Изменить пароль пользователя
+      </h3>
+      <label>
+        <p>
+          Введите старый пароль
+        </p>
+        <input type="password" name="" placeholder="Введите старый пароль">
+      </label>
+      <label>
+        <p>
+          Введите новый пароль
+        </p>
+        <input type="password" name="" placeholder="Введите новый пароль">
+      </label>
+      <label>
+        <p>
+          Повторите новый пароль
+        </p>
+        <input type="password" name="" placeholder="Повторите новый пароль">
+      </label>
+      <button>
+        Сохранить
+      </button>
+    </form>
+  </div>
+  {% endblock mainInfo %}
+{% block js %}
+{% endblock js %}

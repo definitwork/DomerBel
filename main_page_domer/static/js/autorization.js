@@ -96,6 +96,11 @@ function generatingErrorSField(data, fieldForm) {
   }
 }
 
+/**
+ * Sends a login request to the server and handles the response.
+ *
+ * @return {Promise} A promise that resolves with the server response or rejects with an error.
+ */
 function login() {
   let data = new FormData(loginForm);
   fetch("http://127.0.0.1:8000/api/v1/login_user/", {
@@ -124,6 +129,11 @@ function login() {
     });
 }
 
+/**
+ * Logs out the user by sending a POST request to the server's logout API endpoint.
+ *
+ * @return {Promise<void>} A promise that resolves when the logout is successful and the user is redirected to the homepage.
+ */
 function logout() {
   fetch("http://127.0.0.1:8000/api/v1/logout/", {
     method: "POST",

@@ -239,7 +239,7 @@
                         </ul>
                     </nav>
                     {% if user.is_superuser %}
-                        <a href="{% url 'admin:index' %}" class="header__up-user">Админка</a>
+                        <a href="{% url 'admin:index' %}" class="header__up-admin">Админка</a>
                     {% endif %}
                     {% if user.is_authenticated %}
                         <div class="header__up-user-wrap">

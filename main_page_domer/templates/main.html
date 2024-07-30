@@ -1,7 +1,9 @@
-{% extends 'base.html' %} {% load static %} {% block css %} <link rel="stylesheet" href="{% static "css/main.css" %}">
-{% endblock css %} {% block content %}
-
-
+{% extends 'base.html' %} 
+{% load static %} 
+{% block css %} 
+<link rel="stylesheet" href="{% static "css/main.css" %}">
+{% endblock css %} 
+{% block content %}
 <section class="region">
   <ul class="region__list">
     {% for region in regions %}
