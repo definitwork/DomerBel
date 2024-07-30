@@ -1,6 +1,7 @@
 import json
 import random
 from datetime import datetime, timedelta
+from pprint import pprint
 
 from django.db.models import Q, F
 from django.db.models.fields.json import KT
@@ -11,7 +12,7 @@ from django.utils.timezone import get_current_timezone
 from .models import Advertisement, Category, Region, Spisok, Element, ElementTwo, Field
 
 from .utils import sorted_by_number, variables_for_paginator, sorted_by_date_or_price, sorted_by, get_view_type, \
-    get_region_variables
+    get_region_variables, where_to_look, search_additional_information, annotating_field
 
 
 def get_advertisement_page(request):
@@ -219,76 +220,63 @@ def editing_an_ad(request, id):
 
 
 def search_result(request):
-    cop = dict.copy(request.POST)
+    sort_for_paginator = sorted_by_number(request.COOKIES.get('sort'))
+    order_by = sorted_by(request.COOKIES.get('sorted_by'))
+    state_sort_by_date = request.COOKIES.get('date', 0)
+    if request.GET.get('date') or request.GET.get('price'):
+        state_sort_by_date, order_by = sorted_by_date_or_price(request.GET)
+    if request.GET.get('sort'):
+        sort_for_paginator = sorted_by_number(request.GET.get('sort'))
+
+
+    cop = dict.copy(request.GET)
     cop.pop('csrfmiddlewaretoken', None)
-    print(request.POST)
-    # print(cop)
     search_parameters = {}
-
-    def where_to_look(parameter, model):
-        result = []
-        if parameter:
-            if parameter == ['']:
-                pass
-            elif '' in parameter:
-                while '' in parameter:
-                    parameter.remove('')
-                result = get_object_or_404(model, id=parameter[-1]).get_descendants(include_self=True)
-            else:
-                result = parameter
-        return result
-
+    # pprint(request.__dict__)
+    query = request.META.get('QUERY_STRING').replace(f'page={request.GET.get("page")}&', '')
+    print(query)
+    page = cop.pop('page') if cop.get('page') else None
     category = where_to_look(cop.pop('category', None), Category)
+    region = where_to_look(cop.pop('region', None), Region)
     if category:
         search_parameters['category__in'] = category
-    region = where_to_look(cop.pop('region', None), Region)
     if region:
         search_parameters['region__in'] = region
-    print(search_parameters)
+    # print(search_parameters)
+    region_bread_crumbs = region
     try:
-        fild = Field.objects.filter(id__in=cop.keys())
+        fields = Field.objects.filter(id__in=cop.keys())
     except ValueError:
         raise Http404()
-    search = {}
-    search_kt = {}
-    search_annotate = {}
-    search_Q = {}
-    for i in fild:
-        if "от" not in i.search and cop.get(f'{i.id}') != ['undefined']:
-            print(cop.get(f'{i.id}'))
-            if len(cop.get(f'{i.id}')) > 1 and i.title == 'Этаж':
-                if cop.get(f'{i.id}') == ['undefined', 'undefined']:
-                    pass
-                elif cop.get(f'{i.id}')[0] == 'undefined':
-                    search_kt[i.title] = ', '.join(cop.get(f'{i.id}')).replace('undefined,', ',')
-                else:
-                    search_kt[i.title] = ', '.join(cop.get(f'{i.id}')).replace(', undefined', ',')
-            elif len(cop.get(f'{i.id}')) > 1:
-                search_kt[i.title] = ', '.join(cop.get(f'{i.id}')).replace(', undefined', '')
-            else:
-                search[i.title] = ', '.join(cop.get(f'{i.id}'))
-        elif cop.get(f'{i.id}') != ['undefined']:
-            search_kt[i.title] = cop.get(f'{i.id}')
-    for i, item in enumerate(search_kt):
-        search_annotate[f"find{i}"] = f"additional_information__{item}"
-        if type(search_kt.get(item)) is not str:
-            for index, x in enumerate(search_kt.get(item)):
-                if x != 'undefined':
-                    if index == 0:
-                        search_Q[f"find{i}__gte"] = x
-                    elif index == 1:
-                        search_Q[f"find{i}__lte"] = x
-        else:
-            search_Q[f"find{i}__icontains"] = search_kt.get(item)
-    print(search)
-    print(search_kt)
-    print(search_annotate)
-    print(search_Q)
-    a = Advertisement.objects.annotate(**{key: KT(value) for key, value in search_annotate.items()}).filter(additional_information__contains=search, **search_parameters, **search_Q)
-    print(a)
+
+    search, search_kt = search_additional_information(fields, cop)
+
+    if search:
+        search_parameters['additional_information__contains'] = search
+
+    search_q, search_annotate = annotating_field(search_kt)
+    if search_q:
+        search_parameters['search_q'] = search_q
+    # print(search)
+    # print(search_kt)
+    # print(search_annotate)
+    # print(search_q)
+    advertisement_queryset = Advertisement.objects.annotate(**{key: KT(value) for key, value in search_annotate.items()}).filter(**search_parameters).select_related('category', 'region').order_by(order_by)
+    # print(advertisement_queryset)
+
+    page_obj = variables_for_paginator(advertisement_queryset,
+                                       request.GET.get('page'),
+                                       sort_for_paginator)
 
     context = {
-        "page_obj": a,
+        "ads_found": advertisement_queryset.count(),
+        "page_obj": page_obj,
+        "region_bread_crumbs": region_bread_crumbs,
+        "query": query
     }
+    response = render(request, "searchResult.html", context)
+    response.set_cookie('sort', sort_for_paginator)
+    response.set_cookie('date', state_sort_by_date)
+    response.set_cookie('sorted_by', order_by)
 
-    return render(request, 'advertisementAdd.html', context)
+    return response
