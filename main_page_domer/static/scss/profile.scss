@@ -7,9 +7,15 @@
 }
 
 
+@media (max-width:992px) {
+  .profile {
+    flex-direction: column
+  }
+}
+
 @import "./variables";
 @import "./mixins";
 @import "./profileAside";
 @import './profileMainInfo';
-
+@import "./paginator";
 

@@ -238,11 +238,11 @@
                             </li>
                         </ul>
                     </nav>
+                    {% if user.is_superuser %}
+                        <a href="{% url 'admin:index' %}" class="header__up-user">Админка</a>
+                    {% endif %}
                     {% if user.is_authenticated %}
                         <div class="header__up-user-wrap">
-                            {% if user.is_superuser %}
-                                <a href="{% url 'admin:index' %}" class="header__up-user">Админка</a>
-                            {% endif %}
                             <div class="header__up-user-action">
                                 <a href="{% url 'users:personal_account' %}" class="">{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.email }}{% endif %}</a>
                                 <p class="">|</p>

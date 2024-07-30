@@ -131,6 +131,6 @@ function logout() {
       "X-CSRFToken": getCookie("csrftoken"),
     },
   }).then((resp) => {
-    if (resp.status === 205) window.location.reload();
+    if (resp.status === 205) window.location.href="http://127.0.0.1:8000/";
   });
 }

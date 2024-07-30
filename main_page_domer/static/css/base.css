@@ -442,8 +442,6 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  flex: 0 1 300px;
-  justify-content: space-between;
 }
 
 .header__up-user-action {
