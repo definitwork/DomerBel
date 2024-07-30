@@ -1,0 +1,114 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block css %}
+<link rel="stylesheet" href="{% static "css/profile.css" %}">
+{% endblock css %} 
+{% block title %}
+{% endblock title %} 
+{% block search %}
+<search class="main__search search__profile">
+  <form
+    class="main__search-form"
+    action="{% url 'search_result' %}"
+    method="POST"
+  >
+    {% csrf_token %}
+    <fieldset class="main__search-form-item region">
+      <select name="category" class="main__search-form-item-category">
+        <option value="">Все разделы</option>
+        {% for category in category_list %} {% if category.level == 0 %}
+        <option value="{{ category.id }}" data-fetchid="{{ category.id }}">
+          {{ category }}
+        </option>
+        {% endif %} {% endfor %}
+      </select>
+      <input type="text" name="" placeholder="Поиск по тексту" />
+      <select name="" class="main__search-form-item-area">
+        <option value=""></option>
+      </select>
+      <select name="region" class="main__search-form-item-region">
+        <option value="">Любое расположение</option>
+        {% for region in regions %} {% if region.level == 0 %}
+        <option value="{{ region.id }}" data-fetchid="{{ region.id }}">
+          {{ region.area }}
+        </option>
+        {% endif %} {% endfor %}
+      </select>
+    </fieldset>
+    <fieldset class="main__search-form-item labels">
+      <div class="main__search-form-item-label-wrap">
+        <input type="text" name="" placeholder="№ объявления">
+        <label for="heading">
+          <input type="checkbox" name="" id="heading" />
+          <p>в заголовках</p>
+        </label>
+      </div>
+      <button>Искать</button>
+    </fieldset>
+    <fieldset class="main__search-form-item fields"></fieldset>
+  </form>
+</search>
+{% endblock search %}
+{% block content %}
+<section class="profile">
+  {% block aside %}
+  <aside class="profile__aside">
+    <nav>
+      <ul class="profile__aside-nav-list">
+        <li class="profile__aside-nav-list-item exit">
+          <a href="#">
+            Выход
+          </a>
+        </li>
+        <li class="profile__aside-nav-list-item">
+          <a href="#">
+            Контактные данные
+          </a>
+        </li>
+        <li class="profile__aside-nav-list-item">
+          <a href="#">
+            Мои объявления
+          </a>
+        </li>
+        <li class="profile__aside-nav-list-item priority">
+          <a href="#">
+            Добавить магазин
+          </a>
+        </li>
+        <li class="profile__aside-nav-list-item">
+          <a href="#">
+            Входящие сообщения
+          </a>
+        </li>
+        <li class="profile__aside-nav-list-item">
+          <a href="#">
+            Исходящие сообщения
+          </a>
+        </li>
+        <li class="profile__aside-nav-list-item">
+          <a href="#">
+            Отправленные сообщения
+          </a>
+        </li>
+        <li class="profile__aside-nav-list-item">
+          <a href="#">
+            История платежей
+          </a>
+        </li>
+        <li class="profile__aside-nav-list-item priority">
+          <a href="#">
+            Пополнить кошелек
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+  {% endblock aside %}
+  {% block mainInfo %}
+  <form method="POST" class="main__info">
+    
+  </form>
+  {% endblock mainInfo %}
+{% endblock content %} 
+{% block js %}
+{% endblock js %}
