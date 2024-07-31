@@ -150,6 +150,7 @@
                                     {% endif %}
                                 </li>
                             </ul>
+                            {% if card.vip or card.special_accommodation or card.highlight_ad or card.raise_in_search %}
                             <ul class="advertisement__list-item-action">
                                 {% if card.special_accommodation %}
                                     <li class="advertisement__list-item-action-item">
@@ -172,6 +173,7 @@
                                     </li>
                                 {% endif %}
                             </ul>
+                            {% endif %}
                         </div>
                     </article>
                 </li>

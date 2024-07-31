@@ -79,7 +79,8 @@ class Advertisement(DirtyFieldsMixin, models.Model):
         return self.title
 
     def get_days_till_expiration(self):
-        return self.date_of_deactivate - datetime.now(timezone.utc)
+            days_till_expiration = self.date_of_deactivate - datetime.now(timezone.utc)
+            return days_till_expiration.days
 
     def get_absolute_url(self):
         return reverse('advertisement_details', kwargs={"slug": self.slug})

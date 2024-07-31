@@ -2,7 +2,7 @@
   padding: 10px;
   border-radius: 7px;
   background: $userSearchBg;
-  flex: 0 1 192px;
+  flex: 0 0 192px;
   border: 1px solid $gray;
 }
 
@@ -32,3 +32,15 @@
   }
 }
 
+@media (max-width:992px) {
+  .profile__aside{
+    flex: initial;
+    width: 100%;
+  }
+
+  .profile__aside-nav-list {
+    flex-direction: initial;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}

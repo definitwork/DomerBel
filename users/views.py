@@ -157,7 +157,7 @@ def get_user_data_page(request):
                'change_pass_form': change_pass_form,
                'category_list': category_list
                }
-    return render(request, 'personal_account/user_data.html', context)
+    return render(request, 'profile_data.html', context)
 
 
 # Сохранение экземпляра нового магазина через форму

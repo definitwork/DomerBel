@@ -1,5 +1,6 @@
 .main__info {
   flex: 1 1 auto;
+  width: 100%;
 }
 
 
@@ -25,7 +26,7 @@
 
 .main__info-advertisement-list {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 10px;
   margin-bottom: 15px;
   & a {
@@ -49,9 +50,9 @@
   & a {
     display: block;
     padding: 0;
+    width: 20px;
+    height: 20px;
     & img {
-      max-width: 20px;
-      max-height: 20px;
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -63,10 +64,12 @@
 .main__info-advertisement-list-item {
   display: flex;
   align-items: flex-start;
+  position: relative;
   gap: 15px;
 }
 
 .main__info-advertisement-list-item-about {
+  flex: 0 1 130px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -100,6 +103,7 @@
 }
 
 .main__info-advertisement-list-item-title-wrap {
+  flex: 0 1 250px;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -131,7 +135,7 @@
 }
 
 .main__info-advertisement-nav-select-all {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 5px;
   cursor: pointer;
@@ -147,4 +151,42 @@
 
 .advertisement__archive {
   border: 1px solid red;
+}
+
+@media(max-width:992px) {
+  .main__info-advertisement-list-item {
+    flex-direction: column;
+  }
+
+  .main__info-advertisement-list-item-achive {
+    order: 4;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+  .main__info-advertisement-list {
+    row-gap: 20px;
+  }
+  
+  .main__info-advertisement-list-item-img {
+    order: 1;
+    flex: 0 1 200px;
+    width: 100%;
+    height: 100%;
+    & img {
+      max-height: 200px;
+    }
+  }
+
+  .main__info-advertisement-list-item-title-wrap {
+    flex: initial;
+    order: 2;
+  }
+
+  .main__info-advertisement-list-item-about {
+    flex: initial;
+    order: 3;
+  }
+
+
 }

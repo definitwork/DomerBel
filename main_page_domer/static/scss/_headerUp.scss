@@ -31,12 +31,18 @@
     }
 }
 
+.header__up-admin {
+  @include fonts($mainColor,14px, 400);
+  cursor: pointer;
+  &:hover {
+      color:$colorHover;
+  }
+}
+
 .header__up-user-wrap {
     display: flex;
     align-items: center;
     gap: 10px;
-    flex: 0 1 300px;
-    justify-content: space-between;
   }
   
   .header__up-user-action {

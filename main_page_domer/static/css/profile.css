@@ -5,11 +5,16 @@
   gap: 10px;
 }
 
+@media (max-width: 992px) {
+  .profile {
+    flex-direction: column;
+  }
+}
 .profile__aside {
   padding: 10px;
   border-radius: 7px;
   background: #CFE6FE;
-  flex: 0 1 192px;
+  flex: 0 0 192px;
   border: 1px solid #D4D4D4;
 }
 
@@ -39,8 +44,20 @@
   color: red;
 }
 
+@media (max-width: 992px) {
+  .profile__aside {
+    flex: initial;
+    width: 100%;
+  }
+  .profile__aside-nav-list {
+    flex-direction: initial;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
 .main__info {
   flex: 1 1 auto;
+  width: 100%;
 }
 
 .main__info-nav {
@@ -68,7 +85,7 @@
 
 .main__info-advertisement-list {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 10px;
   margin-bottom: 15px;
 }
@@ -95,10 +112,10 @@
 .main__info-advertisement-list-item-achive a {
   display: block;
   padding: 0;
+  width: 20px;
+  height: 20px;
 }
 .main__info-advertisement-list-item-achive a img {
-  max-width: 20px;
-  max-height: 20px;
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
@@ -110,10 +127,12 @@
 .main__info-advertisement-list-item {
   display: flex;
   align-items: flex-start;
+  position: relative;
   gap: 15px;
 }
 
 .main__info-advertisement-list-item-about {
+  flex: 0 1 130px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -159,6 +178,7 @@
 }
 
 .main__info-advertisement-list-item-title-wrap {
+  flex: 0 1 250px;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -202,7 +222,7 @@
 }
 
 .main__info-advertisement-nav-select-all {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 5px;
   cursor: pointer;
@@ -221,4 +241,64 @@
 
 .advertisement__archive {
   border: 1px solid red;
+}
+
+@media (max-width: 992px) {
+  .main__info-advertisement-list-item {
+    flex-direction: column;
+  }
+  .main__info-advertisement-list-item-achive {
+    order: 4;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+  .main__info-advertisement-list {
+    row-gap: 20px;
+  }
+  .main__info-advertisement-list-item-img {
+    order: 1;
+    flex: 0 1 200px;
+    width: 100%;
+    height: 100%;
+  }
+  .main__info-advertisement-list-item-img img {
+    max-height: 200px;
+  }
+  .main__info-advertisement-list-item-title-wrap {
+    flex: initial;
+    order: 2;
+  }
+  .main__info-advertisement-list-item-about {
+    flex: initial;
+    order: 3;
+  }
+}
+.paginator {
+  width: 100%;
+}
+
+.list_pages ul {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.list_pages ul li a {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #3077a0;
+  font-size: 14px;
+}
+
+.page_num_selected {
+  padding: 5px 8px;
+  background: #3077a0;
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #fff;
+  font-size: 14px;
 }/*# sourceMappingURL=profile.css.map */
