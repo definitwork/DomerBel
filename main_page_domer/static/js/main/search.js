@@ -14,12 +14,12 @@ function getOption(url) {
             item?.search?.split("|")?.length >= 2 &&
             !item?.spisok?.element_set
           ) {
-            createSelectElement(item, item.search.split("|")[0])
-            createSelectElement(item, item.search.split("|")[1])
+            createSelectElement(item, item.search.split("|")[0], fields)
+            createSelectElement(item, item.search.split("|")[1], fields)
             return
           }
           if (item?.search?.trim() === "") return
-          createSelectElement(item, item?.search?.split("|")[0]?.trim())
+          createSelectElement(item, item?.search?.split("|")[0]?.trim(), fields)
         })
         return
       }
@@ -29,7 +29,7 @@ function getOption(url) {
         createSelectElement(data, "Любое расположение")
         return
       }
-      createSelectElement(data)
+      createSelectElement(data, {id:"", title:"Все разделы"},fields)
     })
     .catch((error) => {
       console.error(error, "error obj")
@@ -50,7 +50,7 @@ function getInnerList(data, id) {
     (item) => item.dataset.active === "true"
   )].name
   console.log(dataModel);
-  createSelectElement(dataModel, data?.search?.split("|")[1]?.trim())
+  createSelectElement(dataModel, data?.search?.split("|")[1]?.trim(), fields)
 }
 
 function createSelectElement(
@@ -58,7 +58,9 @@ function createSelectElement(
   titleObj = {
     id: "",
     title: "Все разделы",
-  }
+  },
+  fields,
+  search = true
 ) {
   const select = document.createElement("select")
   if (Array.isArray(data) && data?.some(item => item.level) && !data.some(item => item.area)) {
@@ -129,7 +131,11 @@ function createSelectElement(
     data.forEach(forItem => {
       createOptionElement(forItem, select)
     })
-    parentRegionElement.append(select)
+    if(search) {
+      parentRegionElement.append(select)
+    }else {
+      fields.after(select)
+    }
     return
   }
   fields.append(select)

@@ -7,7 +7,7 @@ from users.models import User
 from users.validators import validate_phone
 
 class StoreForm(forms.ModelForm):
-    region = forms.ModelChoiceField(queryset=Region.objects.filter(type="Город"), label="Регион, город, область",
+    region = forms.ModelChoiceField(queryset=Region.objects.filter(type="Область"), label="Регион, город, область",
                                     widget=forms.Select(attrs={'class': 'input_field'}))
     address = forms.CharField(max_length=255, required=False, label="Адрес",
                               widget=forms.TextInput(attrs={'class': 'input_field'}))
@@ -33,9 +33,9 @@ class StoreForm(forms.ModelForm):
         attrs={'class': 'input_field', 'placeholder': 'Должен начитаться с http:// или https://', 'size': 40}))
     logo_image = forms.ImageField(required=False, label="Логотип",
                                   widget=ClearableFileInput(attrs={'class': 'input_field'}))
-    user = forms.ModelChoiceField(queryset=User.objects.all(), required=False)
+    # user = forms.ModelChoiceField(queryset=User.objects.all(), required=False)
 
     class Meta:
         model = Store
         fields = ['region', 'address', 'category', 'title', 'slug', 'description', 'url', 'contact_name', 'email',
-                  'phone_num', 'video_link', 'logo_image', 'user']
+                  'phone_num', 'video_link', 'logo_image',]

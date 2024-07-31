@@ -178,7 +178,7 @@ def add_store(request):
         context = {"oblast": oblast,
                    "store_form": store_form,
                    "category_list": category_list}
-        return render(request, 'personal_account/add_store.html', context)
+        return render(request, 'profile_add_store.html', context)
 
     oblast = Region.objects.filter(type='Область')
     store_form = StoreForm(initial={'contact_name': request.user.first_name, 'email': request.user.email,
@@ -188,7 +188,7 @@ def add_store(request):
     context = {"oblast": oblast,
                "store_form": store_form,
                "category_list": category_list}
-    return render(request, 'personal_account/add_store.html', context)
+    return render(request, 'profile_add_store.html', context)
 
 
 # Показывает в личном кабинете все магазины, которые создал пользователь
@@ -204,7 +204,7 @@ def get_my_store(request):
         }
     else:
         context = {}
-    return render(request, 'personal_account/my_store.html', context)
+    return render(request, 'profile_shop.html', context)
 
 
 # Открывает страницу выбранного в ЛК магазина
