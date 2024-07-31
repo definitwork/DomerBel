@@ -95,16 +95,20 @@ def get_view_type_for_store(view_type):
 
 def where_to_look(parameter, model):
     result = []
+    bread_crumbs = []
     if parameter:
         if parameter == ['']:
             pass
-        elif '' in parameter:
+        # elif '' in parameter:
+        else:
             while '' in parameter:
                 parameter.remove('')
             result = get_object_or_404(model, id=parameter[-1]).get_descendants(include_self=True)
-        else:
-            result = model.objects.filter(id__in=parameter)
-    return result
+            bread_crumbs = get_object_or_404(model, id=parameter[-1]).get_ancestors(ascending=False, include_self=True)
+        # else:
+        #     result = model.objects.filter(id__in=parameter)
+        #     bread_crumbs = result
+    return result, bread_crumbs
 
 
 def search_additional_information(fild, cop):

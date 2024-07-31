@@ -3,6 +3,7 @@ import random
 from datetime import datetime, timedelta
 from pprint import pprint
 
+from django.contrib.postgres.search import SearchVector
 from django.db.models import Q, F
 from django.db.models.fields.json import KT
 from django.http import Http404
@@ -161,14 +162,13 @@ def get_page_place_an_favorites(request):
 
 def get_advertisement_details_page(request, slug):
     '''Отдаем страничку с детальным описанием объявления'''
-    advertisement = Advertisement.objects.filter(slug=slug).prefetch_related("photoadvertisement_set").select_related("category")
-    advertisement_main = advertisement[0]
-    advertisement.update(counter_views=F("counter_views")+1)
+    advertisement_main = get_object_or_404(Advertisement, slug=slug)
+    Advertisement.objects.filter(id=advertisement_main.id).update(counter_views=F("counter_views")+1)
     category_crumbs = advertisement_main.category.get_ancestors(ascending=False, include_self=True)
     similar_advertisement = Advertisement.objects.filter(moderated=True,
                                                          is_active=True,
                                                          date_of_change__gte=(datetime.now(
-                                                             tz=get_current_timezone()) - timedelta(days=50)),
+                                                             tz=get_current_timezone()) - timedelta(days=20)),
                                                          category=advertisement_main.category).exclude(id=advertisement_main.id).select_related("category")
     similar_advertisement = random.sample(list(similar_advertisement), 4 if len(similar_advertisement) >= 4 else len(similar_advertisement))
     context = {
@@ -228,51 +228,68 @@ def search_result(request):
     if request.GET.get('sort'):
         sort_for_paginator = sorted_by_number(request.GET.get('sort'))
 
-
     cop = dict.copy(request.GET)
-    cop.pop('csrfmiddlewaretoken', None)
+    l = ['page', 'sort', 'date', 'price']
     search_parameters = {}
-    # pprint(request.__dict__)
-    query = request.META.get('QUERY_STRING').replace(f'page={request.GET.get("page")}&', '')
-    print(query)
+    search_parameters_only = {}
+    query = request.META.get('QUERY_STRING').replace(f'page={request.GET.get("page")}&', '').replace(f'sort={request.GET.get("sort")}&', '').replace(f'date={request.GET.get("date")}&', '').replace(f'price={request.GET.get("price")}&', '')
     page = cop.pop('page') if cop.get('page') else None
-    category = where_to_look(cop.pop('category', None), Category)
-    region = where_to_look(cop.pop('region', None), Region)
+    sort = cop.pop('sort') if cop.get('sort') else None
+    date = cop.pop('date') if cop.get('date') else None
+    price = cop.pop('price') if cop.get('price') else None
+
+
+    category, category_bread_crumbs = where_to_look(cop.pop('category', None), Category)
+    region, region_bread_crumbs = where_to_look(cop.pop('region', None), Region)
+
     if category:
         search_parameters['category__in'] = category
     if region:
         search_parameters['region__in'] = region
-    # print(search_parameters)
-    region_bread_crumbs = region
+    if request.GET.get('text_search'):
+        # search_parameters['title__icontains'] = request.GET.get('text_search')
+        cop.pop('text_search')
+    if request.GET.get('only_title'):
+        # search_parameters['title__icontains'] = request.GET.get('only_title')
+        cop.pop('only_title')
+    if request.GET.get('only_photo'):
+        search_parameters_only['preview_image__exact'] = ''
+        cop.pop('only_photo')
+    if request.GET.get('only_video'):
+        search_parameters_only['video_link__exact'] = ''
+        cop.pop('only_video')
+
     try:
         fields = Field.objects.filter(id__in=cop.keys())
     except ValueError:
         raise Http404()
 
     search, search_kt = search_additional_information(fields, cop)
+    search_q, search_annotate = annotating_field(search_kt)
 
     if search:
         search_parameters['additional_information__contains'] = search
-
-    search_q, search_annotate = annotating_field(search_kt)
     if search_q:
         search_parameters['search_q'] = search_q
-    # print(search)
-    # print(search_kt)
-    # print(search_annotate)
-    # print(search_q)
-    advertisement_queryset = Advertisement.objects.annotate(**{key: KT(value) for key, value in search_annotate.items()}).filter(**search_parameters).select_related('category', 'region').order_by(order_by)
-    # print(advertisement_queryset)
 
-    page_obj = variables_for_paginator(advertisement_queryset,
+    # advertisement_queryset = Advertisement.objects.annotate(**{key: KT(value) for key, value in search_annotate.items()}).filter(title__icontains=request.GET.get('text_search'), **search_parameters).exclude(**search_parameters_only).select_related('category', 'region').order_by("-raise_in_search", order_by)
+    advertisement_queryset2 = Advertisement.objects.annotate(**{key: KT(value) for key, value in search_annotate.items()}, search=SearchVector("title", "description")).filter(search__icontains=request.GET.get('text_search'), **search_parameters).exclude(**search_parameters_only).select_related('category', 'region').order_by("-raise_in_search", order_by)
+
+    # advertisement_queryset1 = advertisement_queryset.union(advertisement_queryset2)
+
+    # print(advertisement_queryset)
+    print(advertisement_queryset2)
+    page_obj = variables_for_paginator(advertisement_queryset2,
                                        request.GET.get('page'),
                                        sort_for_paginator)
 
     context = {
-        "ads_found": advertisement_queryset.count(),
+        "ads_found": advertisement_queryset2.count(),
         "page_obj": page_obj,
         "region_bread_crumbs": region_bread_crumbs,
-        "query": query
+        "category_bread_crumbs": category_bread_crumbs,
+        "query": query,
+        'date': state_sort_by_date,
     }
     response = render(request, "searchResult.html", context)
     response.set_cookie('sort', sort_for_paginator)

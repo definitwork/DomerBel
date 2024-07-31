@@ -67,7 +67,13 @@ class Advertisement(DirtyFieldsMixin, models.Model):
     class Meta:
         verbose_name = 'Объявление'
         verbose_name_plural = 'Объявления'
-
+        # indexes = [
+        #     GinIndex(fields=['description'], name='description_gin_index',
+        #              opclasses=['gin_trgm_ops']),
+        #
+        #     GinIndex(OpClass(Upper('description'), name='gin_trgm_ops'),
+        #              name='description_upper_gin_index'),
+        # ]
 
     def __str__(self):
         return self.title
