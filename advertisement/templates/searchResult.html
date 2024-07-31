@@ -1,8 +1,8 @@
 {% extends "advertisementAdd.html" %}
 {% load static %}
 
-
-{% if category_bread_crumbs or region_bread_crumbs %}
+{% block crumbs %}
+    {% if category_bread_crumbs or region_bread_crumbs %}
         <section class="crumbs">
             <div class="crumbs__wrapper">
                 <ul class="crumbs__list">
@@ -13,7 +13,7 @@
                     {% if region_bread_crumbs %}
                         {% for bread_crumbs in region_bread_crumbs %}
                             <li class="crumbs__list-item">
-                                <a href="{% url 'advertisement' %}?region={{ bread_crumbs.id }}">{{ bread_crumbs.area }}</a>
+                                <a href="?region={{ bread_crumbs.id }}">{{ bread_crumbs.area }}</a>
                             </li>
                             {% if not forloop.last %}
                             <li class="crumbs__list-item-dots">...</li>
@@ -21,9 +21,12 @@
                         {% endfor %}
                     {% endif %}
                     {% if category_bread_crumbs %}
+                        {% if region_bread_crumbs %}
+                            <li class="crumbs__list-item-dots">...</li>
+                        {% endif %}
                         {% for bread_crumbs in category_bread_crumbs %}
                             <li class="crumbs__list-item">
-                                <a href="{% url 'advertisement_by_category' bread_crumbs.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}">{{ bread_crumbs.title }}</a>
+                                <a href="?category={{ bread_crumbs.id }}{% if region_bread_crumbs %}{% for region in region_bread_crumbs %}&region={{ region.id }}{% endfor %}{% endif %}">{{ bread_crumbs.title }}</a>
                             </li>
                             {% if not forloop.last %}
                             <li class="crumbs__list-item-dots">...</li>
@@ -35,6 +38,69 @@
         </section>
     {% endif %}
 {% endblock %}
+
+
+{% block sort %}
+    <section class="sort">
+        <div class="sort__ads">
+            Найдено: <span>{{ ads_found }}</span>
+        </div>
+        <ul class="sort__type-list">
+            <li class="sort__type-list-item">
+                <img src="{% static 'img/sort1.png' %}" alt="{% static 'img/sort1.png' %}">
+            </li>
+            <li class="sort__type-list-item">
+                <img src="{% static 'img/sort2.png' %}" alt="{% static 'img/sort2.png' %}">
+            </li>
+        </ul>
+        <div class="sorted__output">
+            <p>
+                Выводить по:
+            </p>
+            <ul class="sorted__output-list">
+                <li class="sorted__output-list-item">
+                    <a href="?sort=30{% if query %}&{{ query }}{% endif %}">
+                        30
+                    </a>
+                </li>
+                <li class="sorted__output-list-item">
+                    <a href="?sort=60{% if query %}&{{ query }}{% endif %}">
+                        60
+                    </a>
+                </li>
+                <li class="sorted__output-list-item">
+                    <a href="?sort=90{% if query %}&{{ query }}{% endif %}">
+                        90
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="sorted__by">
+            <p>
+                Сортировать:
+            </p>
+            <ul class="sorted__by-list">
+                <li class="sorted__by-list-item">
+                    <a href="?date={{ date }}{% if query %}&{{ query }}{% endif %}">
+                        Дата
+                    </a>
+                    <div class="sorted__by-list-item-img">
+                        <img src="{% static 'img/icons/arrowDown.svg' %}" alt="">
+                    </div>
+                </li>
+                <li class="sorted__by-list-item">
+                    <a href="?price={{ date }}{% if query %}&{{ query }}{% endif %}">
+                        Цена
+                    </a>
+                    <div class="sorted__by-list-item-img">
+                        <img src="{% static 'img/icons/arrowDown.svg' %}" alt="">
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+    {% endblock sort %}
+
 
 {% block paginator %}
 <div class="paginator">

@@ -310,10 +310,7 @@
                             {% endif %}
                           {% endfor %}
                         </select>
-                        <input type="text" name="" placeholder="Поиск по тексту" />
-                        <select name="" class="main__search-form-item-area">
-                          <option value=""></option>
-                        </select>
+                        <input type="text" name="text_search" placeholder="Поиск по тексту" />
                         <select name="region" class="main__search-form-item-region">
                             <option value="">
                                 Любое расположение
@@ -330,15 +327,15 @@
                       <fieldset class="main__search-form-item labels">
                         <div class="main__search-form-item-label-wrap">
                           <label for="heading">
-                            <input type="checkbox" name="" id="heading" />
+                            <input type="checkbox" name="only_title" id="heading" />
                             <p>Только в заголовках</p>
                           </label>
                           <label for="photos">
-                            <input type="checkbox" name="" id="photos" />
+                            <input type="checkbox" name="only_photo" id="photos" />
                             <p>С фото</p>
                           </label>
                           <label for="videos">
-                            <input type="checkbox" name="" id="videos" />
+                            <input type="checkbox" name="only_video" id="videos" />
                             <p>С видео</p>
                           </label>
                         </div>
