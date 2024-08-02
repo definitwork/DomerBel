@@ -248,7 +248,7 @@ def edit_store(request, store_id):
         'store': store,
         'category_list': category_list
     }
-    return render(request, 'personal_account/edit_store.html', context)
+    return render(request, 'profile_edit_shop.html', context)
 
 
 # Удаление экземпляра магазина
