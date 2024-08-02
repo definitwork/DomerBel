@@ -6,8 +6,11 @@ from dirtyfields import DirtyFieldsMixin
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GinIndex, OpClass, BrinIndex
 from django.contrib.postgres.search import SearchVectorField, SearchVector
+from django.core.cache import cache
 from django.db import models
 from django.db.models.functions import Upper
+from django.db.models.signals import post_delete, post_save
+from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.timezone import make_aware
 from mptt.models import MPTTModel, TreeForeignKey
@@ -250,3 +253,13 @@ class Store(models.Model):
 
     def __str__(self):
         return self.title
+
+
+@receiver(post_delete, sender=Category)
+def object_post_delete_handler(sender, **kwargs):
+     cache.delete('objects')
+
+
+@receiver(post_save, sender=Region)
+def object_post_save_handler(sender, **kwargs):
+    cache.delete('objects')

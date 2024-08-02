@@ -238,10 +238,10 @@
                             </li>
                         </ul>
                     </nav>
+                    {% if user.is_authenticated %}
                     {% if user.is_superuser %}
                         <a href="{% url 'admin:index' %}" class="header__up-admin">Админка</a>
                     {% endif %}
-                    {% if user.is_authenticated %}
                         <div class="header__up-user-wrap">
                             <div class="header__up-user-action">
                                 <a href="{% url 'users:personal_account' %}" class="">{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.email }}{% endif %}</a>
@@ -315,7 +315,7 @@
                             <option value="">
                                 Любое расположение
                             </option>
-                          {% for region in regions %}
+                          {% for region in region_list %}
                             {% if region.level == 0 %}
                             <option value="{{ region.id }}" data-fetchid="{{ region.id }}">
                                 {{ region.area }}
