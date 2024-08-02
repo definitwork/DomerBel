@@ -4,7 +4,10 @@ from datetime import datetime, timedelta, timezone
 import PIL
 from dirtyfields import DirtyFieldsMixin
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.indexes import GinIndex, OpClass, BrinIndex
+from django.contrib.postgres.search import SearchVectorField, SearchVector
 from django.db import models
+from django.db.models.functions import Upper
 from django.urls import reverse
 from django.utils.timezone import make_aware
 from mptt.models import MPTTModel, TreeForeignKey
@@ -35,7 +38,7 @@ class PhotoAdvertisement(models.Model):
 class Advertisement(DirtyFieldsMixin, models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     article = models.CharField(max_length=255, blank=True, null=True, verbose_name="Артикул")
-    title = models.CharField(max_length=255, verbose_name='Заголовок')
+    title = models.CharField(max_length=255, verbose_name='Заголовок', db_index=True)
     price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, default=0, verbose_name='Цена')
     category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Раздел')
     bearer = models.CharField(max_length=50, choices=[('Частное лицо', 'Частное лицо'), ('Компания', 'Компания')],
@@ -62,18 +65,24 @@ class Advertisement(DirtyFieldsMixin, models.Model):
     additional_information_view = ArrayField(ArrayField(models.CharField(max_length=500)), blank=True, null=True, editable=False)
     description = models.TextField(verbose_name='Описание')
     video_link = models.URLField(blank=True, null=True, verbose_name='Ссылка на видео')  # хранит строку, которая представляет валидный URL-адрес
-
+    search_vector = SearchVectorField(null=True, editable=False)
+    search_title_vector = SearchVectorField(null=True, editable=False)
 
     class Meta:
         verbose_name = 'Объявление'
         verbose_name_plural = 'Объявления'
-        # indexes = [
-        #     GinIndex(fields=['description'], name='description_gin_index',
-        #              opclasses=['gin_trgm_ops']),
-        #
-        #     GinIndex(OpClass(Upper('description'), name='gin_trgm_ops'),
-        #              name='description_upper_gin_index'),
-        # ]
+        indexes = [
+            GinIndex(fields=['search_vector']),
+
+            GinIndex(fields=['search_title_vector']),
+
+            GinIndex(fields=['title'], name='title_gin_index',
+                     opclasses=['gin_trgm_ops']),
+
+            GinIndex(OpClass(Upper('title'), name='gin_trgm_ops'),
+                     name='title_upper_gin_index'),
+            BrinIndex(fields=['date_of_create']),
+        ]
 
     def __str__(self):
         return self.title
@@ -90,6 +99,8 @@ class Advertisement(DirtyFieldsMixin, models.Model):
             self.additional_information_view = list(self.additional_information.items())
         self.slug = unique_slugify(self, self.title)
         self.date_of_deactivate = make_aware(datetime.now() + timedelta(days=180))
+        self.search_vector = SearchVector(self.title, self.description)
+        self.search_title_vector = SearchVector(self.title)
         super().save(*args, **kwargs)
         if self.preview_image:
             try:

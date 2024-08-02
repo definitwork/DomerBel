@@ -64,7 +64,7 @@ def get_region_variables(region_request):
     if region_request:
         region_filter = dict(
             region__in=Region.objects.filter(id=region_request).get_descendants(include_self=True))
-        region_param = region_filter.get("region__in").get(id=region_request)
+        region_param = get_object_or_404(Region, id=region_request)
         region_bread_crumbs = region_param.get_ancestors(ascending=False, include_self=True)
         return region_filter, region_param, region_bread_crumbs
     else:
