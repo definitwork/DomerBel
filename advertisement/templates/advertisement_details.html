@@ -2,7 +2,7 @@
 {% load static %}
 {% load advertisement_tags %}
 {% block css %}
- <link rel="stylesheet" href="{% static "css/details.css"%}"> 
+ <link rel="stylesheet" href="{% static 'css/details.css'%}">
 {% endblock css %} 
 {% block crumbs %}
 <section class="crumbs">
@@ -502,7 +502,7 @@
       {% for advertisement in similar_advertisement %}
     <li>
       <article class="similar__list-item">
-        <a href="{% url "advertisement_details" advertisement.slug %}">
+        <a href="{% url 'advertisement_details' advertisement.slug %}">
           <div class="similar__list-item-img">
             <img src="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
           </div>
@@ -510,9 +510,11 @@
               {{ advertisement.title }}
           </h3>
         </a>
+          {% if advertisement.price %}
         <p class="similar__list-price">
             {{ advertisement.price }}
         </p>
+          {% endif %}
       </article>
     </li>
       {% endfor %}
@@ -522,8 +524,8 @@
 
 {% block js %}
   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-  <script src="{% static "js/details/slick.min.js" %}"></script>
-  <script src="{% static "js/details/slider.js" %}"></script>
-  <script src="{% static "js/details/drop.js" %}"></script>
-  <script src="{% static "js/details/magnifier.js" %}"></script>
+  <script src="{% static 'js/details/slick.min.js' %}"></script>
+  <script src="{% static 'js/details/slider.js' %}"></script>
+  <script src="{% static 'js/details/drop.js' %}"></script>
+  <script src="{% static 'js/details/magnifier.js' %}"></script>
 {% endblock js %}

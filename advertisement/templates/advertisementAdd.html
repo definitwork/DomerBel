@@ -25,6 +25,9 @@
                     {% endif %}
                     {% if category_bread_crumbs %}
                         {% for bread_crumbs in category_bread_crumbs %}
+                            {% if region_bread_crumbs %}
+                            <li class="crumbs__list-item-dots">...</li>
+                            {% endif %}
                             <li class="crumbs__list-item">
                                 <a href="{% url 'advertisement_by_category' bread_crumbs.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}">{{ bread_crumbs.title }}</a>
                             </li>
@@ -42,11 +45,13 @@
     <section class="filter">
         <ul class="filter__list">
             {% for category in category %}
+            {% if category.advertisement_counts != 0 %}
                 <li class="filter__list-item">
-                    <a href="{% url 'advertisement_by_category' category.slug %}">
+                    <a href="{% url 'advertisement_by_category' category.slug %}{% if region_bread_crumbs %}?{% for region in region_bread_crumbs %}&region={{ region.id }}{% endfor %}{% endif %}">
                         {{ category.title }}, <span>{{ category.advertisement_counts }}</span>
                     </a>
                 </li>
+            {% endif %}
             {% endfor %}
         </ul>
     </section>
@@ -125,11 +130,13 @@
                                     {{ card.title }}
                                 </a>
                             </h3>
+                            {% if card.price %}
                             <p class="advertisement__list-item-price">
-                                {% if card.price %}
+
                                     {{ card.price|floatformat }} руб.
-                                {% endif %}
+
                             </p>
+                            {% endif %}
                             <ul class="advertisement__list-item-about-text-list">
                                 <li>
                                     {{ card.category }}
@@ -154,22 +161,22 @@
                             <ul class="advertisement__list-item-action">
                                 {% if card.special_accommodation %}
                                     <li class="advertisement__list-item-action-item">
-                                        <img src="{% static "img/special.png" %}" alt="">
+                                        <img src="{% static 'img/special.png' %}" alt="">
                                     </li>
                                 {% endif %}
                                 {% if card.vip %}
                                     <li class="advertisement__list-item-action-item">
-                                        <img src="{% static "img/VIP.png" %}" alt="">
+                                        <img src="{% static 'img/VIP.png' %}" alt="">
                                     </li>
                                 {% endif %}
                                 {% if card.highlight_ad %}
                                     <li class="advertisement__list-item-action-item">
-                                        <img src="{% static "img/highlight.png" %}" alt="">
+                                        <img src="{% static 'img/highlight.png' %}" alt="">
                                     </li>
                                 {% endif %}
                                 {% if card.raise_in_search %}
                                     <li class="advertisement__list-item-action-item">
-                                        <img src="{% static "img/up.png" %}" alt="">
+                                        <img src="{% static 'img/up.png' %}" alt="">
                                     </li>
                                 {% endif %}
                             </ul>

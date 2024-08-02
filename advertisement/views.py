@@ -162,15 +162,20 @@ def get_page_place_an_favorites(request):
 
 def get_advertisement_details_page(request, slug):
     '''Отдаем страничку с детальным описанием объявления'''
-    advertisement_main = get_object_or_404(Advertisement, slug=slug)
+    advertisement_main = get_object_or_404(Advertisement.objects.prefetch_related("photoadvertisement_set"), slug=slug)
     Advertisement.objects.filter(id=advertisement_main.id).update(counter_views=F("counter_views")+1)
     category_crumbs = advertisement_main.category.get_ancestors(ascending=False, include_self=True)
+    date = datetime.now(tz=get_current_timezone()) - timedelta(days=50)
     similar_advertisement = Advertisement.objects.filter(moderated=True,
                                                          is_active=True,
-                                                         date_of_change__gte=(datetime.now(
-                                                             tz=get_current_timezone()) - timedelta(days=20)),
-                                                         category=advertisement_main.category).exclude(id=advertisement_main.id).select_related("category")
-    similar_advertisement = random.sample(list(similar_advertisement), 4 if len(similar_advertisement) >= 4 else len(similar_advertisement))
+                                                         category_id=advertisement_main.category,
+                                                         date_of_create__date__gte=date
+                                                         ).exclude(id=advertisement_main.id).values('id')
+
+    similar_advertisement = list(similar_advertisement)
+    similar_advertisement = random.sample(similar_advertisement, 4 if len(similar_advertisement) >= 4 else len(similar_advertisement))
+    print(similar_advertisement)
+    similar_advertisement = Advertisement.objects.filter(id__in=[value.get('id') for value in similar_advertisement])
     context = {
         "advertisement": advertisement_main,
         "category_crumbs": category_crumbs,
@@ -220,44 +225,42 @@ def editing_an_ad(request, id):
 
 
 def search_result(request):
+    search_parameters = {}
+    search_parameters_only = {}
+    key_delete = ['page', 'sort', 'date', 'price', 'text_search']
+    cop = dict.copy(request.GET)
+
     sort_for_paginator = sorted_by_number(request.COOKIES.get('sort'))
     order_by = sorted_by(request.COOKIES.get('sorted_by'))
     state_sort_by_date = request.COOKIES.get('date', 0)
+    category, category_bread_crumbs = where_to_look(cop.pop('category', None), Category)
+    region, region_bread_crumbs = where_to_look(cop.pop('region', None), Region)
+
     if request.GET.get('date') or request.GET.get('price'):
         state_sort_by_date, order_by = sorted_by_date_or_price(request.GET)
     if request.GET.get('sort'):
         sort_for_paginator = sorted_by_number(request.GET.get('sort'))
 
-    cop = dict.copy(request.GET)
-    l = ['page', 'sort', 'date', 'price']
-    search_parameters = {}
-    search_parameters_only = {}
-    query = request.META.get('QUERY_STRING').replace(f'page={request.GET.get("page")}&', '').replace(f'sort={request.GET.get("sort")}&', '').replace(f'date={request.GET.get("date")}&', '').replace(f'price={request.GET.get("price")}&', '')
-    page = cop.pop('page') if cop.get('page') else None
-    sort = cop.pop('sort') if cop.get('sort') else None
-    date = cop.pop('date') if cop.get('date') else None
-    price = cop.pop('price') if cop.get('price') else None
-
-
-    category, category_bread_crumbs = where_to_look(cop.pop('category', None), Category)
-    region, region_bread_crumbs = where_to_look(cop.pop('region', None), Region)
-
     if category:
         search_parameters['category__in'] = category
     if region:
         search_parameters['region__in'] = region
-    if request.GET.get('text_search'):
-        # search_parameters['title__icontains'] = request.GET.get('text_search')
-        cop.pop('text_search')
-    if request.GET.get('only_title'):
-        # search_parameters['title__icontains'] = request.GET.get('only_title')
-        cop.pop('only_title')
     if request.GET.get('only_photo'):
         search_parameters_only['preview_image__exact'] = ''
         cop.pop('only_photo')
     if request.GET.get('only_video'):
         search_parameters_only['video_link__exact'] = ''
         cop.pop('only_video')
+    if request.GET.get('only_title') and request.GET.get('text_search'):
+        search_parameters['search_title_vector'] = request.GET.get('text_search')
+        cop.pop('only_title')
+    elif request.GET.get('text_search'):
+        search_parameters['search_vector'] = request.GET.get('text_search')
+
+    query = request.META.get('QUERY_STRING')
+    for key in key_delete:
+        cop.pop(key, None)
+        query = query.replace(f'{key}={request.GET.get(key)}&', '')
 
     try:
         fields = Field.objects.filter(id__in=cop.keys())
@@ -272,19 +275,14 @@ def search_result(request):
     if search_q:
         search_parameters['search_q'] = search_q
 
-    # advertisement_queryset = Advertisement.objects.annotate(**{key: KT(value) for key, value in search_annotate.items()}).filter(title__icontains=request.GET.get('text_search'), **search_parameters).exclude(**search_parameters_only).select_related('category', 'region').order_by("-raise_in_search", order_by)
-    advertisement_queryset2 = Advertisement.objects.annotate(**{key: KT(value) for key, value in search_annotate.items()}, search=SearchVector("title", "description")).filter(search__icontains=request.GET.get('text_search'), **search_parameters).exclude(**search_parameters_only).select_related('category', 'region').order_by("-raise_in_search", order_by)
+    advertisement_queryset1 = Advertisement.objects.annotate(**{key: KT(value) for key, value in search_annotate.items()}).filter(**search_parameters).exclude(**search_parameters_only).select_related('category', 'region').order_by("-raise_in_search", order_by)
 
-    # advertisement_queryset1 = advertisement_queryset.union(advertisement_queryset2)
-
-    # print(advertisement_queryset)
-    print(advertisement_queryset2)
-    page_obj = variables_for_paginator(advertisement_queryset2,
+    page_obj = variables_for_paginator(advertisement_queryset1,
                                        request.GET.get('page'),
                                        sort_for_paginator)
 
     context = {
-        "ads_found": advertisement_queryset2.count(),
+        "ads_found": advertisement_queryset1.count(),
         "page_obj": page_obj,
         "region_bread_crumbs": region_bread_crumbs,
         "category_bread_crumbs": category_bread_crumbs,

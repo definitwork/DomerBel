@@ -3,6 +3,7 @@ from uuid import uuid4
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
@@ -141,7 +142,7 @@ def update_advertisement(request):
                                      ).update(author=None if request.user.is_anonymous else request.user,
                                               additional_information=additional_information,
                                               **serializer.validated_data)
-        advertisement = Advertisement.objects.get(id=request.data.get('advertisement'))
+        advertisement = get_object_or_404(Advertisement, id=request.data.get('advertisement'))
 
         if request.data.getlist('photo_files') != ['']:
             for photo in request.data.getlist('photo_files'):
