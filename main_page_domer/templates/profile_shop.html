@@ -16,7 +16,7 @@
             {{ store.title }}
           </h3>
           <div class="main__shop-list-item-edit">
-            <a href="#">
+            <a href="{% url "users:edit_store" store.id %}">
               Редактировать магазин
             </a>
             <a href="#">
@@ -30,61 +30,66 @@
             Магазин активен до:
             <span>
               {{ store.date_of_deactivate }}
+              <span>
+                (Осталось {{ store.get_days_till_expiration }} дн.)
+              </span>
             </span>
           </p>
-          <a href="#">
+          <a href="#" class="main__shop-list-item-shop-link">
             Страница магазина
           </a>
           <ul class="main__shop-list-item-about">
             <li>
-              <h3>
+              <h4>
                 Название
-              </h3>
+              </h4>
               <p>
                 {{ store.title }}
               </p>
             </li>
             <li>
-              <h3>
+              <h4>
                 Раздел
-              </h3>
+              </h4>
               <p>
                 {{ store.category }}
               </p>
             </li>
             <li>
-              <h3>
+              <h4>
                 Регион
-              </h3>
+              </h4>
+              <p>
+                {{store.region.parent}}
+              </p>
+            </li>
+            <li>
+              <h4>
+                Город / район
+              </h4>
               <p>
                 {{ store.region }}
               </p>
             </li>
             <li>
-              <h3>
-                Город / район
-              </h3>
-              <p>
-                Заводской район
-              </p>
-            </li>
-            <li>
-              <h3>
+              <h4>
                 Описание
-              </h3>
+              </h4>
               <p>
                 {{ store.description }}
               </p>
             </li>
-            <li>
-              <a href="#">
-                Сайт магазина
-              </a>
-            </li>
+            {% if store.url %}
+              <li>
+                <a href="{{ store.url }}">
+                  Сайт магазина
+                </a>
+              </li>
+            {% endif %}
           </ul>
          </div>
          <div class="main__shop-list-item-img">
-          <img src="" alt="">
+          <img src="{{ store.logo_image.url }}" alt="{{ store.title }}">
          </div>
         </article>
       </li>

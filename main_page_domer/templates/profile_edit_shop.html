@@ -1,0 +1,39 @@
+{% extends "profile_user.html" %} 
+{% load static %} 
+{% block css2 %}
+<link rel="stylesheet" href="{% static "css/profile_store.css" %}">
+{% endblock css2 %}
+{% block title %}
+{% endblock title %} 
+  {% block mainInfo %}
+  <div class="form__wrapper">
+    <form method="POST" class="main__info">
+      {% csrf_token %}
+      {% if store_form.non_field_errors %}
+      <div class="form-error">{{ store_form.non_field_errors }}</div>
+      {% endif %}
+      {% for f in edit_store %}
+      <label for="{{ f.id_for_label }}">
+        <p class="form-label">
+          {% if f.required %}
+          <span>*</span>
+          {% endif %}
+          {{f.label}}:
+        </p>
+        {{ f }}
+      </label>
+      {% if f.errors %}
+      <div class="form-error">{{ f.errors }}</div>
+      {% endif %}
+      {% endfor %}
+      <button>Изменить</button>
+    </form>
+    <div class="main__advertisement">
+
+    </div>
+  </div>
+  {% endblock mainInfo %}
+{% block js %}
+<script src="{% static "js/profile/storeLogo.js" %}"></script>
+<script src="{% static "js/profile/region.js" %}"></script>
+{% endblock js %}

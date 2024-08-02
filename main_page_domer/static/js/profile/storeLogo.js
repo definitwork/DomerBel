@@ -1,7 +1,7 @@
 const logoInput = document.getElementById('id_logo_image')
 const logoLabel = document.querySelector(".main__info label[for='id_logo_image']")
 const closeTag = document.querySelector(".cross")
-logoInput.addEventListener('change', (event) => {
+logoInput?.addEventListener('change', (event) => {
   const profileImg = document.querySelectorAll(".profile__logo-img")
   if(profileImg.length >= 1) {
     Array.from(profileImg).forEach((item) => {
