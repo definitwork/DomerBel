@@ -147,4 +147,5 @@ def annotating_field(kt):
                         search_q[f"find{i}__lte"] = x
         else:
             search_q[f"find{i}__icontains"] = kt.get(item)
+
     return search_q, search_annotate

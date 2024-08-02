@@ -273,7 +273,7 @@ def search_result(request):
     if search:
         search_parameters['additional_information__contains'] = search
     if search_q:
-        search_parameters['search_q'] = search_q
+        search_parameters.update(search_q)
 
     advertisement_queryset1 = Advertisement.objects.annotate(**{key: KT(value) for key, value in search_annotate.items()}).filter(**search_parameters).exclude(**search_parameters_only).select_related('category', 'region').order_by("-raise_in_search", order_by)
 
