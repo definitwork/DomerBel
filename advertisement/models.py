@@ -6,11 +6,10 @@ from dirtyfields import DirtyFieldsMixin
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GinIndex, OpClass, BrinIndex
 from django.contrib.postgres.search import SearchVectorField, SearchVector
-from django.core.cache import cache
+
 from django.db import models
 from django.db.models.functions import Upper
-from django.db.models.signals import post_delete, post_save
-from django.dispatch import receiver
+
 from django.urls import reverse
 from django.utils.timezone import make_aware
 from mptt.models import MPTTModel, TreeForeignKey
@@ -91,8 +90,8 @@ class Advertisement(DirtyFieldsMixin, models.Model):
         return self.title
 
     def get_days_till_expiration(self):
-            days_till_expiration = self.date_of_deactivate - datetime.now(timezone.utc)
-            return days_till_expiration.days
+        days_till_expiration = self.date_of_deactivate - datetime.now(timezone.utc)
+        return days_till_expiration.days
 
     def get_absolute_url(self):
         return reverse('advertisement_details', kwargs={"slug": self.slug})
@@ -101,7 +100,7 @@ class Advertisement(DirtyFieldsMixin, models.Model):
         if 'additional_information' in self.get_dirty_fields():
             self.additional_information_view = list(self.additional_information.items())
         self.slug = unique_slugify(self, self.title)
-        self.date_of_deactivate = make_aware(datetime.now() + timedelta(days=180))
+        self.date_of_deactivate = make_aware(datetime.now() + timedelta(days=60))
         self.search_vector = SearchVector(self.title, self.description)
         self.search_title_vector = SearchVector(self.title)
         super().save(*args, **kwargs)
@@ -170,7 +169,6 @@ class Field(models.Model):
     max_val_interval_date = models.IntegerField(verbose_name='Максимально возможный год для выбора', blank=True, null=True)
     search = models.CharField(max_length=500, blank=True, null=True)
 
-
     class Meta:
         verbose_name = 'Поле'
         verbose_name_plural = 'Поля'
@@ -183,8 +181,8 @@ class Spisok(models.Model):
     title = models.CharField(max_length=255, verbose_name='Заголовок списка')
 
     class Meta:
-        verbose_name = 'Список'
-        verbose_name_plural = 'Списки'
+        verbose_name = 'Список элементов для полей'
+        verbose_name_plural = 'Списки элементов для полей'
 
     def __str__(self):
         return self.title
@@ -195,8 +193,8 @@ class Element(models.Model):
     spisok = models.ForeignKey('Spisok', on_delete=models.CASCADE, verbose_name='Связь со списком')
 
     class Meta:
-        verbose_name = 'Элемент'
-        verbose_name_plural = 'Элементы'
+        verbose_name = 'Элемент для списка'
+        verbose_name_plural = 'Элементы для списка'
 
     def __str__(self):
         return self.title
@@ -207,8 +205,8 @@ class ElementTwo(models.Model):
     element = models.ForeignKey('Element', on_delete=models.CASCADE, verbose_name='Связь с элементом')
 
     class Meta:
-        verbose_name = 'Второй элемент'
-        verbose_name_plural = 'Вторые элементы'
+        verbose_name = 'Дополнительный элемент для списка'
+        verbose_name_plural = 'Дополнительные элементы для списка'
 
     def __str__(self):
         return self.title
@@ -234,6 +232,13 @@ class Store(models.Model):
     address = models.CharField(max_length=255, blank=True, null=True, verbose_name='Адрес')
     counter_views = models.IntegerField(default=0, verbose_name='Счетчик просмотров')
 
+    class Meta:
+        verbose_name = 'Магазин'
+        verbose_name_plural = 'Магазины'
+
+    def __str__(self):
+        return self.title
+
     def save(self, *args, **kwargs):
         day_now = datetime.now()
         if calendar.isleap(int(day_now.strftime('%Y'))) and int(day_now.strftime("%m")) <= 2:
@@ -242,24 +247,12 @@ class Store(models.Model):
             self.date_of_deactivate = day_now + timedelta(days=365)
         super(Store, self).save(*args, **kwargs)
 
-
     def get_days_till_expiration(self):
         days_till_expiration = self.date_of_deactivate - self.date_of_create
         return days_till_expiration.days
 
-    class Meta:
-        verbose_name = 'Магазин'
-        verbose_name_plural = 'Магазины'
-
-    def __str__(self):
-        return self.title
 
 
-@receiver(post_delete, sender=Category)
-def object_post_delete_handler(sender, **kwargs):
-     cache.delete('objects')
 
 
-@receiver(post_save, sender=Region)
-def object_post_save_handler(sender, **kwargs):
-    cache.delete('objects')
+

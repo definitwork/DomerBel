@@ -1,10 +1,12 @@
 {% extends "profile_user.html" %} 
 {% load static %} 
 {% block css2 %}
-<link rel="stylesheet" href="{% static "css/profileShop.css" %}">
+<link rel="stylesheet" href="{% static 'css/profileShop.css' %}">
 {% endblock css2 %}
 {% block title %}
-{% endblock title %} 
+{% endblock title %}
+{% block search %}
+{% endblock search %}
   {% block mainInfo %}
   <div class="main__wrapper">
     <ul class="main__shop-list">
@@ -16,7 +18,7 @@
             {{ store.title }}
           </h3>
           <div class="main__shop-list-item-edit">
-            <a href="{% url "users:edit_store" store.id %}">
+            <a href="{% url 'users:edit_store' store.id %}">
               Редактировать магазин
             </a>
             <a href="#">
@@ -98,6 +100,6 @@
   </div>
   {% endblock mainInfo %}
 {% block js %}
-<script src="{% static "js/profile/storeLogo.js" %}"></script>
-<script src="{% static "js/profile/region.js" %}"></script>
+<script src="{% static 'js/profile/storeLogo.js' %}"></script>
+<script src="{% static 'js/profile/region.js' %}"></script>
 {% endblock js %}

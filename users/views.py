@@ -1,28 +1,43 @@
+from datetime import datetime
+
+
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Count
+from django.db.models.fields.json import KT
+from django.http import Http404
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 
 from advertisement.forms import StoreForm
-from advertisement.models import Region, Category, Advertisement, Store
+from advertisement.models import Region, Category, Advertisement, Store, Field
+from advertisement.utils import where_to_look, search_additional_information, \
+    annotating_field, variables_for_paginator
 from .models import User, Chat, Message
 
 from main_page_domer.models import PhotoPublication, Publication, photo_publications_delete
 from .forms import PublicationForm, EditContactDataForm, ChangePasswordForm, MessageForm
 
-
+@login_required
 def get_personal_account_page(request):
     """ Выводит все активные объявления пользователя в ЛК"""
     ads = Advertisement.objects.filter(author=request.user, is_active=True).select_related('category',
                                                                                            'region').all().order_by(
-        '-date_of_create')
+        '-date_of_create').defer(
+        'search_title_vector',
+        'search_vector',
+        'video_link',
+        'description',
+        'additional_information_view',
+        'additional_information',
+        'store',
+        'contact_name',
+        'counter_views',
+        'phone_num')
     active_ads_quantity = ads.count()
     inactive_ads_quantity = Advertisement.objects.filter(author=request.user, is_active=False).count()
-    locations = Region.objects.filter(type='Область')
-    category_list = Category.objects.filter(level__lte=1)
 
     paginator = Paginator(ads, 20)
     page_number = request.GET.get("page")
@@ -32,64 +47,119 @@ def get_personal_account_page(request):
         "ads": ads,
         "active_ads_quantity": active_ads_quantity,
         "inactive_ads_quantity": inactive_ads_quantity,
-        "locations": locations,
-        "category_list": category_list,
-        "page_obj": page_obj
+        "page_obj": page_obj,
+        "adaptive_navigation": "Мои объявления. Активные объявления"
     }
     return render(request, 'profile_user.html', context)
 
-
+@login_required
 def search_of_ads_in_personal_account(request):
     """ Поиск среди объявлений пользователя в личном кабинете """
-    category = request.GET.getlist("category")
-    category = [item for item in category if item != '0']
-    search_text = request.GET.get("search_text")
-    region_1 = request.GET.get("region_1")
-    region_2 = request.GET.get("region_2")
-    add_id = request.GET.get("add_id")
-    ads_in_headers = request.GET.get("ads_in_headers")
-    dict_for_filter = {}
+    search_parameters = {}
+    key_delete = ['text_search', 'id', 'page', 'active']
+    cop = dict.copy(request.GET)
 
-    if category != []:
-        dict_for_filter.update({"category__id": category[-1]})
-    if ads_in_headers == "on" and len(search_text) >= 3:
-        dict_for_filter.update({"title__icontains": search_text})
-    elif ads_in_headers == None and len(search_text) >= 3:
-        dict_for_filter.update({"description__icontains": search_text})
-    if region_1 != "0":
-        dict_for_filter.update({"region__parent__id": region_1})
-    if region_2 != "0":
-        dict_for_filter.update({"region__id": region_2})
-    if add_id != "":
-        dict_for_filter.update({"id": add_id})
+    category, category_bread_crumbs = where_to_look(cop.pop('category', None), Category)
+    region, region_bread_crumbs = where_to_look(cop.pop('region', None), Region)
 
-    ads = Advertisement.objects.filter(author=request.user, **dict_for_filter).select_related('category',
-                                                                                              'region').all().order_by(
-        '-date_of_create')
-    all_ads_quantity = ads.count()
-    locations = Region.objects.filter(type='Область')
-    category_list = Category.objects.filter(level__lte=1)
+    if category:
+        search_parameters['category__in'] = category
+    if region:
+        search_parameters['region__in'] = region
+    if request.GET.get('only_title') and request.GET.get('text_search'):
+        search_parameters['search_title_vector'] = request.GET.get('text_search')
+        cop.pop('only_title')
+    elif request.GET.get('text_search'):
+        search_parameters['search_vector'] = request.GET.get('text_search')
+    if request.GET.get('id'):
+        search_parameters['id'] = request.GET.get('id')
 
-    paginator = Paginator(ads, 20)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+
+    query = request.META.get('QUERY_STRING')
+    for key in key_delete:
+        cop.pop(key, None)
+        query = query.replace(f'{key}={request.GET.get(key)}&', '')
+
+    try:
+        fields = Field.objects.filter(id__in=cop.keys())
+    except ValueError:
+        raise Http404()
+
+    search, search_kt = search_additional_information(fields, cop)
+    search_q, search_annotate = annotating_field(search_kt)
+    if search:
+        search_parameters['additional_information__contains'] = search
+    if search_q:
+        search_parameters.update(search_q)
+
+    active = request.GET.get('active')
+    if not active:
+        advertisement_queryset = Advertisement.objects.annotate(**{key: KT(value) for key, value in search_annotate.items()}
+                                                                ).filter(author=request.user,
+                                                                         is_active=True,
+                                                                         moderated=True,
+                                                                         **search_parameters
+                                                                         ).select_related('category', 'region'
+                                                                                          ).order_by('-date_of_create')
+
+        advertisement_queryset_inactive = Advertisement.objects.annotate(**{key: KT(value) for key, value in search_annotate.items()}
+                                                                ).filter(author=request.user,
+                                                                         is_active=False,
+                                                                         moderated=True,
+                                                                         **search_parameters
+                                                                         ).count()
+    else:
+        advertisement_queryset = Advertisement.objects.annotate(
+            **{key: KT(value) for key, value in search_annotate.items()}
+            ).filter(author=request.user,
+                     is_active=True,
+                     moderated=True,
+                     **search_parameters
+                     ).count()
+
+        advertisement_queryset_inactive = Advertisement.objects.annotate(
+            **{key: KT(value) for key, value in search_annotate.items()}
+            ).filter(author=request.user,
+                     is_active=False,
+                     moderated=True,
+                     **search_parameters
+                     ).select_related('category', 'region'
+                                      ).order_by('-date_of_create')
+
+    page_obj = variables_for_paginator(advertisement_queryset if not active else advertisement_queryset_inactive,
+                                       request.GET.get('page'),
+                                       20)
+
+    print(True if page_obj.object_list else False)
 
     context = {
-        "ads": ads,
-        "all_ads_quantity": all_ads_quantity,
-        "locations": locations,
-        "category_list": category_list,
-        "page_obj": page_obj
+        "active_ads_quantity": advertisement_queryset.count() if not active else advertisement_queryset,
+        "inactive_ads_quantity": advertisement_queryset_inactive if not active else advertisement_queryset_inactive.count(),
+        "page_obj": page_obj,
+        "query": query,
+        "active": active,
+        'adaptive_navigation': f'Результаты поиска. {"Активные объявления" if not active else "Архивые объявления"}'
     }
-    return render(request, 'personal_account/personal_account_search_results.html', context)
+    return render(request, 'personal_account_search_results.html', context)
 
 
+@login_required
 def get_personal_account_inactive_adds_page(request):
     """ Выводит все неактивные объявления пользователя в ЛК"""
     ads = Advertisement.objects.filter(author=request.user, is_active=False).select_related('category',
                                                                                             'region').all().order_by(
-        '-date_of_create')
-    inactive_ads_quantity = ads.count()
+        '-date_of_create').defer(
+        'search_title_vector',
+        'search_vector',
+        'video_link',
+        'description',
+        'additional_information_view',
+        'additional_information',
+        'store',
+        'contact_name',
+        'counter_views',
+        'phone_num')
+    inactive_ads_quantity = len(ads)
     active_ads_quantity = Advertisement.objects.filter(author=request.user, is_active=True).count()
     locations = Region.objects.filter(type='Область')
     category_list = Category.objects.filter(level__lte=1)
@@ -104,25 +174,33 @@ def get_personal_account_inactive_adds_page(request):
         "active_ads_quantity": active_ads_quantity,
         "locations": locations,
         "category_list": category_list,
-        "page_obj": page_obj
+        "page_obj": page_obj,
+        "adaptive_navigation": "Мои объявления. Архивные объявления"
     }
-    return render(request, 'personal_account/inactive_adds.html', context)
+    return render(request, 'inactive_adds.html', context)
 
 
+@login_required
 def delete_or_archive_selected_ads(request):
     if request.method == "POST":
         # Удаляет выбранные объявления из активных или архивных
         if 'delete_ads' in request.POST:
             selected_ads = request.POST.getlist('ads_checkbox')
-            Advertisement.objects.filter(id__in=selected_ads).delete()
+            Advertisement.objects.filter(author=request.user, id__in=selected_ads).delete()
             messages.success(request, "Выбранные объявления удалены!")
             return redirect('users:personal_account')
         # Переводит выбранные объявления из активных в архивные
         if 'archive_ads' in request.POST:
             selected_ads = request.POST.getlist('ads_checkbox')
-            Advertisement.objects.filter(id__in=selected_ads).update(is_active=False)
+            Advertisement.objects.filter(author=request.user, id__in=selected_ads).update(is_active=False)
             messages.success(request, "Выбранные объявления перемещены в Архивные!")
             return redirect('users:personal_account')
+        if 'restore_ads' in request.POST:
+            selected_ads = request.POST.getlist('ads_checkbox')
+            ads_updated_count = Advertisement.objects.filter(author=request.user, id__in=selected_ads, date_of_deactivate__date__gte=datetime.now()).update(is_active=True)
+            messages.success(request, "Выбранные объявления удалены!")
+            return redirect('users:inactive_adds')
+        return redirect('users:personal_account')
 
 
 @login_required
@@ -155,12 +233,13 @@ def get_user_data_page(request):
                     return redirect('users:user_data')
     context = {'edit_contact_data_form': edit_contact_data_form,
                'change_pass_form': change_pass_form,
-               'category_list': category_list
+               'category_list': category_list,
+               "adaptive_navigation": "Контактные данные"
                }
     return render(request, 'profile_data.html', context)
 
 
-# Сохранение экземпляра нового магазина через форму
+@login_required
 def add_store(request):
     if request.method == 'POST':
         new_store = StoreForm(request.POST, request.FILES)
@@ -187,11 +266,14 @@ def add_store(request):
 
     context = {"oblast": oblast,
                "store_form": store_form,
-               "category_list": category_list}
+               "category_list": category_list,
+               "adaptive_navigation": "Добавить магазин"
+               }
+
     return render(request, 'profile_add_store.html', context)
 
 
-# Показывает в личном кабинете все магазины, которые создал пользователь
+@login_required
 def get_my_store(request):
     stores = Store.objects.filter(user=request.user).order_by('id')
     category_list = Category.objects.filter(level__lte=1)
@@ -201,9 +283,12 @@ def get_my_store(request):
             'stores': stores,
             'oblast_list': oblast_list,
             'category_list': category_list,
+            "adaptive_navigation": "Мои магазины"
         }
     else:
-        context = {}
+        context = {
+            "adaptive_navigation": "Мои магазины"
+        }
     return render(request, 'profile_shop.html', context)
 
 
@@ -220,7 +305,7 @@ def get_store_page(request, slug):
     return render(request, 'personal_account/store_page.html', context)
 
 
-# Редактирование экземпляра магазина через форму
+@login_required
 def edit_store(request, store_id):
     store = Store.objects.get(user=request.user, id=store_id)
     if request.method == 'POST':
@@ -246,12 +331,13 @@ def edit_store(request, store_id):
         'categories': categories,
         'selected_category': store.category.id if store.category else None,
         'store': store,
-        'category_list': category_list
+        'category_list': category_list,
+        "adaptive_navigation": "Редактирование магазина"
     }
     return render(request, 'profile_edit_shop.html', context)
 
 
-# Удаление экземпляра магазина
+@login_required
 def delete_store(request, store_id):
     store = Store.objects.get(user=request.user, id=store_id)
     if request.method == "POST":
@@ -353,6 +439,7 @@ def get_user_all_publications(request):
     user_publications = Publication.objects.filter(user = request.user.id).order_by('-date_of_create')
     context = {
         "user_publications": user_publications,
+        "adaptive_navigation": "Мои публикации"
     }
     return render(request=request, template_name='personal_account/user_all_publications.html', context=context)
 
@@ -362,6 +449,7 @@ def add_user_publication(request):
     form_publication = PublicationForm()
     context = {
         "form_publication": form_publication,
+        "adaptive_navigation": "Добавление публикации"
     }
     return render(request=request, template_name='personal_account/user_add_publication.html', context=context)
 
@@ -388,6 +476,7 @@ def edit_publication(request, publication_slug):
         'publication_by_id': publication_by_slug,
         'form_publication': form_publication,
         'photo_publications_by_id': photo_publications_by_slug_id,
+        "adaptive_navigation": "Редактирование публикации"
     }
     return render(request=request, template_name='personal_account/user_edit_publication.html', context=context)
 

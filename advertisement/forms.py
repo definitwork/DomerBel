@@ -6,12 +6,21 @@ from advertisement.models import Region, Category, Store
 from users.models import User
 from users.validators import validate_phone
 
+
+
+
 class StoreForm(forms.ModelForm):
+    categories_list = [
+        [category, [[subcategory.id, subcategory] for subcategory in Category.objects.filter(parent=category) if
+                    subcategory.parent == category]]
+        for category in Category.objects.filter(level=0)
+        if category.type == 'category_1']
+
     region = forms.ModelChoiceField(queryset=Region.objects.filter(type="Область"), label="Регион, город, область",
                                     widget=forms.Select(attrs={'class': 'input_field'}))
     address = forms.CharField(max_length=255, required=False, label="Адрес",
                               widget=forms.TextInput(attrs={'class': 'input_field'}))
-    category = TreeNodeChoiceField(queryset=Category.objects.all(), label="Раздел")
+    category = forms.ChoiceField(choices=categories_list, widget=forms.Select(attrs={'size': 10}), label="Раздел")
     title = forms.CharField(max_length=255, required=True, label="Название магазина",
                             widget=forms.TextInput(attrs={'class': 'input_field'}))
     slug = forms.SlugField(min_length=4, max_length=20, required=True,

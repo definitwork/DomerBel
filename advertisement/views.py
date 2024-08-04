@@ -1,17 +1,15 @@
 import json
 import random
 from datetime import datetime, timedelta
-from pprint import pprint
 
-from django.contrib.postgres.search import SearchVector
 from django.db.models import Q, F
 from django.db.models.fields.json import KT
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
 from django.utils.timezone import get_current_timezone
-from django.views.decorators.cache import cache_page
 
-from .models import Advertisement, Category, Region, Spisok, Element, ElementTwo, Field
+
+from .models import Advertisement, Category, Region, ElementTwo, Field
 
 from .utils import sorted_by_number, variables_for_paginator, sorted_by_date_or_price, sorted_by, get_view_type, \
     get_region_variables, where_to_look, search_additional_information, annotating_field
@@ -182,7 +180,7 @@ def get_page_place_an_favorites(request):
     return render(request, 'place_an_favorites.html', context)
 
 
-@cache_page(60 * 15)
+# @cache_page(60 * 15)
 def get_advertisement_details_page(request, slug):
     '''Отдаем страничку с детальным описанием объявления'''
     advertisement_main = get_object_or_404(Advertisement.objects.prefetch_related("photoadvertisement_set"), slug=slug)
@@ -300,23 +298,26 @@ def search_result(request):
     if search_q:
         search_parameters.update(search_q)
 
-    advertisement_queryset1 = Advertisement.objects.annotate(
-        **{key: KT(value) for key, value in search_annotate.items()}).filter(**search_parameters).exclude(
-        **search_parameters_only).select_related('category', 'region').order_by("-raise_in_search", order_by)
+    advertisement_queryset = Advertisement.objects.annotate(**{key: KT(value) for key, value in search_annotate.items()}
+                                                            ).filter(is_active=True, moderated=True, **search_parameters
+                                                                     ).exclude(**search_parameters_only
+                                                                               ).select_related('category', 'region'
+                                                                                                ).order_by("-raise_in_search", order_by)
 
-    page_obj = variables_for_paginator(advertisement_queryset1,
+    page_obj = variables_for_paginator(advertisement_queryset,
                                        request.GET.get('page'),
                                        sort_for_paginator)
 
     context = {
-        "ads_found": advertisement_queryset1.count(),
+        "ads_found": advertisement_queryset.count(),
         "page_obj": page_obj,
         "region_bread_crumbs": region_bread_crumbs,
         "category_bread_crumbs": category_bread_crumbs,
         "query": query,
         'date': state_sort_by_date,
+        'adaptive_navigation': 'Результаты поиска'
     }
-    response = render(request, "searchResult.html", context)
+    response = render(request, "advertisementSearchResult.html", context)
     response.set_cookie('sort', sort_for_paginator)
     response.set_cookie('date', state_sort_by_date)
     response.set_cookie('sorted_by', order_by)
