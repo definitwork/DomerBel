@@ -243,6 +243,8 @@ def get_user_data_page(request):
 def add_store(request):
     if request.method == 'POST':
         new_store = StoreForm(request.POST, request.FILES)
+        for f in new_store:
+            print(dir(f.field))
         if new_store.is_valid():
             store = new_store.save(commit=False)
             store.user = request.user

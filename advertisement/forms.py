@@ -1,13 +1,9 @@
 from django import forms
 from django.forms import ClearableFileInput
-from mptt.forms import TreeNodeChoiceField
 
 from advertisement.models import Region, Category, Store
-from users.models import User
+
 from users.validators import validate_phone
-
-
-
 
 class StoreForm(forms.ModelForm):
     categories_list = [
@@ -42,7 +38,6 @@ class StoreForm(forms.ModelForm):
         attrs={'class': 'input_field', 'placeholder': 'Должен начитаться с http:// или https://', 'size': 40}))
     logo_image = forms.ImageField(required=False, label="Логотип",
                                   widget=ClearableFileInput(attrs={'class': 'input_field'}))
-    # user = forms.ModelChoiceField(queryset=User.objects.all(), required=False)
 
     class Meta:
         model = Store

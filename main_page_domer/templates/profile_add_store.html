@@ -17,7 +17,7 @@
       {% for f in store_form %}
       <label for="{{ f.id_for_label }}">
         <p class="form-label">
-          {% if f.required %}
+          {% if f.field.required %}
           <span>*</span>
           {% endif %}
           {{f.label}}:
