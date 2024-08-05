@@ -34,7 +34,7 @@
   <div class="magnifier__zoom-main">
     {% if advertisement.video_link %}
     <div>
-      <iframe width="100%" height="100%" src="https://www.youtube.com/embed/{{ advertisement.video_link|cut:"https://www.youtube.com/watch?v=" }}"
+      <iframe width="100%" height="100%" src="https://www.youtube.com/embed/{{ advertisement.video_link|cut:'https://www.youtube.com/watch?v=' }}"
           title="YouTube video player"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
@@ -56,7 +56,7 @@
   <div class="magnifier__zoom-second">
     {% if advertisement.video_link %}
     <div class="magnifier__zoom-second-item video">
-      <img data-lazy="https://i.ytimg.com/vi/{{ advertisement.video_link|cut:"https://www.youtube.com/watch?v=" }}/hqdefault.jpg" alt="">
+      <img data-lazy="https://i.ytimg.com/vi/{{ advertisement.video_link|cut:'https://www.youtube.com/watch?v=' }}/hqdefault.jpg" alt="">
     </div>
     {% endif %}
     <div class="magnifier__zoom-second-item">
@@ -98,7 +98,7 @@
             <div class="details__advertisement-view-img">
               {% if advertisement.video_link %}
               <div>
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/{{ advertisement.video_link|cut:"https://www.youtube.com/watch?v=" }}"
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/{{ advertisement.video_link|cut:'https://www.youtube.com/watch?v=' }}"
                 title="YouTube video player"
                   frameborder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
@@ -113,13 +113,13 @@
               {% endfor %}
             </div>
             <div class="magnifier">
-              <img src="{% static "img/icons/lupa.png" %}" alt="zoom">
+              <img src="{% static 'img/icons/lupa.png' %}" alt="zoom">
             </div>
           </div>
           <ul class="details__advertisement-view-list-img">
             {% if advertisement.video_link %}
             <li class="details__advertisement-view-list-img-item video">
-              <img data-lazy="https://i.ytimg.com/vi/{{ advertisement.video_link|cut:"https://www.youtube.com/watch?v=" }}/hqdefault.jpg" alt="">
+              <img data-lazy="https://i.ytimg.com/vi/{{ advertisement.video_link|cut:'https://www.youtube.com/watch?v=' }}/hqdefault.jpg" alt="">
             </li>
             {% endif %}
             {% for photo in advertisement.photoadvertisement_set.all %}

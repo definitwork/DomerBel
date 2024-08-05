@@ -1,10 +1,12 @@
 {% extends "profile_user.html" %} 
 {% load static %} 
 {% block css2 %}
-<link rel="stylesheet" href="{% static "css/profileData.css" %}">
+<link rel="stylesheet" href="{% static 'css/profileData.css' %}">
 {% endblock css2 %}
 {% block title %}
-{% endblock title %} 
+{% endblock title %}
+{% block search %}
+{% endblock search %}
   {% block mainInfo %}
   <div class="form__wrapper">
     <form method="POST" class="main__info">

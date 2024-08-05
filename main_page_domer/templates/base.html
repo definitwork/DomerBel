@@ -35,7 +35,7 @@
                 </div>
                 <div class="modals__login-logo-wrap">
                     <div class="modals__login-logo">
-                        <img src="{% static "img/logo.png" %}" alt="">
+                        <img src="{% static 'img/logo.png' %}" alt="">
                     </div>
                     <h2>
                         Авторизация
@@ -80,7 +80,7 @@
                 </div>
                 <div class="modals__signIn-logo-wrap">
                     <div class="modals__signIn-logo">
-                        <img src="{% static "img/logo.png" %}" alt="logo">
+                        <img src="{% static 'img/logo.png' %}" alt="logo">
                     </div>
                     <div class="modals__signIn-logo-title-wrap">
                         <p>
@@ -143,7 +143,7 @@
                 </div>
                 <div class="modals__login-logo-wrap">
                     <div class="modals__login-logo">
-                        <img src="{% static "img/logo.png" %}" alt="">
+                        <img src="{% static 'img/logo.png' %}" alt="">
                     </div>
                     <h2>
                         Сбросить пароль
@@ -238,10 +238,10 @@
                             </li>
                         </ul>
                     </nav>
+                    {% if user.is_authenticated %}
                     {% if user.is_superuser %}
                         <a href="{% url 'admin:index' %}" class="header__up-admin">Админка</a>
                     {% endif %}
-                    {% if user.is_authenticated %}
                         <div class="header__up-user-wrap">
                             <div class="header__up-user-action">
                                 <a href="{% url 'users:personal_account' %}" class="">{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.email }}{% endif %}</a>
@@ -315,7 +315,7 @@
                             <option value="">
                                 Любое расположение
                             </option>
-                          {% for region in regions %}
+                          {% for region in region_list %}
                             {% if region.level == 0 %}
                             <option value="{{ region.id }}" data-fetchid="{{ region.id }}">
                                 {{ region.area }}

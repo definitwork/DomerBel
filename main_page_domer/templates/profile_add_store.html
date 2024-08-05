@@ -1,10 +1,12 @@
 {% extends "profile_user.html" %} 
 {% load static %} 
 {% block css2 %}
-<link rel="stylesheet" href="{% static "css/profile_store.css" %}">
+<link rel="stylesheet" href="{% static 'css/profile_store.css' %}">
 {% endblock css2 %}
 {% block title %}
-{% endblock title %} 
+{% endblock title %}
+{% block search %}
+{% endblock search %}
   {% block mainInfo %}
   <div class="form__wrapper">
     <form method="POST" class="main__info">
@@ -34,6 +36,6 @@
   </div>
   {% endblock mainInfo %}
 {% block js %}
-<script src="{% static "js/profile/storeLogo.js" %}"></script>
-<script src="{% static "js/profile/region.js" %}"></script>
+<script src="{% static 'js/profile/storeLogo.js' %}"></script>
+<script src="{% static 'js/profile/region.js' %}"></script>
 {% endblock js %}
