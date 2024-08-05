@@ -72,7 +72,7 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class PublicationForm(forms.ModelForm):
-
+    pass
     class Meta:
         model = Publication
         fields = ['title', 'announcement', 'description', 'video_link', ]
