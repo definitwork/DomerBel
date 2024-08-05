@@ -235,18 +235,37 @@ class Store(models.Model):
         return self.title
     
 class UploadFile(models.Model):
-    '''Модель для сохранения файла для массового импорта обявлений'''
+    '''Модель для сохранения файла для массового импорта объявлений'''
     def get(instance,filename):
         '''Ф-ция, возращает путь, по которому хранитьс файл для массого импорта объявлений'''
         return f'files_for_bulk_import_of_ads/{instance.user.email}/{filename}'
 
-    time_upload_file = models.DateTimeField(auto_now_add=True)
-    file = models.FileField(upload_to=get)
+    time_upload_file = models.DateTimeField(auto_now_add=True, verbose_name='Время загрузки файла')
+    file = models.FileField(upload_to=get, verbose_name='Путь к файлу с объявлениями')
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Загруженный файл'
         verbose_name_plural = 'Загруженные файлы'
 
-        def __str__(self):
-            return self.time_upload_file
+    def __str__(self):
+        return f'{self.user}_{self.time_upload_file}'
+
+class ErrorFile(models.Model):
+    '''Модель, возвращающая путь, по которому храниться файл с ошибками после массового импорта объялений'''
+    def get(instance,filename):
+        '''Ф-ция, возвращает путь, по которому храниться файл для массого импорта объявлений'''
+
+        return f'files_for_bulk_import_of_ads/{instance.user.email}/{filename}'
+
+    time_upload_file = models.DateTimeField(auto_now_add=True, verbose_name='Время создания файла')
+    file = models.CharField(max_length=255, verbose_name='Путь к файлу с объявлениями с ошибками')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False, verbose_name='Был доступ у пользователя к файлу или нет')
+
+    class Meta:
+        verbose_name = 'Файл с объявлениями с ошибками'
+        verbose_name_plural = 'Файлы с объявлениями с ошибками'
+
+    def __str__(self):
+        return f'{self.user}_{self.time_upload_file}'

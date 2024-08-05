@@ -12,7 +12,8 @@ from rest_framework import status, serializers, generics, filters
 from rest_framework.response import Response
 from rest_framework.pagination import LimitOffsetPagination
 
-from advertisement.models import Region, Category, Field, ElementTwo, PhotoAdvertisement, Advertisement, Store, Element
+from advertisement.models import Region, Category, Field, ElementTwo, PhotoAdvertisement, Advertisement, Store, Element, \
+    ErrorFile
 from api_domer.serializers import GetListOfCitiesSerializer, GetListOfCategoriesSerializer, FieldSerialier, \
     ElementTwoSerializer, AdvertisementSerializer, StoreSerializer, \
     UserRegisterSerializer, UserLoginSerializer, PasswordResetSerializer, \
@@ -406,6 +407,7 @@ def edit_publication(request):
 
 @api_view(['GET'])
 def get_element_list(request):
+    '''Отадет элементы связанные с полем по id'''
     elements = Element.objects.filter(spisok_id__field=request.query_params.get('id'))
     serializer = ElementSerializer(elements, many=True)
     return Response(serializer.data)
@@ -413,6 +415,9 @@ def get_element_list(request):
 
 @api_view(['GET'])
 def get_subcategory_list(request):
+    '''Отдает подкатегориии и их поля по id категории'''
     categories = Category.objects.filter(parent_id=request.query_params.get('id')).prefetch_related('field_set__spisok__element_set__elementtwo_set')
     serializer = GetListOfCategoriesFieldsSerializer(categories, many=True)
     return Response(serializer.data)
+
+

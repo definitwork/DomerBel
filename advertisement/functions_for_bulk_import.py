@@ -1,6 +1,6 @@
 import time
 import openpyxl
-from advertisement.models import Advertisement, Category, Region, Spisok, ElementTwo, PhotoAdvertisement
+from advertisement.models import Advertisement, Category, Region, Spisok, ElementTwo, PhotoAdvertisement, ErrorFile
 from users.models import User
 from transliterate import slugify
 from zipfile import ZipFile
@@ -156,23 +156,18 @@ def update_photo(ads_for_save,file_name,uploud_zip,email):
     '''Функция для извлечения preview_image из электронного архива,
     и хэширование имени файла и распределение файлов по приложениям
     и далее в разные папки случайным образом'''
-    print("Start update_photo")
     try:
         with ZipFile(uploud_zip,'r') as zip:
-            image_from_zip = zip.extract(f'new_{file_name}',f'./media/files_for_bulk_import_of_ads/{email}')
-        print('1111 '+image_from_zip)
+            image_from_zip = zip.extract(file_name,f'./media/files_for_bulk_import_of_ads/{email}')
         new_location_image = upload_to(ads_for_save,image_from_zip)
-        print('!!!!!'+new_location_image)
         preview_image = os.replace(f'./{image_from_zip}',f'./media/{new_location_image}')
-        print('finish update_photo')
-
         return f'{new_location_image}'
     except:
-        print("Fail photo")
         return False
 
-def write_file_with_error_ads(list_error,email):
-    path = f'./media/files_for_bulk_import_of_ads/{email}/error_{email}.xlsx'
+def write_file_with_error_ads(list_error,email, user):
+
+    path = f'./media/files_for_bulk_import_of_ads/{email}/error_{email}_{time.time()}.xlsx'
     book = xlsxwriter.Workbook(path)
     sheet = book.add_worksheet()
     field = {}
@@ -201,7 +196,10 @@ def write_file_with_error_ads(list_error,email):
                     sheet.write(0, colum, title)
                     sheet.write(row, colum, values.get(title))
     book.close()
-    return path
+    file_error = ErrorFile(file = path,
+                     user = user)
+    file_error.save()
+    return file_error
 
 def save_many_ads_from_excel(uploud_file,id,first_name,phone_number,email):
     '''Функция сохраняющаяя обявления из экселя'''
@@ -360,8 +358,8 @@ def save_many_ads_from_zip(uploud_zip,id,first_name,phone_number,email):
                 list_ads_error.append(ads)
         row_in_excel = row_in_excel + 1
     if len(list_ads_error) != 0:
-        error_file = write_file_with_error_ads(list_ads_error,email)
-        return {'file': error_file}
+        file_error = write_file_with_error_ads(list_ads_error,email,value_author)
+        return {'file': [file_error.id,file_error.file]}
     else:
         return True
 

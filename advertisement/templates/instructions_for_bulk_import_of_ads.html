@@ -123,8 +123,11 @@
     </ul>
 </div>
 </section>
-<script src="{% static "./js/instructions_for_bulk_import_of_ads.js" %}"></script>
 {% endblock content %}
+
+{% block js %}
+<script src="{% static "js/instructions_for_bulk_import_of_ads.js" %}"></script>
+{% endblock %}
 
 
 

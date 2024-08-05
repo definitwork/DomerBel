@@ -4,7 +4,7 @@ from rest_framework import serializers
 from transliterate import slugify
 from django.utils import formats
 
-from advertisement.models import Region, Category, Field, Spisok, ElementTwo, Element, Advertisement, Store
+from advertisement.models import Region, Category, Field, Spisok, ElementTwo, Element, Advertisement, Store, ErrorFile
 from api_domer.validators import validate_password, validate_phone
 from config import settings
 from users.models import User
@@ -162,3 +162,4 @@ class GetListOfCategoriesFieldsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id','title','field_set']
+

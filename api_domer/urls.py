@@ -5,8 +5,8 @@ from django.urls import path, include
 
 from api_domer.views import get_list_of_cities, get_list_of_categories, get_region_list, get_category_list, \
     get_categories_for_search, get_field_list, get_elementtwo_list, save_advertisement, get_store_for_advertisement, \
-    update_advertisement, registration_user, login_user, logout_user, password_reset , ThisPublicationSearchListAPIView, \
-                             save_publication, edit_publication, get_element_list, get_subcategory_list
+    update_advertisement, registration_user, login_user, logout_user, password_reset, ThisPublicationSearchListAPIView, \
+    save_publication, edit_publication, get_element_list, get_subcategory_list
 
 urlpatterns = [
     path('add_store/city/<int:id>', get_list_of_cities, name='list_of_cities'),
