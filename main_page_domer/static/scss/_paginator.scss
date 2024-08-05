@@ -12,7 +12,7 @@
 
     & li {
       & a {
-        @include fonts($mainColor, 14px, 400);
+        @include fonts($mainColor, 16px, 400);
       }
     }
   }
@@ -21,5 +21,5 @@
 .page_num_selected {
   padding: 5px 8px;
   background: $mainColor;
-  @include fonts(#fff, 14px, 400);
+  @include fonts(#fff, 16px, 400);
 }

@@ -20,11 +20,6 @@
 
   & button {
     max-width: 150px;
-    padding: 5px;
-    border: 1px solid $gray;
-    background: $gray;
-    @include fonts($defaultColor, 14px, 400);
-    border-radius: 5px;
   }
 
   & label {

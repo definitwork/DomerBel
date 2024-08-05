@@ -153,12 +153,12 @@ function createOptionElement(item, parentElement, itemList) {
   parentElement.append(option)
 }
 
-getCategory.addEventListener("change", (event) => {
+getCategory?.addEventListener("change", (event) => {
   getCategoryFunc(event, getOption)
   fields.innerHTML = ""
 })
 
-getRegion.addEventListener("change", (event) => {
+getRegion?.addEventListener("change", (event) => {
  getCategoryFunc(event, getOption)
 })  
 
