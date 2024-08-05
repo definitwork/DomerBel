@@ -12,4 +12,3 @@ regionSelect?.addEventListener("change", (event) => {
     })
     .catch(err => console.error(err))
 })
-

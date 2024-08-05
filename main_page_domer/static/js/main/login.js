@@ -1,11 +1,11 @@
-const modalBlock = document.querySelector('.modals');
+const modalsBlock = document.querySelector('.modals');
 const modalLogin = document.querySelector('.modals__login');
 const loginBtn = document.querySelector('.header__up-user');
 
-modalBlock.addEventListener('click', (event) => {
-    if(event.target === modalBlock){
-        modalBlock.classList.remove('modal__active');
-        for(let i of modalBlock.children) {
+modalsBlock.addEventListener('click', (event) => {
+    if(event.target === modalsBlock){
+        modalsBlock.classList.remove('modal__active');
+        for(let i of modalsBlock.children) {
             i.classList.remove('modal__active');
             const fieldErorr = document.querySelectorAll('.modals__signIn-error')
             fieldErorr.forEach(item => item.remove())
@@ -16,6 +16,6 @@ modalBlock.addEventListener('click', (event) => {
 
 loginBtn?.addEventListener('click', () => {
     document.body.style.overflow = 'hidden';
-    modalBlock.classList.add('modal__active');
+    modalsBlock.classList.add('modal__active');
     modalLogin.classList.add('modal__active');
 })
