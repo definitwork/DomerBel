@@ -97,6 +97,11 @@
                         Пополнить кошелек
                     </a>
                 </li>
+                <li class="profile__aside-nav-list-item">
+                    <a href="#">
+                        Публикации
+                    </a>
+                </li>
             </ul>
         </nav>
     </aside>
@@ -134,6 +139,9 @@
             <li>
                 <article class="main__info-advertisement-list-item">
                     <ul class="main__info-advertisement-list-item-achive">
+                        <li>
+                            <input type="checkbox" name="ads_checkbox" value="{{advertisement.id}}">
+                        </li>
                         <li>
                             <a href="#">
                                 <img src="{% static 'img/VIP.png' %}" alt="vip" title="Сделать VIP-объявлением">
@@ -175,7 +183,6 @@
                            class="main__info-advertisement-list-item-about-edit">
                             редактировать
                         </a>
-                        <input type="checkbox" name="ads_checkbox" value="{{advertisement.id}}">
                     </div>
                     <a href="{% url 'advertisement_details' advertisement.slug %}"
                        class="main__info-advertisement-list-item-img">
@@ -187,7 +194,10 @@
                             <a href="{% url 'advertisement_details' advertisement.slug %}">{{ advertisement.title }}</a>
                         </h3>
                         <p>
-                            {% if advertisement.price %}{{ advertisement.price|floatformat }} руб.{% endif %}
+                            {% if advertisement.price %}
+                                {{ advertisement.price|floatformat }} руб.
+                                {% else %} Договорная
+                            {% endif %}
                         </p>
                         <p>
                             {{ advertisement.category.title }}
@@ -201,7 +211,7 @@
             {% endfor %}
         </ul>
         {% else %}
-        <p style="color: #0f1419">
+        <p class="main__info-not-found">
             Объявлений не найдено
         </p>
         {% endif %}
@@ -209,8 +219,8 @@
         {% block action %}
         <div class="main__info-action">
             <p>Отмеченные:</p>
-            <button name="delete_ads">Удалить</button>
-            <button name="archive_ads">Поместить в архив</button>
+            <button name="delete_ads" class="submit__btn">Удалить</button>
+            <button name="archive_ads" class="submit__btn">Поместить в архив</button>
         </div>
         {% endblock action %}
         {% endif %}

@@ -42,44 +42,6 @@
   color: red;
 }
 
-.modals__submit {
-  padding: 10px;
-  border: 1px solid black;
-  border-radius: 8px;
-  font-family: "Trebuchet MS", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  color: black;
-  font-size: 14px;
-  transition: 0.3s ease;
-  position: relative;
-  z-index: 1;
-  width: 100%;
-}
-.modals__submit::before {
-  content: "";
-  display: block;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 0;
-  background: #3077a0;
-  border-radius: 8px;
-}
-.modals__submit:hover {
-  transition: 0.3s ease;
-  color: white;
-}
-.modals__submit:hover::before {
-  z-index: -12;
-  height: 100%;
-  transition: 0.3s ease;
-}
-.modals__submit:active {
-  top: 1px;
-}
-
 .modals__signUp {
   text-align: center;
   display: inline-block;
@@ -414,6 +376,7 @@
   align-items: center;
   gap: 15px;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 .header__up-nav-list a {
   font-family: "Trebuchet MS", sans-serif;
@@ -486,8 +449,14 @@
 }
 
 @media (max-width: 992px) {
+  .header__up-nav {
+    flex: 0 1 500px;
+  }
   .header__up-user-wrap {
     flex: initial;
+  }
+  .header__up-user-action {
+    align-self: flex-end;
   }
 }
 .header__bottom {
@@ -552,10 +521,31 @@
   font-size: 20px;
 }
 
+@media (max-width: 992px) {
+  .header__bottom {
+    flex-direction: column;
+    align-items: center;
+  }
+  .header__bottom-nav {
+    align-self: initial;
+    padding: 0;
+  }
+  .header__bottom-send-wrap {
+    align-self: initial;
+    width: 100%;
+    max-width: 500px;
+    padding: 0;
+  }
+}
 header {
   margin-bottom: 5px;
 }
 
+@media (max-width: 992px) {
+  header {
+    margin-bottom: 15px;
+  }
+}
 .main__search {
   background: #3cb371;
   padding: 5px;
@@ -624,6 +614,12 @@ header {
   gap: 15px;
 }
 
+.fields {
+  display: none;
+}
+.fields:has(select) {
+  display: flex;
+}
 .fields select {
   flex: 1 1 320px;
 }
@@ -663,6 +659,11 @@ header {
   flex: 0 1 270px;
 }
 
+@media (max-width: 992px) {
+  .main__search-form-item button {
+    flex: 1 1 200px;
+  }
+}
 footer {
   padding: 40px 0;
 }
@@ -683,6 +684,44 @@ footer {
 }
 .footer__nav-list-item a:hover {
   color: red;
+}
+
+.submit__btn {
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 8px;
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 14px;
+  transition: 0.3s ease;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+.submit__btn::before {
+  content: "";
+  display: block;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 0;
+  background: #3077a0;
+  border-radius: 8px;
+}
+.submit__btn:hover {
+  transition: 0.3s ease;
+  color: white;
+}
+.submit__btn:hover::before {
+  z-index: -12;
+  height: 100%;
+  transition: 0.3s ease;
+}
+.submit__btn:active {
+  top: 1px;
 }
 
 .g-recaptcha {

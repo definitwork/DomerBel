@@ -47,6 +47,10 @@
 }
 
 .fields {
+    display: none;
+    &:has(select) {
+        display: flex;
+    }
     & select {
         flex: 1 1 320px;
     }
@@ -86,6 +90,14 @@
     & .main__search-form-item-label-wrap {
         & input[type="text"] {
             flex: 0 1 270px;
+        }
+    }
+}
+
+@media (max-width:992px) {
+    .main__search-form-item {
+        & button {
+            flex: 1 1 200px;
         }
     }
 }

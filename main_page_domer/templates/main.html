@@ -38,7 +38,10 @@
                 {{ card.title }}
             </a>
             <p class="recent-announcements__list-item-article-info-price">
-                {% if card.price %} {{ card.price|floatformat }} руб. {% endif %}
+              {% if card.price %}
+                {{ card.price|floatformat }} руб. 
+                {% else %} Договорная
+              {% endif %}
             </p>
             <p class="recent-announcements__list-item-article-info-category">
                 {{ card.category }}

@@ -1,5 +1,5 @@
 .advertisement__list {
-    flex: 0 1 680px;
+    flex: 1 1 680px;
 }
 
 .default__item {
@@ -30,8 +30,7 @@
         flex: 1 1 auto;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        gap: 5px;
+        gap: 10px;
         position: relative;
     
         &::before {
@@ -41,14 +40,14 @@
             height: 18px;
             background: url(../img/favorite.png) no-repeat center/cover;
             position: absolute;
-            top: 0;
-            left: -25px
+            bottom: 0;
+            right: 0;
         }
     }
     
     & .advertisement__list-item-title {
         & a {
-            @include fonts($mainColor, 16px, 400);
+            @include fonts($mainColor, 18px, 400);
             &:hover {
                 color: $colorHover;
             }
@@ -56,12 +55,12 @@
     }
     
     & .advertisement__list-item-price {
-        @include fonts($defaultColor, 14px, 400);
+        @include fonts($defaultColor, 16px, 400);
     }
     
     & .advertisement__list-item-about-text-list {
         & li {
-            @include fonts(gray, 14px, 400);
+            @include fonts(gray, 16px, 400);
         }
     }
     
@@ -107,6 +106,7 @@
 
     & .advertisement__list-item-img {
         display: block;
+        flex: 0 1 140px;
         & img {
             max-height: 140px;
             width: 100%;
@@ -124,6 +124,9 @@
             text-overflow: ellipsis;
             max-width: 180px;
             @include fonts($mainColor, 16px, 400);
+            &:hover {
+                color: $colorHover;
+            }
         }
     }
 
@@ -176,6 +179,28 @@
         flex: 1 1 auto;
         & ~.vip__wrap {
             flex: 1 0 250px;
+        }
+
+        & .advertisement__list-item {
+            gap: 15px;
+            flex-direction: column;
+        }
+
+        & .advertisement__list-item-img {
+            max-width: none;
+            max-height: none;
+            & img {
+                max-height: 400px;
+            }
+        }
+
+        & .advertisement__list-item-about {
+            &::before {
+                top: initial;
+                bottom: 0;
+                right: 10px;
+                left: initial;
+            }
         }
     }
     .second__item {

@@ -27,13 +27,12 @@
     @include fonts($defaultColor, 14px, 400);
   }
 
+  & option {
+    padding-left: 15px;
+  }
+
   & button {
-    border-radius: 5px;
     max-width: 200px;
-    padding: 8px;
-    border: 1px solid $gray;
-    background: $gray;
-    @include fonts($defaultColor, 14px, 400);
   }
 
   & p {
@@ -71,6 +70,10 @@
     & select, input, textarea {
       width: 100%;
       max-width: none;
+    }
+
+    & label {
+      justify-content: flex-start;
     }
   }
   .form__wrapper {

@@ -130,13 +130,12 @@
                                     {{ card.title }}
                                 </a>
                             </h3>
-                            {% if card.price %}
                             <p class="advertisement__list-item-price">
-
+                                {% if card.price %}
                                     {{ card.price|floatformat }} руб.
-
+                                    {% else %} Договорная
+                                {% endif %}
                             </p>
-                            {% endif %}
                             <ul class="advertisement__list-item-about-text-list">
                                 <li>
                                     {{ card.category }}
@@ -186,7 +185,7 @@
                 </li>
             {% endfor %}
         </ul>
-
+        {% if vip_advertisement %}
         <div class="vip__wrap">
             <ul class="vip__list">
                 {% for vip in vip_advertisement %}
@@ -212,7 +211,7 @@
                 {% endfor %}
             </ul>
         </div>
-
+        {% endif %}
     </section>
     {% block paginator %}
     <div class="paginator">
