@@ -15,7 +15,7 @@
       <div class="form-error">{{ store_form.non_field_errors }}</div>
       {% endif %}
       {% for f in store_form %}
-      <label for="{{ f.id_for_label }}">
+      <label for="{{ f.id_for_label }}" class="{% if f.errors %}label__error{% endif %}">
         <p class="form-label">
           {% if f.required %}
           <span>*</span>
@@ -23,10 +23,10 @@
           {{f.label}}:
         </p>
         {{ f }}
+        {% if f.errors %}
+        <div class="form-error">{{ f.errors }}</div>
+        {% endif %}
       </label>
-      {% if f.errors %}
-      <div class="form-error">{{ f.errors }}</div>
-      {% endif %}
       {% endfor %}
       <button class="submit__btn">Добавить</button>
     </form>
@@ -35,7 +35,7 @@
     </div>
   </div>
   {% endblock mainInfo %}
-{% block js %}
+{% block js2 %}
 <script src="{% static 'js/profile/storeLogo.js' %}"></script>
 <script src="{% static 'js/profile/region.js' %}"></script>
-{% endblock js %}
+{% endblock js2 %}
