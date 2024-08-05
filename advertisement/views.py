@@ -318,3 +318,11 @@ def get_instructions_for_bulk_import_of_ads(request):
     return render(request=request,
                   template_name='instructions_for_bulk_import_of_ads.html',
                   context=context)
+
+# def import_words(request):
+#     with open('./bad_words.txt', "r") as file:
+#         one_string_words = file.readline()
+#         words_list = one_string_words.split(", ")
+#         for w in words_list:
+#             BadWords.objects.create(word=w)
+#     return render(request, template_name='import_words.html')

@@ -13,6 +13,7 @@ from django.conf import settings
 
 from .utils_for_models import add_watermark_to_photo, upload_to, unique_slugify
 from users.validators import validate_phone
+from .validators import validate_words
 
 
 class PhotoAdvertisement(models.Model):
@@ -35,7 +36,7 @@ class PhotoAdvertisement(models.Model):
 class Advertisement(DirtyFieldsMixin, models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     article = models.CharField(max_length=255, blank=True, null=True, verbose_name="Артикул")
-    title = models.CharField(max_length=255, verbose_name='Заголовок')
+    title = models.CharField(max_length=255, verbose_name='Заголовок', validators=[validate_words])
     price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, default=0, verbose_name='Цена')
     category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Раздел')
     bearer = models.CharField(max_length=50, choices=[('Частное лицо', 'Частное лицо'), ('Компания', 'Компания')],
@@ -44,7 +45,7 @@ class Advertisement(DirtyFieldsMixin, models.Model):
     preview_image = models.ImageField(upload_to=upload_to, verbose_name='Главная фотография',
                                       blank=True, null=True)
     counter_views = models.IntegerField(default=0, verbose_name='Счетчик просмотров')
-    contact_name = models.CharField(max_length=255, verbose_name='Контактное лицо')
+    contact_name = models.CharField(max_length=255, verbose_name='Контактное лицо',validators=[validate_words])
     phone_num = models.CharField(max_length=255, verbose_name='Телефон', validators=[validate_phone])
     email = models.EmailField(verbose_name='E-Mail')
     store = models.ForeignKey('Store', on_delete=models.CASCADE, blank=True, null=True, verbose_name="Магазин")
@@ -60,14 +61,16 @@ class Advertisement(DirtyFieldsMixin, models.Model):
     raise_in_search = models.BooleanField(default=False, verbose_name="Поднять в поиске")
     additional_information = models.JSONField()
     additional_information_view = ArrayField(ArrayField(models.CharField(max_length=500)), blank=True, null=True, editable=False)
-    description = models.TextField(verbose_name='Описание')
+    description = models.TextField(verbose_name='Описание',validators=[validate_words])
     video_link = models.URLField(blank=True, null=True, verbose_name='Ссылка на видео')  # хранит строку, которая представляет валидный URL-адрес
 
+    def get_days_till_expiration(self):
+        days_till_expiration = self.date_of_deactivate - self.date_of_create
+        return days_till_expiration.days
 
     class Meta:
         verbose_name = 'Объявление'
         verbose_name_plural = 'Объявления'
-
 
     def __str__(self):
         return self.title
@@ -233,7 +236,7 @@ class Store(models.Model):
 
     def __str__(self):
         return self.title
-    
+
 class UploadFile(models.Model):
     '''Модель для сохранения файла для массового импорта объявлений'''
     def get(instance,filename):
@@ -269,3 +272,13 @@ class ErrorFile(models.Model):
 
     def __str__(self):
         return f'{self.user}_{self.time_upload_file}'
+
+
+class BadWords(models.Model):
+    word = models.CharField(max_length=255)
+    def get_censor(self):
+        n = len(self.word)-3
+        self.censor = self.word[0:2]+ '*'*n + self.word[-1]
+
+    def __str__(self):
+        return self.censor

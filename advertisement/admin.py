@@ -2,7 +2,7 @@ from django.contrib import admin
 from mptt.admin import MPTTModelAdmin, DraggableMPTTAdmin
 
 from advertisement.models import Advertisement, Category, Region, PhotoAdvertisement, \
-    Field, Spisok, Element, ElementTwo, Store, UploadFile, ErrorFile
+    Field, Spisok, Element, ElementTwo, Store, UploadFile, ErrorFile, BadWords
 
 
 class AdvertisementAdmin(admin.ModelAdmin):
@@ -47,6 +47,7 @@ admin.site.register(Field)
 admin.site.register(Spisok)
 admin.site.register(Element)
 admin.site.register(ElementTwo)
+admin.site.register(BadWords)
 admin.site.register(Store, StoreAdmin)
 admin.site.register(UploadFile)
 admin.site.register(ErrorFile)
