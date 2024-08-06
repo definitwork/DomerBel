@@ -243,22 +243,20 @@ def get_user_data_page(request):
 def add_store(request):
     if request.method == 'POST':
         new_store = StoreForm(request.POST, request.FILES)
-        for f in new_store:
-            print(dir(f.field))
         if new_store.is_valid():
-            store = new_store.save(commit=False)
-            store.user = request.user
+            print(new_store.cleaned_data)
+            store = Store(user=request.user,
+                          category=Category.objects.get(id=new_store.cleaned_data.pop("category")),
+                          **new_store.cleaned_data)
             store.save()
             messages.success(request, f"Новый магазин {store} успешно создан!")
             return redirect('users:my_store')
 
-        oblast = Region.objects.filter(type='Область')
         store_form = StoreForm(request.POST, request.FILES)
         store_form.errors.update(new_store.errors)
-        category_list = Category.objects.filter(level__lte=1)
-        context = {"oblast": oblast,
-                   "store_form": store_form,
-                   "category_list": category_list}
+        context = {
+                   "store_form": store_form
+                   }
         return render(request, 'profile_add_store.html', context)
 
     oblast = Region.objects.filter(type='Область')
@@ -322,18 +320,12 @@ def edit_store(request, store_id):
     else:
         edit_selected_store = StoreForm(instance=store)
 
-    oblast = Region.objects.filter(type='Область')
-    selected_oblast = Region.objects.get(id=store.region.parent_id)
-    categories = Category.objects.all()
-    category_list = Category.objects.filter(level__lte=1)
+    print(edit_selected_store.initial)
+
+
     context = {
-        'edit_store': edit_selected_store,
-        'oblast': oblast,
-        'selected_oblast': selected_oblast,
-        'categories': categories,
-        'selected_category': store.category.id if store.category else None,
-        'store': store,
-        'category_list': category_list,
+        'store_form': edit_selected_store,
+        'selected_region': Region.objects.get(id=store.region_id),
         "adaptive_navigation": "Редактирование магазина"
     }
     return render(request, 'profile_edit_shop.html', context)

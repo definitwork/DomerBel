@@ -7,9 +7,11 @@
 <section class="region">
   <ul class="region__list">
     {% for region in region_list %}
+    {% if region.level == 0 %}
     <li class="region__list-item">
       <a href="{% url 'advertisement' %}?region={{ region.id }}"> {{ region|upper }} </a>
     </li>
+    {% endif %}
     {% endfor %}
   </ul>
 </section>
