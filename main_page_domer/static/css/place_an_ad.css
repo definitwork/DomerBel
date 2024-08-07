@@ -5,7 +5,14 @@
   margin-bottom: 10px;
 }
 
-:where(.additional_information, .category_select, form, .contact, .bearer_company_additional_info, .region_select, .information_select) {
+:where(.additional_information,
+.category_select,
+form,
+.contact,
+.bearer_company_additional_info,
+.region_select,
+.information_select,
+.inner_select) {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -29,10 +36,12 @@
   align-items: center;
   gap: 10px;
 }
-.item_input input, .item_input select, .item_input textarea {
+.item_input input,
+.item_input select,
+.item_input textarea {
   width: 100%;
   max-width: 320px;
-  border: 1px solid #D4D4D4;
+  border: 1px solid #d4d4d4;
   padding: 5px;
   font-family: "Trebuchet MS", sans-serif;
   font-weight: 400;
@@ -167,7 +176,9 @@
     align-items: initial;
     flex-direction: column;
   }
-  .item_input input, .item_input select, .item_input textarea {
+  .item_input input,
+  .item_input select,
+  .item_input textarea {
     max-width: none;
   }
   .label_fields {

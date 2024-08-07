@@ -286,7 +286,7 @@ ${i.title ? i.title : i.title_ad}
           }
           if (i.title == "Этаж") {
             informationList.innerHTML += `
-<div class="additional_information_item-${i.id}">
+<div class="additional_information_item-${i.id} inner_select">
 <div class="additional_information_item item_input">
 <div class="information_label label_fields">
 Этаж
@@ -325,7 +325,7 @@ ${i.title ? i.title : i.title_ad}
                     `
           } else {
             informationList.innerHTML += `
-<div class="additional_information_item-${i.id}">
+<div class="additional_information_item-${i.id} inner_select">
 <div class="additional_information_item item_input">
 <div class="information_label label_fields">
 ${i.title ? i.title : i.title_ad}

@@ -9,7 +9,16 @@
   }
 }
 
-:where(.additional_information, .category_select, form, .contact, .bearer_company_additional_info, .region_select, .information_select) {
+:where(
+    .additional_information,
+    .category_select,
+    form,
+    .contact,
+    .bearer_company_additional_info,
+    .region_select,
+    .information_select,
+    .inner_select
+  ) {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -29,19 +38,20 @@
   align-items: center;
   gap: 10px;
 
-  & input, select, textarea {
+  & input,
+  select,
+  textarea {
     width: 100%;
     max-width: 320px;
-    border: 1px solid #D4D4D4;
+    border: 1px solid #d4d4d4;
     padding: 5px;
-   @include fonts($defaultColor, 14px, 400);
+    @include fonts($defaultColor, 14px, 400);
   }
 
   & input[type="radio"] {
     width: initial;
   }
 }
-
 
 .photo {
   display: flex;
@@ -61,7 +71,6 @@
 }
 
 .photo_img {
-
   & img {
     max-height: 85px;
     width: 100%;
@@ -71,7 +80,6 @@
   }
 }
 
-
 .photo_preview {
   display: none;
 
@@ -80,7 +88,7 @@
   }
 }
 
-.bearer_company_additional_info{
+.bearer_company_additional_info {
   display: none;
 
   &:has(div) {
@@ -91,7 +99,6 @@
 .add_adv {
   max-width: 320px;
 }
-
 
 .description_radio {
   display: flex;
@@ -116,7 +123,7 @@
 
   &:hover {
     .delete_img {
-      transition: .3s ease;
+      transition: 0.3s ease;
       opacity: 1;
       display: block;
     }
@@ -125,7 +132,7 @@
 
 .delete_img {
   border-radius: 0 3px 0 0;
-  transition: .3s ease;
+  transition: 0.3s ease;
   opacity: 0;
   position: absolute;
   top: 0;
@@ -135,7 +142,8 @@
   background: rgb(0, 0, 0, 0.5);
   cursor: pointer;
 
-  &::after, &::before {
+  &::after,
+  &::before {
     content: "";
     display: block;
     width: 100%;
@@ -158,13 +166,15 @@
 
 .input_error {
   border: 1px solid red !important;
-} 
+}
 
-@media(max-width:992px) {
+@media (max-width: 992px) {
   .item_input {
     align-items: initial;
     flex-direction: column;
-    & input, select, textarea {
+    & input,
+    select,
+    textarea {
       max-width: none;
     }
   }
