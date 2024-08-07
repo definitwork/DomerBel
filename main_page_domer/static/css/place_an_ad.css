@@ -5,7 +5,7 @@
   margin-bottom: 10px;
 }
 
-:where(.additional_information, .category_select, form, .contact, .bearer_company_additional_info, .region_select, .information_item) {
+:where(.additional_information, .category_select, form, .contact, .bearer_company_additional_info, .region_select, .information_select) {
   display: flex;
   flex-direction: column;
   gap: 10px;
