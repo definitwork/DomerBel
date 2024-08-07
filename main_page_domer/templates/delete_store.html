@@ -1,0 +1,16 @@
+{% extends 'profile_user.html' %}
+{% load static %}
+
+
+{% block mainInfo %}
+<div class="main__info">
+    <h1>Вы уверены, что хотите удалить магазин {{ store.title }}?</h1>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="buttons_for_delete">
+            <button class="execute_button">Удалить</button>
+            <a href="{% url 'users:my_store' %}"><div class="cancel_button">Отмена</div></a>
+        </div>
+    </form>
+</div>
+{% endblock mainInfo %}
