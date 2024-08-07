@@ -8,11 +8,13 @@
 .main__shop-list {
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
 
 .main__shop-list-item {
   display: flex;
   align-items: flex-start;
+  justify-content: space-between;
   gap: 15px;
 }
 
