@@ -196,6 +196,10 @@
   font-style: normal;
   color: #3077a0;
   font-size: 18px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 .default__item .advertisement__list-item-title a:hover {
   color: red;

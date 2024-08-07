@@ -215,6 +215,10 @@
   font-style: normal;
   color: #3077a0;
   font-size: 18px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 .default__item .advertisement__list-item-title a:hover {
   color: red;
@@ -498,7 +502,7 @@
   flex-direction: column;
   gap: 5px;
   align-self: center;
-  flex: 0 1 120px;
+  flex: 0 0 120px;
 }
 .recent-announcements__list-item-article-date p {
   font-family: "Trebuchet MS", sans-serif;
@@ -528,6 +532,10 @@
   font-style: normal;
   color: #3077a0;
   font-size: 16px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 .recent-announcements__list-item-article-info-link:hover {
   color: red;

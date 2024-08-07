@@ -94,6 +94,7 @@ def get_store_for_advertisement(request):
 
 @api_view(['POST'])
 def save_advertisement(request):
+    print(request.data)
     additional_information = dict(request.data.copy())
     serializer = AdvertisementSerializer(data=request.data)
     serializer.is_valid()

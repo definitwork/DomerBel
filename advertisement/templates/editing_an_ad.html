@@ -1,14 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load advertisement_tags %}
-{% block stylesheet %}
-    <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/place_an_ad.css' %}">
-    {% block style %}
-    {% endblock %}
-{% endblock %}
-{% block find %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/place_an_ad.css' %}">
 {% endblock %}
 {% block content %}
+{% block search %}{% endblock search %}
     <div class="create_advertisement">
         <form enctype="multipart/form-data" id="add_adver" data-advertisement="{{ advertisement.id }}">
             {% csrf_token %}
@@ -283,10 +280,10 @@
                 </div>
             </div>
         </form>
-    <button class="add_adv">Редактировать объявление</button>
+    <button class="add_adv submit__btn">Редактировать объявление</button>
     </div>
 {% endblock %}
-{% block javascript %}
+{% block js %}
     <script src="{% static 'js/place_an_ad.js' %}"></script>
     <script src="{% static 'js/editing_an_ad.js' %}"></script>
 {% endblock %}
