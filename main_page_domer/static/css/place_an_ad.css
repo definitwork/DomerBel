@@ -5,7 +5,7 @@
   margin-bottom: 10px;
 }
 
-:where(.additional_information, .category_select, form, .contact, .bearer_company_additional_info, .region_select) {
+:where(.additional_information, .category_select, form, .contact, .bearer_company_additional_info, .region_select, .information_item) {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -49,9 +49,6 @@
   align-items: center;
   gap: 10px;
 }
-.photo p {
-  flex: 0 0 150px;
-}
 
 .photo_file {
   max-width: 320px;
@@ -65,6 +62,7 @@
 }
 
 .photo_img img {
+  max-height: 85px;
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
@@ -152,6 +150,18 @@
   transform: rotate(-45deg);
 }
 
+.error {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: red;
+  font-size: 14px;
+}
+
+.input_error {
+  border: 1px solid red !important;
+}
+
 @media (max-width: 992px) {
   .item_input {
     align-items: initial;
@@ -170,9 +180,6 @@
   .photo {
     flex-direction: column;
     align-items: initial;
-  }
-  .photo p {
-    flex: initial;
   }
   .add_adv {
     max-width: none;

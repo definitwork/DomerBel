@@ -6,6 +6,7 @@
 {% block find %}
 {% endblock %}
 {% block content %}
+{% block search %}{% endblock search %}
     <div class="create_advertisement">
         <form action="" method="POST" enctype="multipart/form-data" id="add_adver">
             {% csrf_token %}
@@ -107,7 +108,7 @@
                 </div>
             </div>
         </form>
-        <button class="add_adv submit__btn">Разместить объявление</button>
+        <button type="button" class="add_adv submit__btn">Разместить объявление</button>
     </div>
 {% endblock %}
 {% block js %}
