@@ -16,6 +16,9 @@ from users.validators import validate_phone
 from .validators import validate_words
 
 
+# from .validators import validate_words
+
+
 class PhotoAdvertisement(models.Model):
     photo = models.ImageField(upload_to=upload_to, verbose_name='Фото')
     advertisement = models.ForeignKey('Advertisement', on_delete=models.CASCADE, verbose_name='Фотография')
@@ -87,6 +90,7 @@ class Advertisement(DirtyFieldsMixin, models.Model):
             self.additional_information_view = list(self.additional_information.items())
         self.slug = unique_slugify(self, self.title)
         self.date_of_deactivate = make_aware(datetime.now() + timedelta(days=180))
+        self.full_clean()
         super().save(*args, **kwargs)
         if self.preview_image:
             try:
@@ -276,9 +280,11 @@ class ErrorFile(models.Model):
 
 class BadWords(models.Model):
     word = models.CharField(max_length=255)
-    def get_censor(self):
-        n = len(self.word)-3
-        self.censor = self.word[0:2]+ '*'*n + self.word[-1]
 
     def __str__(self):
-        return self.censor
+        return self.word[0:2]+'*'*(len(self.word)-3)+self.word[-1]
+
+
+    class Meta:
+        verbose_name = 'Нецензурное слово'
+        verbose_name_plural = 'Нецензурные слова'

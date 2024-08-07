@@ -259,7 +259,7 @@ def save_many_ads_from_excel(uploud_file,id,first_name,phone_number,email):
                 list_ads_error.append(ads)
         row_in_excel = row_in_excel + 1
     if len(list_ads_error) != 0:
-        error_file = write_file_with_error_ads(list_ads_error,email)
+        error_file = write_file_with_error_ads(list_ads_error,email,value_author)
         return {'file': error_file}
     else:
         return True
