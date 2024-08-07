@@ -61,6 +61,7 @@ form,
 
 .photo_file {
   max-width: 320px;
+  width: 100%;
 }
 
 .photo_preview {
