@@ -103,6 +103,7 @@ def save_advertisement(request):
                                                                                           additional_information)
     if serializer.is_valid() and not serializer_additional_error.data:
         additional_information_save = Field.objects.filter(id__in=additional_information).order_by('id')
+        print(serializer.validated_data)
         for i in additional_information_save:
             additional_information[i.title] = ', '.join(additional_information.pop(f'{i.id}'))
         new_advertisement = Advertisement(author=None if request.user.is_anonymous else request.user,
