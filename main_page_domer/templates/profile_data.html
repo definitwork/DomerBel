@@ -9,57 +9,44 @@
 {% endblock search %}
   {% block mainInfo %}
   <div class="form__wrapper">
-    <form method="POST" class="main__info">
-      <h3>
+    <h3>
         Контактные данные пользователя
       </h3>
-      <label>
-        <p>
-          Контактное лицо
+     <form method="POST" action="" class="main__info">
+      {% csrf_token %}
+      {% if edit_contact_data_form.non_field_errors %}
+      <div class="form-error">{{ edit_contact_data_form.non_field_errors }}</div>
+      {% endif %}
+      {% for field in edit_contact_data_form %}
+      <label for="{{ field.id_for_label }}">
+        <p class="form-label">
+          {{field.label}}:
         </p>
-        <input type="text" name="" placeholder="Иван Иванович">
+        {{ field }}
       </label>
-      <label>
-        <p>
-          E-MAIL
-        </p>
-        <input type="email" name="" placeholder="user@yandex.ru">
-      </label>
-      <label>
-        <p>
-          Телефон
-        </p>
-        <input type="tel" name="" placeholder="Телефон">
-      </label>
-      <button class="submit__btn">
-        Изменить
-      </button>
+      {% if field.errors %}
+      <div class="form-error">{{ field.errors }}</div>
+      {% endif %}
+      {% endfor %}
+      <button class="submit__btn" name="edit_contact_data">Изменить</button>
     </form>
-    <form method="POST">
-      <h3>
-        Изменить пароль пользователя
-      </h3>
-      <label>
-        <p>
-          Введите старый пароль
+    <form method="POST" class="main__info" action="" novalidate>
+      {% csrf_token %}
+      {% if change_pass_form.non_field_errors %}
+      <div class="form-error">{{ change_pass_form.non_field_errors }}</div>
+      {% endif %}
+      {% for field in change_pass_form  %}
+      <label for="{{ field.id_for_label }}">
+        <p class="form-label">
+          {{field.label}}:
         </p>
-        <input type="password" name="" placeholder="Введите старый пароль">
+        {{ field }}
       </label>
-      <label>
-        <p>
-          Введите новый пароль
-        </p>
-        <input type="password" name="" placeholder="Введите новый пароль">
-      </label>
-      <label>
-        <p>
-          Повторите новый пароль
-        </p>
-        <input type="password" name="" placeholder="Повторите новый пароль">
-      </label>
-      <button class="submit__btn">
-        Сохранить
-      </button>
+      {% if field.errors %}
+      <div class="form-error">{{ field.errors }}</div>
+      {% endif %}
+      {% endfor %}
+      <button class="submit__btn" name="change_password">Сохранить</button>
     </form>
   </div>
   {% endblock mainInfo %}

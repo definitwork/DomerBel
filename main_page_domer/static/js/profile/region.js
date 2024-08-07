@@ -14,9 +14,9 @@ regionSelect?.addEventListener("change", (event) => {
         Array.from(regionList).splice(1,regionList.length).forEach(region => region.remove())
       }
       createSelectElement(
-        data, 
-        {id: "", title: "Любое расположение"}, 
-        regionSelect, 
+        data,
+        {id: "", title: "Любое расположение"},
+        regionSelect,
         false
       )
     })

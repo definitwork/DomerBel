@@ -91,7 +91,7 @@
           </ul>
          </div>
          <div class="main__shop-list-item-img">
-          <img src="{{ store.logo_image.url }}" alt="{{ store.title }}">
+          <img src="{% if store.logo_image %}{{ store.logo_image.url }}{% else %}{% static 'img/no_image.jpg' %}{% endif %}" alt="{{ store.title }}">
          </div>
         </article>
       </li>

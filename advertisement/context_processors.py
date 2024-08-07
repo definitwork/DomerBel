@@ -27,7 +27,7 @@ def get_data_category_and_region(request):
         cache.set('category', category)
 
     if region is None:
-        region = Region.objects.filter(level=0)
+        region = Region.objects.all()
         cache.set('region', region)
 
     context = {

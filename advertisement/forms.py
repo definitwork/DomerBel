@@ -3,10 +3,8 @@ from django.forms import ClearableFileInput
 from mptt.forms import TreeNodeChoiceField
 
 from advertisement.models import Region, Category, Store
-from users.models import User
+
 from users.validators import validate_phone
-
-
 
 
 class StoreForm(forms.ModelForm):
@@ -16,10 +14,11 @@ class StoreForm(forms.ModelForm):
         for category in Category.objects.filter(level=0)
         if category.type == 'category_1']
 
-    region = forms.ModelChoiceField(queryset=Region.objects.filter(type="Область"), label="Регион, город, область",
+    region = forms.ModelChoiceField(queryset=Region.objects.filter(type="Город"), label="Регион, город, область",
                                     widget=forms.Select(attrs={'class': 'input_field'}))
     address = forms.CharField(max_length=255, required=False, label="Адрес",
                               widget=forms.TextInput(attrs={'class': 'input_field'}))
+    # category = TreeNodeChoiceField(queryset=Category.objects.filter(level=1), label="Раздел", widget=forms.Select(attrs={'size': 10}))
     category = forms.ChoiceField(choices=categories_list, widget=forms.Select(attrs={'size': 10}), label="Раздел")
     title = forms.CharField(max_length=255, required=True, label="Название магазина",
                             widget=forms.TextInput(attrs={'class': 'input_field'}))
@@ -40,9 +39,8 @@ class StoreForm(forms.ModelForm):
                                 validators=[validate_phone])
     video_link = forms.URLField(required=False, label="Ссылка на видеоролик YouTube", widget=forms.URLInput(
         attrs={'class': 'input_field', 'placeholder': 'Должен начитаться с http:// или https://', 'size': 40}))
-    logo_image = forms.ImageField(required=False, label="Логотип",
+    logo_image = forms.ImageField(required=True, label="Логотип",
                                   widget=ClearableFileInput(attrs={'class': 'input_field'}))
-    # user = forms.ModelChoiceField(queryset=User.objects.all(), required=False)
 
     class Meta:
         model = Store
