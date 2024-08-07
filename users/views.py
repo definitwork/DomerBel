@@ -245,10 +245,10 @@ def add_store(request):
     if request.method == 'POST':
         new_store = StoreForm(request.POST, request.FILES)
         if new_store.is_valid():
-            new_store.save(commit=False)
-            new_store.user = request.user
-            new_store.save()
-            messages.success(request, f"Новый магазин {new_store} успешно создан!")
+            store = new_store.save(commit=False)
+            store.user = request.user
+            store.save()
+            messages.success(request, f"Новый магазин {store} успешно создан!")
             return redirect('users:my_store')
 
         store_form = StoreForm(request.POST, request.FILES)
@@ -312,7 +312,7 @@ def edit_store(request, store_id):
     if request.method == 'POST':
         edit_selected_store = StoreForm(request.POST, request.FILES, instance=store)
         if edit_selected_store.is_valid():
-            store.save()
+            edit_selected_store.save()
             messages.success(request, f"Магазин {store} успешно изменён!")
             return redirect('users:my_store')
     else:
