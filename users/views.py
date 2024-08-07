@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.db.models.fields.json import KT
@@ -240,16 +240,15 @@ def get_user_data_page(request):
 
 
 @login_required
+@permission_required("advertisement.add_store", raise_exception=True)
 def add_store(request):
     if request.method == 'POST':
         new_store = StoreForm(request.POST, request.FILES)
         if new_store.is_valid():
-            print(new_store.cleaned_data)
-            store = Store(user=request.user,
-                          category=Category.objects.get(id=new_store.cleaned_data.pop("category")),
-                          **new_store.cleaned_data)
-            store.save()
-            messages.success(request, f"Новый магазин {store} успешно создан!")
+            new_store.save(commit=False)
+            new_store.user = request.user
+            new_store.save()
+            messages.success(request, f"Новый магазин {new_store} успешно создан!")
             return redirect('users:my_store')
 
         store_form = StoreForm(request.POST, request.FILES)
@@ -274,6 +273,7 @@ def add_store(request):
 
 
 @login_required
+@permission_required("advertisement.view_store", raise_exception=True)
 def get_my_store(request):
     stores = Store.objects.filter(user=request.user).order_by('id')
     category_list = Category.objects.filter(level__lte=1)
@@ -306,22 +306,17 @@ def get_store_page(request, slug):
 
 
 @login_required
+@permission_required("advertisement.change_store", raise_exception=True)
 def edit_store(request, store_id):
-    store = Store.objects.get(user=request.user, id=store_id)
+    store = get_object_or_404(Store, user=request.user, id=store_id)
     if request.method == 'POST':
         edit_selected_store = StoreForm(request.POST, request.FILES, instance=store)
         if edit_selected_store.is_valid():
-            updated_store = edit_selected_store.save(commit=False)
-            updated_store.user = request.user
-            updated_store.save()
+            store.save()
             messages.success(request, f"Магазин {store} успешно изменён!")
             return redirect('users:my_store')
-
     else:
         edit_selected_store = StoreForm(instance=store)
-
-    print(edit_selected_store.initial)
-
 
     context = {
         'store_form': edit_selected_store,
@@ -332,14 +327,18 @@ def edit_store(request, store_id):
 
 
 @login_required
+@permission_required("advertisement.delete_store", raise_exception=True)
 def delete_store(request, store_id):
-    store = Store.objects.get(user=request.user, id=store_id)
+    store = get_object_or_404(Store, user=request.user, id=store_id)
     if request.method == "POST":
         store.delete()
         messages.success(request, f"Магазин {store} успешно удален!")
         return redirect('users:my_store')
-    context = {'store': store}
-    return render(request, 'personal_account/delete_store.html', context)
+    context = {
+        'store': store,
+        "adaptive_navigation": "Удаление магазина"
+    }
+    return render(request, 'delete_store.html', context)
 
 
 @login_required

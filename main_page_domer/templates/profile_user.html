@@ -67,16 +67,20 @@
                     Мои объявления
                     </a>
                 </li>
+                {% if user.entity %}
                 <li class="profile__aside-nav-list-item priority">
                     <a href="{% url 'users:add_store' %}">
                     Добавить магазин
                     </a>
                 </li>
+                {% if user.store_set %}
                 <li class="profile__aside-nav-list-item priority">
                     <a href="{% url 'users:my_store' %}">
                     Мои магазины
                     </a>
                 </li>
+                {% endif %}
+                {% endif %}
                 <li class="profile__aside-nav-list-item">
                     <a href="#">
                         Диалоги
