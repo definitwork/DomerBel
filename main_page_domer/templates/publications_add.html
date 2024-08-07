@@ -1,0 +1,48 @@
+{% extends "profile_user.html" %} 
+{% load static %} 
+{% block css2 %}
+<link rel="stylesheet" href="{% static 'css/publications_add.css' %}">
+{% endblock css2 %}
+{% block title %}
+{% endblock title %}
+{% block search %}
+{% endblock search %}
+  {% block mainInfo %}
+  <form class="main__info">
+      <label>
+        <p>
+          Заголовок:
+        </p>
+        <input type="text" name="" placeholder="Заголовок">
+      </label>
+      <label>
+        <p>
+          Аннотация:
+        </p>
+        <textarea name="" placeholder="Аннотация"></textarea>
+      </label>
+      <label>
+        <p>
+          Текст статьи:
+        </p>
+        <textarea name="" placeholder="Аннотация"></textarea>
+      </label>
+      <label>
+        <p>
+          Ссылка на видео:
+        </p>
+        <input type="text" name="" placeholder="Ссылка на видео">
+      </label>
+      <label>
+        <p>
+          Загрузите фотографии
+        </p>
+        <input type="file" name="" multiple>
+      </label>
+      <button class="submit__btn">
+        Разместить публикацию
+      </button>
+  </form>
+  {% endblock mainInfo %}
+{% block js %}
+{% endblock js %}

@@ -1,0 +1,46 @@
+.main__info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.main__info label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.main__info label p {
+  flex: 0 0 200px;
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 14px;
+}
+.main__info input, .main__info textarea {
+  max-width: 320px;
+  width: 100%;
+  padding: 7px;
+  border: 1px solid gray;
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 14px;
+}
+.main__info input::-moz-placeholder, .main__info textarea::-moz-placeholder {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: gray;
+  font-size: 14px;
+}
+.main__info input::placeholder, .main__info textarea::placeholder {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: gray;
+  font-size: 14px;
+}
+.main__info button {
+  max-width: 320px;
+}/*# sourceMappingURL=publications_add.css.map */

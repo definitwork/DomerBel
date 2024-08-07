@@ -444,7 +444,7 @@ def add_user_publication(request):
         "form_publication": form_publication,
         "adaptive_navigation": "Добавление публикации"
     }
-    return render(request=request, template_name='personal_account/user_add_publication.html', context=context)
+    return render(request=request, template_name='publications_add.html', context=context)
 
 
 @login_required
