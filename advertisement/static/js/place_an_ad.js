@@ -129,7 +129,7 @@ function showCategory(event) {
         .then((response) => response.json())
         .then((data) => {
           informationList.innerHTML = ""
-          let category = document.createElement("p")
+          let category = document.createElement("div")
           category.classList.add("category_level_1")
           category.innerHTML += `
             <select class="input_field select_class_category" name="category" id="select_category_1">
@@ -173,7 +173,7 @@ function showCategory(event) {
         .then((data) => {
           if (data.length !== 0) {
             informationList.innerHTML = ""
-            let category = document.createElement("p")
+            let category = document.createElement("div")
             category.classList.add("category_level_2")
             category.innerHTML += `
             <select class="input_field select_class_category" name="category" id="select_category_2">
@@ -212,7 +212,7 @@ function showCategory(event) {
         .then((data) => {
           if (data.length !== 0) {
             informationList.innerHTML = ""
-            let category = document.createElement("p")
+            let category = document.createElement("div")
             category.classList.add("category_level_3")
             category.innerHTML += `
             <select class="input_field select_class_category" name="category" id="select_category_3">
@@ -267,11 +267,11 @@ function show_additional_information(event) {
 ${i.title ? i.title : i.title_ad}
 </div>
 <div class="information_select">
-<p class="information_item">
+<div class="information_item">
  <input class="information_item-input" id="information_${
    i.id
  }" type="text" name="${i.id}">
-        </p>
+        </div>
 </div>
 </div> 
 </div>
@@ -292,7 +292,7 @@ ${i.title ? i.title : i.title_ad}
 Этаж
 </div>
 <div class="information_select">
-<p class="information_item">
+<div class="information_item">
             <select class="input_field select_class" id="information_${
               i.id
             }" name="${i.id}">
@@ -301,7 +301,7 @@ ${i.title ? i.title : i.title_ad}
                   (elem) => `<option value="${elem}">${elem}</option>`
                 )}
             </select>
-        </p>
+        </div>
 </div>
 </div>
 <div class="additional_information_item item_input">
@@ -309,7 +309,7 @@ ${i.title ? i.title : i.title_ad}
 Этажей в доме
 </div>
 <div class="information_select">
-<p class="information_item">
+<div class="information_item">
             <select class="input_field select_class" id="element_two-${
               i.id
             }" name="${i.id}">
@@ -318,7 +318,7 @@ ${i.title ? i.title : i.title_ad}
                   (elem) => `<option value=${elem}>${elem}</option>`
                 )}
             </select>
-        </p>
+        </div>
 </div>
 </div>
 </div>
@@ -331,7 +331,7 @@ ${i.title ? i.title : i.title_ad}
 ${i.title ? i.title : i.title_ad}
 </div>
 <div class="information_select">
-<p class="information_item">
+<div class="information_item">
             <select class="input_field select_class" id="information_${
               i.id
             }" name="${i.id}">
@@ -340,7 +340,7 @@ ${i.title ? i.title : i.title_ad}
                   (elem) => `<option value=${elem}>${elem}</option>`
                 )}
             </select>
-        </p>
+        </div>
 </div>
 </div>
 </div>
@@ -359,14 +359,14 @@ ${i.title ? i.title : i.title_ad}
 ${i.title ? i.title : i.title_ad} руб
 </div>
 <div class="information_select">
-<p class="information_item">
+<div class="information_item">
  <input class="information_item-input price" id="information_${
    i.id
  }" type="text" name="${i.id}">
  <input class="information_item-input price-hidden" id="information_${
    i.title
  }" type="hidden" name="${i.title}">
-        </p>
+        </div>
 </div>
 </div> 
 </div>
@@ -379,7 +379,7 @@ ${i.title ? i.title : i.title_ad} руб
 ${i.title ? i.title : i.title_ad}
 </div>
 <div class="information_select">
-<p class="information_item">
+<div class="information_item">
             <select class="input_field select_class select_info" id="information_${
               i.id
             }" name="${i.id}">
@@ -389,7 +389,7 @@ ${i.title ? i.title : i.title_ad}
                     `<option value="${elem.title}" data-elementtwo="${elem.id}">${elem.title}</option>`
                 )}
             </select>
-        </p>
+        </div>
 </div>
 </div>
 </div>
@@ -422,7 +422,7 @@ function showAdditionalInformationTwo(event) {
             if (document.querySelector(".information_item_two")) {
               document.querySelector(".information_item_two").remove()
             }
-            let elementP = document.createElement("p")
+            let elementP = document.createElement("div")
             elementP.classList.add("information_item")
             elementP.classList.add("information_item_two")
             elementP.innerHTML += `
@@ -468,7 +468,7 @@ function bearerCompanyInfo(event) {
                         Магазин
                         </p>
                     <div class="store_select">
-                        <p class="bearer_store">
+                        <div class="bearer_store">
                             <select class="input_field" name="store" id="select_store">
                                 <option value="">---------</option>
                                 ${data.map(
@@ -476,7 +476,7 @@ function bearerCompanyInfo(event) {
                                     `<option value="${elem.id}">${elem.title}</option>`
                                 )}
                             </select>
-                        </p>
+                        </div>
                     </div>
                 </div>`
           const bearerCompanyVendorCode = document.createElement("div")
@@ -691,7 +691,7 @@ function saveAdvertisement() {
         if (document.querySelector(".region_error")) {
           document.querySelector(".region_error").remove()
         }
-        const errorText = document.createElement("p")
+        const errorText = document.createElement("div")
         errorText.classList.add("region_error")
         errorText.classList.add("error")
         errorText.innerHTML = `${msg.data.error.region} `
