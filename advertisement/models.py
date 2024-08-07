@@ -100,9 +100,10 @@ class Advertisement(DirtyFieldsMixin, models.Model):
         if 'additional_information' in self.get_dirty_fields():
             self.additional_information_view = list(self.additional_information.items())
         self.slug = unique_slugify(self, self.title)
-        self.date_of_deactivate = make_aware(datetime.now() + timedelta(days=60))
-        self.search_vector = SearchVector(self.title, self.description)
-        self.search_title_vector = SearchVector(self.title)
+        super().save(*args, **kwargs)
+        self.date_of_deactivate = self.date_of_create + timedelta(days=60)
+        self.search_vector = SearchVector('title', 'description')
+        self.search_title_vector = SearchVector('title')
         super().save(*args, **kwargs)
         if self.preview_image:
             try:
