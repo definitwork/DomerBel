@@ -1,0 +1,94 @@
+{% extends "profile_user.html" %} 
+{% load static %} 
+{% block css2 %}
+<link rel="stylesheet" href="{% static 'css/publications.css' %}">
+{% endblock css2 %}
+{% block title %}
+{% endblock title %}
+{% block search %}
+{% endblock search %}
+  {% block mainInfo %}
+  <form class="main__info">
+    <nav class="main__info-nav">
+      <ul class="main__info-list">
+          <li>
+              <a href="{% url 'users:user_add_publication' %}" class="advertisement__active">
+                  Добавить
+              </a>
+          </li>
+      </ul>
+      <label class="main__info-advertisement-nav-select-all" for="selectAll">
+          <input type="checkbox" name="" id="selectAll">
+          <p>
+              Выделить все публикации
+          </p>
+      </label>
+    </nav>
+    <div class="main__info-action">
+      <p>
+        Отмеченные:
+      </p>
+      <button>
+        Удалить
+      </button>
+    </div>
+    <ul class="publications__list">
+      <li>
+        <a href="#" class="publications__list-item">
+          <article>
+            <p class="article__date">
+              18 июля 2021 г.
+              20:42	
+            </p>
+            <div class="article__img">
+              <img src="{% static "img/logo.png" %}" alt="">
+            </div>
+            <div class="article__about">
+              <h3>
+                Как выбрать собаку, избежав хлопот и разочарований?
+              </h3>
+              <p>
+                Шаг 1. Анализ своих возможностей. Как выбрать собаку для квартиры? Породы собак для частного дома. Шаг 2. Пол питомца. Шаг 3. Возраст собаки. Шаг 4. Здоровье питомца. Шаг 5. Документы.
+              </p>
+              <p>
+                первый каталог
+              </p>
+              <input type="checkbox" name="">
+            </div>
+          </article>
+        </a>
+      </li>
+      {% for publications in user_publications %}
+        <li>
+          <a href="#" class="publications__list-item">
+            <article>
+              <p class="article__date">
+                18 июля 2021 г.
+                20:42	
+              </p>
+              <div class="article__img">
+                <img src="{% static "img/logo.png" %}" alt="">
+              </div>
+              <div class="article__about">
+                <h3>
+                  Как выбрать собаку, избежав хлопот и разочарований?
+                </h3>
+                <p>
+                  Шаг 1. Анализ своих возможностей. Как выбрать собаку для квартиры? Породы собак для частного дома. Шаг 2. Пол питомца. Шаг 3. Возраст собаки. Шаг 4. Здоровье питомца. Шаг 5. Документы.
+                </p>
+                <p>
+                  первый каталог
+                </p>
+                <input type="checkbox" name="">
+              </div>
+            </article>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </form>
+  {% endblock mainInfo %}
+{% block js %}
+<script src="{% static 'js/profile/storeLogo.js' %}"></script>
+<script src="{% static 'js/profile/region.js' %}"></script>
+{% endblock js %}

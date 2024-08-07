@@ -664,6 +664,35 @@ header {
     flex: 1 1 200px;
   }
 }
+.paginator {
+  width: 100%;
+}
+
+.list_pages ul {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.list_pages ul li a {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #3077a0;
+  font-size: 16px;
+}
+
+.page_num_selected {
+  padding: 5px 8px;
+  background: #3077a0;
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #fff;
+  font-size: 16px;
+}
+
 footer {
   padding: 40px 0;
 }

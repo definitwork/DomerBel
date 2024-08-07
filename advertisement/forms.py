@@ -18,7 +18,7 @@ class ImagePreviewWidget(forms.widgets.FileInput):
     def render(self, name, value, attrs=None, **kwargs):
         input_html = super().render(name, value, attrs=None, **kwargs)
         if value:
-            html = Template(f'{input_html}<div class="profile__logo-img"><img src="$link"/></div>')
+            html = Template(f'{input_html}<div class="photo_img"><img src="$link"/></div>')
             img_html = mark_safe(html.substitute(link=value.url))
             return img_html
         return input_html

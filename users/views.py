@@ -434,7 +434,7 @@ def get_user_all_publications(request):
         "user_publications": user_publications,
         "adaptive_navigation": "Мои публикации"
     }
-    return render(request=request, template_name='personal_account/user_all_publications.html', context=context)
+    return render(request=request, template_name='profile_publications.html', context=context)
 
 @login_required
 def add_user_publication(request):

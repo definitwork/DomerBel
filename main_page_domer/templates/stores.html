@@ -1,0 +1,65 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% block css %} 
+<link rel="stylesheet" href="{% static 'css/stores.css' %}">
+{% endblock css %} 
+{% block search %}
+<search class="main__search">
+  <form class="main__search-form">
+    <fieldset class="main__search-form-item">
+      <input type="text" name="text_search" placeholder="Поиск по тексту">
+      <button>
+        Искать
+      </button>
+    </fieldset>
+  </form>
+</search>
+{% endblock search %}
+{% block content %}
+<div class="category_navigation_bar">
+  <div class="category_wrapper">
+  {% if category %}
+      <ul class="category_list">
+          {% for cat in category %}
+              {% if cat %}
+                  {% if cat.store_counts != 0 %}
+                  <li>
+                    <a href="{% url 'stores_by_category' cat.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}" class="category">
+                        {{ cat.title }}, {{ cat.store_counts }}
+                    </a>
+                  </li>
+                  {% endif %}
+              {% endif %}
+          {% endfor %}
+      </ul>
+  {% endif %}
+  </div>
+</div>
+<div class="number_of_advertisements">
+  Найдено записей: {{ stores_found }}
+</div>
+  <section class="stores">
+    <ul class="stores__list">
+      <li class="stores__list-item">
+        <a href="#" class="stores__list-item-img">
+          <img src="{% static "img/logo.png" %}" alt="">
+        </a>
+        <div class="stores__list-item-about">
+          <h3>
+            <a href="#">
+              МЕТАЛЛ-КРОВАТИ
+            </a>
+        </h3>
+          <p class="stores__list-item-district">Заводской район</p>
+          <p>Ул. Долгобродская, 1</p>
+          <p>тел. +375291112233</p>
+        </div>
+        <p class="stores__list-item-category">
+          Мебель и интерьер
+        </p>
+      </li>
+    </ul>
+  </section>
+{% endblock content %} 
+{% block js %}
+{% endblock js %}

@@ -222,12 +222,12 @@
                                 </a>
                             </li>
                             <li class="header__up-nav-list-item">
-                                <a href="#">
+                                <a href="{% url "stores" %}">
                                     Магазины
                                 </a>
                             </li>
                             <li class="header__up-nav-list-item">
-                                <a href="#">
+                                <a href="{% url "publications" %}">
                                     Публикации
                                 </a>
                             </li>
@@ -296,54 +296,54 @@
             <main>
                 {% block search %}
                     <search class="main__search">
-                    <form class="main__search-form" action="{% url 'search_result' %}" method="GET">
-                      <fieldset class="main__search-form-item region">
-                        <select name="category" class="main__search-form-item-category">
-                            <option value="">
-                                Все разделы
-                            </option>
-                          {% for category in category_list %}
-                            {% if category.level == 0 %}
-                                <option value="{{ category.id }}" data-fetchid="{{ category.id }}">
-                                    {{ category }}
+                        <form class="main__search-form" action="{% url 'search_result' %}" method="GET">
+                        <fieldset class="main__search-form-item region">
+                            <select name="category" class="main__search-form-item-category">
+                                <option value="">
+                                    Все разделы
                                 </option>
-                            {% endif %}
-                          {% endfor %}
-                        </select>
-                        <input type="text" name="text_search" placeholder="Поиск по тексту" />
-                        <select name="region" class="main__search-form-item-region">
-                            <option value="">
-                                Любое расположение
-                            </option>
-                          {% for region in region_list %}
-                            {% if region.level == 0 %}
-                            <option value="{{ region.id }}" data-fetchid="{{ region.id }}">
-                                {{ region.area }}
-                            </option>
-                            {% endif %}
-                          {% endfor %}
-                        </select>
-                      </fieldset>
-                      <fieldset class="main__search-form-item labels">
-                        <div class="main__search-form-item-label-wrap">
-                          <label for="heading">
-                            <input type="checkbox" name="only_title" id="heading" />
-                            <p>Только в заголовках</p>
-                          </label>
-                          <label for="photos">
-                            <input type="checkbox" name="only_photo" id="photos" />
-                            <p>С фото</p>
-                          </label>
-                          <label for="videos">
-                            <input type="checkbox" name="only_video" id="videos" />
-                            <p>С видео</p>
-                          </label>
-                        </div>
-                        <button>Искать</button>
-                      </fieldset>
-                      <fieldset class="main__search-form-item fields">
-                      </fieldset>
-                    </form>
+                            {% for category in category_list %}
+                                {% if category.level == 0 %}
+                                    <option value="{{ category.id }}" data-fetchid="{{ category.id }}">
+                                        {{ category }}
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                            </select>
+                            <input type="text" name="text_search" placeholder="Поиск по тексту" />
+                            <select name="region" class="main__search-form-item-region">
+                                <option value="">
+                                    Любое расположение
+                                </option>
+                            {% for region in region_list %}
+                                {% if region.level == 0 %}
+                                <option value="{{ region.id }}" data-fetchid="{{ region.id }}">
+                                    {{ region.area }}
+                                </option>
+                                {% endif %}
+                            {% endfor %}
+                            </select>
+                        </fieldset>
+                        <fieldset class="main__search-form-item labels">
+                            <div class="main__search-form-item-label-wrap">
+                            <label for="heading">
+                                <input type="checkbox" name="only_title" id="heading" />
+                                <p>Только в заголовках</p>
+                            </label>
+                            <label for="photos">
+                                <input type="checkbox" name="only_photo" id="photos" />
+                                <p>С фото</p>
+                            </label>
+                            <label for="videos">
+                                <input type="checkbox" name="only_video" id="videos" />
+                                <p>С видео</p>
+                            </label>
+                            </div>
+                            <button>Искать</button>
+                        </fieldset>
+                        <fieldset class="main__search-form-item fields">
+                        </fieldset>
+                        </form>
                   </search>
                 {% endblock search %}
                 {% block crumbs %}
