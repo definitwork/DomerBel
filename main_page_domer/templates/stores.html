@@ -43,20 +43,26 @@
       {% for store in page_obj %}
       <li class="stores__list-item">
         <a href="{% url 'store_by_title' store.slug  %}" class="stores__list-item-img">
-          <img src="{% static 'img/logo.png' %}" alt="">
+          <img src="{{ store.logo_image.url }}" alt="{{ store.title }}">
         </a>
         <div class="stores__list-item-about">
           <h3>
-            <a href="#">
-              МЕТАЛЛ-КРОВАТИ
+            <a href="{% url 'store_by_title' store.slug  %}">
+              {{ store.title }}
             </a>
         </h3>
-          <p class="stores__list-item-district">Заводской район</p>
-          <p>Ул. Долгобродская, 1</p>
-          <p>тел. +375291112233</p>
+          <p class="stores__list-item-district">
+              {{ store.region }}
+          </p>
+            {% if store.address %}
+            <p>{{ store.address }}</p>
+            {% endif %}
+            {% if store.phone_num %}
+            <p>тел. {{ store.phone_num }}</p>
+            {% endif %}
         </div>
         <p class="stores__list-item-category">
-          Мебель и интерьер
+          {{ store.category }}
         </p>
       </li>
       {% endfor %}
