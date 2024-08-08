@@ -27,47 +27,28 @@
       <p>Найдено записей: {{ publications.count }} </p>
   </div>
   <ul class="publications__list">
-    <li>
-        <a href="#" class="publications__list-item">
-          <article>
-            <p class="article__date">
-              18 июля 2021 г.
-              20:42	
-            </p>
-            <div class="article__img">
-              <img src="{% static "img/logo.png" %}" alt="">
-            </div>
-            <div class="article__about">
-              <h3>
-                Как выбрать собаку, избежав хлопот и разочарований?
-              </h3>
-              <p>
-                Шаг 1. Анализ своих возможностей. Как выбрать собаку для квартиры? Породы собак для частного дома. Шаг 2. Пол питомца. Шаг 3. Возраст собаки. Шаг 4. Здоровье питомца. Шаг 5. Документы.
-              </p>
-              <p>
-                первый каталог
-              </p>
-            </div>
-          </article>
-        </a>
-      </li>
       {% for publication in publications %}
-          <li class="publication_list_item">
-              <a href="{% url 'publication_by_slug' publication.slug %}" class="publication_link">
-                  <div class="publication_link_wrap">
-                      <div class="publication_data">
-                          <p> {{ publication.date_of_create }} </p>
-                      </div>
-                      <div class="publication_img">
-                          <img src="{{ publication.preview_image.url }}" alt="Publication Photo">
-                      </div>
-                      <div class="publication_text">
-                          <p class="publication_text_title"> {{ publication.title }} </p>
-                          <p> {{ publication.announcement }} </p>
-                      </div>
-                  </div>
+      <li>
+        <article class="publications__list-item">
+          <a href="{% url 'publication_by_slug' publication.slug %}" class="article__date">
+            18 июля 2021 г.
+            20:42	
+          </a>
+          <a href="{% url 'publication_by_slug' publication.slug %}" class="article__img">
+            <img src="{{ publication.preview_image.url }}" alt="">
+          </a>
+          <div class="article__about">
+            <h3>
+              <a href="{% url 'publication_by_slug' publication.slug %}">
+                {{ publication.title }}
               </a>
-          </li>
+            </h3>
+            <p>
+              {{ publication.announcement|safe }}
+            </p>
+          </div>
+        </article>
+    </li>
       {% endfor %}
   </ul>
 </section>

@@ -5,19 +5,17 @@
 }
 
 .publications__list-item {
-  display: block;
+  display: flex;
+  gap: 10px;
   border: 1px solid black;
   padding: 5px;
 }
-.publications__list-item:hover h3, .publications__list-item:hover p {
+.publications__list-item a:hover {
   color: red;
-}
-.publications__list-item article {
-  display: flex;
-  gap: 10px;
 }
 
 .article__date {
+  display: block;
   align-self: center;
   flex: 0 0 150px;
   font-family: "Trebuchet MS", sans-serif;
@@ -28,6 +26,7 @@
 }
 
 .article__img {
+  display: block;
   flex: 0 0 150px;
 }
 .article__img img {
@@ -45,7 +44,7 @@
   flex-direction: column;
   gap: 10px;
 }
-.article__about h3 {
+.article__about h3 a {
   font-family: "Trebuchet MS", sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -63,9 +62,25 @@
   align-self: flex-start;
 }
 
+.article__edit {
+  align-self: center;
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #3077a0;
+  font-size: 14px;
+}
+.article__edit:hover {
+  color: red;
+}
+
 @media (max-width: 992px) {
-  .publications__list-item article {
+  .publications__list-item {
     flex-direction: column;
+  }
+  .article__edit {
+    order: 4;
+    align-self: initial;
   }
   .article__date {
     flex: initial;
