@@ -37,7 +37,7 @@
                 {% endfor %}
             </div>
             <div class="publication_text">
-                <p> {{ publication.description }} </p>
+                <p> {{ publication.description|safe }} </p>
             </div>
         </div>
         <p> Просмотров: {{ publication.counter_views }} </p>

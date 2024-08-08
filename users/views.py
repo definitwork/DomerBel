@@ -436,6 +436,7 @@ def get_user_all_publications(request):
     }
     return render(request=request, template_name='profile_publications.html', context=context)
 
+
 @login_required
 def add_user_publication(request):
     """ Добавление новой публикации """
