@@ -1,5 +1,5 @@
-const logoInput = document.getElementById('id_logo_image') || document.getElementById("id_preview_image")
-const logoLabel = document.querySelector(".main__info label[for='id_logo_image']") || document.querySelector(".main__info label[for='id_preview_image']")
+const logoInput = document.getElementById('id_logo_image') || document.getElementById("preview_image_logo_image")
+const logoLabel = document.querySelector(".main__info label[for='id_logo_image']") || document.querySelector(".main__info label[for='preview_image_logo_image']")
 const closeTag = document.querySelector(".delete_img")
 logoInput?.addEventListener('change', (event) => {
   const profileImg = document.querySelectorAll(".photo_img")

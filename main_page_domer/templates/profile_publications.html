@@ -37,21 +37,20 @@
     <ul class="publications__list">
       {% for publication in user_publications %}
         <li>
-          <a href="{% url 'publication_by_slug' publication.slug %}" class="publications__list-item">
-            <article>
-              <p class="article__date">
+            <article class="publications__list-item">
+              <a href="{% url 'publication_by_slug' publication.slug %}" class="article__date">
                 {{ publication.date_of_create|date:"d b. Y" }}
                 {{ publication.date_of_create|date:"H:i" }}
-              </p>
-          </div>
-              </p>
-              <a href="{% url 'users:edit_publication' publication.slug %}">Редактировать</a>
-              <div class="article__img">
+              </a>
+              <a href="{% url 'users:edit_publication' publication.slug %}" class="article__edit">Редактировать</a>
+              <a href="{% url 'publication_by_slug' publication.slug %}" class="article__img">
                 <img src="{{publication.preview_image.url}}" alt="">
-              </div>
+              </a>
               <div class="article__about">
                 <h3>
-                  {{ publication.title }}
+                  <a href="{% url 'publication_by_slug' publication.slug %}">
+                    {{ publication.title }}
+                  </a>
                 </h3>
                 <p>
                   {{ publication.announcement|safe }}
