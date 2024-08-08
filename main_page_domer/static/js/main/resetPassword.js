@@ -18,12 +18,10 @@ backBtn.addEventListener("click", () => {
 });
 
 function expiredCallbackResetRecaptcha() {
-  console.log(111, "reset");
   resetSubmitPasswordBtn.removeEventListener("click", requestResetPassword);
 }
 
 function callbackResetRecaptcha() {
-  console.log(2222, "reset");
   resetSubmitPasswordBtn.addEventListener("click", requestResetPassword);
 }
 

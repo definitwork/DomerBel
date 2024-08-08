@@ -53,6 +53,7 @@ function registration() {
         notificationModal.classList.add("modal__active");
         const notificationText = document.querySelector(".modals__notification-text");
         notificationText.innerText = data.success;
+        
       }
     })
     .catch((err) => {
