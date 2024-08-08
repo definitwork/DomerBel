@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock css %}
+{% block title %}
+{% endblock title %}
+{% block search %}
+<section class="store">
+  <div class="store__about">
+    <h2>
+      Container-Deshevo
+    </h2>
+    <p>
+      Компания "Container-Deshevo" - предлагает купить контейнер морской в Минске и Беларуси с доставкой из Москвы от 1 дня. Наша компания предлагает широкий ассортимент контейнеров, которые отвечают самым высоким стандартам качества и безопасности.
+    </p>
+  </div>
+  <div class="store__info">
+    <div class="store__info-img">
+      <img src="{% static "img/logo.png" %}" alt="">
+    </div>
+    <div class="store__info-district">
+      МИНСК
+    </div>
+    <div class="store__info-text">
+      г. Минск Минская область, Минский район, Луговослободской сельсовет, 7, корп. 1 терминал - Южный
+    </div>
+    <a href="#">
+      +375293562629
+    </a>
+    <p>
+      Отправить письмо
+    </p>
+    <a href="#">
+      Сайт магазина
+    </a>
+  </div>
+</section>
+<search class="main__search">
+    <form class="main__search-form" action="{% url 'users:personal_account_search_results' %}" method="GET">
+        <fieldset class="main__search-form-item region">
+            <select name="category" class="main__search-form-item-category">
+                <option value="">Все разделы</option>
+                {% for category in category_list %} {% if category.level == 0 %}
+                <option value="{{ category.id }}" data-fetchid="{{ category.id }}">
+                    {{ category }}
+                </option>
+                {% endif %} {% endfor %}
+            </select>
+            <input type="text" name="" placeholder="Поиск по тексту"/>
+            <select name="" class="main__search-form-item-area">
+                <option value=""></option>
+            </select>
+            <select name="region" class="main__search-form-item-region">
+                <option value="">Любое расположение</option>
+                {% for region in region_list %} {% if region.level == 0 %}
+                <option value="{{ region.id }}" data-fetchid="{{ region.id }}">
+                    {{ region.area }}
+                </option>
+                {% endif %} {% endfor %}
+            </select>
+        </fieldset>
+        <fieldset class="main__search-form-item labels">
+            <div class="main__search-form-item-label-wrap">
+                <input type="text" name="id" placeholder="№ объявления">
+                <label for="heading">
+                    <input type="checkbox" name="only_title" id="heading"/>
+                    <p>в заголовках</p>
+                </label>
+            </div>
+            <button>Искать</button>
+        </fieldset>
+        <fieldset class="main__search-form-item fields"></fieldset>
+    </form>
+</search>
+{% endblock search %}
+{% block content %}
+
+{% endblock content %}
+{% block js %}
+<script src="{% static 'js/profile/selectAdvertisement.js' %}"></script>
+<script src="{% static 'js/profile/errors.js' %}"></script>
+{% endblock js %}
