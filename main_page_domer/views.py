@@ -270,7 +270,7 @@ def get_site_map_page(request):
     context = {}
     context['nodes'] = category_list
 
-    return render(request, 'site_map.html', context)
+    return render(request, 'store_details.html', context)
 
 
 def get_help_page(request):
