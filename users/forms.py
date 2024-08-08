@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
+from advertisement.forms import ImagePreviewWidget
 from main_page_domer.models import Publication
 
 from .models import User, Message
@@ -72,6 +73,9 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class PublicationForm(forms.ModelForm):
+
+    preview_image = forms.ImageField(widget=ImagePreviewWidget(attrs={"id": "preview_image_logo_image"}))
+
     class Meta:
         model = Publication
         fields = ['title', 'announcement', 'description', 'video_link', 'preview_image']
