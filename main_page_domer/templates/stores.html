@@ -40,8 +40,9 @@
 </div>
   <section class="stores">
     <ul class="stores__list">
+      {% for store in page_obj %}
       <li class="stores__list-item">
-        <a href="#" class="stores__list-item-img">
+        <a href="{% url "store_by_title_and_category" store.slug %}" class="stores__list-item-img">
           <img src="{% static "img/logo.png" %}" alt="">
         </a>
         <div class="stores__list-item-about">
@@ -58,6 +59,7 @@
           Мебель и интерьер
         </p>
       </li>
+      {% endfor %}
     </ul>
   </section>
 {% endblock content %} 
