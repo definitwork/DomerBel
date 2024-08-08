@@ -72,10 +72,22 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class PublicationForm(forms.ModelForm):
-    pass
     class Meta:
         model = Publication
-        fields = ['title', 'announcement', 'description', 'video_link', ]
+        fields = ['title', 'announcement', 'description', 'video_link', 'preview_image']
+
+    def __init__(self, *args, **kwargs):
+        """
+        Обновление стилей формы под Bootstrap
+        """
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class': 'form-control', 'autocomplete': 'off'})
+
+        self.fields['announcement'].widget.attrs.update({'class': 'form-control django_ckeditor_5'})
+        self.fields['description'].widget.attrs.update({'class': 'form-control django_ckeditor_5'})
+        self.fields['announcement'].required = False
+        self.fields['description'].required = False
 
 
 class MessageForm(forms.ModelForm):

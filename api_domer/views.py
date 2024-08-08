@@ -104,7 +104,6 @@ def save_advertisement(request):
                                                                                           additional_information)
     if serializer.is_valid() and not serializer_additional_error.data:
         additional_information_save = Field.objects.filter(id__in=additional_information).order_by('id')
-        print(serializer.validated_data)
         for i in additional_information_save:
             additional_information[i.title] = ', '.join(additional_information.pop(f'{i.id}'))
         new_advertisement = Advertisement(author=None if request.user.is_anonymous else request.user,
@@ -264,44 +263,37 @@ class ThisPublicationSearchListAPIView(generics.ListAPIView):
 @api_view(['POST'])
 def save_publication(request):
     """ Сохранение новой публикации """
-    error_serializer = {'errors': []}
-    if request.method == "POST":
-        try:
-            query_dict = request.data.dict()
-            main_img_name = request.data.get('main_img')
-            preview_image_list = request.FILES.getlist('preview_image')
-            if len(preview_image_list) > 1:
-                for preview_img in preview_image_list:
-                    if preview_img.name == main_img_name:
-                        query_dict['preview_image'] = preview_img
-                        preview_image_list.remove(preview_img)
-            else:
-                preview_image_list = []
-            query_dict['user'] = request.user.id
-            serializer = SavePublicationSerializer(data=query_dict)
-            if serializer.is_valid():
-                serializer.save()
-                if preview_image_list != []:
-                    for preview_image in preview_image_list:
-                        serializer_for_photo_publication = SavePhotoPublicationSerializer(
-                            data={"publications": serializer.instance.id, "photo": preview_image})
-                        if serializer_for_photo_publication.is_valid():
-                            serializer_for_photo_publication.save()
-                        else:
-                            for field, errors in serializer_for_photo_publication.errors.items():
-                                error_serializer['errors'].append(
-                                    f"Поле '{field}' не прошло валидацию. Ошибки: {errors}")
-                            return Response({"error": "Ошибка валидации данных ", "detail": error_serializer},
-                                            status=status.HTTP_400_BAD_REQUEST)
-            else:
-                for field, errors in serializer.errors.items():
-                    error_serializer['errors'].append(f"Поле '{field}' не прошло валидацию. Ошибки: {errors}")
-                return Response({"error": "Ошибка валидации данных", "detail": error_serializer},
-                                status=status.HTTP_400_BAD_REQUEST)
+    try:
+        query_dict = request.data.dict()
+        print(query_dict)
+        main_img_name = request.data.get('main_img')
+        preview_image_list = request.FILES.getlist('preview_image')
+        if len(preview_image_list) > 1:
+            for preview_img in preview_image_list:
+                if preview_img.name == main_img_name:
+                    query_dict['preview_image'] = preview_img
+                    preview_image_list.remove(preview_img)
+        else:
+            preview_image_list = []
+        query_dict['user'] = request.user.id
+        serializer = SavePublicationSerializer(data=query_dict)
+        if serializer.is_valid():
+            serializer.save()
+            if preview_image_list != []:
+                for preview_image in preview_image_list:
+                    serializer_for_photo_publication = SavePhotoPublicationSerializer(
+                        data={"publications": serializer.instance.id, "photo": preview_image})
+                    if serializer_for_photo_publication.is_valid():
+                        serializer_for_photo_publication.save()
+                    else:
+                        return Response({"errors": serializer_for_photo_publication.errors},
+                                        status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-        except Exception as error:
-            return Response({"error": "Ошибка при сохранении публикации",
-                             "detail": str(error)}, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as error:
+        return Response({"error": "Ошибка при сохранении публикации",
+                         "detail": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
     return Response({"created": "Публикация успешно сохранена"}, status=status.HTTP_201_CREATED)
 

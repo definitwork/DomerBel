@@ -440,6 +440,12 @@ def get_user_all_publications(request):
 def add_user_publication(request):
     """ Добавление новой публикации """
     form_publication = PublicationForm()
+    if request.method == 'POST':
+        form_publication = PublicationForm(request.POST, request.FILES)
+        if form_publication.is_valid():
+            publication = form_publication.save(commit=False)
+            publication.user = request.user
+            publication.save()
     context = {
         "form_publication": form_publication,
         "adaptive_navigation": "Добавление публикации"

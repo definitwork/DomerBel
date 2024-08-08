@@ -86,7 +86,7 @@ class Publication(models.Model):
     slug = models.SlugField(max_length=255, unique=True, verbose_name="URL")
     announcement = CKEditor5Field(config_name='extends', verbose_name='Аннотация')
     description = CKEditor5Field(config_name='extends', verbose_name='Текст статьи')
-    preview_image = models.ImageField(upload_to="images/publications", verbose_name="Фото")
+    preview_image = models.ImageField(upload_to="images/publications/%Y/%m/%d", verbose_name="Фото")
     video_link = models.URLField(blank=True, null=True, verbose_name="Ссылка на видео")
     date_of_create = models.DateTimeField(
         auto_now_add=True, verbose_name="Дата создания"
@@ -106,7 +106,7 @@ class Publication(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        self.slug = unique_slugify(self.title)
+        self.slug = unique_slugify(self, self.title)
         super(Publication, self).save(*args, **kwargs)
 
 

@@ -8,41 +8,32 @@
 {% block search %}
 {% endblock search %}
   {% block mainInfo %}
-  <form class="main__info">
-      <label>
-        <p>
-          Заголовок:
-        </p>
-        <input type="text" name="" placeholder="Заголовок">
-      </label>
-      <label>
-        <p>
-          Аннотация:
-        </p>
-        <textarea name="" placeholder="Аннотация"></textarea>
-      </label>
-      <label>
-        <p>
-          Текст статьи:
-        </p>
-        <textarea name="" placeholder="Аннотация"></textarea>
-      </label>
-      <label>
-        <p>
-          Ссылка на видео:
-        </p>
-        <input type="text" name="" placeholder="Ссылка на видео">
-      </label>
-      <label>
-        <p>
-          Загрузите фотографии
-        </p>
-        <input type="file" name="" multiple>
-      </label>
-      <button class="submit__btn">
+  <form class="main__info" method="POST" enctype="multipart/form-data" action="">
+      {% csrf_token %}
+      {% if form_publication.non_field_errors %}
+            <div class="form-error">{{ form_publication.non_field_errors }}</div>
+        {% endif %}
+      {{ form_publication.media }}
+        {% for f in form_publication %}
+        <label for="{{ f.id_for_label }}" class="{% if f.errors %}label__error{% endif %}">
+            <p class="form-label">
+                {% if f.field.required %}
+                <span>*</span>
+                {% endif %}
+                {{f.label}}:
+            </p>
+            {{ f }}
+            {% if f.errors %}
+                <div class="form-error">{{ f.errors }}</div>
+            {% endif %}
+        </label>
+      {% endfor %}
+      <button class="submit__btn" id="add_publication">
         Разместить публикацию
       </button>
   </form>
   {% endblock mainInfo %}
-{% block js %}
-{% endblock js %}
+{% block js2 %}
+<!--<script src="{% static 'js/profile/savePublicaion.js' %}"></script>-->
+{% endblock js2 %}
+

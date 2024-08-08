@@ -1,6 +1,5 @@
-const addPublicationButton = document.querySelector(".button_add_publication");
-addPublicationButton.addEventListener("click", savePublication);
-
+const addPublicationButton = document.getElementById("add_publication");
+addPublicationButton.addEventListener("click", savePublication)
 const preview = document.querySelector('.photo_preview')
 preview.addEventListener('click', removeImg)
 const inputElement = document.getElementById("photo_list");
@@ -71,12 +70,15 @@ function removeImg(event) {
 
 
 function savePublication() {
-    const form = document.querySelector(".form_add_publication");
+    console.log('johan')
+    const form = document.querySelector(".main__info");
     const title = form.querySelector("input[name='title']");
     const announcement = form.querySelector("textarea[name='announcement']");
     const description = form.querySelector("textarea[name='description']");
     const preview_image = form.querySelector("input[name='preview_image']");
     const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    console.log(description.textContent)
+    console.log(announcement.textContent)
 
     let data = new FormData(form);
     data.append("main_img", mainImg.name)
