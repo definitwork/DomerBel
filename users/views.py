@@ -446,6 +446,7 @@ def add_user_publication(request):
             publication = form_publication.save(commit=False)
             publication.user = request.user
             publication.save()
+            return redirect('users:user_all_publications')
     context = {
         "form_publication": form_publication,
         "adaptive_navigation": "Добавление публикации"
@@ -474,7 +475,7 @@ def edit_publication(request, publication_slug):
         if form_publication.is_valid():
             form_publication.save()
             messages.success(request, f"Публикация {publication} успешно изменена!")
-            return redirect('users:my_store')
+            return redirect('users:user_all_publications')
     else:
         form_publication = PublicationForm(instance=publication)
 

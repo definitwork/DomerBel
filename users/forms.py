@@ -74,16 +74,14 @@ class CustomUserChangeForm(UserChangeForm):
 
 class PublicationForm(forms.ModelForm):
 
-    preview_image = forms.ImageField(widget=ImagePreviewWidget(attrs={"id": "preview_image_logo_image"}))
+    preview_image = forms.ImageField(widget=ImagePreviewWidget(attrs={"id": "id_preview_image"}),
+                                     label='Изображение публикации')
 
     class Meta:
         model = Publication
         fields = ['title', 'announcement', 'description', 'video_link', 'preview_image']
 
     def __init__(self, *args, **kwargs):
-        """
-        Обновление стилей формы под Bootstrap
-        """
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs.update({'class': 'form-control', 'autocomplete': 'off'})

@@ -40,8 +40,10 @@
           <a href="{% url 'publication_by_slug' publication.slug %}" class="publications__list-item">
             <article>
               <p class="article__date">
-                18 июля 2021 г.
-                20:42	
+                {{ publication.date_of_create|date:"d b. Y" }}
+                {{ publication.date_of_create|date:"H:i" }}
+              </p>
+          </div>
               </p>
               <a href="{% url 'users:edit_publication' publication.slug %}">Редактировать</a>
               <div class="article__img">
