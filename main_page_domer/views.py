@@ -190,7 +190,7 @@ def get_store_by_title(request, store_slug):
         'date': state_sort_by_date,
         'view_type': view_type,
     }
-    response = render(request, html, context)
+    response = render(request, 'store_details.html', context)
     response.set_cookie('sort', sort_for_paginator)
     response.set_cookie('date', state_sort_by_date)
     response.set_cookie('sorted_by', order_by)
