@@ -24,7 +24,6 @@ function getOption(url) {
         return
       }
       if (data.some(item => item.search === "")) return
-      console.log(data);
       if (Array.isArray(data) && data.some(item=>item.area)) {
         createSelectElement(data, "Любое расположение")
         return
@@ -49,7 +48,6 @@ function getInnerList(data, id) {
   dataModel.outer_id = +fields.children[Array.from(fields.children).findIndex(
     (item) => item.dataset.active === "true"
   )].name
-  console.log(dataModel);
   createSelectElement(dataModel, data?.search?.split("|")[1]?.trim(), fields)
 }
 

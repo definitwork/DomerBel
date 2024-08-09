@@ -46,7 +46,6 @@ function requestResetPassword() {
     })
     .catch((error) => {
         const errorMessage = JSON.parse(error.message)
-        console.log(errorMessage)
         if (errorMessage["recaptcha"]) {
             resetSubmitPasswordBtn.removeEventListener("click", requestResetPassword);
           }
