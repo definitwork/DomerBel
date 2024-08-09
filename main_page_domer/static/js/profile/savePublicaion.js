@@ -8,7 +8,6 @@ let inputElementArray = []
 let mainImg = ""
 
 function handleFiles() {
-    console.log('да ')
     const dt = new DataTransfer();
     const fileList = this.files;
     for (let i = 0; i < fileList.length; i++) {
@@ -70,19 +69,15 @@ function removeImg(event) {
 
 
 function savePublication() {
-    console.log('johan')
     const form = document.querySelector(".main__info");
     const title = form.querySelector("input[name='title']");
     const announcement = form.querySelector("textarea[name='announcement']");
     const description = form.querySelector("textarea[name='description']");
     const preview_image = form.querySelector("input[name='preview_image']");
     const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-    console.log(description.textContent)
-    console.log(announcement.textContent)
 
     let data = new FormData(form);
     data.append("main_img", mainImg.name)
-    console.log(data);
 
     fetch(`http://127.0.0.1:8000/api/v1/save_publication/`, {
         method: "POST",
@@ -94,13 +89,10 @@ function savePublication() {
     .then(response => {
         if (response.ok) {
             document.location.href = 'http://127.0.0.1:8000/users/user_all_publications/';
-        } else {
-            console.log("Ошибка сохранения публикации.");
         }
         return response.json()
     })
     .then(response => {
-        console.log(response);
     })
     .catch(error => {
         console.error("Error:", error);

@@ -63,7 +63,6 @@ function removeImg(event) {
     let z = []
 
     let target = event.target
-    console.log('000', target)
     if (target.classList.contains("delete_img")) {
         target.parentElement.remove()
         if (target.parentElement.children[1].classList.contains("main_img")) {
@@ -76,7 +75,6 @@ function removeImg(event) {
         }
         if (window.location.href === `http://127.0.0.1:8000/users/personal_account/edit_publication/${document.getElementById('add_adver').dataset.slug}/`) {
             deletedImages.push(target.dataset.name)
-            console.log(deletedImages)
         }
         inputElementArray = inputElementArray.filter(file => file.name !== target.dataset.name);
         for (let i of inputElementArray) {
@@ -110,7 +108,6 @@ function savePublication() {
     data.append("main_img", mainImg.name);
     data.append("dataSlag", dataSlag);
     data.append("deletedImages", deletedImages);
-    console.log('11111', data.get('preview_image').name)
 
     fetch(`http://127.0.0.1:8000/api/v1/edit_publication/`, {
         method: "POST",
@@ -122,13 +119,8 @@ function savePublication() {
     .then(response => {
         if (response.ok) {
             document.location.href = 'http://127.0.0.1:8000/users/user_all_publications/';
-        } else {
-            console.log("Ошибка сохранения публикации.");
         }
         return response.json()
-    })
-    .then(response => {
-        console.log(response);
     })
     .catch(error => {
         console.error("Error:", error);
