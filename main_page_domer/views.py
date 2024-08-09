@@ -179,7 +179,7 @@ def get_store_by_title(request, store_slug):
                                        sort_for_paginator)
 
     context = {
-        'store_page': store_page,
+        'store': store_page,
         'oblast': oblast,
         "category_list": category_list,
         "ads_found": advertisement_queryset.count(),

@@ -1,9 +1,8 @@
-const regionOpened = document.querySelector(".region_opened")
-regionOpened.addEventListener("click", showCity)
 const getElementSelectOblast = document.getElementById("select_oblast")
+getElementSelectOblast.addEventListener("change", showCity)
 const getElementSelectCategory0 = document.getElementById("select_category_0")
 const categorySelect = document.querySelector(".category_select")
-categorySelect.addEventListener("click", showCategory)
+categorySelect.addEventListener("change", showCategory)
 let regionStatus = document.getElementById("select_oblast").value
 let statusCategory0 = document.getElementById("select_category_0")
   ? document.getElementById("select_category_0").value
@@ -452,12 +451,12 @@ function showAdditionalInformationTwo(event) {
 }
 
 const bearerCompany = document.querySelector(".description_radio")
-bearerCompany.addEventListener("click", bearerCompanyInfo)
+bearerCompany.addEventListener("change", bearerCompanyInfo)
 
 function bearerCompanyInfo(event) {
   if (event.target.id === "bearer_company") {
     if (!document.querySelector(".bearer_company_store")) {
-      fetch`http://127.0.0.1:8000/api/v1/get_store_for_advertisement/`
+      fetch(`http://127.0.0.1:8000/api/v1/get_store_for_advertisement/`)
         .then((response) => response.json())
         .then((data) => {
           const bearerCompanyStore = document.createElement("div")

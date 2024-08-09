@@ -208,6 +208,31 @@
                     </button>
                 </div>
             </div>
+            <div class="modals__more">
+                <div class="modals__more-close"></div>
+                {% for category in category_list%}
+                    {% if category.level == 0 %}
+                    <div class="modals__more-item">
+                        <h3>
+                            <a href="#">
+                                {{category}}
+                            </a>
+                        </h3>
+                        <ul>
+                            {% for category_child in category_list%}
+                                {% if category_child.parent_id == category.id %}
+                                    <li>
+                                        <a href="#">
+                                            {{category_child}}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
             {% block modals %}
             {% endblock modals %}
         </div>
@@ -282,7 +307,7 @@
                                     Недвижимость
                                 </a>
                             </li>
-                            <li class="header__bottom-nav-list-item">
+                            <li class="header__bottom-nav-list-item modal__more">
                                 <a href="#">
                                     Еще...
                                 </a>
@@ -347,7 +372,7 @@
                         <fieldset class="main__search-form-item fields">
                         </fieldset>
                         </form>
-                  </search>
+                    </search>
                 {% endblock search %}
                 {% block crumbs %}
                 {% endblock crumbs %}
@@ -400,6 +425,7 @@
     {% block js %}
     {% endblock %}
     <script src="{% static "js/main/search.js" %}"></script>
+    <script src="{% static "js/main/moreList.js" %}"></script>
     <script src="{% static "js/autorization.js" %}"></script>
     <script src="{% static "js/main/login.js" %}"></script>
     <script src="{% static "js/signIn.js" %}"></script>

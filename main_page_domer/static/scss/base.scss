@@ -13,6 +13,13 @@
 @import "./formNotifications";
 @import "./footer";
 
+a {
+  @include fonts($mainColor, 14px, 400);
+  &:hover {
+    color: $colorHover;
+  }
+}
+
 .submit__btn {
     padding: 10px;
     border: 1px solid $defaultColor;

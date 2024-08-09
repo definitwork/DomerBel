@@ -2,7 +2,7 @@ const modalsBlock = document.querySelector('.modals');
 const modalLogin = document.querySelector('.modals__login');
 const loginBtn = document.querySelector('.header__up-user');
 
-modalsBlock.addEventListener('click', (event) => {
+modalsBlock.addEventListener('click', (event) => {    
     if(event.target === modalsBlock){
         modalsBlock.classList.remove('modal__active');
         for(let i of modalsBlock.children) {

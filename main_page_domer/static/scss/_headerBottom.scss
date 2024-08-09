@@ -40,6 +40,10 @@
 
   & a {
     text-align: center;
+
+    &:hover {
+      color: #fff;
+    }
   }
 }
 

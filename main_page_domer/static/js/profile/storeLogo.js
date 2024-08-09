@@ -20,7 +20,7 @@ logoInput?.addEventListener('change', (event) => {
     img.src = e.target.result
     div.append(img)
     div.append(cross)
-    logoLabel.after(div)
+    logoLabel.append(div)
     cross.addEventListener('click', (event) => {
       event.target.parentElement.remove()
       logoInput.value = ""

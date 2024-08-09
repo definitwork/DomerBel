@@ -464,6 +464,32 @@
   color: red;
 }
 
+.more {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20 px;
+  margin-top: 20px;
+}
+
+.more__item h2 {
+  margin-bottom: 5px;
+}
+.more__item h2 a {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  color: black;
+  font-size: 16px;
+}
+.more__item h2 a:hover {
+  color: red;
+}
+.more__item ul {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .advertisement {
   display: flex;
   align-items: flex-end;

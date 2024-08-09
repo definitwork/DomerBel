@@ -360,6 +360,60 @@
   display: none;
 }
 
+.modals__more {
+  width: 100%;
+  max-width: 920px;
+  padding: 15px;
+  background: #fff;
+  border-radius: 5px;
+  display: none;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+  position: relative;
+}
+.modals__more h3 {
+  margin-bottom: 10px;
+}
+.modals__more h3 a {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 21px;
+}
+.modals__more h3 a:hover {
+  color: red;
+}
+
+.modals__more-close {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  width: 15px;
+  height: 15px;
+  background: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+.modals__more-close::before, .modals__more-close::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  position: absolute;
+  top: 45%;
+  right: 0;
+  z-index: 1;
+  transform: rotate(45deg);
+}
+.modals__more-close::after {
+  transform: rotate(-45deg);
+}
+
+.modals__active-grid {
+  display: grid;
+}
+
 .header__up {
   display: flex;
   align-items: center;
@@ -507,6 +561,9 @@
 }
 .header__bottom-send-wrap a {
   text-align: center;
+}
+.header__bottom-send-wrap a:hover {
+  color: #fff;
 }
 
 .header__bottom-send {
@@ -749,6 +806,17 @@ footer {
   font-size: 14px;
 }
 .footer__nav-list-item a:hover {
+  color: red;
+}
+
+a {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #3077a0;
+  font-size: 14px;
+}
+a:hover {
   color: red;
 }
 

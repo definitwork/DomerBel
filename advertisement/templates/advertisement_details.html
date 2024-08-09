@@ -179,9 +179,9 @@
             <div class="details__advertisement-about-list-item-img">
               <img src="{% static "img/icons/telefon.gif" %}" alt="phone">
             </div>
-            <p>
+            <p class="details__advertisement-about-list-item-phone">
               <span>Показать номер телефона</span>
-              <span>{{ advertisement.phone_number }}</span>
+              <span>{{ advertisement.phone_num }}</span>
             </p>
           </li>
           <li class="details__advertisement-about-list-item details__advertisement-about-list-item-action">
@@ -520,4 +520,5 @@
   <script src="{% static 'js/details/slider.js' %}"></script>
   <script src="{% static 'js/details/drop.js' %}"></script>
   <script src="{% static 'js/details/magnifier.js' %}"></script>
+  <script src="{% static "js/details/showPhone.js" %}"></script>
 {% endblock js %}
