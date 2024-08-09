@@ -214,7 +214,7 @@
                     {% if category.level == 0 %}
                     <div class="modals__more-item">
                         <h3>
-                            <a href="#">
+                            <a href="{% url 'advertisement_by_category' category.slug %}">
                                 {{category}}
                             </a>
                         </h3>
@@ -222,7 +222,7 @@
                             {% for category_child in category_list%}
                                 {% if category_child.parent_id == category.id %}
                                     <li>
-                                        <a href="#">
+                                        <a href="{% url 'advertisement_by_category' category.slug %}">
                                             {{category_child}}
                                         </a>
                                     </li>
@@ -250,12 +250,12 @@
                                 </a>
                             </li>
                             <li class="header__up-nav-list-item">
-                                <a href="{% url "stores" %}">
+                                <a href="{% url 'stores' %}">
                                     Магазины
                                 </a>
                             </li>
                             <li class="header__up-nav-list-item">
-                                <a href="{% url "publications" %}">
+                                <a href="{% url 'publications' %}">
                                     Публикации
                                 </a>
                             </li>
@@ -383,22 +383,22 @@
                 <nav class="footer__nav">
                     <ul class="footer__nav-list">
                         <li class="footer__nav-list-item">
-                            <a href="#">
+                            <a href="{% url 'place_an_ad' %}">
                                 Подать объявление
                             </a>
                         </li>
                         <li class="footer__nav-list-item">
-                            <a href="#">
+                            <a href="{% url 'advertisement' %}">
                                 Объявления
                             </a>
                         </li>
                         <li class="footer__nav-list-item">
-                            <a href="#">
+                            <a href="{% url 'stores' %}">
                                 Магазины
                             </a>
                         </li>
                         <li class="footer__nav-list-item">
-                            <a href="#">
+                            <a href="{% url 'publications' %}">
                                 Помощь
                             </a>
                         </li>
@@ -424,14 +424,14 @@
     </div>
     {% block js %}
     {% endblock %}
-    <script src="{% static "js/main/search.js" %}"></script>
-    <script src="{% static "js/main/moreList.js" %}"></script>
-    <script src="{% static "js/autorization.js" %}"></script>
-    <script src="{% static "js/main/login.js" %}"></script>
-    <script src="{% static "js/signIn.js" %}"></script>
-    <script src="{% static "js/main/resetPassword.js" %}"></script>
-    <script src="{% static "js/main/setUrl.js" %}"></script>
-    <script src="{% static "js/main/notification.js" %}"></script>
+    <script src="{% static 'js/main/search.js' %}"></script>
+    <script src="{% static 'js/main/moreList.js' %}"></script>
+    <script src="{% static 'js/autorization.js' %}"></script>
+    <script src="{% static 'js/main/login.js' %}"></script>
+    <script src="{% static 'js/signIn.js' %}"></script>
+    <script src="{% static 'js/main/resetPassword.js' %}"></script>
+    <script src="{% static 'js/main/setUrl.js' %}"></script>
+    <script src="{% static 'js/main/notification.js' %}"></script>
     <script src="https://www.google.com/recaptcha/api.js" async></script>
   </body>
 </html>

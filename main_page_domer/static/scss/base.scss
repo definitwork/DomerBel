@@ -67,3 +67,9 @@ a {
 .modal__active {
     display: flex;
 }
+
+input, select, textarea {
+  &:focus {
+    border: 1px solid hsl(218, 81.8%, 56.9%) !important;
+  }
+}
