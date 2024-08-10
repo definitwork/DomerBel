@@ -48,9 +48,11 @@
       alt="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
     </div>
     {% for photo in advertisement.photoadvertisement_set.all %}
-    <div>
+    {% if photo.photo.url != advertisement.preview_image.url %}
+      <div>
       <img data-lazy="{{ photo.photo.url }}" alt="{{ photo.photo.url }}">
     </div>
+      {% endif %}
     {% endfor %}
   </div>
   <div class="magnifier__zoom-second">
@@ -64,9 +66,11 @@
                                  alt="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
     </div>
     {% for photo in advertisement.photoadvertisement_set.all %}
+      {% if photo.photo.url != advertisement.preview_image.url %}
     <div class="magnifier__zoom-second-item">
       <img data-lazy="{{ photo.photo.url }}" alt="{{ photo.photo.url }}">
     </div>
+      {% endif %}
     {% endfor %}
   </div>
 </div>
@@ -106,10 +110,16 @@
                   allowfullscreen></iframe>
               </div>
               {% endif %}
+                <div>
+                    <img src="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
+                                 alt="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
+                </div>
               {% for photo in advertisement.photoadvertisement_set.all %}
+                {% if photo.photo.url != advertisement.preview_image.url %}
               <div>
                 <img data-lazy="{{ photo.photo.url }}" alt="{{ photo.photo.url }}">
               </div>
+                {% endif %}
               {% endfor %}
             </div>
             <div class="magnifier">
@@ -122,10 +132,16 @@
               <img data-lazy="https://i.ytimg.com/vi/{{ advertisement.video_link|cut:'https://www.youtube.com/watch?v=' }}/hqdefault.jpg" alt="">
             </li>
             {% endif %}
+              <li class="details__advertisement-view-list-img-item">
+                    <img src="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
+                                 alt="{% if advertisement.preview_image %} {{ advertisement.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
+              </li>
             {% for photo in advertisement.photoadvertisement_set.all %}
+              {% if photo.photo.url != advertisement.preview_image.url %}
             <li class="details__advertisement-view-list-img-item">
               <img data-lazy="{{ photo.photo.url }}" alt="{{ photo.photo.url }}">
             </li>
+              {% endif %}
             {% endfor %}
           </ul>
         </div>

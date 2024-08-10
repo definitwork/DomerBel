@@ -39,8 +39,8 @@ def publication_photo_delete(sender, instance, **kwargs):
     instance.preview_image.delete(False)
 
 
-@receiver(pre_delete, sender=PhotoAdvertisement)
-def publication_photo_delete(sender, instance, **kwargs):
-    """ Удаление файлов перед удалением экземпляра
-    дополнительного изображения объявления """
-    instance.photo.delete(False)
+# @receiver(pre_delete, sender=PhotoAdvertisement)
+# def publication_photo_delete(sender, instance, **kwargs):
+#     """ Удаление файлов перед удалением экземпляра
+#     дополнительного изображения объявления """
+#     instance.photo.delete(False)

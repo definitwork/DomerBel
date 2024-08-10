@@ -126,3 +126,14 @@ class PublicationAdmin(admin.ModelAdmin):
     ordering = [
         "date_of_create",
     ]
+
+
+class Help(models.Model):
+    announcement = CKEditor5Field(config_name='extends', verbose_name='Текст помощи')
+
+    class Meta:
+        verbose_name = "Текст страницы помощь"
+        verbose_name_plural = "Текст страницы помощь"
+
+    def __str__(self):
+        return f'Текст страницы помощь'

@@ -5,9 +5,7 @@ from django.urls import path, include
 
 from api_domer.views import get_list_of_cities, get_list_of_categories, get_region_list, get_category_list, \
     get_categories_for_search, get_field_list, get_elementtwo_list, save_advertisement, get_store_for_advertisement, \
-    update_advertisement, registration_user, login_user, logout_user, password_reset, ThisPublicationSearchListAPIView, \
-                             save_publication, edit_publication
-
+    update_advertisement, registration_user, login_user, logout_user, password_reset
 
 
 urlpatterns = [
@@ -25,7 +23,4 @@ urlpatterns = [
     path('login_user/', login_user),
     path('logout/', logout_user),
     path('password_reset/', password_reset),
-    path('get_search_publications/', ThisPublicationSearchListAPIView.as_view(), name='get_search_publications'),
-    path('save_publication/', save_publication),
-    path('edit_publication/', edit_publication),
 ]
