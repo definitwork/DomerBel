@@ -7,6 +7,7 @@ modalsBlock.addEventListener('click', (event) => {
         modalsBlock.classList.remove('modal__active');
         for(let i of modalsBlock.children) {
             i.classList.remove('modal__active');
+            i.classList.remove("modals__active-grid")
             const fieldErorr = document.querySelectorAll('.modals__signIn-error')
             fieldErorr.forEach(item => item.remove())
         }
