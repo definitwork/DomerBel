@@ -6,9 +6,7 @@ const getRegion = document.querySelector(".main__search-form-item-region")
 function getOption(url) {
   fetch(url)
     .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      
+    .then((data) => {      
       if (data.length === 0) return false
       if (data.some(item => item.spisok !== null && item.spisok !== undefined) && fields.children.length !== 0) {
         data.forEach((item) => {

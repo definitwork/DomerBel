@@ -29,6 +29,7 @@
 .modals__notification-text {
     @include fonts($defaultColor, 18px, 600);
     text-align: center;
+    word-break: break-word;
 }
 
 .modals__active-resetPassword {
