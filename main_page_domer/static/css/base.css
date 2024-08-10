@@ -98,10 +98,8 @@
   max-height: 800px;
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -o-object-position: center;
-     object-position: center;
+  object-fit: cover;
+  object-position: center;
   border: 1px solid #D4D4D4;
   border-radius: 8px;
 }
@@ -137,10 +135,8 @@
 .magnifier__zoom-second img {
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -o-object-position: center;
-     object-position: center;
+  object-fit: cover;
+  object-position: center;
   border-radius: 8px;
 }
 
@@ -183,13 +179,6 @@
   padding: 10px;
   border-radius: 8px;
   border: 1px solid black;
-}
-.modals__login-field input::-moz-placeholder {
-  font-family: "Trebuchet MS", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  color: rgb(110, 109, 109);
-  font-size: 14px;
 }
 .modals__login-field input::placeholder {
   font-family: "Trebuchet MS", sans-serif;
@@ -635,13 +624,6 @@ header {
   color: black;
   font-size: 14px;
 }
-.main__search-form-item input::-moz-placeholder {
-  font-family: "Trebuchet MS", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  color: gray;
-  font-size: 14px;
-}
 .main__search-form-item input::placeholder {
   font-family: "Trebuchet MS", sans-serif;
   font-weight: 400;
@@ -899,4 +881,6 @@ a:hover {
 
 input:focus, select:focus, textarea:focus {
   border: 1px solid hsl(218, 81.8%, 56.9%) !important;
-}/*# sourceMappingURL=base.css.map */
+}
+
+/*# sourceMappingURL=base.css.map */
