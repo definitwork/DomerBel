@@ -344,6 +344,7 @@
   color: black;
   font-size: 18px;
   text-align: center;
+  word-break: break-word;
 }
 
 .modals__active-resetPassword {
@@ -617,6 +618,7 @@ header {
 .main__search-form-item input {
   flex: 1 1 350px;
   padding: 6px;
+  border: 1px solid #D4D4D4;
   border-radius: 5px;
   font-family: "Trebuchet MS", sans-serif;
   font-weight: 400;
@@ -632,6 +634,7 @@ header {
   font-size: 14px;
 }
 .main__search-form-item select {
+  border: 1px solid #D4D4D4;
   flex: 1 1 200px;
   padding: 5px;
   border-radius: 5px;

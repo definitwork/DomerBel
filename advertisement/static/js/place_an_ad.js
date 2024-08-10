@@ -664,7 +664,10 @@ function saveAdvertisement() {
         error.data = data
         throw error
       }
-      document.location.href = "http://127.0.0.1:8000/"
+      document.querySelector(".modals")?.classList?.add("modal__active")
+      document.querySelector(".modals__notification")?.classList?.add("modal__active")
+      document.querySelector(".modals__notification-text").innerText = data?.created
+      
     })
     .catch((msg) => {
       if (msg.data.error.title) {

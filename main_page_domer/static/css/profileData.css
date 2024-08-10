@@ -44,6 +44,7 @@
   max-width: 250px;
   border: 1px solid #D4D4D4;
   padding: 10px;
+  border-radius: 7px;
 }
 .form__wrapper input::placeholder {
   font-family: "Trebuchet MS", sans-serif;
