@@ -7,6 +7,8 @@ function getOption(url) {
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
+      console.log(data);
+      
       if (data.length === 0) return false
       if (data.some(item => item.spisok !== null && item.spisok !== undefined) && fields.children.length !== 0) {
         data.forEach((item) => {
@@ -37,7 +39,8 @@ function getOption(url) {
 
 function getInnerList(data, id) {
   const dataModel = data.spisok.element_set.find((item) => item.id == id)
-  if(!dataModel) {
+  if(!dataModel || dataModel?.elementtwo_set.length === 0) {
+    
     fields.children[
       Array.from(fields.children).findIndex((item) =>
         item.classList.contains("category__mark")
