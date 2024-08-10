@@ -17,7 +17,7 @@ let statusCategory3 = document.getElementById("select_category_3")
   ? document.getElementById("select_category_3").value
   : ""
 const informationList = document.querySelector(".additional_information")
-informationList.addEventListener("click", showAdditionalInformationTwo)
+informationList.addEventListener("change", showAdditionalInformationTwo)
 let statusElementTwo = document.querySelector(
   ".information_item.information_item_two"
 )
