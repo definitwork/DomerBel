@@ -8,6 +8,9 @@ function getOption(url) {
     .then((response) => response.json())
     .then((data) => {      
       if (data.length === 0) return false
+      if(window.location.pathname.includes("stores") && fields.children.length >= 1) {
+        return
+      }
       if (data.some(item => item.spisok !== null && item.spisok !== undefined) && fields.children.length !== 0) {
         data.forEach((item) => {
           if (
@@ -28,7 +31,7 @@ function getOption(url) {
         createSelectElement(data, "Любое расположение")
         return
       }
-      createSelectElement(data, {id:"", title:"Все разделы"},fields)
+      createSelectElement(data, {id:"", title:"Все разделы"}, fields)
     })
     .catch((error) => {
       console.error(error, "error obj")
@@ -174,15 +177,18 @@ function getCategoryFunc(event, func) {
     if(event.target.dataset.level && event.target.value === ""){
       return
     }
-  }
+  }  
   if(event.target.name === "region") {
     getRegion?.nextElementSibling?.remove()
-    if(event.target.value === ""){
+    if(event.target.value === "" || event.target.value == undefined) {
       return
     }
     func(`http://127.0.0.1:8000/api/v1/get_city_list/${id}`)
     return
   }  
+  if(event.target.value === undefined || event.target.value === "") {
+    return
+  }
   if (!func(`http://127.0.0.1:8000/api/v1/categories_for_search/${id}`)) {
     func(`http://127.0.0.1:8000/api/v1/get_field_list/?id=${id}`)
   }else{

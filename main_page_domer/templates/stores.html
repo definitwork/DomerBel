@@ -4,15 +4,43 @@
 <link rel="stylesheet" href="{% static 'css/stores.css' %}">
 {% endblock css %} 
 {% block search %}
-<search class="main__search">
-  <form class="main__search-form">
-    <fieldset class="main__search-form-item">
-      <input type="text" name="text_search" placeholder="Поиск по тексту">
-      <button>
-        Искать
-      </button>
+<search class="main__search search__profile">
+    <form class="main__search-form" action="{% url 'search_result' %}" method="GET">
+    <fieldset class="main__search-form-item region">
+        <select name="category" class="main__search-form-item-category">
+            <option value="">
+                Все разделы
+            </option>
+        {% for category in category_list %}
+            {% if category.level == 0 %}
+                <option value="{{ category.id }}" data-fetchid="{{ category.id }}">
+                    {{ category }}
+                </option>
+            {% endif %}
+        {% endfor %}
+        </select>
+        <input type="text" name="text_search" placeholder="Поиск по тексту" />
+        <select name="region" class="main__search-form-item-region">
+            <option value="">
+                Любое расположение
+            </option>
+        {% for region in region_list %}
+            {% if region.level == 0 %}
+            <option value="{{ region.id }}" data-fetchid="{{ region.id }}">
+                {{ region.area }}
+            </option>
+            {% endif %}
+        {% endfor %}
+        </select>
     </fieldset>
-  </form>
+    <fieldset class="main__search-form-item labels">
+        <div class="main__search-form-item-label-wrap">
+        </div>
+        <button>Искать</button>
+    </fieldset>
+    <fieldset class="main__search-form-item fields">
+    </fieldset>
+    </form>
 </search>
 {% endblock search %}
 {% block content %}
