@@ -200,6 +200,7 @@
   position: relative;
 }
 .default__item .advertisement__list-item-about::before {
+  cursor: pointer;
   content: "";
   display: block;
   width: 18px;
@@ -535,7 +536,7 @@
   font-weight: 400;
   font-style: normal;
   color: black;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .recent-announcements__list-item-article-img {
@@ -557,7 +558,7 @@
   font-weight: 400;
   font-style: normal;
   color: #3077a0;
-  font-size: 16px;
+  font-size: 18px;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -577,7 +578,7 @@
   font-weight: 400;
   font-style: normal;
   color: gray;
-  font-size: 14px;
+  font-size: 16px;
 }
 .recent-announcements__list-item-article-info p:nth-child(2) {
   color: black;

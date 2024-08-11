@@ -66,4 +66,6 @@
 
 .modals__active-grid {
   display: grid;
+  transition: .5s ease;
+  opacity: 1;
 }
