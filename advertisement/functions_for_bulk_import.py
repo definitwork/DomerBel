@@ -95,7 +95,7 @@ def check_additional_information(ads,check_category):
             '''Все поля'''
             fields = category.field_set.all()
             for field_from_excel in ads.keys():
-                if field_from_excel not in ['артикул','заголовок','категория', 'регион','описание','тип двигателя'] and not field_from_excel.startswith('фото'):
+                if field_from_excel not in ['артикул','заголовок','категория', 'регион','описание'] and not field_from_excel.startswith('фото'):
                     value = ads.get(field_from_excel)
                     field_from_db = fields.filter(title__iexact = field_from_excel)
                     if len(field_from_db) != 0:

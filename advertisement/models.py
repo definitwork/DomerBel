@@ -42,7 +42,6 @@ class Advertisement(DirtyFieldsMixin, models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     article = models.CharField(max_length=255, blank=True, null=True, verbose_name="Артикул")
     title = models.CharField(max_length=255, verbose_name='Заголовок', db_index=True, validators=[validate_words])
-    # title = models.CharField(max_length=255, verbose_name='Заголовок', db_index=True)
     price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, default=0, verbose_name='Цена')
     category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Раздел')
     bearer = models.CharField(max_length=50, choices=[('Частное лицо', 'Частное лицо'), ('Компания', 'Компания')],
@@ -52,7 +51,6 @@ class Advertisement(DirtyFieldsMixin, models.Model):
                                       blank=True, null=True)
     counter_views = models.IntegerField(default=0, verbose_name='Счетчик просмотров')
     contact_name = models.CharField(max_length=255, verbose_name='Контактное лицо',validators=[validate_words])
-    # contact_name = models.CharField(max_length=255, verbose_name='Контактное лицо')
     phone_num = models.CharField(max_length=255, verbose_name='Телефон', validators=[validate_phone])
     email = models.EmailField(verbose_name='E-Mail')
     store = models.ForeignKey('Store', on_delete=models.CASCADE, blank=True, null=True, verbose_name="Магазин")
@@ -69,7 +67,6 @@ class Advertisement(DirtyFieldsMixin, models.Model):
     additional_information = models.JSONField()
     additional_information_view = ArrayField(ArrayField(models.CharField(max_length=500)), blank=True, null=True, editable=False)
     description = models.TextField(verbose_name='Описание',validators=[validate_words])
-    # description = models.TextField(verbose_name='Описание')
     video_link = models.URLField(blank=True, null=True, verbose_name='Ссылка на видео')  # хранит строку, которая представляет валидный URL-адрес
     search_vector = SearchVectorField(null=True, editable=False)
     search_title_vector = SearchVectorField(null=True, editable=False)

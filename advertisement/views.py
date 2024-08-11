@@ -365,9 +365,7 @@ def get_bulk_import_of_ads(request):
                         file.status = True
                         file.save(update_fields=["status"])
                     result = ads.get()
-                    print(f'result:{result}')
                     if result != True:
-                        print('Ошибка')
                         path = result.get('file')[1][1:]
                         context['answer_error'] = 'Несколько объявлений не были сохранены. Чтобы посмотреть объявления с ошибками скачайте файл.'
                         context['file'] = f'http://127.0.0.1:8000//{path}'
@@ -428,16 +426,16 @@ def get_instructions_for_bulk_import_of_ads(request):
                   template_name='instructions_for_bulk_import_of_ads.html',
                   context=context)
 
-def import_words(request):
-    # with open('./advertisement/r_word.txt', "r") as file:
-    #     for line in file:
-    #         print(line, end='')
-    #         BadWords.objects.create(word=line[0:-1].lower())
-    ad = Advertisement.objects.get(id=1)
-    print(ad)
-    ad.title = "хуй"
-    print(ad)
-    ad.save()
-    return render(request, template_name='import_words.html')
+# def import_words(request):
+#     # with open('./advertisement/r_word.txt', "r") as file:
+#     #     for line in file:
+#     #         print(line, end='')
+#     #         BadWords.objects.create(word=line[0:-1].lower())
+#     ad = Advertisement.objects.get(id=1)
+#     print(ad)
+#     ad.title = "хуй"
+#     print(ad)
+#     ad.save()
+#     return render(request, template_name='import_words.html')
 
 
