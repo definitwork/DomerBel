@@ -5,6 +5,7 @@ from datetime import datetime
 
 import PIL
 from django.contrib import messages
+from django.contrib.postgres.search import SearchVector
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -14,7 +15,7 @@ from django.utils.timezone import make_aware
 from users.models import User
 from advertisement.models import Advertisement, Region, Category, Store, ElementTwo, PhotoAdvertisement
 from advertisement.utils import (get_region_variables, sorted_by, sorted_by_number, sorted_by_date_or_price,
-                                 variables_for_paginator, get_view_type_for_store)
+                                 variables_for_paginator, get_view_type_for_store, where_to_look)
 from config import settings
 from main_page_domer.forms import FeedbackForm, ComplaintForm
 from main_page_domer.models import Help, ReasonOfComplaint, Complaint, Publication
@@ -47,8 +48,6 @@ def get_main_page(request):
 
 def get_stores_page(request):
     """ Страница со всеми магазинами сайта """
-    locations = Region.objects.filter(type='Область')
-    category_list = Category.objects.filter(level__lte=1)
     store_queryset = Store.objects.filter(is_active=True).select_related('category', 'region')
     category_queryset = Category.objects.add_related_count(Category.objects.root_nodes(),
                                                            Store,
@@ -62,8 +61,6 @@ def get_stores_page(request):
     context = {
         "stores_found": store_queryset.count(),
         "category": category_queryset,
-        "category_list": category_list,
-        "locations": locations,
         "page_obj": page_obj
     }
 
@@ -72,31 +69,29 @@ def get_stores_page(request):
 
 def get_store_search(request):
     """ Отдаем страницу с результатами поиска по магазинам"""
-    category_1 = request.GET.get("category_1")
-    category_2 = request.GET.get("category_2")
-    search_text = request.GET.get("search_text")
-    region_1 = request.GET.get("region_1")
-    region_2 = request.GET.get("region_2")
+    text_search = request.GET.get("text_search")
+
     dict_for_filter = {}
-    if category_1 != "0":
-        dict_for_filter.update({"category__parent__id": category_1})
-    if category_2 != "0":
-        dict_for_filter.update({"category__id": category_2})
-    if len(search_text) >= 3:
-        dict_for_filter.update({"description__icontains": search_text})
-    if region_1 != "0":
-        dict_for_filter.update({"region__parent__id": region_1})
-    if region_2 != "0":
-        dict_for_filter.update({"region__id": region_2})
+    cop = dict.copy(request.GET)
+
+    category, category_bread_crumbs = where_to_look(cop.pop('category', None), Category)
+    region, region_bread_crumbs = where_to_look(cop.pop('region', None), Region)
+
+    if category:
+        dict_for_filter['category__in'] = category
+    if text_search:
+        dict_for_filter.update({"search_vector": text_search})
+    if region:
+        dict_for_filter['region__in'] = region
 
     store_queryset = Store.objects.filter(is_active=True, **dict_for_filter).select_related('category', 'region')
     category_queryset = Category.objects.add_related_count(Category.objects.root_nodes(),
                                                            Store,
                                                            'category',
                                                            'store_counts',
-                                                           cumulative=True)
-    locations = Region.objects.filter(type='Область')
-    category_list = Category.objects.filter(level__lte=1)
+                                                           cumulative=True,
+                                                           extra_filters={"is_active": True,
+                                                                          **dict_for_filter})
 
     paginator = Paginator(store_queryset, 10)
     page_number = request.GET.get("page")
@@ -105,12 +100,10 @@ def get_store_search(request):
     context = {
         "stores_found": store_queryset.count(),
         "category": category_queryset,
-        "locations": locations,
-        "category_list": category_list,
         "page_obj": page_obj
     }
 
-    return render(request, 'stores_search_results.html', context)
+    return render(request, 'stores.html', context)
 
 
 def get_stores_by_category(request, category_slug):

@@ -52,7 +52,9 @@ def get_advertisement_page(request):
                                                            'category',
                                                            'advertisement_counts',
                                                            cumulative=True,
-                                                           extra_filters={"region__in": region_filter['region__in']})
+                                                           extra_filters={"region__in": region_filter['region__in'],
+                                                                          "is_active": True,
+                                                                          "moderated": True})
 
     page_obj = variables_for_paginator(advertisement_queryset,
                                        request.GET.get('page'),
@@ -104,7 +106,9 @@ def get_advertisement_by_category(request, category_slug):
                                                               'category',
                                                               'advertisement_counts',
                                                               cumulative=True,
-                                                              extra_filters={"region__in": region_filter['region__in']})
+                                                              extra_filters={"region__in": region_filter['region__in'],
+                                                                             "is_active": True,
+                                                                             "moderated": True})
     category_queryset = category_queryset_an.filter(parent_id=category.id)
     advertisement_queryset = Advertisement.objects.filter(Q(category__in=category_queryset_an) |
                                                           Q(category__slug=category.slug),

@@ -5,7 +5,7 @@
 {% endblock css %} 
 {% block search %}
 <search class="main__search search__profile">
-    <form class="main__search-form" action="{% url 'search_result' %}" method="GET">
+    <form class="main__search-form" action="{% url 'stores_search_results' %}" method="GET">
     <fieldset class="main__search-form-item region">
         <select name="category" class="main__search-form-item-category">
             <option value="">
@@ -96,6 +96,37 @@
       {% endfor %}
     </ul>
   </section>
+{% block paginator %}
+    <div class="paginator">
+        <div class="paginator_wrapper">
+            <nav class="list_pages">
+                <ul>
+                    {% if page_obj.has_previous %}
+                        <li class="">
+                            <a href="?page={{ page_obj.previous_page_number }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}"><</a>
+                        </li>
+                    {% endif %}
+                    {% if page_obj.has_other_pages %}
+                        {% for page in page_obj.paginator.page_range %}
+                            {% if page_obj.number == page %}
+                                <li class="page_num page_num_selected">{{ page }}</li>
+                            {% elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                                <li class="page_num">
+                                    <a href="?page={{ page }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">{{ page }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                        <li class="">
+                            <a href="?page={{ page_obj.next_page_number }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">></a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+    {% endblock paginator %}
 {% endblock content %} 
 {% block js %}
 {% endblock js %}
