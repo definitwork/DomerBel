@@ -12,7 +12,7 @@
   align-self: center;
   flex: 0 0 120px;
   & p {
-    @include fonts($defaultColor, 14px, 400);
+    @include fonts($defaultColor, 16px, 400);
   }
 }
 
@@ -29,7 +29,7 @@
 }
 
 .recent-announcements__list-item-article-info-link {
-  @include fonts($mainColor, 16px, 400);
+  @include fonts($mainColor, 18px, 400);
   overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -45,7 +45,7 @@
   gap: 5px;
 
   & p {
-    @include fonts(gray, 14px, 400);
+    @include fonts(gray, 16px, 400);
 
     &:nth-child(2) {
       color: $defaultColor;

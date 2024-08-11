@@ -59,6 +59,7 @@
       </li>
       {% endfor %}
     </ul>
+    {% if vip_advertisement %}
     <div class="recent__announcement-list-vip-wrap vip__wrap">
       <ul class="recent__announcement-list-vip vip__list">
           {% for vip in vip_advertisement %}
@@ -84,6 +85,7 @@
           {% endfor %}
       </ul>
     </div>
+    {% endif %}
   </div>
 </section>
 {% endblock %} 

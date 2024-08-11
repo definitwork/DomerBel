@@ -6,6 +6,7 @@
   background: rgb(28, 161, 28);
   @include fonts(#fff, 16px, 400);
   opacity: 0;
+  user-select: none;
 }
 
 .access__active {

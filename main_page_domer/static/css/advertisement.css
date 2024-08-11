@@ -181,6 +181,7 @@
   position: relative;
 }
 .default__item .advertisement__list-item-about::before {
+  cursor: pointer;
   content: "";
   display: block;
   width: 18px;

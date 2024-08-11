@@ -66,8 +66,10 @@ a {
 
 
 .modal__active {
-    display: flex;
+  display: flex;
 }
+
+
 
 input, select, textarea {
   &:focus {
