@@ -11,7 +11,7 @@ from django.utils.timezone import get_current_timezone
 
 from .models import Advertisement, Category, Region, ElementTwo, Field
 
-from .utils import sorted_by_number, variables_for_paginator, sorted_by_date_or_price, sorted_by, get_view_type, \
+from .utils import sorted_by_number, variables_for_paginator, sorted_by_date_or_price, sorted_by, \
     get_region_variables, where_to_look, search_additional_information, annotating_field
 
 
@@ -19,15 +19,13 @@ def get_advertisement_page(request):
     order_by = sorted_by(request.COOKIES.get('sorted_by'))
     sort_for_paginator = sorted_by_number(request.COOKIES.get('sort'))
     state_sort_by_date = request.COOKIES.get('date', 0)
-    view_type, html = get_view_type(request.COOKIES)
     region_filter, region_param, region_bread_crumbs = get_region_variables(request.GET.get('region'))
 
     if request.GET.get('date') or request.GET.get('price'):
         state_sort_by_date, order_by = sorted_by_date_or_price(request.GET)
     if request.GET.get('sort'):
         sort_for_paginator = sorted_by_number(request.GET.get('sort'))
-    if request.GET.get('view_type'):
-        view_type, html = get_view_type(request.GET)
+
 
     category_list = Category.objects.filter(level__lte=1)
     advertisement_queryset = Advertisement.objects.filter(is_active=True,
@@ -69,7 +67,6 @@ def get_advertisement_page(request):
         "page_obj": page_obj,
         "vip_advertisement": vip_advertisement,
         'date': state_sort_by_date,
-        'view_type': view_type,
         'adaptive_navigation': "Доска объявлений. Беларусь",
     }
 
@@ -77,7 +74,6 @@ def get_advertisement_page(request):
     response.set_cookie('sort', sort_for_paginator)
     response.set_cookie('date', state_sort_by_date)
     response.set_cookie('sorted_by', order_by)
-    response.set_cookie('view_type', view_type)
     response.set_cookie('user_auth', request.user.id)
 
     return response
@@ -87,15 +83,12 @@ def get_advertisement_by_category(request, category_slug):
     order_by = sorted_by(request.COOKIES.get('sorted_by'))
     sort_for_paginator = sorted_by_number(request.COOKIES.get('sort'))
     state_sort_by_date = request.COOKIES.get('date', 0)
-    view_type, html = get_view_type(request.COOKIES)
     region_filter, region_param, region_bread_crumbs = get_region_variables(request.GET.get('region'))
 
     if request.GET.get('date') or request.GET.get('price'):
         state_sort_by_date, order_by = sorted_by_date_or_price(request.GET)
     if request.GET.get('sort'):
         sort_for_paginator = sorted_by_number(request.GET.get('sort'))
-    if request.GET.get('view_type'):
-        view_type, html = get_view_type(request.GET)
 
     category_queryset_all = Category.objects.all()
     category_list = category_queryset_all.filter(level__lte=1)
@@ -141,7 +134,6 @@ def get_advertisement_by_category(request, category_slug):
         "page_obj": page_obj,
         "vip_advertisement": vip_advertisement,
         'date': state_sort_by_date,
-        'view_type': view_type,
         'adaptive_navigation': f"{category.main_title if category.main_title else category.title}. Беларусь",
     }
 
@@ -149,7 +141,6 @@ def get_advertisement_by_category(request, category_slug):
     response.set_cookie('sort', sort_for_paginator)
     response.set_cookie('date', state_sort_by_date)
     response.set_cookie('sorted_by', order_by)
-    response.set_cookie('view_type', view_type)
 
     return response
 
@@ -254,6 +245,7 @@ def editing_an_ad(request, id):
 def search_result(request):
     search_parameters = {}
     search_parameters_only = {}
+    category_queryset_an = []
     key_delete = ['page', 'sort', 'date', 'price', 'text_search']
     cop = dict.copy(request.GET)
 
@@ -299,6 +291,19 @@ def search_result(request):
 
     if search:
         search_parameters['additional_information__contains'] = search
+
+    try:
+        category_queryset_an = Category.objects.add_related_count(category.get_descendants(),
+                                                                  Advertisement,
+                                                                  'category',
+                                                                  'advertisement_counts',
+                                                                  cumulative=True,
+                                                                  extra_filters={"is_active": True,
+                                                                                 "moderated": True,
+                                                                                 **search_parameters})
+    except:
+        pass
+
     if search_q:
         search_parameters.update(search_q)
 
@@ -306,7 +311,9 @@ def search_result(request):
                                                             ).filter(is_active=True, moderated=True, **search_parameters
                                                                      ).exclude(**search_parameters_only
                                                                                ).select_related('category', 'region'
-                                                                                                ).order_by("-raise_in_search", order_by)
+                                                                                                ).order_by(
+                                                                                                    "-raise_in_search",
+                                                                                                    order_by)
 
     page_obj = variables_for_paginator(advertisement_queryset,
                                        request.GET.get('page'),
@@ -317,6 +324,7 @@ def search_result(request):
         "page_obj": page_obj,
         "region_bread_crumbs": region_bread_crumbs,
         "category_bread_crumbs": category_bread_crumbs,
+        "category": category_queryset_an,
         "query": query,
         'date': state_sort_by_date,
         'adaptive_navigation': 'Результаты поиска'
