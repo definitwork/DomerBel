@@ -1,0 +1,54 @@
+{% extends "profile_user.html" %} 
+{% load static %} 
+{% block css2 %}
+<link rel="stylesheet" href="{% static 'css/profileData.css' %}">
+{% endblock css2 %}
+{% block title %}
+{% endblock title %}
+{% block search %}
+{% endblock search %}
+  {% block mainInfo %}
+  <div class="form__wrapper">
+    <h3>
+        Контактные данные пользователя
+      </h3>
+     <form method="POST" action="" class="main__info">
+      {% csrf_token %}
+      {% if edit_contact_data_form.non_field_errors %}
+      <div class="form-error">{{ edit_contact_data_form.non_field_errors }}</div>
+      {% endif %}
+      {% for field in edit_contact_data_form %}
+      <label for="{{ field.id_for_label }}">
+        <p class="form-label">
+          {{field.label}}:
+        </p>
+        {{ field }}
+      </label>
+      {% if field.errors %}
+      <div class="form-error">{{ field.errors }}</div>
+      {% endif %}
+      {% endfor %}
+      <button class="submit__btn" name="edit_contact_data">Изменить</button>
+    </form>
+    <form method="POST" class="main__info" action="" novalidate>
+      {% csrf_token %}
+      {% if change_pass_form.non_field_errors %}
+      <div class="form-error">{{ change_pass_form.non_field_errors }}</div>
+      {% endif %}
+      {% for field in change_pass_form  %}
+      <label for="{{ field.id_for_label }}">
+        <p class="form-label">
+          {{field.label}}:
+        </p>
+        {{ field }}
+      </label>
+      {% if field.errors %}
+      <div class="form-error">{{ field.errors }}</div>
+      {% endif %}
+      {% endfor %}
+      <button class="submit__btn" name="change_password">Сохранить</button>
+    </form>
+  </div>
+  {% endblock mainInfo %}
+{% block js %}
+{% endblock js %}

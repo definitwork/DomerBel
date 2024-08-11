@@ -33,6 +33,9 @@
   & a {
     @include fonts($defaultColor, 14px, 400);
   }
+  & p {
+    @include fonts($defaultColor, 14px, 400);
+  }
 }
 
 .sorted__output-list {
@@ -88,4 +91,11 @@
         object-fit: cover;
         object-position: center;
     }
+}
+
+
+@media (max-width:992px) {
+  .sort {
+    justify-content: center;
+  }
 }

@@ -1,13 +1,17 @@
-{% extends 'base.html' %} {% load static %} {% block css %} <link rel="stylesheet" href="{% static "css/main.css" %}">
-{% endblock css %} {% block content %}
-
-
+{% extends 'base.html' %} 
+{% load static %}
+{% block css %} 
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+{% endblock css %} 
+{% block content %}
 <section class="region">
   <ul class="region__list">
-    {% for region in regions %}
+    {% for region in region_list %}
+    {% if region.level == 0 %}
     <li class="region__list-item">
       <a href="{% url 'advertisement' %}?region={{ region.id }}"> {{ region|upper }} </a>
     </li>
+    {% endif %}
     {% endfor %}
   </ul>
 </section>
@@ -36,7 +40,10 @@
                 {{ card.title }}
             </a>
             <p class="recent-announcements__list-item-article-info-price">
-                {% if card.price %} {{ card.price|floatformat }} руб. {% endif %}
+              {% if card.price %}
+                {{ card.price|floatformat }} руб. 
+                {% else %} Договорная
+              {% endif %}
             </p>
             <p class="recent-announcements__list-item-article-info-category">
                 {{ card.category }}

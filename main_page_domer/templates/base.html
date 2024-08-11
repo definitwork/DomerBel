@@ -35,7 +35,7 @@
                 </div>
                 <div class="modals__login-logo-wrap">
                     <div class="modals__login-logo">
-                        <img src="{% static "img/logo.png" %}" alt="">
+                        <img src="{% static 'img/logo.png' %}" alt="">
                     </div>
                     <h2>
                         Авторизация
@@ -48,7 +48,7 @@
                     <div class="modals__signIn-field">
                         <input type="password" name="password" id="login_password" placeholder="Введите пароль">
                     </div>
-                    <button type="button" class="modals__submit" id="login_button">
+                    <button type="button" class="submit__btn" id="login_button">
                         Отправить
                     </button>
                 </fieldset>
@@ -80,7 +80,7 @@
                 </div>
                 <div class="modals__signIn-logo-wrap">
                     <div class="modals__signIn-logo">
-                        <img src="{% static "img/logo.png" %}" alt="logo">
+                        <img src="{% static 'img/logo.png' %}" alt="logo">
                     </div>
                     <div class="modals__signIn-logo-title-wrap">
                         <p>
@@ -93,10 +93,10 @@
                 </div>
                 <div class="modals__signIn-choice-wrap">
                     <button type="button" class="modals__signIn-entity legal">
-                        Юридическое лицо
+                        Юр. лицо
                     </button>
                     <button type="button" class="modals__signIn-entity physical">
-                        Физическое лицо
+                        Физ. лицо
                     </button>
                 </div>
                 <fieldset class="modals__signIn-fields">
@@ -117,7 +117,7 @@
                     </div>
                 </fieldset>
                 <div class="g-recaptcha" data-sitekey="{{ public_key }}" data-expired-callback="expiredCallbackRecaptcha" data-callback="callbackRecaptcha"></div>
-                <button data-action='submit' type="button" class="modals__submit" id="registration_button">
+                <button data-action='submit' type="button" class="submit__btn" id="registration_button">
                     Зарегистрироваться
                 </button>
                 <p class="modals__signUp">
@@ -143,7 +143,7 @@
                 </div>
                 <div class="modals__login-logo-wrap">
                     <div class="modals__login-logo">
-                        <img src="{% static "img/logo.png" %}" alt="">
+                        <img src="{% static 'img/logo.png' %}" alt="">
                     </div>
                     <h2>
                         Сбросить пароль
@@ -157,7 +157,7 @@
                 data-expired-callback="expiredCallbackResetRecaptcha"
                 data-callback="callbackResetRecaptcha"
                 ></div>
-                <button type='button' class="modals__submit" id="resetSubmitBtn">
+                <button type='button' class="submit__btn" id="resetSubmitBtn">
                     Отправить
                 </button>
                 <a href="#">
@@ -239,12 +239,12 @@
                         </ul>
                     </nav>
                     {% if user.is_authenticated %}
+                    {% if user.is_superuser %}
+                        <a href="{% url 'admin:index' %}" class="header__up-admin">Админка</a>
+                    {% endif %}
                         <div class="header__up-user-wrap">
-                            {% if user.is_superuser %}
-                                <a href="{% url "admin:index" %}" class="header__up-user">Админка</a>
-                            {% endif %}
                             <div class="header__up-user-action">
-                                <a href="#" class="">{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.email }}{% endif %}</a>
+                                <a href="{% url 'users:personal_account' %}" class="">{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.email }}{% endif %}</a>
                                 <p class="">|</p>
                                 <p class="" id="logout_button">Выйти</p>
                             </div>
@@ -256,8 +256,8 @@
                     {% endif %}
                 </div>
                 <div class="header__bottom">
-                    <a href="{% url "home" %}" class="header__logo">
-                        <img src="{% static "img/logo.png" %}" alt="">
+                    <a href="{% url 'home' %}" class="header__logo">
+                        <img src="{% static 'img/logo.png' %}" alt="">
                     </a>
                     <nav class="header__bottom-nav">
                         <h2 class="header__bottom-nav-title">
@@ -287,7 +287,7 @@
                         </ul>
                     </nav>
                     <div class="header__bottom-send-wrap">
-                        <a href="#" class="header__bottom-send">
+                        <a href="{% url 'place_an_ad' %}" class="header__bottom-send">
                             Подать объявление
                         </a>
                     </div>
@@ -296,49 +296,46 @@
             <main>
                 {% block search %}
                     <search class="main__search">
-                    <form class="main__search-form">
-                      <fieldset class="main__search-form-item">
-                        <select name="" class="main__search-form-item-category">
+                    <form class="main__search-form" action="{% url 'search_result' %}" method="GET">
+                      <fieldset class="main__search-form-item region">
+                        <select name="category" class="main__search-form-item-category">
                             <option value="">
                                 Все разделы
                             </option>
                           {% for category in category_list %}
                             {% if category.level == 0 %}
-                                <option value="{{ category.id }}">
+                                <option value="{{ category.id }}" data-fetchid="{{ category.id }}">
                                     {{ category }}
                                 </option>
                             {% endif %}
                           {% endfor %}
                         </select>
-                        <input type="text" name="" placeholder="Поиск по тексту" />
-                        <select name="" class="main__search-form-item-area">
-                          <option value=""></option>
-                        </select>
-                        <select name="" class="main__search-form-item-region">
+                        <input type="text" name="text_search" placeholder="Поиск по тексту" />
+                        <select name="region" class="main__search-form-item-region">
                             <option value="">
                                 Любое расположение
                             </option>
-                          {% for region in regions %}
+                          {% for region in region_list %}
                             {% if region.level == 0 %}
-                            <option value="{{ region.id }}">
-                                {{ region }}
+                            <option value="{{ region.id }}" data-fetchid="{{ region.id }}">
+                                {{ region.area }}
                             </option>
                             {% endif %}
                           {% endfor %}
                         </select>
                       </fieldset>
-                      <fieldset class="main__search-form-item">
+                      <fieldset class="main__search-form-item labels">
                         <div class="main__search-form-item-label-wrap">
                           <label for="heading">
-                            <input type="checkbox" name="" id="heading" />
+                            <input type="checkbox" name="only_title" id="heading" />
                             <p>Только в заголовках</p>
                           </label>
                           <label for="photos">
-                            <input type="checkbox" name="" id="photos" />
+                            <input type="checkbox" name="only_photo" id="photos" />
                             <p>С фото</p>
                           </label>
                           <label for="videos">
-                            <input type="checkbox" name="" id="videos" />
+                            <input type="checkbox" name="only_video" id="videos" />
                             <p>С видео</p>
                           </label>
                         </div>

@@ -25,15 +25,21 @@ def get_main_page(request):
     """ Отдаём главную страницу """
     advertisement_queryset = Advertisement.objects.filter(
         is_active=True, moderated=True).select_related(
-        'category', 'region').order_by("-date_of_create")[:10]
+        'category', 'region').order_by("-date_of_create")[:10].defer(
+        'search_title_vector',
+        'search_vector',
+        'video_link',
+        'description',
+        'additional_information_view',
+        'additional_information',
+        'store',
+        'contact_name',
+        'counter_views',
+        'phone_num')
     vip_advertisement = Advertisement.objects.filter(vip=True)
-    regions_queryset = Region.objects.filter(level=0)
-    category_list = Category.objects.filter(level=0)
     context = {
         "advertisement": advertisement_queryset,
         "vip_advertisement": vip_advertisement,
-        "category_list": category_list,
-        "regions": regions_queryset,
         "adaptive_navigation": "Общебелорусская доска объявлений"
     }
     return render(request, 'main.html', context)

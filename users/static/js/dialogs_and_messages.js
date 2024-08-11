@@ -6,22 +6,23 @@ select_all.addEventListener('change', select_all_dialogs);
 
 function select_all_dialogs(event) {
     for (let i = 0; i < checkboxes.length; i++) {
-        checkboxes[i].checked = event.target.checked;
-    }
+
+}
+
+
+checkboxes[i].checked = event.target.checked;
+}
 }
 
 for (let i = 0; i < checkboxes.length; i++) {
-    checkboxes[i].addEventListener('change', find_unchecked_dialogs)
+checkboxes[i].addEventListener('change', find_unchecked_dialogs)
 }
 
 function find_unchecked_dialogs(event) {
-    for (let i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].checked == false) {
-            select_all.checked = false;
-            break;
-        }
-        select_all.checked = true;
-    }
+for (let i = 0; i < checkboxes.length; i++) {
+if (checkboxes[i].checked == false) {
+select_all.checked = false;
+break;
 }
-
-
+select_all.checked = true;
+}

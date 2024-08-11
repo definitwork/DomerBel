@@ -51,33 +51,24 @@
   @include fonts(white, 20px, 600);
 }
 
-.header__up-user-wrap {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 0 1 300px;
-  justify-content: space-between;
-}
 
-.header__up-user-action {
-  display: flex;
-  align-items: center;
-  gap: 5px;
 
-  & a {
-    @include fonts($mainColor, 14px, 400);
-    &:hover {
-      color: $colorHover;
-    }
+@media (max-width:992px) {
+  .header__bottom {
+    flex-direction: column;
+    align-items: center;
   }
-  & p {
-    &:last-child {
-      cursor: pointer;
-      &:hover {
-        color: $colorHover;
-      }
-    }
-    @include fonts($mainColor, 14px, 400);
-  }
-}
 
+  .header__bottom-nav {
+    align-self: initial;
+    padding: 0;
+  }
+
+  .header__bottom-send-wrap {
+    align-self: initial;
+    width: 100%;
+    max-width: 500px;
+    padding: 0;
+  }
+
+}

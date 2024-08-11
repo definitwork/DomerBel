@@ -1,6 +1,7 @@
 import time
 import openpyxl
 from advertisement.models import Advertisement, Category, Region, Spisok, ElementTwo, PhotoAdvertisement, ErrorFile
+from advertisement.validators import validate_words
 from users.models import User
 from transliterate import slugify
 from zipfile import ZipFile
@@ -33,7 +34,11 @@ def check_article(ads,value_author):
 def chek_title(ads):
     '''Функция, проверяющая заголовок объявления'''
     if 'заголовок' in ads and len(str(ads.get("заголовок"))) < 256:
-        return True
+        try:
+            validate_words(str(ads.get("заголовок")))
+            return True
+        except:
+            return 'Найдено запрещенное слово'
     else:
         return 'поле "Заголовк" обязательное'
 
@@ -90,7 +95,7 @@ def check_additional_information(ads,check_category):
             '''Все поля'''
             fields = category.field_set.all()
             for field_from_excel in ads.keys():
-                if field_from_excel not in ['артикул','заголовок','категория', 'регион','описание'] and not field_from_excel.startswith('фото'):
+                if field_from_excel not in ['артикул','заголовок','категория', 'регион','описание','тип двигателя'] and not field_from_excel.startswith('фото'):
                     value = ads.get(field_from_excel)
                     field_from_db = fields.filter(title__iexact = field_from_excel)
                     if len(field_from_db) != 0:
@@ -148,7 +153,11 @@ def check_additional_information(ads,check_category):
 def chek_description(ads):
     '''Функция, проверяющаа описание'''
     if 'описание' in ads:
-        return True
+        try:
+            validate_words(str(ads.get("описание")))
+            return True
+        except:
+            return 'Найдено запрещенное слово'
     else:
         return 'поле "Описание" обязательное'
 
@@ -166,7 +175,6 @@ def update_photo(ads_for_save,file_name,uploud_zip,email):
         return False
 
 def write_file_with_error_ads(list_error,email, user):
-
     path = f'./media/files_for_bulk_import_of_ads/{email}/error_{email}_{time.time()}.xlsx'
     book = xlsxwriter.Workbook(path)
     sheet = book.add_worksheet()
@@ -196,8 +204,7 @@ def write_file_with_error_ads(list_error,email, user):
                     sheet.write(0, colum, title)
                     sheet.write(row, colum, values.get(title))
     book.close()
-    file_error = ErrorFile(file = path,
-                     user = user)
+    file_error = ErrorFile(file = path, user = user)
     file_error.save()
     return file_error
 
@@ -259,8 +266,8 @@ def save_many_ads_from_excel(uploud_file,id,first_name,phone_number,email):
                 list_ads_error.append(ads)
         row_in_excel = row_in_excel + 1
     if len(list_ads_error) != 0:
-        error_file = write_file_with_error_ads(list_ads_error,email,value_author)
-        return {'file': error_file}
+        file_error = write_file_with_error_ads(list_ads_error,email,value_author)
+        return {'file': [file_error.id,file_error.file]}
     else:
         return True
 
@@ -280,9 +287,7 @@ def save_many_ads_from_zip(uploud_zip,id,first_name,phone_number,email):
         for i in range(0, sheet.max_column):
             if sheet[row_in_excel][i].value != None:
                 ads[f'{sheet[1][i].value.lower()}'] = sheet[row_in_excel][i].value
-        print(ads)
         if len(ads) != 0:
-            print(ads)
             status_ads = []
             value_artical = check_article(ads,value_author)
             if value_artical != True:
@@ -346,15 +351,12 @@ def save_many_ads_from_zip(uploud_zip,id,first_name,phone_number,email):
                                 ads_for_save.delete()
                                 status_ads.append(f'Невозможно сохранить изображение {ads.get(key)}')
                                 list_ads_error.append(ads)
-                                print(status_ads)
                                 break
                 else:
                     ads_for_save.delete()
                     status_ads.append(f'Невозможно сохранить файл {ads.get("фото1")}')
                     list_ads_error.append(ads)
-                    print(status_ads)
             else:
-                print(status_ads)
                 list_ads_error.append(ads)
         row_in_excel = row_in_excel + 1
     if len(list_ads_error) != 0:

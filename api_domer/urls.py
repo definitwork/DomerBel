@@ -8,8 +8,9 @@ from api_domer.views import get_list_of_cities, get_list_of_categories, get_regi
     update_advertisement, registration_user, login_user, logout_user, password_reset, ThisPublicationSearchListAPIView, \
     save_publication, edit_publication, get_element_list, get_subcategory_list
 
+
 urlpatterns = [
-    path('add_store/city/<int:id>', get_list_of_cities, name='list_of_cities'),
+    path('get_city_list/<int:id>', get_list_of_cities, name='list_of_cities'),
     path('add_store/categories/', get_list_of_categories, name='list_of_categories'),
     path('categories_for_search/<int:id>', get_categories_for_search, name='categories_for_search'),
     path('get_region_list/', get_region_list),

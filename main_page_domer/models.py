@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.conf import settings
+from django.contrib.postgres.indexes import GinIndex
+from django.contrib.postgres.search import SearchVectorField
 from django.db import models
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
@@ -60,12 +62,12 @@ class ReasonOfComplaint(models.Model):
 class PhotoPublication(models.Model):
     """ Фото для публикаций """
     photo = models.ImageField(upload_to="images/publications", verbose_name="Фото")
-    publications = models.ForeignKey(
+    publication = models.ForeignKey(
         "Publication", on_delete=models.CASCADE, verbose_name="Публикация"
     )
 
     def __str__(self):
-        return f"{self.publications}"
+        return f"{self.publication}"
 
     class Meta:
         verbose_name = "Фото публикации"
@@ -91,6 +93,14 @@ class Publication(models.Model):
     )
     counter_views = models.IntegerField(default=0, verbose_name="Счетчик просмотров")
     moderated = models.BooleanField(default=False, verbose_name="Прошло модерацию")
+    search_vector = SearchVectorField(null=True, editable=False)
+
+    class Meta:
+        verbose_name = "Публикация"
+        verbose_name_plural = "Публикации"
+        indexes = [
+                      GinIndex(fields=['search_vector']),
+            ]
 
     def __str__(self):
         return self.title
@@ -99,9 +109,7 @@ class Publication(models.Model):
         self.slug = unique_slugify(self.title)
         super(Publication, self).save(*args, **kwargs)
 
-    class Meta:
-        verbose_name = "Публикация"
-        verbose_name_plural = "Публикации"
+
 
 
 @receiver(pre_delete, sender=Publication)
