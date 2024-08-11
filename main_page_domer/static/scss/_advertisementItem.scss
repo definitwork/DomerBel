@@ -32,18 +32,17 @@
         flex-direction: column;
         gap: 10px;
         position: relative;
-    
-        &::before {
-            cursor: pointer;
-            content: "";
-            display: block;
-            width: 18px;
-            height: 18px;
-            background: url(../img/favorite.png) no-repeat center/cover;
-            position: absolute;
-            bottom: 0;
-            right: 0;
-        }
+    }
+
+    & .advertisement__list-item-about-favorites {
+        cursor: pointer;
+        display: block;
+        width: 18px;
+        height: 18px;
+        background: url(../img/favorite.png) no-repeat center/cover;
+        position: absolute;
+        bottom: 0;
+        right: 0;
     }
     
     & .advertisement__list-item-title {
@@ -87,7 +86,9 @@
             }
         }
     }
-    
+    & .advertisement__favorites-active {
+        background: url(../img/favorite_yes.png) no-repeat center/cover;
+    }
 }
 .second__item {
     display: grid;
@@ -102,6 +103,7 @@
         gap: 10px;
         padding: 8px;
         border: 1px solid $gray;
+        border-radius: 7px;
     }
 
     & ~.vip__wrap {
@@ -163,19 +165,25 @@
 
     & .advertisement__list-item-about {
         position: relative;
-        &::after {
-            content: "";
-            display: block;
-            width: 18px;
-            height: 18px;
-            position: absolute;
-            background: url(../img/favorite.png) no-repeat center/cover;
-            bottom: 0px;
-            right: 0px;
-            cursor: pointer;
-        }
+    }
+
+    & .advertisement__list-item-about-favorites {
+        cursor: pointer;
+        display: block;
+        width: 18px;
+        height: 18px;
+        background: url(../img/favorite.png) no-repeat center/cover;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+
+    & .advertisement__favorites-active {
+        background: url(../img/favorite_yes.png) no-repeat center/cover;
     }
 }
+
+
 
 
 @media (max-width: 992px) {

@@ -2,7 +2,7 @@ from django.contrib.auth.views import PasswordResetConfirmView, PasswordResetCom
 from django.urls import path, reverse_lazy
 
 
-from .views import (get_personal_account_page,add_store, get_my_store,
+from .views import (get_favorites_page, get_personal_account_page,add_store, get_my_store,
                     edit_store, get_store_page, delete_store, get_user_data_page,
                     get_personal_account_inactive_adds_page, delete_or_archive_selected_ads,
                     search_of_ads_in_personal_account, get_user_all_publications, add_user_publication,
@@ -38,4 +38,5 @@ urlpatterns = [
     path('add_publication/', add_user_publication, name='add_publication'),
     path('personal_account/delete_publication/', delete_publication, name='delete_publication'),
     path('personal_account/edit_publication/<str:publication_slug>/', edit_publication, name='edit_publication'),
+    path('personal_account/favorites/', get_favorites_page, name='favorites'),
 ]
