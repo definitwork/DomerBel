@@ -98,10 +98,8 @@
   max-height: 800px;
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -o-object-position: center;
-     object-position: center;
+  object-fit: cover;
+  object-position: center;
   border: 1px solid #D4D4D4;
   border-radius: 8px;
 }

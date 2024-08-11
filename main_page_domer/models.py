@@ -110,8 +110,6 @@ class Publication(models.Model):
         super(Publication, self).save(*args, **kwargs)
 
 
-
-
 @receiver(pre_delete, sender=Publication)
 def publication_photo_delete(sender, instance, **kwargs):
     """ Удаление файлов перед удалением экземпляра публикаций """

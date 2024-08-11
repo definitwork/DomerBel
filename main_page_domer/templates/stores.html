@@ -71,7 +71,7 @@
       {% for store in page_obj %}
       <li class="stores__list-item">
         <a href="{% url 'store_by_title' store.slug  %}" class="stores__list-item-img">
-          <img src="{{ store.logo_image.url }}" alt="{{ store.title }}">
+          <img src="{% if store.logo_image %}{{ store.logo_image.url }}{% else %}{% static 'img/no_image.jpg' %}{% endif %}" alt="{{ store.title }}">
         </a>
         <div class="stores__list-item-about">
           <h3>

@@ -54,7 +54,8 @@ def get_stores_page(request):
                                                            Store,
                                                            'category',
                                                            'store_counts',
-                                                           cumulative=True)
+                                                           cumulative=True,
+                                                           extra_filters={"is_active": True})
     paginator = Paginator(store_queryset, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -123,7 +124,8 @@ def get_stores_by_category(request, category_slug):
                                                               'category',
                                                               'store_counts',
                                                               cumulative=True,
-                                                              extra_filters={"region__in": region_filter['region__in']})
+                                                              extra_filters={"region__in": region_filter['region__in'],
+                                                                             "is_active": True})
     store_queryset = Store.objects.filter(Q(category__in=category_queryset_an) |
                                                           Q(category__slug=category.slug),
                                                           **region_filter,
@@ -141,7 +143,7 @@ def get_stores_by_category(request, category_slug):
         "category_list": category_list,
         "page_obj": page_obj
     }
-    return render(request, 'stores_by_category.html', context)
+    return render(request, 'stores.html', context)
 
 
 def get_store_by_title(request, store_slug):
@@ -162,7 +164,7 @@ def get_store_by_title(request, store_slug):
     store_page = Store.objects.get(slug=store_slug)
     oblast = Region.objects.get(id=store_page.region.parent_id)
     category_list = Category.objects.filter(level__lte=1)
-    advertisement_queryset = Advertisement.objects.filter(store=store_page, is_active=True,
+    advertisement_queryset = Advertisement.objects.filter(author=store_page.user, is_active=True,
                                                           moderated=True, **region_filter).select_related(
                                                           'category',
                                                           'region').order_by(order_by)
@@ -473,9 +475,37 @@ def dowload_user(request):
     #             date_joined=i.get('data'),
     #             password=i.get('pass')
     #         )
-
+#========================download store==================================================
+    # with codecs.open('./new_id_store.json', 'r', 'utf-8') as json_file:
+    #     ishod_dump = json.loads(json_file.read())
+    #
+    #     for store in ishod_dump:
+    #
+    #         new_store=Store(
+    #             region=Region.objects.get(id=store.get('id_gorod')),
+    #             title=store["zag"],
+    #             slug=store.get('zag_url'),
+    #             description=store.get('opis'),
+    #             contact_name=store.get('contakt'),
+    #             email=store.get('email'),
+    #             phone_num=store.get('tel'),
+    #             video_link=store.get('video_link'),
+    #             logo_image=f'images/store_img/{store.get("small").split("/")[1]}' if store.get("small") else None,
+    #             date_of_create=make_aware(datetime.strptime(store.get("data"), "%Y-%m-%d %H:%M:%S")),
+    #             user=User.objects.get(id=store.get('id_akk')),
+    #             is_active=1 if store.get('activ') == "0" else 0,
+    #             category=Category.objects.get(id=store.get('category_id')),
+    #             url=store.get('url_real'),
+    #             address=store.get('adres'),
+    #         )
+    #         new_store.save()
 
     return render(request, 'download_adver.html')
+
+
+
+
+
 
 
 def dowload_photo(request):
