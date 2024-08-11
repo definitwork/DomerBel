@@ -17,7 +17,7 @@ from advertisement.utils import (get_region_variables, sorted_by, sorted_by_numb
                                  variables_for_paginator, get_view_type_for_store)
 from config import settings
 from main_page_domer.forms import FeedbackForm, ComplaintForm
-from main_page_domer.models import ReasonOfComplaint, Complaint, Publication
+from main_page_domer.models import Help, ReasonOfComplaint, Complaint, Publication
 from main_page_domer.functions import views_counter_publication
 
 
@@ -272,16 +272,6 @@ def get_site_map_page(request):
 
     return render(request, 'store_details.html', context)
 
-
-def get_help_page(request):
-    """ Страница Помощь """
-    category_list = Category.objects.filter(level__lte=1)
-    context = {
-        "category_list": category_list
-    }
-    return render(request, 'help.html', context)
-
-
 def get_publications(request):
     """ Страница с всеми публикациями """
     publications = Publication.objects.prefetch_related('photopublication_set').order_by('date_of_create').exclude(moderated=False)
@@ -385,6 +375,14 @@ def get_complaint_page(request, adv_id):
 
 def register_done(request):
     return render(request, "message_after_register.html")
+
+
+def get_help_page(request):
+    help = Help.objects.first()
+    context = {
+        "help": help,
+    }
+    return render(request, "help_page.html", context)
 
 
 def desc_and_opis(objavl):
