@@ -220,7 +220,7 @@ class Store(models.Model):
     description = models.TextField(verbose_name='Описание')
     contact_name = models.CharField(max_length=100, verbose_name='Контактное лицо')
     email = models.EmailField(verbose_name='E-Mail')
-    phone_num = models.CharField(max_length=20, blank=True, null=True, verbose_name='Номер телефона')
+    phone_num = models.CharField(max_length=255, blank=True, null=True, verbose_name='Номер телефона')
     video_link = models.URLField(blank=True, null=True, verbose_name='Ссылка на YouTube видео')  # хранит строку, которая представляет валидный URL-адрес
     logo_image = models.ImageField(upload_to='images/store_img', default='default/no_image.jpg', blank=True, null=True, verbose_name='Логотип')
     date_of_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
