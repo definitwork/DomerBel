@@ -3,6 +3,7 @@ from uuid import uuid4
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
@@ -12,8 +13,7 @@ from rest_framework import status, serializers, generics, filters
 from rest_framework.response import Response
 from rest_framework.pagination import LimitOffsetPagination
 
-from advertisement.models import Region, Category, Field, ElementTwo, PhotoAdvertisement, Advertisement, Store, Element, \
-    ErrorFile
+from advertisement.models import Region, Category, Field, ElementTwo, PhotoAdvertisement, Advertisement, Store, Element, ErrorFile
 from api_domer.serializers import GetListOfCitiesSerializer, GetListOfCategoriesSerializer, FieldSerialier, \
     ElementTwoSerializer, AdvertisementSerializer, StoreSerializer, \
     UserRegisterSerializer, UserLoginSerializer, PasswordResetSerializer, \
@@ -96,6 +96,7 @@ def get_store_for_advertisement(request):
 
 @api_view(['POST'])
 def save_advertisement(request):
+    print(request.data)
     additional_information = dict(request.data.copy())
     serializer = AdvertisementSerializer(data=request.data)
     serializer.is_valid()
@@ -105,6 +106,7 @@ def save_advertisement(request):
                                                                                           additional_information)
     if serializer.is_valid() and not serializer_additional_error.data:
         additional_information_save = Field.objects.filter(id__in=additional_information).order_by('id')
+        print(serializer.validated_data)
         for i in additional_information_save:
             additional_information[i.title] = ', '.join(additional_information.pop(f'{i.id}'))
         new_advertisement = Advertisement(author=None if request.user.is_anonymous else request.user,
@@ -145,7 +147,7 @@ def update_advertisement(request):
                                      ).update(author=None if request.user.is_anonymous else request.user,
                                               additional_information=additional_information,
                                               **serializer.validated_data)
-        advertisement = Advertisement.objects.get(id=request.data.get('advertisement'))
+        advertisement = get_object_or_404(Advertisement, id=request.data.get('advertisement'))
 
         if request.data.getlist('photo_files') != ['']:
             for photo in request.data.getlist('photo_files'):

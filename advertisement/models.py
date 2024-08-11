@@ -1,10 +1,15 @@
 import calendar
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import PIL
 from dirtyfields import DirtyFieldsMixin
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.indexes import GinIndex, OpClass, BrinIndex
+from django.contrib.postgres.search import SearchVectorField, SearchVector
+
 from django.db import models
+from django.db.models.functions import Upper
+
 from django.urls import reverse
 from django.utils.timezone import make_aware
 from mptt.models import MPTTModel, TreeForeignKey
@@ -14,9 +19,6 @@ from django.conf import settings
 from .utils_for_models import add_watermark_to_photo, upload_to, unique_slugify
 from users.validators import validate_phone
 from .validators import validate_words
-
-
-# from .validators import validate_words
 
 
 class PhotoAdvertisement(models.Model):
@@ -39,7 +41,8 @@ class PhotoAdvertisement(models.Model):
 class Advertisement(DirtyFieldsMixin, models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     article = models.CharField(max_length=255, blank=True, null=True, verbose_name="Артикул")
-    title = models.CharField(max_length=255, verbose_name='Заголовок', validators=[validate_words])
+    title = models.CharField(max_length=255, verbose_name='Заголовок', db_index=True, validators=[validate_words])
+    # title = models.CharField(max_length=255, verbose_name='Заголовок', db_index=True)
     price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, default=0, verbose_name='Цена')
     category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Раздел')
     bearer = models.CharField(max_length=50, choices=[('Частное лицо', 'Частное лицо'), ('Компания', 'Компания')],
@@ -49,6 +52,7 @@ class Advertisement(DirtyFieldsMixin, models.Model):
                                       blank=True, null=True)
     counter_views = models.IntegerField(default=0, verbose_name='Счетчик просмотров')
     contact_name = models.CharField(max_length=255, verbose_name='Контактное лицо',validators=[validate_words])
+    # contact_name = models.CharField(max_length=255, verbose_name='Контактное лицо')
     phone_num = models.CharField(max_length=255, verbose_name='Телефон', validators=[validate_phone])
     email = models.EmailField(verbose_name='E-Mail')
     store = models.ForeignKey('Store', on_delete=models.CASCADE, blank=True, null=True, verbose_name="Магазин")
@@ -65,21 +69,32 @@ class Advertisement(DirtyFieldsMixin, models.Model):
     additional_information = models.JSONField()
     additional_information_view = ArrayField(ArrayField(models.CharField(max_length=500)), blank=True, null=True, editable=False)
     description = models.TextField(verbose_name='Описание',validators=[validate_words])
+    # description = models.TextField(verbose_name='Описание')
     video_link = models.URLField(blank=True, null=True, verbose_name='Ссылка на видео')  # хранит строку, которая представляет валидный URL-адрес
-
-    def get_days_till_expiration(self):
-        days_till_expiration = self.date_of_deactivate - self.date_of_create
-        return days_till_expiration.days
+    search_vector = SearchVectorField(null=True, editable=False)
+    search_title_vector = SearchVectorField(null=True, editable=False)
 
     class Meta:
         verbose_name = 'Объявление'
         verbose_name_plural = 'Объявления'
+        indexes = [
+            GinIndex(fields=['search_vector']),
+
+            GinIndex(fields=['search_title_vector']),
+
+            GinIndex(fields=['title'], name='title_gin_index',
+                     opclasses=['gin_trgm_ops']),
+
+            GinIndex(OpClass(Upper('title'), name='gin_trgm_ops'),
+                     name='title_upper_gin_index'),
+            BrinIndex(fields=['date_of_create']),
+        ]
 
     def __str__(self):
         return self.title
 
     def get_days_till_expiration(self):
-        days_till_expiration = self.date_of_deactivate - self.date_of_create
+        days_till_expiration = self.date_of_deactivate - datetime.now(timezone.utc)
         return days_till_expiration.days
 
     def get_absolute_url(self):
@@ -89,8 +104,10 @@ class Advertisement(DirtyFieldsMixin, models.Model):
         if 'additional_information' in self.get_dirty_fields():
             self.additional_information_view = list(self.additional_information.items())
         self.slug = unique_slugify(self, self.title)
-        self.date_of_deactivate = make_aware(datetime.now() + timedelta(days=180))
-        self.full_clean()
+        super().save(*args, **kwargs)
+        self.date_of_deactivate = self.date_of_create + timedelta(days=60)
+        self.search_vector = SearchVector('title', 'description')
+        self.search_title_vector = SearchVector('title')
         super().save(*args, **kwargs)
         if self.preview_image:
             try:
@@ -170,8 +187,8 @@ class Spisok(models.Model):
     title = models.CharField(max_length=255, verbose_name='Заголовок списка')
 
     class Meta:
-        verbose_name = 'Список'
-        verbose_name_plural = 'Списки'
+        verbose_name = 'Список элементов для полей'
+        verbose_name_plural = 'Списки элементов для полей'
 
     def __str__(self):
         return self.title
@@ -182,8 +199,8 @@ class Element(models.Model):
     spisok = models.ForeignKey('Spisok', on_delete=models.CASCADE, verbose_name='Связь со списком')
 
     class Meta:
-        verbose_name = 'Элемент'
-        verbose_name_plural = 'Элементы'
+        verbose_name = 'Элемент для списка'
+        verbose_name_plural = 'Элементы для списка'
 
     def __str__(self):
         return self.title
@@ -194,8 +211,8 @@ class ElementTwo(models.Model):
     element = models.ForeignKey('Element', on_delete=models.CASCADE, verbose_name='Связь с элементом')
 
     class Meta:
-        verbose_name = 'Второй элемент'
-        verbose_name_plural = 'Вторые элементы'
+        verbose_name = 'Дополнительный элемент для списка'
+        verbose_name_plural = 'Дополнительные элементы для списка'
 
     def __str__(self):
         return self.title
@@ -221,6 +238,13 @@ class Store(models.Model):
     address = models.CharField(max_length=255, blank=True, null=True, verbose_name='Адрес')
     counter_views = models.IntegerField(default=0, verbose_name='Счетчик просмотров')
 
+    class Meta:
+        verbose_name = 'Магазин'
+        verbose_name_plural = 'Магазины'
+
+    def __str__(self):
+        return self.title
+
     def save(self, *args, **kwargs):
         day_now = datetime.now()
         if calendar.isleap(int(day_now.strftime('%Y'))) and int(day_now.strftime("%m")) <= 2:
@@ -229,17 +253,10 @@ class Store(models.Model):
             self.date_of_deactivate = day_now + timedelta(days=365)
         super(Store, self).save(*args, **kwargs)
 
-
     def get_days_till_expiration(self):
         days_till_expiration = self.date_of_deactivate - self.date_of_create
         return days_till_expiration.days
 
-    class Meta:
-        verbose_name = 'Магазин'
-        verbose_name_plural = 'Магазины'
-
-    def __str__(self):
-        return self.title
 
 class UploadFile(models.Model):
     '''Модель для сохранения файла для массового импорта объявлений'''
@@ -279,11 +296,11 @@ class ErrorFile(models.Model):
 
 
 class BadWords(models.Model):
+    '''Модель для валидации нецензурных слов'''
     word = models.CharField(max_length=255)
 
     def __str__(self):
         return self.word[0:2]+'*'*(len(self.word)-3)+self.word[-1]
-
 
     class Meta:
         verbose_name = 'Нецензурное слово'

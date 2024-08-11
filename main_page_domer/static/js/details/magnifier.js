@@ -1,10 +1,10 @@
 const btn = document.querySelector('.magnifier')
-const modal = document.querySelector('.modals')
+const modalBlock = document.querySelector('.modals')
 const magnifierModal = document.querySelector(".magnifier__zoom")
 
 btn.addEventListener('click', () => {
   document.body.style.overflow = 'hidden'
-    modal.classList.add('modal__active')
+  modalBlock.classList.add('modal__active')
     magnifierModal.classList.add('modal__active')
       $(".magnifier__zoom-main").slick({
         slidesToShow: 1,
@@ -15,9 +15,9 @@ btn.addEventListener('click', () => {
       });
 })
 
-modal.addEventListener('click', (event) => {
-  if(event.target === modal) {
+modalBlock.addEventListener('click', (event) => {
+  if(event.target === modalBlock) {
     document.body.style.overflow = 'auto'
-    modal.classList.remove('modal__active')
+    modalBlock.classList.remove('modal__active')
   } 
 })

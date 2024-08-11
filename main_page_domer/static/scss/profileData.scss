@@ -1,0 +1,64 @@
+@import "./variables";
+@import "./mixins";
+
+.form__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+
+  & h3 {
+    @include fonts($defaultColor, 21px, 400);
+    margin-bottom: 10px;
+  }
+
+  & form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  & button {
+    max-width: 150px;
+  }
+
+  & label {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  & p {
+    @include fonts($defaultColor, 14px, 400);
+    flex: 0 0 200px;
+  }
+
+  & input {
+    @include fonts($defaultColor, 14px, 400);
+    flex: 0 1 250px;
+    border: 1px solid $gray;
+    padding: 5px;
+    &::placeholder {
+      @include fonts($gray, 14px, 400);
+    }
+  }
+}
+
+
+@media(max-width:992px) {
+  .form__wrapper {
+    // & p {
+    //   flex: initial;
+    // }
+
+    & input {
+      flex: 1 1 800px;
+    }
+
+    // & label {
+    //   align-items: initial;
+    //   flex-direction: column;
+    // }
+  }
+}

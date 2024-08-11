@@ -8,8 +8,8 @@
 }
 
 .similar__list {
-    display: flex;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 10px;
     overflow: hidden;
 }
@@ -25,6 +25,7 @@
 }
 
 .similar__list-item-img {
+    flex: 0 0 180px;
     max-width: 180px;
     border: 1px solid $gray;
     & img {
@@ -38,6 +39,7 @@
 
 .similar__list-title {
     @include fonts($mainColor, 14px, 400);
+    text-align: center;
 }
 
 .similar__list-price {
