@@ -487,3 +487,10 @@ def edit_publication(request, publication_slug):
     }
     return render(request=request, template_name='profile_edit_publication.html', context=context)
 
+def get_favorites_page(request):
+
+    favorites_list = Advertisement.objects.filter(id__in=request.user.userfavorites.favorites, is_active=True, moderated=True)
+    context = {
+        "favorites_list": favorites_list
+    }
+    return render(request, "profile_favorites.html", context)
