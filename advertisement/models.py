@@ -21,7 +21,7 @@ from users.validators import validate_phone
 
 
 class PhotoAdvertisement(models.Model):
-    photo = models.ImageField(upload_to=upload_to, verbose_name='Фото')
+    photo = models.ImageField(upload_to=upload_to, verbose_name='Фото', blank=True, null=True)
     advertisement = models.ForeignKey('Advertisement', on_delete=models.CASCADE, verbose_name='Фотография')
 
     class Meta:

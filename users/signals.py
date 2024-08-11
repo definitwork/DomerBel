@@ -1,9 +1,11 @@
 # from django.contrib.auth.models import Group
 # from django.db import transaction
-# from django.db.models.signals import post_save
-# from django.dispatch import receiver
 
-# from users.models import User
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+from users.models import User, UserFavorites
 
 
 # @receiver(post_save, sender=User)
@@ -13,3 +15,14 @@
 #     group = Group.objects.get(name='Юридические лица')
 #     if instance.entity:
 #         transaction.on_commit(lambda: instance.groups.add(group))
+
+
+@receiver(post_save, sender=User)
+def create_user_favorites(sender, instance, created, **kwargs):
+    if created:
+        UserFavorites.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_favorites(sender, instance, **kwargs):
+    instance.userfavorites.save()

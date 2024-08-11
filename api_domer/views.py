@@ -1,5 +1,3 @@
-from uuid import uuid4
-
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
@@ -7,25 +5,19 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import api_view
-from rest_framework import status, serializers, generics, filters
+from rest_framework import status, serializers
 from rest_framework.response import Response
-from rest_framework.pagination import LimitOffsetPagination
 
 from advertisement.models import Region, Category, Field, ElementTwo, PhotoAdvertisement, Advertisement, Store
 from api_domer.serializers import GetListOfCitiesSerializer, GetListOfCategoriesSerializer, FieldSerialier, \
     ElementTwoSerializer, AdvertisementSerializer, StoreSerializer, \
     UserRegisterSerializer, UserLoginSerializer, PasswordResetSerializer, \
-    SavePhotoPublicationSerializer, SavePublicationSerializer, EditPublicationSerializer, PublicationSearchSerializer
-
-from api_domer.filters import PublicationsFilter
-
-from main_page_domer.models import PhotoPublication, Publication
+    FavoriteSerializer
 
 from api_domer.utils import validate_additional_information
 from config.settings import env_keys
-from users.models import User
+from users.models import User, UserFavorites
 
 
 # Отдаёт список городов type='Город' по id выбранной области type='Область' из модели Region
@@ -126,7 +118,6 @@ def save_advertisement(request):
 @api_view(['PATCH'])
 def update_advertisement(request):
     additional_information = dict(request.data.copy())
-    print(additional_information)
     serializer = AdvertisementSerializer(data=request.data)
     serializer.is_valid()
     keys_to_delete = ['csrfmiddlewaretoken', 'preview_img', 'photo_files', 'deleted_images', 'advertisement']
@@ -140,7 +131,7 @@ def update_advertisement(request):
         deleted_images = request.data.get('deleted_images').split(',')
         preview_img = request.data.get("preview_img")
         Advertisement.objects.filter(author=request.user, id=request.data.get('advertisement')
-                                     ).update(additional_information=additional_information,
+                                     ).update(moderated=False, additional_information=additional_information,
                                               **serializer.validated_data)
         advertisement = get_object_or_404(Advertisement, id=request.data.get('advertisement'))
 
@@ -163,7 +154,9 @@ def update_advertisement(request):
                                                   advertisement=advertisement)
             if preview_img:
                 advertisement.preview_image = preview_img
-                PhotoAdvertisement.objects.filter(photo=preview_img).delete()
+                inst = get_object_or_404(PhotoAdvertisement, photo=preview_img)
+                PhotoAdvertisement.objects.filter(id=inst.id).update(photo=None)
+                PhotoAdvertisement.objects.filter(id=inst.id).delete()
             else:
                 advertisement.preview_image = None
             advertisement.save()
@@ -246,4 +239,25 @@ def password_reset(request):
     else:
         raise serializers.ValidationError(
             {"errors": password_reset_serializer.errors})
+
+
+@api_view(['POST'])
+def add_to_favorite(request):
+    serializer = FavoriteSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        user_favorites = get_object_or_404(UserFavorites, user=request.user)
+        user_favorites.favorites.append(serializer.validated_data.get('id'))
+        user_favorites.favorites.remove(serializer.validated_data.get('id'))
+        user_favorites.save()
+        return Response({'success': 'Объявление успешно добавлено в избранное'}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['POST'])
+def delete_from_favorite(request):
+    serializer = FavoriteSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        user_favorites = get_object_or_404(UserFavorites, user=request.user)
+        user_favorites.favorites.remove(serializer.validated_data.get('id'))
+        user_favorites.save()
+        return Response({'success': 'Объявление успешно удалено из избранного'}, status=status.HTTP_201_CREATED)
 
