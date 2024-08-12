@@ -8,7 +8,7 @@
 {% block action %}
         <div class="main__info-action">
             <p>Отмеченные:</p>
-            <button name="restore_ads">Восстановить</button>
+            <button name="restore_ads" class="submit__btn">Восстановить</button>
         </div>
 {% endblock action %}
     {% block paginator %}
@@ -42,7 +42,6 @@
         </div>
     </div>
     {% endblock paginator %}
-
 {% block js %}
 <script src="{% static 'js/profile/selectAdvertisement.js' %}"></script>
 {% endblock js %}

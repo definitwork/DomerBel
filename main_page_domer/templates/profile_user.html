@@ -101,11 +101,13 @@
                         Пополнить кошелек
                     </a>
                 </li>
+                {% if user.entity %}
                 <li class="profile__aside-nav-list-item">
                     <a href="{% url 'users:user_all_publications' %}">
-                        Публикации
+                        Мои публикации
                     </a>
                 </li>
+                {% endif %}
                 <li class="profile__aside-nav-list-item">
                     <a href="{% url 'users:favorites' %}">
                         Избранное
