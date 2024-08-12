@@ -18,6 +18,7 @@ from django.conf import settings
 
 from .utils_for_models import add_watermark_to_photo, upload_to, unique_slugify
 from users.validators import validate_phone
+from .validators import validate_words
 
 
 class PhotoAdvertisement(models.Model):
@@ -40,7 +41,7 @@ class PhotoAdvertisement(models.Model):
 class Advertisement(DirtyFieldsMixin, models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     article = models.CharField(max_length=255, blank=True, null=True, verbose_name="Артикул")
-    title = models.CharField(max_length=255, verbose_name='Заголовок', db_index=True)
+    title = models.CharField(max_length=255, verbose_name='Заголовок', db_index=True, validators=[validate_words])
     price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, default=0, verbose_name='Цена')
     category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Раздел')
     bearer = models.CharField(max_length=50, choices=[('Частное лицо', 'Частное лицо'), ('Компания', 'Компания')],
@@ -49,7 +50,7 @@ class Advertisement(DirtyFieldsMixin, models.Model):
     preview_image = models.ImageField(upload_to=upload_to, verbose_name='Главная фотография',
                                       blank=True, null=True)
     counter_views = models.IntegerField(default=0, verbose_name='Счетчик просмотров')
-    contact_name = models.CharField(max_length=255, verbose_name='Контактное лицо')
+    contact_name = models.CharField(max_length=255, verbose_name='Контактное лицо',validators=[validate_words])
     phone_num = models.CharField(max_length=255, verbose_name='Телефон', validators=[validate_phone])
     email = models.EmailField(verbose_name='E-Mail')
     store = models.ForeignKey('Store', on_delete=models.CASCADE, blank=True, null=True, verbose_name="Магазин")
@@ -65,7 +66,7 @@ class Advertisement(DirtyFieldsMixin, models.Model):
     raise_in_search = models.BooleanField(default=False, verbose_name="Поднять в поиске")
     additional_information = models.JSONField()
     additional_information_view = ArrayField(ArrayField(models.CharField(max_length=500)), blank=True, null=True, editable=False)
-    description = models.TextField(verbose_name='Описание')
+    description = models.TextField(verbose_name='Описание',validators=[validate_words])
     video_link = models.URLField(blank=True, null=True, verbose_name='Ссылка на видео')  # хранит строку, которая представляет валидный URL-адрес
     search_vector = SearchVectorField(null=True, editable=False)
     search_title_vector = SearchVectorField(null=True, editable=False)
@@ -167,6 +168,7 @@ class Field(models.Model):
     max_val_interval_date = models.IntegerField(verbose_name='Максимально возможный год для выбора', blank=True, null=True)
     search = models.CharField(max_length=500, blank=True, null=True)
 
+
     class Meta:
         verbose_name = 'Поле'
         verbose_name_plural = 'Поля'
@@ -256,7 +258,50 @@ class Store(models.Model):
         return days_till_expiration.days
 
 
+class UploadFile(models.Model):
+    '''Модель для сохранения файла для массового импорта объявлений'''
+    def get(instance,filename):
+        '''Ф-ция, возращает путь, по которому хранитьс файл для массого импорта объявлений'''
+        return f'files_for_bulk_import_of_ads/{instance.user.email}/{filename}'
+
+    time_upload_file = models.DateTimeField(auto_now_add=True, verbose_name='Время загрузки файла')
+    file = models.FileField(upload_to=get, verbose_name='Путь к файлу с объявлениями')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Загруженный файл'
+        verbose_name_plural = 'Загруженные файлы'
+
+    def __str__(self):
+        return f'{self.user}_{self.time_upload_file}'
+
+class ErrorFile(models.Model):
+    '''Модель, возвращающая путь, по которому храниться файл с ошибками после массового импорта объялений'''
+    def get(instance,filename):
+        '''Ф-ция, возвращает путь, по которому храниться файл для массого импорта объявлений'''
+
+        return f'files_for_bulk_import_of_ads/{instance.user.email}/{filename}'
+
+    time_upload_file = models.DateTimeField(auto_now_add=True, verbose_name='Время создания файла')
+    file = models.CharField(max_length=255, verbose_name='Путь к файлу с объявлениями с ошибками')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False, verbose_name='Был доступ у пользователя к файлу или нет')
+
+    class Meta:
+        verbose_name = 'Файл с объявлениями с ошибками'
+        verbose_name_plural = 'Файлы с объявлениями с ошибками'
+
+    def __str__(self):
+        return f'{self.user}_{self.time_upload_file}'
 
 
+class BadWords(models.Model):
+    '''Модель для валидации нецензурных слов'''
+    word = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.word[0:2]+'*'*(len(self.word)-3)+self.word[-1]
 
+    class Meta:
+        verbose_name = 'Нецензурное слово'
+        verbose_name_plural = 'Нецензурные слова'

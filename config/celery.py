@@ -26,7 +26,15 @@ app.conf.beat_schedule = {
         "schedule": timedelta(seconds=10)
         # "schedule": crontab(hour=0, minute=1)
     },
-
+    "delete_everything_in_folder": {
+        "task": "advertisement.tasks.delete_everything_in_folder_beat",
+        "schedule": crontab(minute=15, hour=0),
+    },
+    "delete_error_file": {
+        "task": "advertisement.tasks.delete_error_file_beat",
+        # "schedule": crontab(minute=15, hour=0),
+        "schedule": timedelta(seconds=120)
+    }
 }
 
 if __name__ == '__main__':

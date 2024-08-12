@@ -12,6 +12,7 @@ from mptt.forms import TreeNodeChoiceField
 from advertisement.models import Region, Category, Store
 
 from users.validators import validate_phone
+from django.core.validators import FileExtensionValidator
 
 
 class ImagePreviewWidget(forms.widgets.FileInput):
@@ -103,3 +104,8 @@ class StoreForm(forms.ModelForm):
         model = Store
         fields = ['region', 'address', 'category', 'title', 'slug', 'description', 'url', 'contact_name', 'email',
                   'phone_num', 'video_link', 'logo_image']
+
+
+class UploadFileForm(forms.Form):
+    '''Форма для массового импорта объявления'''
+    file = forms.FileField( validators = [FileExtensionValidator(allowed_extensions=['xlsx','zip'])])

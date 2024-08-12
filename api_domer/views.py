@@ -9,11 +9,11 @@ from rest_framework.decorators import api_view
 from rest_framework import status, serializers
 from rest_framework.response import Response
 
-from advertisement.models import Region, Category, Field, ElementTwo, PhotoAdvertisement, Advertisement, Store
+from advertisement.models import Region, Category, Field, ElementTwo, PhotoAdvertisement, Advertisement, Store, Element
 from api_domer.serializers import GetListOfCitiesSerializer, GetListOfCategoriesSerializer, FieldSerialier, \
     ElementTwoSerializer, AdvertisementSerializer, StoreSerializer, \
     UserRegisterSerializer, UserLoginSerializer, PasswordResetSerializer, \
-    FavoriteSerializer
+    FavoriteSerializer, ElementSerializer, GetListOfCategoriesFieldsSerializer
 
 from api_domer.utils import validate_additional_information
 from config.settings import env_keys
@@ -61,7 +61,6 @@ def get_category_list(request):
 @api_view(['GET'])
 def get_field_list(request):
     fieldlist = Field.objects.filter(category_id=request.query_params.get('id')).select_related(
-
         'spisok').prefetch_related('spisok__element_set__elementtwo_set').order_by('id')
     serializer = FieldSerialier(fieldlist, many=True)
     return Response(serializer.data)
@@ -261,4 +260,22 @@ def delete_from_favorite(request):
             user_favorites.favorites.remove(serializer.validated_data.get('id'))
             user_favorites.save()
         return Response({'success': 'Объявление успешно удалено из избранного'}, status=status.HTTP_201_CREATED)
+
+
+
+@api_view(['GET'])
+def get_element_list(request):
+    '''Отадет элементы связанные с полем по id'''
+    elements = Element.objects.filter(spisok_id__field=request.query_params.get('id'))
+    serializer = ElementSerializer(elements, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_subcategory_list(request):
+    '''Отдает подкатегориии и их поля по id категории'''
+    categories = Category.objects.filter(parent_id=request.query_params.get('id')).prefetch_related('field_set__spisok__element_set__elementtwo_set')
+    serializer = GetListOfCategoriesFieldsSerializer(categories, many=True)
+    return Response(serializer.data)
+
 

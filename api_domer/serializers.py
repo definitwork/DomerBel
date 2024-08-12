@@ -117,3 +117,10 @@ class PasswordResetSerializer(serializers.Serializer):
 
 class FavoriteSerializer(serializers.Serializer):
     id = serializers.IntegerField()
+
+
+class GetListOfCategoriesFieldsSerializer(serializers.ModelSerializer):
+    field_set = FieldSerialier(many=True)
+    class Meta:
+        model = Category
+        fields = ['id','title','field_set']

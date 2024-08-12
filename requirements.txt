@@ -24,10 +24,12 @@ django-simple-captcha==0.6.0
 djangorestframework==3.14.0
 drf-recaptcha==3.1.0
 drf-yasg==1.21.7
+et-xmlfile==1.1.0
 inflection==0.5.1
 isort==5.13.2
 kombu==5.3.7
 mccabe==0.7.0
+openpyxl==3.1.2
 packaging==23.2
 pillow==10.3.0
 platformdirs==4.2.2
@@ -49,3 +51,4 @@ tzdata==2023.4
 uritemplate==4.1.1
 vine==5.1.0
 wcwidth==0.2.13
+XlsxWriter==3.2.0
