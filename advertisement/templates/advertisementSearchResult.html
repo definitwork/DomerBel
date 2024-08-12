@@ -38,8 +38,21 @@
         </section>
     {% endif %}
 {% endblock %}
-
-
+{% block category_filter %}
+    <section class="filter">
+        <ul class="filter__list">
+            {% for category in category %}
+            {% if category.advertisement_counts != 0 %}
+                <li class="filter__list-item">
+                    <a href="{% url 'advertisement_by_category' category.slug %}{% if region_bread_crumbs %}?{% for region in region_bread_crumbs %}&region={{ region.id }}{% endfor %}{% endif %}">
+                        {{ category.title }}, <span>{{ category.advertisement_counts }}</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </section>
+{% endblock category_filter %}
 {% block sort %}
     <section class="sort">
         <div class="sort__ads">
@@ -100,8 +113,6 @@
         </div>
     </section>
     {% endblock sort %}
-
-
 {% block paginator %}
 <div class="paginator">
         <div class="paginator_wrapper">

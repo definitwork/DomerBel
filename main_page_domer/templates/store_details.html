@@ -100,13 +100,13 @@
             <div class="crumbs__wrapper">
                 <ul class="crumbs__list">
                     <li class="crumbs__list-item">
-                        <a href="{% url 'advertisement' %}">Все объявления</a>
+                        <a href="{% url 'store_by_title' store.slug %}">Все объявления</a>
                     </li>
                     <li class="crumbs__list-item-dots">...</li>
                     {% if region_bread_crumbs %}
                         {% for bread_crumbs in region_bread_crumbs %}
                             <li class="crumbs__list-item">
-                                <a href="{% url 'advertisement' %}?region={{ bread_crumbs.id }}">{{ bread_crumbs.area }}</a>
+                                <a href="{% url 'store_by_title' store.slug %}?region={{ bread_crumbs.id }}">{{ bread_crumbs.area }}</a>
                             </li>
                             {% if not forloop.last %}
                             <li class="crumbs__list-item-dots">...</li>
@@ -119,7 +119,7 @@
                             <li class="crumbs__list-item-dots">...</li>
                             {% endif %}
                             <li class="crumbs__list-item">
-                                <a href="{% url 'advertisement_by_category' bread_crumbs.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}">{{ bread_crumbs.title }}</a>
+                                <a href="{% url 'store_by_title_and_category' store_slug=store.slug category_slug=bread_crumbs.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}">{{ bread_crumbs.title }}</a>
                             </li>
                             {% if not forloop.last %}
                             <li class="crumbs__list-item-dots">...</li>
@@ -132,12 +132,13 @@
     {% endif %}
 {% endblock %}
 {% block content %}
+{% block category_filter %}
 <section class="filter">
   <ul class="filter__list">
       {% for category in category %}
       {% if category.advertisement_counts != 0 %}
           <li class="filter__list-item">
-              <a href="{% url 'advertisement_by_category' category.slug %}{% if region_bread_crumbs %}?{% for region in region_bread_crumbs %}&region={{ region.id }}{% endfor %}{% endif %}">
+              <a href="{% url 'store_by_title_and_category' store_slug=store.slug category_slug=category.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}" class="category">
                   {{ category.title }}, <span>{{ category.advertisement_counts }}</span>
               </a>
           </li>
@@ -145,6 +146,7 @@
       {% endfor %}
   </ul>
 </section>
+{% endblock category_filter %}
 {% block sort %}
 <section class="sort">
   <div class="sort__ads">

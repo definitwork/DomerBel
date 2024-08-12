@@ -42,6 +42,7 @@
     {% endif %}
 {% endblock %}
 {% block content %}
+{% block category_filter %}
     <section class="filter">
         <ul class="filter__list">
             {% for category in category %}
@@ -55,6 +56,7 @@
             {% endfor %}
         </ul>
     </section>
+{% endblock category_filter %}
     {% block sort %}
     <section class="sort">
         <div class="sort__ads">
@@ -250,7 +252,7 @@
             {% if category.level == 0 %}
                 <div class="more__item">
                     <h2>
-                        <a href="#">
+                        <a href="{% url 'advertisement_by_category' category.slug %}">
                             {{category}}
                         </a>
                     </h2>
@@ -258,7 +260,7 @@
                         {% for category_child in category_list%}
                             {% if category_child.parent_id == category.id %}
                                 <li>
-                                    <a href="#">
+                                    <a href="{% url 'advertisement_by_category' category.slug %}">
                                         {{category_child}}
                                     </a>
                                 </li>
@@ -273,5 +275,5 @@
 {% endblock content %}
 
 {% block js %}
-    <script src="{% static "js/advertisementAdd/advertisementAdd.js" %}"></script>
+    <script src="{% static 'js/advertisementAdd/advertisementAdd.js' %}"></script>
 {% endblock js %}

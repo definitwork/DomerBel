@@ -232,10 +232,14 @@ class Store(models.Model):
     url = models.URLField(blank=True, null=True, verbose_name='Ссылка на сайт магазина')  # хранит строку, которая представляет валидный URL-адрес
     address = models.CharField(max_length=255, blank=True, null=True, verbose_name='Адрес')
     counter_views = models.IntegerField(default=0, verbose_name='Счетчик просмотров')
+    search_vector = SearchVectorField(null=True, editable=False)
 
     class Meta:
         verbose_name = 'Магазин'
         verbose_name_plural = 'Магазины'
+        indexes = [
+            GinIndex(fields=['search_vector']),
+        ]
 
     def __str__(self):
         return self.title
@@ -246,10 +250,12 @@ class Store(models.Model):
             self.date_of_deactivate = day_now + timedelta(days=366)
         else:
             self.date_of_deactivate = day_now + timedelta(days=365)
+        super().save(*args, **kwargs)
+        self.search_vector = SearchVector('title', 'description')
         super(Store, self).save(*args, **kwargs)
 
     def get_days_till_expiration(self):
-        days_till_expiration = self.date_of_deactivate - self.date_of_create
+        days_till_expiration = self.date_of_deactivate - datetime.now(timezone.utc)
         return days_till_expiration.days
 
 

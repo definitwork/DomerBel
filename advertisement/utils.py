@@ -41,25 +41,6 @@ def sorted_by(key):
         return '-date_of_create'
 
 
-def get_view_type(view_type):
-    if view_type.get('view_type'):
-        view_type = view_type.get('view_type')
-        if type(view_type) == str:
-            if view_type == '1':
-                return 1, 'advertisement_page_type_2.html'
-            else:
-                return 0, 'advertisement_page_type_1.html'
-        elif view_type.get('view_type'):
-            if view_type.get('view_type') == '0':
-                return 1, 'advertisement_page_type_2.html'
-            else:
-                return 0, 'advertisement_page_type_1.html'
-        else:
-            return 0, 'advertisement_page_type_1.html'
-    else:
-        return 0, 'advertisement_page_type_1.html'
-
-
 def get_region_variables(region_request):
     if region_request:
         region_filter = dict(
@@ -74,40 +55,17 @@ def get_region_variables(region_request):
         return region_filter, region_param, region_bread_crumbs
 
 
-def get_view_type_for_store(view_type):
-    if view_type.get('view_type'):
-        view_type = view_type.get('view_type')
-        if type(view_type) == str:
-            if view_type == '1':
-                return 1, 'store_detail_page_type_2.html'
-            else:
-                return 0, 'store_detail_page_type_1.html'
-        elif view_type.get('view_type'):
-            if view_type.get('view_type') == '0':
-                return 1, 'store_detail_page_type_2.html'
-            else:
-                return 0, 'store_detail_page_type_1.html'
-        else:
-            return 0, 'store_detail_page_type_1.html'
-    else:
-        return 0, 'store_detail_page_type_1.html'
-
-
 def where_to_look(parameter, model):
     result = []
     bread_crumbs = []
     if parameter:
         if parameter == ['']:
             pass
-        # elif '' in parameter:
         else:
             while '' in parameter:
                 parameter.remove('')
             result = get_object_or_404(model, id=parameter[-1]).get_descendants(include_self=True)
             bread_crumbs = get_object_or_404(model, id=parameter[-1]).get_ancestors(ascending=False, include_self=True)
-        # else:
-        #     result = model.objects.filter(id__in=parameter)
-        #     bread_crumbs = result
     return result, bread_crumbs
 
 
