@@ -15,10 +15,44 @@
   color: red;
 }
 
+.publications__list-item-date-edit {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex: 0 0 150px;
+}
+
+.article__status {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: red;
+  font-size: 14px;
+}
+
+.moderated {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: rgb(0, 128, 0);
+  font-size: 14px;
+}
+
+.publications__list-item-check {
+  display: flex;
+  gap: 5px;
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+  font-size: 14px;
+}
+
 .article__date {
   display: block;
-  align-self: center;
-  flex: 0 0 150px;
+  align-self: start;
+  text-align: inherit;
   font-family: "Trebuchet MS", sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -65,7 +99,7 @@
 }
 
 .article__edit {
-  align-self: center;
+  align-self: start;
   font-family: "Trebuchet MS", sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -84,6 +118,9 @@
     order: 4;
     align-self: initial;
   }
+  .publications__list-item-date-edit {
+    flex: 0 0 100px;
+  }
   .article__date {
     flex: initial;
     align-self: flex-start;
@@ -101,7 +138,7 @@
   }
 }
 .main__info-action {
-  margin-bottom: 10px;
+  margin-top: 10px;
 }
 .main__info-action p {
   font-family: "Trebuchet MS", sans-serif;

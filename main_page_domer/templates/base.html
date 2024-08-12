@@ -284,7 +284,7 @@
                                 </a>
                             </li>
                             <li class="header__up-nav-list-item">
-                                <a href="{% url "help" %}">
+                                <a href="{% url 'help' %}">
                                     Помощь
                                 </a>
                             </li>
@@ -317,17 +317,17 @@
                         </h2>
                         <ul class="header__bottom-nav-list">
                             <li class="header__bottom-nav-list-item">
-                                <a href="#">
+                                <a href="{% url 'advertisement_by_category' 'avtomobili_s_probegom' %}">
                                     Авто
                                 </a>
                             </li>
                             <li class="header__bottom-nav-list-item">
-                                <a href="#">
+                                <a href="{% url 'advertisement_by_category' 'rabota' %}">
                                     Работа
                                 </a>
                             </li>
                             <li class="header__bottom-nav-list-item">
-                                <a href="#">
+                                <a href="{% url 'advertisement_by_category' 'nedvizhimost' %}">
                                     Недвижимость
                                 </a>
                             </li>

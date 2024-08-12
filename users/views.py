@@ -292,19 +292,6 @@ def get_my_store(request):
     return render(request, 'profile_shop.html', context)
 
 
-# Открывает страницу выбранного в ЛК магазина
-def get_store_page(request, slug):
-    store_page = Store.objects.get(user=request.user, slug=slug)
-    oblast = Region.objects.get(id=store_page.region.parent_id)
-    category_list = Category.objects.filter(level__lte=1)
-    context = {
-        'store_page': store_page,
-        'oblast': oblast,
-        'category_list': category_list
-    }
-    return render(request, 'personal_account/store_page.html', context)
-
-
 @login_required
 @permission_required("advertisement.change_store", raise_exception=True)
 def edit_store(request, store_id):
@@ -487,10 +474,12 @@ def edit_publication(request, publication_slug):
     }
     return render(request=request, template_name='profile_edit_publication.html', context=context)
 
+@login_required
 def get_favorites_page(request):
 
     favorites_list = Advertisement.objects.filter(id__in=request.user.userfavorites.favorites, is_active=True, moderated=True)
     context = {
-        "favorites_list": favorites_list
+        "favorites_list": favorites_list,
+        "adaptive_navigation": "Избранное"
     }
     return render(request, "profile_favorites.html", context)

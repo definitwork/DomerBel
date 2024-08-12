@@ -3,7 +3,7 @@
 @import "./publicationsItem";
 
 .main__info-action {
-  margin-bottom: 10px;
+  margin-top: 10px;
 
   & p {
     @include fonts($defaultColor, 14px, 400);
