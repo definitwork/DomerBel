@@ -272,7 +272,7 @@ def get_site_map_page(request):
     context = {}
     context['nodes'] = category_list
 
-    return render(request, 'store_details.html', context)
+    return render(request, 'map.html', context)
 
 def get_publications(request):
     """ Страница с всеми публикациями """
