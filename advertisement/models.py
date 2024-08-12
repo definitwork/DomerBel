@@ -75,12 +75,9 @@ class Advertisement(DirtyFieldsMixin, models.Model):
         verbose_name_plural = 'Объявления'
         indexes = [
             GinIndex(fields=['search_vector']),
-
             GinIndex(fields=['search_title_vector']),
-
             GinIndex(fields=['title'], name='title_gin_index',
                      opclasses=['gin_trgm_ops']),
-
             GinIndex(OpClass(Upper('title'), name='gin_trgm_ops'),
                      name='title_upper_gin_index'),
             BrinIndex(fields=['date_of_create']),

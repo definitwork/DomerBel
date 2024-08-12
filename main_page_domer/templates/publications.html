@@ -5,7 +5,7 @@
 {% endblock css %} 
 {% block search %}
 <search class="main__search search__profile">
-  <form class="main__search-form">
+  <form class="main__search-form" method="GET" action="{% url 'publication_search_result' %}">
     <fieldset class="main__search-form-item">
       <input type="text" name="text_search" placeholder="Поиск по тексту">
     </fieldset>
@@ -22,9 +22,11 @@
 </search>
 {% endblock search %}
 {% block content %}
+{% if publications.object_list %}
+{% block mainInfo %}
 <section class="section_publications">
   <div class="publications_count">
-      <p>Найдено записей: {{ publications.count }} </p>
+      <p>Найдено записей: {{ publications_count }} </p>
   </div>
   <ul class="publications__list">
       {% for publication in publications %}
@@ -43,15 +45,54 @@
                 {{ publication.title }}
               </a>
             </h3>
-            <p>
+            <div>
               {{ publication.announcement|safe }}
-            </p>
+            </div>
           </div>
         </article>
     </li>
       {% endfor %}
   </ul>
 </section>
-{% endblock %} 
+{% endblock mainInfo %}
+        {% block paginator %}
+        <div class="paginator">
+            <div class="paginator_wrapper">
+                <nav class="list_pages">
+                    <ul>
+                        {% if page_obj.has_previous %}
+                        <li class="">
+                            <a href="?page={{ page_obj.previous_page_number }}"><</a>
+                        </li>
+                        {% endif %}
+                        {% if page_obj.has_other_pages %}
+                        {% for page in page_obj.paginator.page_range %}
+                        {% if page_obj.number == page %}
+                        <li class="page_num page_num_selected">{{ page }}</li>
+                        {% elif page >= page_obj.number|add:-5 and page <= page_obj.number|add:5 %}
+                        <li class="page_num">
+                            <a href="?page={{ page }}">{{ page }}</a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        {% if page_obj.has_next %}
+                        <li class="">
+                            <a href="?page={{ page_obj.next_page_number }}">></a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        {% endblock paginator %}
+{% else %}
+{% block not_found %}
+        <p class="main__info-not-found">
+            Публикаций не найдено
+        </p>
+{% endblock not_found %}
+{% endif %}
+{% endblock content %}
 {% block js %}
 {% endblock js %}

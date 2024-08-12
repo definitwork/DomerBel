@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
-from django.contrib.postgres.search import SearchVectorField
+from django.contrib.postgres.search import SearchVectorField, SearchVector
 from django.db import models
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
@@ -94,12 +94,14 @@ class Publication(models.Model):
     counter_views = models.IntegerField(default=0, verbose_name="Счетчик просмотров")
     moderated = models.BooleanField(default=False, verbose_name="Прошло модерацию")
     search_vector = SearchVectorField(null=True, editable=False)
+    search_title_vector = SearchVectorField(null=True, editable=False)
 
     class Meta:
         verbose_name = "Публикация"
         verbose_name_plural = "Публикации"
         indexes = [
-                      GinIndex(fields=['search_vector']),
+            GinIndex(fields=['search_vector']),
+            GinIndex(fields=['search_title_vector']),
             ]
 
     def __str__(self):
@@ -107,6 +109,9 @@ class Publication(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = unique_slugify(self, self.title)
+        super().save(*args, **kwargs)
+        self.search_vector = SearchVector('title', 'description', 'announcement')
+        self.search_title_vector = SearchVector('title')
         super(Publication, self).save(*args, **kwargs)
 
 

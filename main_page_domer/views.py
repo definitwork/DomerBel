@@ -7,18 +7,20 @@ import PIL
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, F
+from django.db.models.fields.json import KT
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.timezone import make_aware
 
 from users.models import User
-from advertisement.models import Advertisement, Region, Category, Store, ElementTwo, PhotoAdvertisement
+from advertisement.models import Advertisement, Region, Category, Store, ElementTwo, PhotoAdvertisement, Field
 from advertisement.utils import (get_region_variables, sorted_by, sorted_by_number, sorted_by_date_or_price,
-                                 variables_for_paginator, where_to_look)
+                                 variables_for_paginator, where_to_look, search_additional_information,
+                                 annotating_field)
 from config import settings
 from main_page_domer.forms import FeedbackForm, ComplaintForm
 from main_page_domer.models import Help, ReasonOfComplaint, Complaint, Publication
-from main_page_domer.functions import views_counter_publication
 
 
 def get_main_page(request):
@@ -155,7 +157,7 @@ def get_store_by_title(request, store_slug):
     if request.GET.get('sort'):
         sort_for_paginator = sorted_by_number(request.GET.get('sort'))
 
-    store_page = Store.objects.get(slug=store_slug)
+    store_page = get_object_or_404(Store, slug=store_slug)
     advertisement_queryset = Advertisement.objects.filter(store=store_page, is_active=True,
                                                           moderated=True, **region_filter).select_related(
                                                           'category',
@@ -183,6 +185,8 @@ def get_store_by_title(request, store_slug):
         "region_param": region_param,
         "page_obj": page_obj,
         'date': state_sort_by_date,
+        'adaptive_navigation': f'{store_page.title}. Беларусь'
+
     }
     response = render(request, 'store_details.html', context)
     response.set_cookie('sort', sort_for_paginator)
@@ -205,7 +209,7 @@ def get_store_by_title_and_category(request, store_slug, category_slug):
     if request.GET.get('sort'):
         sort_for_paginator = sorted_by_number(request.GET.get('sort'))
 
-    store_page = Store.objects.get(slug=store_slug)
+    store_page = get_object_or_404(Store, slug=store_slug)
     category_queryset_all = Category.objects.all()
     category = get_object_or_404(category_queryset_all, slug=category_slug)
     category_bread_crumbs = category.get_ancestors(ascending=False, include_self=True)
@@ -242,6 +246,7 @@ def get_store_by_title_and_category(request, store_slug, category_slug):
         "region_param": region_param,
         'page_obj': page_obj,
         'date': state_sort_by_date,
+        'adaptive_navigation': f'{store_page.title}. {category.main_title if category.main_title else category.title}. Беларусь'
 
     }
 
@@ -250,6 +255,108 @@ def get_store_by_title_and_category(request, store_slug, category_slug):
     response.set_cookie('date', state_sort_by_date)
     response.set_cookie('sorted_by', order_by)
     response.set_cookie('user_auth', request.user.id)
+
+    return response
+
+
+def search_for_advertisements_in_the_store(request, store_slug):
+    search_parameters = {}
+    search_parameters_only = {}
+    category_queryset_an = []
+    key_delete = ['page', 'sort', 'date', 'price', 'text_search']
+    cop = dict.copy(request.GET)
+
+    sort_for_paginator = sorted_by_number(request.COOKIES.get('sort'))
+    order_by = sorted_by(request.COOKIES.get('sorted_by'))
+    state_sort_by_date = request.COOKIES.get('date', 0)
+    category, category_bread_crumbs = where_to_look(cop.pop('category', None), Category)
+    region, region_bread_crumbs = where_to_look(cop.pop('region', None), Region)
+
+    if request.GET.get('date') or request.GET.get('price'):
+        state_sort_by_date, order_by = sorted_by_date_or_price(request.GET)
+    if request.GET.get('sort'):
+        sort_for_paginator = sorted_by_number(request.GET.get('sort'))
+
+    if category:
+        search_parameters['category__in'] = category
+    if region:
+        search_parameters['region__in'] = region
+    if request.GET.get('only_photo'):
+        search_parameters_only['preview_image__exact'] = ''
+        cop.pop('only_photo')
+    if request.GET.get('only_video'):
+        search_parameters_only['video_link__exact'] = ''
+        cop.pop('only_video')
+    if request.GET.get('only_title') and request.GET.get('text_search'):
+        search_parameters['search_title_vector'] = request.GET.get('text_search')
+        cop.pop('only_title')
+    elif request.GET.get('text_search'):
+        search_parameters['search_vector'] = request.GET.get('text_search')
+
+    query = request.META.get('QUERY_STRING')
+    for key in key_delete:
+        cop.pop(key, None)
+        query = query.replace(f'{key}={request.GET.get(key)}&', '')
+
+    try:
+        fields = Field.objects.filter(id__in=cop.keys())
+    except ValueError:
+        raise Http404()
+
+    search, search_kt = search_additional_information(fields, cop)
+    search_q, search_annotate = annotating_field(search_kt)
+
+    if search:
+        search_parameters['additional_information__contains'] = search
+
+    store_page = Store.objects.get(slug=store_slug)
+
+    try:
+        category_queryset_an = Category.objects.add_related_count(category.get_descendants(),
+                                                                  Advertisement,
+                                                                  'category',
+                                                                  'advertisement_counts',
+                                                                  cumulative=True,
+                                                                  extra_filters={"is_active": True,
+                                                                                 "moderated": True,
+                                                                                 "store": store_page,
+                                                                                 **search_parameters})
+    except:
+        pass
+
+    if search_q:
+        search_parameters.update(search_q)
+
+    advertisement_queryset = Advertisement.objects.annotate(**{key: KT(value) for key, value in search_annotate.items()}
+                                                            ).filter(is_active=True,
+                                                                     moderated=True,
+                                                                     store=store_page,
+                                                                     **search_parameters
+                                                                     ).exclude(**search_parameters_only
+                                                                               ).select_related('category', 'region'
+                                                                                                ).order_by(
+        "-raise_in_search",
+        order_by)
+
+    page_obj = variables_for_paginator(advertisement_queryset,
+                                       request.GET.get('page'),
+                                       sort_for_paginator)
+
+    context = {
+        "ads_found": advertisement_queryset.count(),
+        "store": store_page,
+        "page_obj": page_obj,
+        "region_bread_crumbs": region_bread_crumbs,
+        "category_bread_crumbs": category_bread_crumbs,
+        "category": category_queryset_an,
+        "query": query,
+        'date': state_sort_by_date,
+        'adaptive_navigation': f'{store_page.title}. Результаты поиска'
+    }
+    response = render(request, "stores_search_result_for_advertisement.html", context)
+    response.set_cookie('sort', sort_for_paginator)
+    response.set_cookie('date', state_sort_by_date)
+    response.set_cookie('sorted_by', order_by)
 
     return response
 
@@ -263,24 +370,63 @@ def get_site_map_page(request):
 
     return render(request, 'store_details.html', context)
 
+
 def get_publications(request):
     """ Страница с всеми публикациями """
-    publications = Publication.objects.prefetch_related('photopublication_set'
-                                                        ).order_by('date_of_create').exclude(moderated=False)
+    publications = Publication.objects.exclude(moderated=False).order_by('date_of_create')
+
+    page_obj = variables_for_paginator(publications,
+                                       request.GET.get('page'),
+                                       10)
+
     context = {
-        'publications': publications,
+        'publications_count': publications.count(),
+        'publications': page_obj,
+        'adaptive_navigation': 'Публикации. Беларусь'
     }
-    return render(request=request, template_name='publications.html', context=context)
+    return render(request, 'publications.html', context)
 
 
 def get_publication_by_slug(request, publication_slug):
     """ Страница публикации по slug """
-    views_counter_publication(publication_slug)
-    publication = Publication.objects.get(slug=publication_slug)
+    Publication.objects.filter(slug=publication_slug).update(counter_views=F('counter_views')+1)
+    publication = get_object_or_404(Publication, slug=publication_slug, moderated=True)
     context = {
         'publication': publication,
+        'adaptive_navigation': f'{publication.title}'
     }
-    return render(request=request, template_name='publication_by_slug.html', context=context)
+    return render(request, 'publication_by_slug.html', context)
+
+
+def publication_search_result(request):
+    """ Страница с результатами поиска по публикациям """
+    search_parameters = {}
+    search_parameters_only = {}
+    cop = dict.copy(request.GET)
+
+    if request.GET.get('only_title') and request.GET.get('text_search'):
+        search_parameters['search_title_vector'] = request.GET.get('text_search')
+        cop.pop('only_title')
+    elif request.GET.get('text_search'):
+        search_parameters['search_vector'] = request.GET.get('text_search')
+
+    query = request.META.get('QUERY_STRING').replace(f'page={request.GET.get("page")}&', '')
+
+    publications = Publication.objects.filter(moderated=True, **search_parameters
+                                              ).exclude(**search_parameters_only
+                                                        ).order_by('date_of_create')
+
+    page_obj = variables_for_paginator(publications,
+                                       request.GET.get('page'),
+                                       10)
+
+    context = {
+        'publications_count': publications.count(),
+        'publications': page_obj,
+        'query': query,
+        'adaptive_navigation': 'Публикации. Результаты поиска'
+    }
+    return render(request, 'publication_search_result.html', context)
 
 
 def get_feedback_page(request):

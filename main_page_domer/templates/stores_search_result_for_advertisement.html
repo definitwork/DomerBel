@@ -1,16 +1,12 @@
-{% extends "base.html" %}
+{% extends 'store_details.html' %}
 {% load static %}
-{% block css %}
-<link rel="stylesheet" href="{% static 'css/advertisement.css' %}">
-<link rel="stylesheet" href="{% static 'css/storeDetail.css' %}">
-{% endblock css %}
-{% block title %}
-{% endblock title %}
+
+
 {% block search %}
 <section class="store">
   <div class="store__about">
     <h2>
-      {{ store.title }} 
+      {{ store.title }}
     </h2>
     <p>
       {{ store.description }}
@@ -106,7 +102,7 @@
                     {% if region_bread_crumbs %}
                         {% for bread_crumbs in region_bread_crumbs %}
                             <li class="crumbs__list-item">
-                                <a href="{% url 'store_by_title' store.slug %}?region={{ bread_crumbs.id }}">{{ bread_crumbs.area }}</a>
+                                <a href="?region={{ bread_crumbs.id }}">{{ bread_crumbs.area }}</a>
                             </li>
                             {% if not forloop.last %}
                             <li class="crumbs__list-item-dots">...</li>
@@ -119,7 +115,7 @@
                             <li class="crumbs__list-item-dots">...</li>
                             {% endif %}
                             <li class="crumbs__list-item">
-                                <a href="{% url 'store_by_title_and_category' store_slug=store.slug category_slug=bread_crumbs.slug %}{% if region_param.id %}?region={{ region_param.id }}{% endif %}">{{ bread_crumbs.title }}</a>
+                                <a href="?category={{ bread_crumbs.id }}{% if region_bread_crumbs %}{% for region in region_bread_crumbs %}&region={{ region.id }}{% endfor %}{% endif %}">{{ bread_crumbs.title }}</a>
                             </li>
                             {% if not forloop.last %}
                             <li class="crumbs__list-item-dots">...</li>
@@ -131,7 +127,7 @@
         </section>
     {% endif %}
 {% endblock %}
-{% block content %}
+
 {% block category_filter %}
 <section class="filter">
   <ul class="filter__list">
@@ -166,17 +162,17 @@
       </p>
       <ul class="sorted__output-list">
           <li class="sorted__output-list-item">
-              <a href="?sort=30{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+              <a href="?sort=30{% if query %}&{{ query }}{% endif %}">
                   30
               </a>
           </li>
           <li class="sorted__output-list-item">
-              <a href="?sort=60{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+              <a href="?sort=60{% if query %}&{{ query }}{% endif %}">
                   60
               </a>
           </li>
           <li class="sorted__output-list-item">
-              <a href="?sort=90{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+              <a href="?sort=90{% if query %}&{{ query }}{% endif %}">
                   90
               </a>
           </li>
@@ -188,7 +184,7 @@
       </p>
       <ul class="sorted__by-list">
           <li class="sorted__by-list-item">
-              <a href="?date={{ date }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+              <a href="?date={{ date }}{% if query %}&{{ query }}{% endif %}">
                   Дата
               </a>
               <div class="sorted__by-list-item-img">
@@ -196,7 +192,7 @@
               </div>
           </li>
           <li class="sorted__by-list-item">
-              <a href="?price={{ date }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">
+              <a href="?price={{ date }}{% if query %}&{{ query }}{% endif %}">
                   Цена
               </a>
               <div class="sorted__by-list-item-img">
@@ -207,104 +203,7 @@
   </div>
 </section>
 {% endblock sort %}
-<section class="advertisement">
-  <ul class="advertisement__list">
-      {% for card in page_obj|dictsortreversed:"raise_in_search" %}
-          <li class="default__item">
-              <article class="advertisement__list-item {% if card.highlight_ad %} active__item {% endif %}">
-                  <a href="{% url 'advertisement_details' card.slug %}" class="advertisement__list-item-img">
-                      <img src="{% if card.preview_image %} {{ card.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
-                           alt="{% if card.preview_image %} {{ card.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
-                  </a>
-                  <div class="advertisement__list-item-about">
-                      <h3 class="advertisement__list-item-title">
-                          <a href="{% url 'advertisement_details' card.slug %}">
-                              {{ card.title }}
-                          </a>
-                      </h3>
-                      <p class="advertisement__list-item-price">
-                          {% if card.price %}
-                              {{ card.price|floatformat }} руб.
-                              {% else %} Договорная
-                          {% endif %}
-                      </p>
-                      <ul class="advertisement__list-item-about-text-list">
-                          <li>
-                              {{ card.category }}
-                          </li>
-                          <li>
-                              {{ card.bearer }}
-                          </li>
-                          <li>
-                              {{ card.region }}
-                          </li>
-                          <li>
-                              {% if card.date_of_create.date == date_today %}
-                                  Сегодня
-                              {% elif card.date_of_create.date == date_yesterday %}
-                                  Вчера
-                              {% else %}
-                                  {{ card.date_of_create|date:"d b. Y H:i" }}
-                              {% endif %}
-                          </li>
-                      </ul>
-                      {% if card.vip or card.special_accommodation or card.highlight_ad or card.raise_in_search %}
-                      <ul class="advertisement__list-item-action">
-                          {% if card.special_accommodation %}
-                              <li class="advertisement__list-item-action-item">
-                                  <img src="{% static 'img/special.png' %}" alt="">
-                              </li>
-                          {% endif %}
-                          {% if card.vip %}
-                              <li class="advertisement__list-item-action-item">
-                                  <img src="{% static 'img/VIP.png' %}" alt="">
-                              </li>
-                          {% endif %}
-                          {% if card.highlight_ad %}
-                              <li class="advertisement__list-item-action-item">
-                                  <img src="{% static 'img/highlight.png' %}" alt="">
-                              </li>
-                          {% endif %}
-                          {% if card.raise_in_search %}
-                              <li class="advertisement__list-item-action-item">
-                                  <img src="{% static 'img/up.png' %}" alt="">
-                              </li>
-                          {% endif %}
-                      </ul>
-                      {% endif %}
-                  </div>
-              </article>
-          </li>
-      {% endfor %}
-  </ul>
-  {% if vip_advertisement %}
-  <div class="vip__wrap">
-      <ul class="vip__list">
-          {% for vip in vip_advertisement %}
-              <li>
-                  <h2 class="vip__title">
-                      VIP объявления
-                  </h2>
-                  <article class="vip__list-item">
-                      <a href="{% url 'advertisement_details' vip.slug %}">
-                          <div class="vip__list-item-img">
-                              <img src="{% if vip.preview_image %} {{ vip.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
-                                   alt="{% if vip.preview_image %} {{ vip.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}">
-                          </div>
-                          <h3 class="vip__list-item-title">
-                              {{ vip.title }}
-                          </h3>
-                          <p class="vip__list-item-district">
-                              {{ vip.region }}
-                          </p>
-                      </a>
-                  </article>
-              </li>
-          {% endfor %}
-      </ul>
-  </div>
-  {% endif %}
-</section>
+
 {% block paginator %}
 <div class="paginator">
   <div class="paginator_wrapper">
@@ -312,7 +211,7 @@
           <ul>
               {% if page_obj.has_previous %}
                   <li class="">
-                      <a href="?page={{ page_obj.previous_page_number }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}"><</a>
+                      <a href="?page={{ page_obj.previous_page_number }}{% if query %}&{{ query }}{% endif %}"><</a>
                   </li>
               {% endif %}
               {% if page_obj.has_other_pages %}
@@ -321,14 +220,14 @@
                           <li class="page_num page_num_selected">{{ page }}</li>
                       {% elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
                           <li class="page_num">
-                              <a href="?page={{ page }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">{{ page }}</a>
+                              <a href="?page={{ page }}{% if query %}&{{ query }}{% endif %}">{{ page }}</a>
                           </li>
                       {% endif %}
                   {% endfor %}
               {% endif %}
               {% if page_obj.has_next %}
                   <li class="">
-                      <a href="?page={{ page_obj.next_page_number }}{% if region_param.id %}&region={{ region_param.id }}{% endif %}">></a>
+                      <a href="?page={{ page_obj.next_page_number }}{% if query %}&{{ query }}{% endif %}">></a>
                   </li>
               {% endif %}
           </ul>
@@ -336,10 +235,3 @@
   </div>
 </div>
 {% endblock paginator %}
-
-{% endblock content %}
-{% block js %}
-<script src="{% static 'js/profile/selectAdvertisement.js' %}"></script>
-<script src="{% static 'js/profile/errors.js' %}"></script>
-<script src="{% static 'js/advertisementAdd/advertisementAdd.js' %}"></script>
-{% endblock js %}

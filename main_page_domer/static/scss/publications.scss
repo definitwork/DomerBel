@@ -25,3 +25,9 @@
     @include fonts($defaultColor, 14px, 400);
   }
 }
+
+.main__info-not-found {
+  text-align: center;
+  @include fonts($defaultColor, 24px, 400);
+  margin-top: 40px;
+}
