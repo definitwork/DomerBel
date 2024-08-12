@@ -3,6 +3,8 @@ const registrationButton = document.getElementById("registration_button");
 registrationButton.addEventListener("click", registration);
 const loginForm = document.getElementById("login_form");
 const loginButton = document.getElementById("login_button");
+const exitBtn = document.querySelector(".exit")
+exitBtn?.addEventListener("click", logout)
 loginButton.addEventListener("click", login);
 const logoutButton = document.getElementById("logout_button");
 logoutButton?.addEventListener("click", logout);
@@ -141,6 +143,6 @@ function logout() {
       "X-CSRFToken": getCookie("csrftoken"),
     },
   }).then((resp) => {
-    if (resp.status === 205) window.location.href="http://127.0.0.1:8000/";
+    if (resp.ok) window.location.href="http://127.0.0.1:8000/";
   });
 }
