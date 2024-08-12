@@ -210,7 +210,7 @@
 <section class="advertisement">
   <ul class="advertisement__list">
       {% for card in page_obj|dictsortreversed:"raise_in_search" %}
-          <li class="default__item">
+          <li>
               <article class="advertisement__list-item {% if card.highlight_ad %} active__item {% endif %}">
                   <a href="{% url 'advertisement_details' card.slug %}" class="advertisement__list-item-img">
                       <img src="{% if card.preview_image %} {{ card.preview_image.url }} {% else %}{% static 'img/no_image.jpg' %}{% endif %}"
