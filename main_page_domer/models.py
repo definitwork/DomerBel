@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.contrib import admin
 from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
@@ -68,6 +69,7 @@ class PhotoPublication(models.Model):
 
     def __str__(self):
         return f"{self.publication}"
+    
 
     class Meta:
         verbose_name = "Фото публикации"
@@ -106,6 +108,9 @@ class Publication(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def get_absolute_url(self):
+        return reverse('publication_by_slug', kwargs={"slug": self.slug})
 
     def save(self, *args, **kwargs):
         self.slug = unique_slugify(self, self.title)

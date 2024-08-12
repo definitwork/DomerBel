@@ -387,14 +387,15 @@ def get_publications(request):
     return render(request, 'publications.html', context)
 
 
-def get_publication_by_slug(request, publication_slug):
+def get_publication_by_slug(request, slug):
     """ Страница публикации по slug """
-    Publication.objects.filter(slug=publication_slug).update(counter_views=F('counter_views')+1)
-    publication = get_object_or_404(Publication, slug=publication_slug, moderated=True)
+    Publication.objects.filter(slug=slug).update(counter_views=F('counter_views')+1)
+    publication = get_object_or_404(Publication, slug=slug, moderated=True)
     context = {
         'publication': publication,
         'adaptive_navigation': f'{publication.title}'
     }
+    print(publication.get_absolute_url())
     return render(request, 'publication_by_slug.html', context)
 
 
