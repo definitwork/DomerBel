@@ -62,3 +62,10 @@
 @import "./modalsSignIn";
 @import "./modalsReset";
 @import './modalsNotification';
+@import "./modalsMore";
+
+.modals__active-grid {
+  display: grid;
+  transition: .5s ease;
+  opacity: 1;
+}

@@ -21,7 +21,6 @@ closing_cross_pa.forEach(item => item.addEventListener("click", () => {
 }));
 
 popup_pa.addEventListener("click", (event) => {
-    // console.log(event.currentTarget);
     if (event.target === event.currentTarget) {
         popup_pa.style.display = 'none';
         nav_category_list_popup_pa.style.display = "none";

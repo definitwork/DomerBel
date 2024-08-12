@@ -53,6 +53,7 @@ function registration() {
         notificationModal.classList.add("modal__active");
         const notificationText = document.querySelector(".modals__notification-text");
         notificationText.innerText = data.success;
+        
       }
     })
     .catch((err) => {
@@ -116,7 +117,6 @@ function login() {
       return resp.json();
     })
     .then((data) => {
-      console.log(data);
       if (data.errors) throw new Error(JSON.stringify(data.errors));
     })
     .catch((err) => {

@@ -326,4 +326,18 @@
 
 .label__error select, .label__error input {
   border-color: red;
+}
+
+.ck-editor-container {
+  max-width: 320px;
+}
+
+.word-count {
+  display: none;
+}
+
+@media (max-width: 992px) {
+  .ck-editor-container {
+    max-width: none;
+  }
 }/*# sourceMappingURL=profile.css.map */

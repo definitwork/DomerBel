@@ -102,8 +102,13 @@
                     </a>
                 </li>
                 <li class="profile__aside-nav-list-item">
-                    <a href="#">
+                    <a href="{% url 'users:user_all_publications' %}">
                         Публикации
+                    </a>
+                </li>
+                <li class="profile__aside-nav-list-item">
+                    <a href="{% url 'users:favorites' %}">
+                        Избранное
                     </a>
                 </li>
             </ul>
@@ -264,7 +269,7 @@
 </section>
 {% endblock content %}
 {% block js %}
-<script src="{% static "js/profile/selectAdvertisement.js" %}"></script>
-<script src="{% static "js/profile/errors.js" %}"></script>
+<script src="{% static 'js/profile/selectAdvertisement.js' %}"></script>
+<script src="{% static 'js/profile/errors.js' %}"></script>
 {% block js2 %}{% endblock js2 %}
 {% endblock js %}

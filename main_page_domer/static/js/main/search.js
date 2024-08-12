@@ -6,7 +6,7 @@ const getRegion = document.querySelector(".main__search-form-item-region")
 function getOption(url) {
   fetch(url)
     .then((response) => response.json())
-    .then((data) => {
+    .then((data) => {      
       if (data.length === 0) return false
       if (data.some(item => item.spisok !== null && item.spisok !== undefined) && fields.children.length !== 0) {
         data.forEach((item) => {
@@ -24,7 +24,6 @@ function getOption(url) {
         return
       }
       if (data.some(item => item.search === "")) return
-      console.log(data);
       if (Array.isArray(data) && data.some(item=>item.area)) {
         createSelectElement(data, "Любое расположение")
         return
@@ -38,7 +37,8 @@ function getOption(url) {
 
 function getInnerList(data, id) {
   const dataModel = data.spisok.element_set.find((item) => item.id == id)
-  if(!dataModel) {
+  if(!dataModel || dataModel?.elementtwo_set.length === 0) {
+    
     fields.children[
       Array.from(fields.children).findIndex((item) =>
         item.classList.contains("category__mark")
@@ -49,7 +49,6 @@ function getInnerList(data, id) {
   dataModel.outer_id = +fields.children[Array.from(fields.children).findIndex(
     (item) => item.dataset.active === "true"
   )].name
-  console.log(dataModel);
   createSelectElement(dataModel, data?.search?.split("|")[1]?.trim(), fields)
 }
 

@@ -199,8 +199,8 @@
   gap: 10px;
   position: relative;
 }
-.default__item .advertisement__list-item-about::before {
-  content: "";
+.default__item .advertisement__list-item-about-favorites {
+  cursor: pointer;
   display: block;
   width: 18px;
   height: 18px;
@@ -255,6 +255,9 @@
   -o-object-position: center;
      object-position: center;
 }
+.default__item .advertisement__favorites-active {
+  background: url(../img/favorite_yes.png) no-repeat center/cover;
+}
 
 .second__item {
   display: grid;
@@ -270,6 +273,7 @@
   gap: 10px;
   padding: 8px;
   border: 1px solid #D4D4D4;
+  border-radius: 7px;
 }
 .second__item ~ .vip__wrap {
   flex: 0 0 250px;
@@ -334,16 +338,18 @@
 .second__item .advertisement__list-item-about {
   position: relative;
 }
-.second__item .advertisement__list-item-about::after {
-  content: "";
+.second__item .advertisement__list-item-about-favorites {
+  cursor: pointer;
   display: block;
   width: 18px;
   height: 18px;
-  position: absolute;
   background: url(../img/favorite.png) no-repeat center/cover;
-  bottom: 0px;
-  right: 0px;
-  cursor: pointer;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+.second__item .advertisement__favorites-active {
+  background: url(../img/favorite_yes.png) no-repeat center/cover;
 }
 
 @media (max-width: 992px) {
@@ -483,6 +489,32 @@
   color: red;
 }
 
+.more {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.more__item h2 {
+  margin-bottom: 5px;
+}
+.more__item h2 a {
+  font-family: "Trebuchet MS", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  color: black;
+  font-size: 16px;
+}
+.more__item h2 a:hover {
+  color: red;
+}
+.more__item ul {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .advertisement {
   display: flex;
   align-items: flex-end;
@@ -509,7 +541,7 @@
   font-weight: 400;
   font-style: normal;
   color: black;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .recent-announcements__list-item-article-img {
@@ -531,7 +563,7 @@
   font-weight: 400;
   font-style: normal;
   color: #3077a0;
-  font-size: 16px;
+  font-size: 18px;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -551,7 +583,7 @@
   font-weight: 400;
   font-style: normal;
   color: gray;
-  font-size: 14px;
+  font-size: 16px;
 }
 .recent-announcements__list-item-article-info p:nth-child(2) {
   color: black;

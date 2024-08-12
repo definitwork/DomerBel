@@ -2,9 +2,9 @@
 
 {% load static %}
 
-{% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/publication_by_id/style.css' %}"/>
-{% endblock stylesheet %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/publicationSlug.css' %}"/>
+{% endblock css %}
 
 {% block title %} Пубикации {% endblock title %}
 
@@ -27,8 +27,8 @@
 
 {% block content %}
     <section class="section_publications">
-        <p class="publication_text_title"> {{ publication.title }} </p>
-        <p> {{ publication.date_of_create }} </p>
+        <h2 class="publication_text_title"> {{ publication.title }} </h2>
+        <p class="publication_data">{{ publication.date_of_create }}</p>
         <div class="publication_link_wrap">
             <div class="publication_img">
                 <img src="{{ publication.preview_image.url }}" alt="Publication Photo">
@@ -37,10 +37,10 @@
                 {% endfor %}
             </div>
             <div class="publication_text">
-                <p> {{ publication.description }} </p>
+                {{ publication.description|safe }}
             </div>
         </div>
-        <p> Просмотров: {{ publication.counter_views }} </p>
+        <p class="publication_views">Просмотров: {{ publication.counter_views }}</p>
     </section>
 {% endblock content %}
 

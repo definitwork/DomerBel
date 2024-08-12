@@ -14,10 +14,3 @@ btn.addEventListener('click', () => {
         touchMove:false,
       });
 })
-
-modalBlock.addEventListener('click', (event) => {
-  if(event.target === modalBlock) {
-    document.body.style.overflow = 'auto'
-    modalBlock.classList.remove('modal__active')
-  } 
-})

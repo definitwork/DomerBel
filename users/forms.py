@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django_ckeditor_5.widgets import CKEditor5Widget
 
+from advertisement.forms import ImagePreviewWidget
 from main_page_domer.models import Publication
 
 from .models import User, Message
@@ -39,16 +41,16 @@ class ChangePasswordForm(forms.ModelForm):
         attrs={'class': 'input_field', 'placeholder': 'Повторите новый пароль'}),
                                       validators=[validate_password], label='Повторите новый пароль')
 
+    class Meta:
+        model = get_user_model()
+        fields = ['password']
+
     def clean(self):
         cleaned_data = super().clean()
         new_password = cleaned_data.get('new_password')
         repeat_new_pass = cleaned_data.get('repeat_new_pass')
         if new_password is not None and repeat_new_pass is not None and new_password != repeat_new_pass:
             self.add_error('repeat_new_pass', 'Пароли не совпадают')
-
-    class Meta:
-        model = get_user_model()
-        fields = ['password']
 
 
 class MessageForm(forms.ModelForm):
@@ -72,10 +74,17 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class PublicationForm(forms.ModelForm):
-    pass
     class Meta:
         model = Publication
-        fields = ['title', 'announcement', 'description', 'video_link', ]
+        fields = ['title', 'announcement', 'description', 'video_link', 'preview_image']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['announcement'].widget = CKEditor5Widget(config_name='extends2')
+        self.fields['preview_image'].widget = ImagePreviewWidget()
+        self.fields['preview_image'].widget.attrs.update({"id": "id_preview_image"})
+        self.fields['announcement'].required = False
+        self.fields['description'].required = False
 
 
 class MessageForm(forms.ModelForm):

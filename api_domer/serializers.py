@@ -1,14 +1,11 @@
-from django.contrib.auth import authenticate, login
-from drf_recaptcha.fields import ReCaptchaV3Field, ReCaptchaV2Field
+from drf_recaptcha.fields import ReCaptchaV2Field
 from rest_framework import serializers
-from transliterate import slugify
-from django.utils import formats
 
-from advertisement.models import Region, Category, Field, Spisok, ElementTwo, Element, Advertisement, Store, ErrorFile
+
+from advertisement.models import Region, Category, Field, Spisok, ElementTwo, Element, Advertisement, Store
 from api_domer.validators import validate_password, validate_phone
-from config import settings
 from users.models import User
-from main_page_domer.models import Publication, PhotoPublication
+
 
 
 class GetListOfCitiesSerializer(serializers.ModelSerializer):
@@ -118,43 +115,8 @@ class PasswordResetSerializer(serializers.Serializer):
             return email
 
 
-class PublicationSearchSerializer(serializers.ModelSerializer):
-    def to_representation(self, instance):
-        """ Переопределяем вывод даты в формате 'd-m-Y H:i' """
-        representation = super().to_representation(instance)
-        representation['date_of_create'] = formats.date_format(instance.date_of_create, "d-m-Y H:i")
-        return representation
-
-    class Meta:
-        model = Publication
-        fields = '__all__'
-
-
-class SavePublicationSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Publication
-        fields = ['user', 'title', 'announcement', 'description', 'preview_image', 'video_link',]
-
-
-class SavePhotoPublicationSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = PhotoPublication
-        fields = ['photo', 'publications']
-
-
-class EditPublicationSerializer(serializers.ModelSerializer):
-    preview_image = serializers.ImageField(allow_null=True, required=False)
-    main_img = serializers.CharField()
-
-    class Meta:
-        model = Publication
-        fields = ['title', 'announcement', 'description', 'preview_image', 'video_link', 'main_img',]
-
-    # def validate(self, attrs):
-    #     print("Данные сериализатора:", attrs)
-    #     return attrs
+class FavoriteSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
 
 
 class GetListOfCategoriesFieldsSerializer(serializers.ModelSerializer):
@@ -162,4 +124,3 @@ class GetListOfCategoriesFieldsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id','title','field_set']
-

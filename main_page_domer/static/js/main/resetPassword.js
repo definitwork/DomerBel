@@ -18,12 +18,10 @@ backBtn.addEventListener("click", () => {
 });
 
 function expiredCallbackResetRecaptcha() {
-  console.log(111, "reset");
   resetSubmitPasswordBtn.removeEventListener("click", requestResetPassword);
 }
 
 function callbackResetRecaptcha() {
-  console.log(2222, "reset");
   resetSubmitPasswordBtn.addEventListener("click", requestResetPassword);
 }
 
@@ -48,7 +46,6 @@ function requestResetPassword() {
     })
     .catch((error) => {
         const errorMessage = JSON.parse(error.message)
-        console.log(errorMessage)
         if (errorMessage["recaptcha"]) {
             resetSubmitPasswordBtn.removeEventListener("click", requestResetPassword);
           }

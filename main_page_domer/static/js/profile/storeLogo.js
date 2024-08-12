@@ -1,8 +1,8 @@
-const logoInput = document.getElementById('id_logo_image')
-const logoLabel = document.querySelector(".main__info label[for='id_logo_image']")
-const closeTag = document.querySelector(".cross")
+const logoInput = document.getElementById('id_logo_image') || document.getElementById("preview_image_logo_image")
+const logoLabel = document.querySelector(".main__info label[for='id_logo_image']") || document.querySelector(".main__info label[for='preview_image_logo_image']")
+const closeTag = document.querySelector(".delete_img")
 logoInput?.addEventListener('change', (event) => {
-  const profileImg = document.querySelectorAll(".profile__logo-img")
+  const profileImg = document.querySelectorAll(".photo_img")
   if(profileImg.length >= 1) {
     Array.from(profileImg).forEach((item) => {
       item.remove()
@@ -13,15 +13,14 @@ logoInput?.addEventListener('change', (event) => {
   reader.readAsDataURL(file)
   reader.onload = (e) => {
     const div = document.createElement('div');
-    div.classList.add("profile__logo-img")
+    div.classList.add("photo_img")
     const cross = document.createElement('div');
-    cross.classList.add("cross");
-    cross.innerHTML = "X"
+    cross.classList.add("delete_img");
     const img = document.createElement('img');
     img.src = e.target.result
     div.append(img)
     div.append(cross)
-    logoLabel.after(div)
+    logoLabel.append(div)
     cross.addEventListener('click', (event) => {
       event.target.parentElement.remove()
       logoInput.value = ""

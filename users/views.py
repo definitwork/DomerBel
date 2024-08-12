@@ -429,22 +429,30 @@ def delete_user_message(request, message_id, chat_id):
 @login_required
 def get_user_all_publications(request):
     """ Вывод всех публикаций """
-    user_publications = Publication.objects.filter(user = request.user.id).order_by('-date_of_create')
+    user_publications = Publication.objects.filter(user=request.user.id).order_by('-date_of_create')
     context = {
         "user_publications": user_publications,
         "adaptive_navigation": "Мои публикации"
     }
-    return render(request=request, template_name='personal_account/user_all_publications.html', context=context)
+    return render(request=request, template_name='profile_publications.html', context=context)
+
 
 @login_required
 def add_user_publication(request):
     """ Добавление новой публикации """
     form_publication = PublicationForm()
+    if request.method == 'POST':
+        form_publication = PublicationForm(request.POST, request.FILES)
+        if form_publication.is_valid():
+            publication = form_publication.save(commit=False)
+            publication.user = request.user
+            publication.save()
+            return redirect('users:user_all_publications')
     context = {
         "form_publication": form_publication,
         "adaptive_navigation": "Добавление публикации"
     }
-    return render(request=request, template_name='personal_account/user_add_publication.html', context=context)
+    return render(request=request, template_name='profile_add_publication.html', context=context)
 
 
 @login_required
@@ -452,8 +460,8 @@ def delete_publication(request):
     """ Удаляет выбранные публикации """
     if request.method == "POST":
         if 'delete_publication' in request.POST:
-            selected_publications = request.POST.getlist('ads_checkbox')
-            Publication.objects.filter(id__in=selected_publications).delete()
+            selected_publications = request.POST.getlist('publication_checkbox')
+            Publication.objects.filter(user=request.user, id__in=selected_publications).delete()
             messages.success(request, "Выбранные публикации удалены!")
             return redirect('users:user_all_publications')
 
@@ -461,15 +469,28 @@ def delete_publication(request):
 @login_required
 def edit_publication(request, publication_slug):
     """ Публикация для редактирования """
-    publication_by_slug = Publication.objects.get(slug=publication_slug)
-    photo_publications_by_slug_id = PhotoPublication.objects.filter(publications=publication_by_slug.id)
-    form_publication = PublicationForm(instance=publication_by_slug)
+    publication = get_object_or_404(Publication, user=request.user, slug=publication_slug)
+
+    if request.method == 'POST':
+        form_publication = PublicationForm(request.POST, request.FILES, instance=publication)
+        if form_publication.is_valid():
+            form_publication.save()
+            messages.success(request, f"Публикация {publication} успешно изменена!")
+            return redirect('users:user_all_publications')
+    else:
+        form_publication = PublicationForm(instance=publication)
 
     context = {
-        'publication_by_id': publication_by_slug,
+        'publication': publication,
         'form_publication': form_publication,
-        'photo_publications_by_id': photo_publications_by_slug_id,
         "adaptive_navigation": "Редактирование публикации"
     }
-    return render(request=request, template_name='personal_account/user_edit_publication.html', context=context)
+    return render(request=request, template_name='profile_edit_publication.html', context=context)
 
+def get_favorites_page(request):
+
+    favorites_list = Advertisement.objects.filter(id__in=request.user.userfavorites.favorites, is_active=True, moderated=True)
+    context = {
+        "favorites_list": favorites_list
+    }
+    return render(request, "profile_favorites.html", context)

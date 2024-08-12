@@ -17,7 +17,7 @@ from advertisement.utils import (get_region_variables, sorted_by, sorted_by_numb
                                  variables_for_paginator, get_view_type_for_store)
 from config import settings
 from main_page_domer.forms import FeedbackForm, ComplaintForm
-from main_page_domer.models import ReasonOfComplaint, Complaint, Publication
+from main_page_domer.models import Help, ReasonOfComplaint, Complaint, Publication
 from main_page_domer.functions import views_counter_publication
 
 
@@ -179,7 +179,7 @@ def get_store_by_title(request, store_slug):
                                        sort_for_paginator)
 
     context = {
-        'store_page': store_page,
+        'store': store_page,
         'oblast': oblast,
         "category_list": category_list,
         "ads_found": advertisement_queryset.count(),
@@ -190,7 +190,7 @@ def get_store_by_title(request, store_slug):
         'date': state_sort_by_date,
         'view_type': view_type,
     }
-    response = render(request, html, context)
+    response = render(request, 'store_details.html', context)
     response.set_cookie('sort', sort_for_paginator)
     response.set_cookie('date', state_sort_by_date)
     response.set_cookie('sorted_by', order_by)
@@ -270,17 +270,7 @@ def get_site_map_page(request):
     context = {}
     context['nodes'] = category_list
 
-    return render(request, 'site_map.html', context)
-
-
-def get_help_page(request):
-    """ Страница Помощь """
-    category_list = Category.objects.filter(level__lte=1)
-    context = {
-        "category_list": category_list
-    }
-    return render(request, 'help.html', context)
-
+    return render(request, 'store_details.html', context)
 
 def get_publications(request):
     """ Страница с всеми публикациями """
@@ -385,6 +375,14 @@ def get_complaint_page(request, adv_id):
 
 def register_done(request):
     return render(request, "message_after_register.html")
+
+
+def get_help_page(request):
+    help = Help.objects.first()
+    context = {
+        "help": help,
+    }
+    return render(request, "help_page.html", context)
 
 
 def desc_and_opis(objavl):

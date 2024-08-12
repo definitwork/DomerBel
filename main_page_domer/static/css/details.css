@@ -528,6 +528,8 @@
 }
 
 .details__advertisement-add-share-list-drop {
+  max-height: 300px;
+  overflow: auto;
   transition: 0.3s ease;
   transform: scale(0);
   position: absolute;
@@ -622,5 +624,9 @@
   .detials__advertisement-about-action {
     gap: 20px;
     flex-wrap: wrap;
+  }
+  .details__advertisement-add-share-list {
+    width: 100%;
+    justify-content: flex-end;
   }
 }/*# sourceMappingURL=details.css.map */

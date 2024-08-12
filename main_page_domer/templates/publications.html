@@ -1,58 +1,57 @@
-{% extends 'base.html' %}
-
+{% extends 'base.html' %} 
 {% load static %}
-
-{% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/publications/style.css' %}"/>
-{% endblock stylesheet %}
-
-{% block title %} Пубикации {% endblock title %}
-
-{% block nav_title %}
-    <div class="nav_category_title">
-        <p>Доска объявлений</p>
-    </div>
-{% endblock nav_title %}
-
-{% block find %}
-    <section class="search_table_stores">
-        <nav class="table_topics_search_location">
-            <input type="text" placeholder="Поиск" class="table_search">
-            <div class="checkbox_button">
-                <input type="image" name="submit" src="{% static 'img/poisk.png' %}">
-            </div>
-        </nav>
-    </section>
-{% endblock find %}
-
+{% block css %} 
+<link rel="stylesheet" href="{% static 'css/publications.css' %}">
+{% endblock css %} 
+{% block search %}
+<search class="main__search search__profile">
+  <form class="main__search-form">
+    <fieldset class="main__search-form-item">
+      <input type="text" name="text_search" placeholder="Поиск по тексту">
+    </fieldset>
+    <fieldset class="main__search-form-item labels">
+      <div class="main__search-form-item-label-wrap">
+        <label for="heading">
+            <input type="checkbox" name="only_title" id="heading" />
+            <p>Только в заголовках</p>
+        </label>
+      </div>
+      <button>Искать</button>
+  </fieldset>
+  </form>
+</search>
+{% endblock search %}
 {% block content %}
-    <section class="section_publications">
-        <div class="publications_count">
-            <p>Найдено записей: {{ publications.count }} </p>
-        </div>
-        <ul class="publication_list">
-            {% for publication in publications %}
-                <li class="publication_list_item">
-                    <a href="{% url 'publication_by_slug' publication.slug %}" class="publication_link">
-                        <div class="publication_link_wrap">
-                            <div class="publication_data">
-                                <p> {{ publication.date_of_create }} </p>
-                            </div>
-                            <div class="publication_img">
-                                <img src="{{ publication.preview_image.url }}" alt="Publication Photo">
-                            </div>
-                            <div class="publication_text">
-                                <p class="publication_text_title"> {{ publication.title }} </p>
-                                <p> {{ publication.announcement }} </p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </section>
-{% endblock content %}
-
-{% block javascript %}
-    <script src=""></script>
-{% endblock %}
+<section class="section_publications">
+  <div class="publications_count">
+      <p>Найдено записей: {{ publications.count }} </p>
+  </div>
+  <ul class="publications__list">
+      {% for publication in publications %}
+      <li>
+        <article class="publications__list-item">
+          <a href="{% url 'publication_by_slug' publication.slug %}" class="article__date">
+            18 июля 2021 г.
+            20:42	
+          </a>
+          <a href="{% url 'publication_by_slug' publication.slug %}" class="article__img">
+            <img src="{{ publication.preview_image.url }}" alt="">
+          </a>
+          <div class="article__about">
+            <h3>
+              <a href="{% url 'publication_by_slug' publication.slug %}">
+                {{ publication.title }}
+              </a>
+            </h3>
+            <p>
+              {{ publication.announcement|safe }}
+            </p>
+          </div>
+        </article>
+    </li>
+      {% endfor %}
+  </ul>
+</section>
+{% endblock %} 
+{% block js %}
+{% endblock js %}
